@@ -20,3 +20,7 @@ android:
 
 before_script:
   - yes | sdkmanager "platforms;android-30" "build-tools;30.0.2"
+
+branches:
+  only:
+    - 'alexandre'

@@ -18,5 +18,5 @@ android:
     - sys-img-x86-android-26
     - sys-img-armeabi-v7a-android-17
 
-script:
+before_script:
   - yes | sdkmanager "platforms;android-30" "build-tools;30.0.2"

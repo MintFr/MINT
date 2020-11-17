@@ -17,9 +17,9 @@ android:
     # if you need to run emulator(s) during your tests
 
 before_script:
-  - yes | sdkmanager "platforms;android-30" "build-tools;30.0.2" "system-images;android-30;google_apis_playstore;x86_64"
+  - yes | sdkmanager "platforms;android-30" "build-tools;30.0.2"
 script:
-  - gradlew build
+  - ./gradlew build
 
 branches:
   only:

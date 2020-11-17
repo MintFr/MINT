@@ -8,10 +8,8 @@ android:
     # - platform-tools
 
     # The BuildTools version used by your project
-    - build-tools-30.0.2
 
     # The SDK version used to compile your project
-    - android-30
 
     # Additional components
 
@@ -21,4 +19,4 @@ android:
     - sys-img-armeabi-v7a-android-17
 
 script:
-  - yes | sdkmanager --licenses
+  - yes | sdkmanager "platforms;android-30" "build-tools;30.0.2"

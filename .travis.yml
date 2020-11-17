@@ -19,7 +19,7 @@ android:
 before_script:
   - yes | sdkmanager "platforms;android-30" "build-tools;30.0.2" "system-images;android-30;google_apis_playstore;x86_64"
 script:
-  - gradle build
+  - gradlew build
 
 branches:
   only:

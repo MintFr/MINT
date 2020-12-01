@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/background_map">
 
     <EditText
         android:id="@+id/PointDeDepart"
@@ -87,9 +88,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="#DDDDDD"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
+        android:background="#DDDDDD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

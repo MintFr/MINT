@@ -5,6 +5,174 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="222px"
+            android:layout_height="222px"
+            android:src="@drawable/mint_icone_seule__1_"
+            android:contentDescription="logo"
+            android:layout_gravity="center"/>
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <LinearLayout
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="com.example.helloworld.MainActivity">
+
+                <RelativeLayout
+                    android:id="@+id/profile_main_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="33px"
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"
+                    android:padding="20dp"
+                    android:background="@drawable/layout_bg_profile_main">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="474px"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="Gérard\nDupont"
+                        android:textColor="#999999"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:id="@+id/user_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:contentDescription="user_image"
+                        android:src="@drawable/user" />
+
+                    <TextView
+                        android:id="@+id/parameters"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="40px"
+                        android:fontFamily="@font/quicksand_light"
+                        android:text="Paramètres"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        android:gravity="bottom"
+                        android:layout_alignBottom="@id/user_image"
+                        android:layout_alignLeft="@id/name"
+                        android:layout_below="@id/name"/>
+
+                    <TextView
+                        android:id="@+id/sensibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_regular"
+                        android:text="Sensibilité"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_below="@id/user_image"
+                        android:paddingLeft="30px"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"/>
+                    <TextView
+                        android:id="@+id/adresses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_regular"
+                        android:text="Mes adresses favorites"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_below="@id/sensibility"
+                        android:paddingLeft="30px"
+                        android:paddingBottom="5dp"/>
+                    <TextView
+                        android:id="@+id/transportation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_regular"
+                        android:text="Mes modes transports favoris"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_below="@id/adresses"
+                        android:paddingLeft="30px"
+                        android:paddingBottom="5dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/profile_second_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_bg_profile_main"
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"
+                    android:layout_marginBottom="33px"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/exposition_today"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="Mon exposition lors\nde mon dernier trajet"
+                        android:textColor="#999999"
+                        android:textSize="16dp" />
+
+                    <ImageView
+                        android:id="@+id/graph"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/graph_pie"
+                        android:contentDescription="graph_pie"
+                        android:layout_toRightOf="@id/exposition_today"
+                        android:paddingLeft="60px"/>
+                    <TextView
+                        android:id="@+id/text_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/graph"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="312"
+                        android:textColor="#89BE89"
+                        android:textSize="32dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/profile_third_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_bg_profile_main"
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"
+                    android:layout_marginBottom="33px"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/chart_week"
+                        android:layout_width="885px"
+                        android:layout_height="861px"
+                        android:src="@drawable/chart_week"
+                        android:contentDescription="graph_week"
+                        android:layout_centerHorizontal="true"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

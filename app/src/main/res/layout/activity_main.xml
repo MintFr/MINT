@@ -6,29 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <Button
+    <EditText
         android:id="@+id/PointDeDepart"
         android:layout_width="795px"
         android:layout_height="132.21px"
         android:layout_marginTop="21dp"
         android:background="@drawable/point_de_depart"
-        android:text="Point De Depart"
+        android:hint="Point de Départ"
         android:textAllCaps="false"
         android:textColor="#999999"
+        android:textAlignment="center"
+        android:gravity="center_horizontal|center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-    <Button
+    <EditText
         android:id="@+id/PointDarrivee"
         android:layout_width="795px"
         android:layout_height="132.21px"
         android:layout_marginTop="11dp"
         android:background="@drawable/point_darrivee"
-        android:text="Point d'arrivee"
+        android:hint="Point d'arrivee"
         android:textAllCaps="false"
         android:textColor="#999999"
+        android:textAlignment="center"
+        android:gravity="center_horizontal|center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PointDeDepart" />
@@ -84,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
+        android:background="#DDDDDD"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

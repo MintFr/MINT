@@ -6,13 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <Button
+        android:id="@+id/PointDeDepart"
+        android:layout_width="795px"
+        android:layout_height="132.21px"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/point_de_depart"
+        android:text="Point De Depart"
+        android:textAllCaps="false"
+        android:textColor="#999999"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <Button
+        android:id="@+id/PointDarrivee"
+        android:layout_width="795px"
+        android:layout_height="132.21px"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/point_darrivee"
+        android:text="Point d'arrivee"
+        android:textAllCaps="false"
+        android:textColor="#999999"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PointDeDepart" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="300px"
+        android:layout_height="300px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mint_icone_seule__1_" />
+
+    <Button
+        android:id="@+id/recherche"
+        android:layout_width="315px"
+        android:layout_height="90px"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/recherche"
+        android:text="Rechercher"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="42px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/options" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/options"
+        android:layout_width="171px"
+        android:layout_height="66px"
+        android:layout_marginTop="6dp"
+        android:gravity="center_horizontal"
+        android:text="Options"
+        android:textAlignment="center"
+        android:textColor="#084528"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.843"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PointDarrivee" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -183,6 +183,7 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         android:background="#DDDDDD"
+        android:fontFamily="@font/quicksand_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

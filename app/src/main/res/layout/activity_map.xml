@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MapActivity">
+
     <org.osmdroid.views.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -18,6 +20,7 @@
         android:layout_gravity="bottom"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
+        android:fontFamily="@font/quicksand_regular"
         android:background="#DDDDDD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"

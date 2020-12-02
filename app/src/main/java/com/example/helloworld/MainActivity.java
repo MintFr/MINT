@@ -25,25 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.itineraire:
-                        break;
-
-                    case R.id.cartes:
-                        Intent intentMap = new Intent(MainActivity.this, MapActivity.class);
-                        startActivity(intentMap);
-                        break;
-                    case R.id.profil:
-                        Intent intentProfil = new Intent(MainActivity.this, ProfileActivity.class);
-                        startActivity(intentProfil);
-                        break;
-                }
-                return false;
-            }
-        });
+        bottomNav.setOnNavigationItemSelectedListener(new ActivitySwitcher(this));
     }
 
 }

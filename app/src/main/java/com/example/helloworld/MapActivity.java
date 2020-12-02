@@ -1,13 +1,10 @@
 package com.example.helloworld;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -36,29 +33,7 @@ public class MapActivity extends AppCompatActivity {
         mapController.setZoom(15.0);
         mapController.setCenter(startPoint);
 
-
-
-
-
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.cartes:
-                        break;
-
-                    case R.id.itineraire:
-                        Intent intentMap = new Intent(MapActivity.this, MainActivity.class);
-                        startActivity(intentMap);
-                        break;
-                    case R.id.profil:
-                        Intent intentProfil = new Intent(MapActivity.this, ProfileActivity.class);
-                        startActivity(intentProfil);
-                        break;
-                }
-                return false;
-            }
-        });
+        bottomNav.setOnNavigationItemSelectedListener(new ActivitySwitcher(this));
     }
 }

@@ -36,16 +36,6 @@
                     android:padding="20dp"
                     android:background="@drawable/layout_bg_profile_main">
 
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="474px"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:text="Gérard\nDupont"
-                        android:textColor="#999999"
-                        android:textSize="20dp" />
-
                     <ImageView
                         android:id="@+id/user_image"
                         android:layout_width="wrap_content"
@@ -53,8 +43,19 @@
                         android:padding="10dp"
                         android:scaleX="1.2"
                         android:scaleY="1.2"
+                        android:layout_alignParentLeft="true"
                         android:contentDescription="user_image"
                         android:src="@drawable/user" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="Gérard\nDupont"
+                        android:textColor="#999999"
+                        android:textSize="20dp"
+                        android:layout_toRightOf="@id/user_image"/>
 
                     <TextView
                         android:id="@+id/parameters"

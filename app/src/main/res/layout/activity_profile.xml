@@ -71,12 +71,15 @@
                         android:layout_alignLeft="@id/name"
                         android:layout_below="@id/name"/>
 
-                    <TextView
+                    <Button
                         android:id="@+id/sensibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand_regular"
-                        android:text="Sensibilité"
+                        android:text="@string/sensibility_button"
+                        android:textAllCaps="false"
+                        android:background="#FFFFFF"
+                        android:minHeight="0dp"
                         android:textColor="#999999"
                         android:textSize="16dp"
                         android:layout_alignLeft="@id/user_image"
@@ -84,28 +87,34 @@
                         android:paddingLeft="30px"
                         android:paddingTop="10dp"
                         android:paddingBottom="5dp"/>
-                    <TextView
-                        android:id="@+id/adresses"
+                    <Button
+                        android:id="@+id/favorite_adresses"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand_regular"
-                        android:text="Mes adresses favorites"
+                        android:text="@string/favorite_adresses_button"
+                        android:textAllCaps="false"
+                        android:background="#FFFFFF"
+                        android:minHeight="0dp"
                         android:textColor="#999999"
                         android:textSize="16dp"
                         android:layout_alignLeft="@id/user_image"
                         android:layout_below="@id/sensibility"
                         android:paddingLeft="30px"
                         android:paddingBottom="5dp"/>
-                    <TextView
-                        android:id="@+id/transportation"
+                    <Button
+                        android:id="@+id/favorite_transportation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand_regular"
-                        android:text="Mes modes transports favoris"
+                        android:text="@string/favorite_transportation_button"
+                        android:textAllCaps="false"
+                        android:background="#FFFFFF"
+                        android:minHeight="0dp"
                         android:textColor="#999999"
                         android:textSize="16dp"
                         android:layout_alignLeft="@id/user_image"
-                        android:layout_below="@id/adresses"
+                        android:layout_below="@id/favorite_adresses"
                         android:paddingLeft="30px"
                         android:paddingBottom="5dp"/>
                 </RelativeLayout>
@@ -163,8 +172,8 @@
 
                     <ImageView
                         android:id="@+id/chart_week"
-                        android:layout_width="885px"
-                        android:layout_height="861px"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:src="@drawable/chart_week"
                         android:contentDescription="graph_week"
                         android:layout_centerHorizontal="true"/>

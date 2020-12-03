@@ -16,4 +16,7 @@
     <string name="favorite_adresses_button">Mes adresses favorites</string>
     <string name="favorite_transportation_button">Mes modes de transport favoris</string>
     <string name="sensibility_button">Sensibilité</string>
+    <string name="add">ajouter</string>
+    <string name="adress1">première adresse favorite</string>
+    <string name="adress2">deuxième adresse favorite</string>
 </resources>

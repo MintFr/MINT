@@ -16,11 +16,9 @@
             android:contentDescription="logo"
             android:layout_gravity="center"/>
         <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_height="match_parent"
             android:layout_width="match_parent">
             <LinearLayout
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -78,7 +76,7 @@
                         android:fontFamily="@font/quicksand_regular"
                         android:text="@string/sensibility_button"
                         android:textAllCaps="false"
-                        android:background="#FFFFFF"
+                        android:background="#00FFFFFF"
                         android:minHeight="0dp"
                         android:textColor="#999999"
                         android:textSize="16dp"
@@ -94,7 +92,7 @@
                         android:fontFamily="@font/quicksand_regular"
                         android:text="@string/favorite_adresses_button"
                         android:textAllCaps="false"
-                        android:background="#FFFFFF"
+                        android:background="#00FFFFFF"
                         android:minHeight="0dp"
                         android:textColor="#999999"
                         android:textSize="16dp"
@@ -109,7 +107,7 @@
                         android:fontFamily="@font/quicksand_regular"
                         android:text="@string/favorite_transportation_button"
                         android:textAllCaps="false"
-                        android:background="#FFFFFF"
+                        android:background="#00FFFFFF"
                         android:minHeight="0dp"
                         android:textColor="#999999"
                         android:textSize="16dp"
@@ -183,6 +181,12 @@
         </ScrollView>
     </LinearLayout>
 
+    <View
+        android:id="@+id/dim_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#73000000"
+        android:visibility="invisible"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -197,5 +201,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#73000000">
-<RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".FavoriteAdressesPopUp"
-    android:background="@drawable/layout_bg_profile_main"
+    tools:context=".ProfileActivity">
+
+<RelativeLayout
+    android:id="@+id/popup_window"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg_popup"
     android:padding="20dp">
 
     <EditText
@@ -27,20 +28,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/enter_adress"
-        android:text="blabla"
+        android:text="@string/adress1"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:paddingLeft="50dp"
+        android:paddingLeft="10dp"
         android:paddingRight="50dp"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background = "#e0e0e0"
+        android:layout_alignLeft="@id/enter_adress"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_below="@id/adress1" />
+
     <TextView
         android:id="@+id/adress2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/adress1"
-        android:text="blabla"
+        android:text="@string/adress2"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"/>
+        android:paddingLeft="10dp"
+        android:paddingRight="50dp"
+        android:visibility="gone"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background = "#e0e0e0"
+        android:layout_alignLeft="@id/enter_adress"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_below="@id/adress2"
+        android:visibility="gone"/>
 </RelativeLayout>
-</LinearLayout>
+<Button
+    android:id="@+id/button_add"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/add"
+    android:fontFamily="@font/quicksand_bold"
+    android:textColor="#ffffff"
+    android:background="@drawable/add"
+    android:layout_below="@id/popup_window"
+    android:layout_alignRight="@id/popup_window"
+    android:layout_alignEnd="@id/popup_window"
+    android:layout_marginTop="20dp" />
+
+</RelativeLayout>

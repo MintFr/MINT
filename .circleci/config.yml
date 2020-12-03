@@ -10,6 +10,12 @@ jobs:
     steps:
       - checkout
 
+      # Before cache as it modifies build.gradle
+      - run:
+          name: Disable pre-dexing
+          command: perl -pi -e 's/true/false/ if /preDexLibraries/' app/build.gradle
+
+
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -19,10 +25,6 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-
-      - run:
-          name: Disable pre-dexing
-          command: perl -pi -e 's/true/false/ if /preDexLibraries/' app/build.gradle
 
       - run:
           name: Run build and tests

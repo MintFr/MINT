@@ -1,11 +1,8 @@
 package com.example.helloworld;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -18,6 +15,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivitySwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
     }
 }

@@ -34,6 +34,6 @@ public class MapActivity extends AppCompatActivity {
         mapController.setCenter(startPoint);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivitySwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
     }
 }

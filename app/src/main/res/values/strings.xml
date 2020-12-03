@@ -12,4 +12,12 @@
     <string name="title_notifications">Notifications</string>
     <string name="start_point">Point de départ</string>
     <string name="end_point">Point d\'arrivée</string>
+
+    <string-array name="map_array">
+        <item>Routes</item>
+        <item>Traffic en direct</item>
+        <item>Transport en commun</item>
+        <item>Pollution en direct</item>
+        <item>Pollens en direct</item>
+    </string-array>
 </resources>

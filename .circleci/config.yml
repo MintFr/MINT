@@ -42,6 +42,14 @@ jobs:
           path: ~/test-results/junit
 
       - run:
+          name: Save lint results
+          command: |
+            mkdir -p ~/lint-results/
+            find . -type f -name 'lint-results*' -exec cp {} ~/lint-results/ \;
+      - store_artifacts:
+          path: ~/lint-results/
+
+      - run:
           name: Save built apk
           command: |
               mkdir -p ~/apk/

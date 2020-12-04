@@ -32,14 +32,28 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="50dp"/>
+        android:paddingRight="50dp"
+        android:visibility="gone"/>
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background = "#e0e0e0"
         android:layout_alignLeft="@id/enter_adress"
         android:layout_alignRight="@id/enter_adress"
-        android:layout_below="@id/adress1" />
+        android:layout_below="@id/adress1"
+        android:visibility="gone"/>
+    <ImageButton
+        android:id="@+id/remove_btn_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove"
+        android:layout_below="@id/enter_adress"
+        android:minHeight="0dp"
+        android:background="#00ffffff"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_alignEnd="@id/enter_adress"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/adress2"
@@ -60,6 +74,112 @@
         android:layout_alignRight="@id/enter_adress"
         android:layout_below="@id/adress2"
         android:visibility="gone"/>
+    <ImageButton
+        android:id="@+id/remove_btn_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove"
+        android:minHeight="0dp"
+        android:background="#00ffffff"
+        android:layout_below="@id/adress1"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_alignEnd="@id/enter_adress"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/adress3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adress2"
+        android:text="@string/adress3"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="50dp"
+        android:visibility="gone"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background = "#e0e0e0"
+        android:layout_alignLeft="@id/enter_adress"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_below="@id/adress3"
+        android:visibility="gone"/>
+    <ImageButton
+        android:id="@+id/remove_btn_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove"
+        android:minHeight="0dp"
+        android:background="#00ffffff"
+        android:layout_below="@id/adress2"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_alignEnd="@id/enter_adress"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/adress4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adress3"
+        android:text="@string/adress4"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="50dp"
+        android:visibility="gone"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background = "#e0e0e0"
+        android:layout_alignLeft="@id/enter_adress"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_below="@id/adress4"
+        android:visibility="gone"/>
+    <ImageButton
+        android:id="@+id/remove_btn_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove"
+        android:minHeight="0dp"
+        android:background="#00ffffff"
+        android:layout_below="@id/adress3"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_alignEnd="@id/enter_adress"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/adress5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adress4"
+        android:text="@string/adress5"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="50dp"
+        android:visibility="gone"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background = "#e0e0e0"
+        android:layout_alignLeft="@id/enter_adress"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_below="@id/adress5"
+        android:visibility="gone"/>
+    <ImageButton
+        android:id="@+id/remove_btn_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove"
+        android:minHeight="0dp"
+        android:background="#00ffffff"
+        android:layout_below="@id/adress4"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@id/enter_adress"
+        android:layout_alignEnd="@id/enter_adress"
+        android:visibility="gone"/>
+
 </RelativeLayout>
 <Button
     android:id="@+id/button_add"

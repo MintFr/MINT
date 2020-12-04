@@ -27,6 +27,14 @@ public class Preferences {
         editor.apply();
     }
 
+    public static void clearSensibility(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("sensibility", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+
     public static void setPrefAddresses(String arrayName, ArrayList<String> array, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -54,8 +62,11 @@ public class Preferences {
     public static void removeAddress(String arrayName, int ind, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.remove(arrayName + "_" + ind);
         int newSize = prefs.getInt(arrayName+"_size",0)-1;
+        for(int i=ind;i<newSize;i++) {
+            editor.putString(arrayName + "_" + i, prefs.getString(arrayName + "_" + (i + 1), null));
+        }
+        editor.remove(arrayName + "_" + (newSize));
         editor.putInt(arrayName+"_size",newSize);
         editor.apply();
     }
@@ -64,11 +75,11 @@ public class Preferences {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(arrayName+"_"+key,value);
-        int newSize = prefs.getInt(arrayName+"_size",0)+1;
+        int newSize = (prefs.getInt(arrayName+"_size",0))+1;
         editor.putInt(arrayName+"_size",newSize);
         editor.apply();
     }
-    public static void clear(String arrayName, Context context){
+    public static void clearAddresses(Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();

@@ -59,8 +59,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton remove5;
 
     // sensibility //
-    private Button veryHignBtn;
-    private Button hignBtn;
+    private Button veryHighBtn;
+    private Button highBtn;
     private Button moderateBtn;
     private Button lowBtn;
     private Button noSensibilityBtn;
@@ -71,6 +71,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        //Preferences.clearAddresses(this);
+        //Preferences.clearSensibility(this);
 
         //link layout elements to activity
         sensibilityButton = findViewById(R.id.sensibility);
@@ -148,10 +151,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         View.OnClickListener onCLickRemove = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = (int) v.getTag();
-                addressPopupView.findViewWithTag(i-5).setVisibility(View.GONE);
-                addressPopupView.findViewWithTag(i).setVisibility(View.GONE);
-                Preferences.removeAddress("Address",i-5,ProfileActivity.this);
+                int i = (int) v.getTag() - 5;
+                int numberOfAddresses = Preferences.getNumberOfAddresses("Address", ProfileActivity.this);
+                Preferences.removeAddress("Address",i,ProfileActivity.this);
+                for (int j=i;j<numberOfAddresses-1;j++){
+                    TextView selectedText=addressPopupView.findViewWithTag(j);
+                    TextView selectedTextAfter=addressPopupView.findViewWithTag(j+1);
+                    selectedText.setText(selectedTextAfter.getText().toString());
+                }
+                TextView deletedAddress = addressPopupView.findViewWithTag(numberOfAddresses-1);
+                deletedAddress.setVisibility(View.GONE);
+                ImageButton deletedButton = addressPopupView.findViewWithTag(numberOfAddresses+4);
+                deletedButton.setVisibility(View.GONE);
             }
         };
 
@@ -248,15 +259,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         //link elements from popup window
-        veryHignBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
-        hignBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
+        veryHighBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
+        highBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
         moderateBtn = sensibilityPopupView.findViewById(R.id.moderate_sensibility_btn);
         lowBtn = sensibilityPopupView.findViewById(R.id.low_sensibility_btn);
         noSensibilityBtn = sensibilityPopupView.findViewById(R.id.no_sensibility_btn);
 
         // set Tags to use in onClick
-        veryHignBtn.setTag(10);
-        hignBtn.setTag(11);
+        veryHighBtn.setTag(10);
+        highBtn.setTag(11);
         moderateBtn.setTag(12);
         lowBtn.setTag(13);
         noSensibilityBtn.setTag(14);
@@ -294,8 +305,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         };
 
-        veryHignBtn.setOnClickListener(onClickSelect);
-        hignBtn.setOnClickListener(onClickSelect);
+        veryHighBtn.setOnClickListener(onClickSelect);
+        highBtn.setOnClickListener(onClickSelect);
         moderateBtn.setOnClickListener(onClickSelect);
         lowBtn.setOnClickListener(onClickSelect);
         noSensibilityBtn.setOnClickListener(onClickSelect);

@@ -22,4 +22,10 @@
     <string name="adress3">troisième adresse favorite</string>
     <string name="adress4">quatrième adresse favorite</string>
     <string name="adress5">cinquième adresse favorite</string>
+    <string name="very_high_sensibility">Très élevé</string>
+    <string name="high_sensibility">Élevé</string>
+    <string name="moderate_sensibility">Modérée</string>
+    <string name="low_sensibility">Faible</string>
+    <string name="no_sensibility">Pas de sensibilité</string>
+    <string name="message_sensibility">Sélectionnez votre niveau <br/> de sensibilité à la pollution</string>
 </resources>

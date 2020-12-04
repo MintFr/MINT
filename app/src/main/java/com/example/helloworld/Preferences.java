@@ -20,6 +20,13 @@ public class Preferences {
         return prefs.getString(key, "notfound");
     }
 
+    public static void removeSensibility(String key, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("sensibility",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(key);
+        editor.apply();
+    }
+
     public static void setPrefAddresses(String arrayName, ArrayList<String> array, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -44,7 +51,7 @@ public class Preferences {
         return numberOfAddresses;
     }
 
-    public static void removeValue(String arrayName, int ind, Context context){
+    public static void removeAddress(String arrayName, int ind, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(arrayName + "_" + ind);
@@ -53,7 +60,7 @@ public class Preferences {
         editor.apply();
     }
 
-    public static void addValue(String arrayName, int key, String value, Context context){
+    public static void addAddress(String arrayName, int key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(arrayName+"_"+key,value);

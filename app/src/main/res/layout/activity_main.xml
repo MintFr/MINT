@@ -9,8 +9,8 @@
 
     <EditText
         android:id="@+id/PointDeDepart"
-        android:layout_width="795px"
-        android:layout_height="132.21px"
+        android:layout_width="302dp"
+        android:layout_height="50dp"
         android:layout_marginTop="21dp"
         android:background="@drawable/point_de_depart"
         android:hint="@string/start_point"
@@ -20,14 +20,16 @@
         android:textColor="#999999"
         android:textAlignment="center"
         android:gravity="center_horizontal|center_vertical"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        android:focusable="true" />
 
     <EditText
         android:id="@+id/PointDarrivee"
-        android:layout_width="795px"
-        android:layout_height="132.21px"
+        android:layout_width="302dp"
+        android:layout_height="50dp"
         android:layout_marginTop="11dp"
         android:background="@drawable/point_darrivee"
         android:fontFamily="@font/quicksand_regular"
@@ -95,8 +97,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
+        app:itemIconTint="@drawable/bottomnavigation_color_state"
+        app:itemTextColor="@drawable/bottomnavigation_color_state"
         android:background="#DDDDDD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"

@@ -15,6 +15,8 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private int buttonView;
     private PopupWindow addressPopupWindow;
     private PopupWindow sensibilityPopupWindow;
-    private PopupWindow transportationPopWindow;
+    private PopupWindow transportationPopupWindow;
 
     // addresses //
     private Button addButton;
@@ -64,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button moderateBtn;
     private Button lowBtn;
     private Button noSensibilityBtn;
+    private TextView setSensibility;
 
     int activated =0;
 
@@ -147,18 +150,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         remove4.setTag(8);
         remove5.setTag(9);
 
-        // this is a callback that is set off everytime a remove button is pressed
+        // this is a callback that is set off every time a remove button is pressed
         View.OnClickListener onCLickRemove = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = (int) v.getTag() - 5;
+                int i = (int) v.getTag() - 5; // to know which address has to be removed
                 int numberOfAddresses = Preferences.getNumberOfAddresses("Address", ProfileActivity.this);
                 Preferences.removeAddress("Address",i,ProfileActivity.this);
                 for (int j=i;j<numberOfAddresses-1;j++){
                     TextView selectedText=addressPopupView.findViewWithTag(j);
                     TextView selectedTextAfter=addressPopupView.findViewWithTag(j+1);
-                    selectedText.setText(selectedTextAfter.getText().toString());
+                    selectedText.setText(selectedTextAfter.getText().toString()); // the text in each textView is set to the text that was in the next textView
                 }
+                // stop displaying the last address since we moved all the addresses up
                 TextView deletedAddress = addressPopupView.findViewWithTag(numberOfAddresses-1);
                 deletedAddress.setVisibility(View.GONE);
                 ImageButton deletedButton = addressPopupView.findViewWithTag(numberOfAddresses+4);
@@ -214,14 +218,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 else {
                     if (Preferences.getNumberOfAddresses("Address",ProfileActivity.this)>=5){
-                        // if you already 5 addresses, tells you you cannot add anymore
+                        // if you already have 5 addresses, tells you you cannot add anymore
                         Toast.makeText(ProfileActivity.this,"Vous ne pouvez pas ajouter plus de 5 adresses",Toast.LENGTH_SHORT).show();
                     }
                     else {
                         // add typed in address to the Preferences
                         int addressIndex = Preferences.getNumberOfAddresses("Address", ProfileActivity.this);
                         Preferences.addAddress("Address",addressIndex,enterAddress.getText().toString(),ProfileActivity.this);
-                        // add the new address to the list bellow by making a new textview and remove button visible
+                        // add the new address at the end of the list by making a new textview and remove button visible
                         TextView newAddress = addressPopupView.findViewWithTag(addressIndex);
                         ImageButton newButton = addressPopupView.findViewWithTag(addressIndex + 5);
                         newAddress.setVisibility(View.VISIBLE);
@@ -250,20 +254,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sensibilityPopupWindow.setHeight(height);
         sensibilityPopupWindow.setFocusable(focusable);
 
-        //remove background dimness when popup is dismissed
-        sensibilityPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                dim_popup.setVisibility(View.INVISIBLE);
-            }
-        });
-
         //link elements from popup window
         veryHighBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
         highBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
         moderateBtn = sensibilityPopupView.findViewById(R.id.moderate_sensibility_btn);
         lowBtn = sensibilityPopupView.findViewById(R.id.low_sensibility_btn);
         noSensibilityBtn = sensibilityPopupView.findViewById(R.id.no_sensibility_btn);
+        setSensibility = findViewById(R.id.set_sensibility);
 
         // set Tags to use in onClick
         veryHighBtn.setTag(10);
@@ -271,6 +268,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         moderateBtn.setTag(12);
         lowBtn.setTag(13);
         noSensibilityBtn.setTag(14);
+
+        setSensibility.setText(Preferences.getSensibility("Sensibility",this));
 
         // Highlight the sensibility if it has already been selected
         Button selectedButton = new Button(this);
@@ -311,12 +310,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         lowBtn.setOnClickListener(onClickSelect);
         noSensibilityBtn.setOnClickListener(onClickSelect);
 
+        //remove background dimness when popup is dismissed
+        sensibilityPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dim_popup.setVisibility(View.INVISIBLE);
+                if(!setSensibility.getText().toString().equals(Preferences.getSensibility("Sensibility", ProfileActivity.this))){
+                    setSensibility.setText(Preferences.getSensibility("Sensibility",ProfileActivity.this));
+                }
+            }
+        });
+
         /////////////////////////////////////////////////////////
         // SENSIBILITY POPUP END //
         /////////////////////////////////////////////////////////
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
     }
 
     @Override

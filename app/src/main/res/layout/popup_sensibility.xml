@@ -97,6 +97,7 @@
         android:paddingRight="50dp"
         android:text="@string/no_sensibility"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/low_sensibility_btn"/>
+        android:layout_below="@id/low_sensibility_btn"
+        android:layout_marginBottom="5dp"/>
 
 </RelativeLayout>

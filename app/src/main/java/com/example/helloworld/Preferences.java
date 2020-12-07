@@ -17,7 +17,7 @@ public class Preferences {
 
     public static String getSensibility(String key, Context context){
         SharedPreferences prefs = context.getSharedPreferences("sensibility", Context.MODE_PRIVATE);
-        return prefs.getString(key, "notfound");
+        return prefs.getString(key, "--");
     }
 
     public static void removeSensibility(String key, Context context){

@@ -3,6 +3,8 @@ package com.example.helloworld;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,7 +35,11 @@ public class MapActivity extends AppCompatActivity {
         mapController.setZoom(15.0);
         mapController.setCenter(startPoint);
 
+        //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
     }
 }

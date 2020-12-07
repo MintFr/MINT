@@ -61,7 +61,7 @@
                         android:text="@string/user_name"
                         android:gravity="start"
                         android:textColor="#999999"
-                        android:textSize="30sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/parameters"

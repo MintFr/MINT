@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText startPoint;
     private EditText endPoint;
+
+    PopupWindow popUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +41,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menuItem.setChecked(true);
     }
 
-    private PopupWindow popupWindowsort() {
+    private PopupWindow showFavoriteAddresses() {
 
         // initialize a pop up window type
         PopupWindow popupWindow = new PopupWindow(this);
 
         ArrayList<String> addressList = Preferences.getPrefAddresses("Address", this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item,
                 addressList);
         // the drop down list is a list view
         ListView addressListView = new ListView(this);
+
+        // add title to the list
+        TextView title = new TextView(this);
+        title.setText("Mes adresses favorites");
+        title.setTextColor(getResources().getColor(R.color.colorAccent));
+        title.setPadding(30,30,30,0);
+        addressListView.addHeaderView(title);
+        addressListView.setHeaderDividersEnabled(false);
 
         // set our adapter and pass our pop up window contents
         addressListView.setAdapter(adapter);
@@ -72,14 +83,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startPoint.setText(Preferences.getPrefAddresses("Address",MainActivity.this).get((int)id));
+                if (id>=0) {
+                    startPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
+                    // popUp.dismiss(); // marche pas
+                }
             }
         };
     }
 
     @Override
     public void onClick(View v){
-        PopupWindow popUp = popupWindowsort();
+        PopupWindow popUp = showFavoriteAddresses();
         popUp.showAsDropDown(v, 0, 0); // show popup like dropdown list
     }
 }

@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id>=0) {
                     startPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
-                    // popUp.dismiss(); // marche pas
+                    popUp.dismiss(); // marche pas
                 }
             }
         };
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v){
-        PopupWindow popUp = showFavoriteAddresses();
+        popUp = showFavoriteAddresses();
         popUp.showAsDropDown(v, 0, 0); // show popup like dropdown list
     }
 }

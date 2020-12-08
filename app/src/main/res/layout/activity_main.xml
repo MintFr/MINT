@@ -7,6 +7,12 @@
     tools:context=".MainActivity"
     android:background="@drawable/background_map">
 
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints" />
+
     <EditText
         android:id="@+id/PointDeDepart"
         android:layout_width="795px"

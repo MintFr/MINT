@@ -296,6 +296,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             sensibilityPopupView.findViewWithTag(j).setActivated(false);
                         }
                     }
+                    sensibilityPopupWindow.dismiss(); // Remove popup
                 }
                 else {
                     Preferences.removeSensibility("Sensibility", ProfileActivity.this);
@@ -355,8 +356,3 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 }
-
-
-
-
-

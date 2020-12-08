@@ -3,7 +3,7 @@
     <!-- Bottom Menu -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="itineraire">Itineraire</string>
+    <string name="itineraire">Itinéraire</string>
     <string name="cartes">Cartes</string>
     <string name="profil">Profil</string>
     <string name="title_activity_accueil">MainActivity</string>

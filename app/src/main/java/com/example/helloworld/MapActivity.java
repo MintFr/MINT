@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,7 +50,11 @@ public class MapActivity extends AppCompatActivity {
 
 
 
+        //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
     }
 }

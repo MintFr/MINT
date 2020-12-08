@@ -40,15 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="#DDDDDD"
+        app:itemIconTint="@drawable/bottomnavigation_color_state"
+        app:itemTextColor="@drawable/bottomnavigation_color_state"
         android:fontFamily="@font/quicksand_regular"
-        android:visibility="visible"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
+        android:background="#DDDDDD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
-        tools:ignore="MissingConstraints">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

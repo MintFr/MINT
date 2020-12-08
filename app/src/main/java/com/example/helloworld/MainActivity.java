@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText startPoint;
+
     private EditText endPoint;
 
     PopupWindow popUp;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id>=0) {
                     startPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
+                    startPoint.setSelection(startPoint.length()); // set cursor at end of text
                     popUp.dismiss(); // marche pas
                 }
             }

@@ -15,8 +15,8 @@
 
     <EditText
         android:id="@+id/PointDeDepart"
-        android:layout_width="795px"
-        android:layout_height="132.21px"
+        android:layout_width="302dp"
+        android:layout_height="50dp"
         android:layout_marginTop="21dp"
         android:background="@drawable/button_text_color"
         android:hint="@string/start_point"
@@ -26,14 +26,15 @@
         android:textColor="#999999"
         android:textAlignment="center"
         android:gravity="center_horizontal|center_vertical"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
         android:id="@+id/PointDarrivee"
-        android:layout_width="795px"
-        android:layout_height="132.21px"
+        android:layout_width="302dp"
+        android:layout_height="50dp"
         android:layout_marginTop="11dp"
         android:background="@drawable/button_text_color"
         android:fontFamily="@font/quicksand_regular"

@@ -5,119 +5,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <ImageView
-            android:layout_width="222px"
-            android:layout_height="222px"
-            android:src="@drawable/mint_icone_seule__1_"
-            android:contentDescription="logo"
-            android:layout_gravity="center"/>
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_logo"
+            android:src="@drawable/mint_icone_seule__1_" />
+
         <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <LinearLayout
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context="com.example.helloworld.MainActivity">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/profile_main_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="33px"
-                    android:layout_marginStart="30px"
-                    android:layout_marginEnd="30px"
-                    android:padding="20dp"
-                    android:background="@drawable/layout_bg_profile_main">
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/layout_bg_profile_main"
+                    android:padding="20dp">
 
                     <ImageView
                         android:id="@+id/user_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:contentDescription="@string/user_image"
                         android:padding="10dp"
                         android:scaleX="1.2"
                         android:scaleY="1.2"
-                        android:layout_alignParentLeft="true"
-                        android:contentDescription="user_image"
                         android:src="@drawable/user" />
 
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:text="Gérard\nDupont"
+                        android:layout_alignTop="@id/user_image"
+                        android:layout_toRightOf="@id/user_image"
+                        android:layout_toEndOf="@id/user_image"
+                        android:textStyle="bold"
+                        android:text="@string/user_name"
+                        android:gravity="start"
                         android:textColor="#999999"
-                        android:textSize="20dp"
-                        android:layout_toRightOf="@id/user_image"/>
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/parameters"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="40px"
-                        android:fontFamily="@font/quicksand_light"
-                        android:text="Paramètres"
-                        android:textColor="#999999"
-                        android:textSize="16dp"
-                        android:gravity="bottom"
-                        android:layout_alignBottom="@id/user_image"
+                        android:layout_alignStart="@id/name"
                         android:layout_alignLeft="@id/name"
-                        android:layout_below="@id/name"/>
+                        android:layout_alignBottom="@id/user_image"
+                        android:fontFamily="@font/quicksand_light"
+                        android:gravity="start"
+                        android:paddingBottom="15dp"
+                        android:text="@string/param_button"
+                        android:textColor="#999999"
+                        android:textSize="16sp" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/sensibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_regular"
-                        android:text="Sensibilité"
-                        android:textColor="#999999"
-                        android:textSize="16dp"
-                        android:layout_alignLeft="@id/user_image"
                         android:layout_below="@id/user_image"
-                        android:paddingLeft="30px"
+                        android:layout_alignStart="@id/user_image"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="#00FFFFFF"
+                        android:gravity="start"
+                        android:minHeight="0dp"
                         android:paddingTop="10dp"
-                        android:paddingBottom="5dp"/>
+                        android:paddingBottom="5dp"
+                        android:text="@string/sensibility_button"
+                        android:textAllCaps="false"
+                        android:textColor="#999999"
+                        android:textSize="16sp" />
+
                     <TextView
-                        android:id="@+id/adresses"
+                        android:id="@+id/set_sensibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_regular"
-                        android:text="Mes adresses favorites"
-                        android:textColor="#999999"
-                        android:textSize="16dp"
-                        android:layout_alignLeft="@id/user_image"
+                        android:layout_toRightOf="@id/sensibility"
+                        android:layout_toEndOf="@id/sensibility"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_below="@id/user_image"
+                        android:text="@string/set_sensibility"
+                        android:textColor="@color/colorAccent"
+                        android:gravity="end"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:textSize="14sp"/>
+
+                    <Button
+                        android:id="@+id/favorite_adresses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/sensibility"
-                        android:paddingLeft="30px"
-                        android:paddingBottom="5dp"/>
-                    <TextView
-                        android:id="@+id/transportation"
+                        android:layout_alignStart="@id/user_image"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="#00FFFFFF"
+                        android:minHeight="0dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/favorite_adresses_button"
+                        android:textAllCaps="false"
+                        android:textColor="#999999"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/favorite_transportation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_regular"
-                        android:text="Mes modes transports favoris"
-                        android:textColor="#999999"
-                        android:textSize="16dp"
+                        android:layout_below="@id/favorite_adresses"
+                        android:layout_alignStart="@id/user_image"
                         android:layout_alignLeft="@id/user_image"
-                        android:layout_below="@id/adresses"
-                        android:paddingLeft="30px"
-                        android:paddingBottom="5dp"/>
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="#00FFFFFF"
+                        android:minHeight="0dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/favorite_transportation_button"
+                        android:textAllCaps="false"
+                        android:textColor="#999999"
+                        android:textSize="16sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/profile_second_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
-                    android:layout_marginStart="30px"
-                    android:layout_marginEnd="30px"
-                    android:layout_marginBottom="33px"
                     android:padding="20dp">
 
                     <TextView
@@ -125,55 +162,67 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:text="Mon exposition lors\nde mon dernier trajet"
+                        android:gravity="start"
+                        android:maxWidth="180dp"
+                        android:text="@string/exposure_last_travel_text"
                         android:textColor="#999999"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/graph"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/graph_pie"
-                        android:contentDescription="graph_pie"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_toEndOf="@id/exposition_today"
                         android:layout_toRightOf="@id/exposition_today"
-                        android:paddingLeft="60px"/>
+                        android:contentDescription="@string/graph_pie"
+                        android:src="@drawable/graph_pie" />
+
                     <TextView
                         android:id="@+id/text_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/graph"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:text="312"
-                        android:textColor="#89BE89"
-                        android:textSize="32dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:gravity="right" />
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:gravity="end"
+                        android:text="@string/max_value_exposure"
+                        android:textColor="#89BE89"
+                        android:textSize="32sp" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/profile_third_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
-                    android:layout_marginStart="30px"
-                    android:layout_marginEnd="30px"
-                    android:layout_marginBottom="33px"
                     android:padding="20dp">
 
                     <ImageView
                         android:id="@+id/chart_week"
-                        android:layout_width="885px"
-                        android:layout_height="861px"
-                        android:src="@drawable/chart_week"
-                        android:contentDescription="graph_week"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/graph_week"
+                        android:src="@drawable/chart_week" />
                 </RelativeLayout>
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
 
+    <View
+        android:id="@+id/dim_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#73000000"
+        android:visibility="invisible"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -188,5 +237,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

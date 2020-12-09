@@ -23,4 +23,29 @@
         <item>Pollution en direct</item>
         <item>Pollens en direct</item>
     </string-array>
+    <string name="enter_adress">Entrer une nouvelle adresse</string>
+    <string name="favorite_adresses_button"><u>Mes adresses favorites</u></string>
+    <string name="favorite_transportation_button"><u>Mes modes de transport favoris</u></string>
+    <string name="sensibility_button"><u>Sensibilité</u></string>
+    <string name="add">ajouter</string>
+    <string name="adress1">première adresse favorite</string>
+    <string name="adress2">deuxième adresse favorite</string>
+    <string name="adress3">troisième adresse favorite</string>
+    <string name="adress4">quatrième adresse favorite</string>
+    <string name="adress5">cinquième adresse favorite</string>
+    <string name="very_high_sensibility">Très élevée</string>
+    <string name="high_sensibility">Élevée</string>
+    <string name="moderate_sensibility">Modérée</string>
+    <string name="low_sensibility">Faible</string>
+    <string name="no_sensibility">Pas de sensibilité</string>
+    <string name="message_sensibility">Sélectionnez votre niveau <br/> de sensibilité à la pollution</string>
+    <string name="graph_week">graph_week</string>
+    <string name="max_value_exposure">312</string>
+    <string name="graph_pie">graph_pie</string>
+    <string name="exposure_last_travel_text">Mon exposition lors de mon dernier trajet</string>
+    <string name="param_button">Paramètres</string>
+    <string name="user_image">user_image</string>
+    <string name="app_logo">logo</string>
+    <string name="set_sensibility">-</string>
+    <string name="user_name">"Gérard\nDupont"</string>
 </resources>

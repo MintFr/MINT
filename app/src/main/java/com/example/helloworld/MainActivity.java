@@ -35,14 +35,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText startPoint;
     private EditText endPoint;
 
+    int buttonClicked;
     PopupWindow popUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         startPoint = findViewById(R.id.PointDeDepart);
+        endPoint = findViewById(R.id.PointDarrivee);
+
         startPoint.setOnClickListener(this);
+        endPoint.setOnClickListener(this);
+
+        startPoint.setTag(0);
+        endPoint.setTag(1);
+
         Context context = getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
@@ -54,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(startPoint);
-
-
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -108,9 +115,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id>=0) {
-                    startPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
-                    startPoint.setSelection(startPoint.length()); // set cursor at end of text
-                    popUp.dismiss(); // marche pas
+                    switch (buttonClicked) {
+                        case 0 :
+                            startPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
+                            startPoint.setSelection(startPoint.length()); // set cursor at end of text
+                            popUp.dismiss(); //
+                            break;
+                        case 1 :
+                            endPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
+                            endPoint.setSelection(startPoint.length()); // set cursor at end of text
+                            popUp.dismiss();
+                            break;
+                    }
                 }
             }
         };
@@ -118,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v){
+        buttonClicked = (int) v.getTag();
         popUp = showFavoriteAddresses();
         popUp.showAsDropDown(v, 0, 0); // show popup like dropdown list
     }

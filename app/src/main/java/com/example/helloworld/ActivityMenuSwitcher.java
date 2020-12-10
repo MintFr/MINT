@@ -15,7 +15,19 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
- * Bottom menu listener that switches to the right activity given the current activity
+ * Bottom menu listener that switches to the right activity when a menu item is selected.
+ *
+ * <p>
+ * Usage:
+ * <pre>{@code
+ * public class MyActivity extends Activity {
+ *     ... someFunction(...) {
+ *         BottomNavigationView bottomNav = new BottomNavigationView(self);
+ *         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+ *     }
+ * }
+ * }</pre>
+ * </p>
  */
 class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelectedListener {
     private final Activity activity;
@@ -27,8 +39,9 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Class<? extends Activity> target = null;
+        // Get target class
         int itemId = item.getItemId();
+        Class<? extends Activity> target = null;
 
         if (itemId == R.id.itineraire) {
             target = MainActivity.class;

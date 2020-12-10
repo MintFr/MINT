@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -326,6 +328,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SENSIBILITY POPUP END //
         /////////////////////////////////////////////////////////
 
+        //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
         Menu menu = bottomNav.getMenu();

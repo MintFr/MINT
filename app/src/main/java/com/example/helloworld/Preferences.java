@@ -86,33 +86,37 @@ public class Preferences {
         editor.apply();
     }
 
-    public static void addTransportation(int key, String value, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("transportation",Context.MODE_PRIVATE);
+    public static void addTransportation(String arrayName, int key, String value, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("Transportation",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("transport_"+key, value);
+        editor.putString(arrayName+"_"+key, value);
         editor.apply();
     }
 
-    public static void removeTransportation(int key, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("transportation",Context.MODE_PRIVATE);
+    public static void removeTransportation(String arrayName, int key, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("Transportation",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.remove("transport_"+key);
+        editor.remove(arrayName + "_" + key);
         editor.apply();
     }
 
     public static void clearTransportation(Context context){
-        SharedPreferences prefs = context.getSharedPreferences("transportation",Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("Transportation",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
     }
 
-    public static ArrayList<String> getPrefTransportation(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
+    public static ArrayList<String> getPrefTransportation(String arrayName, Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("Transportation", Context.MODE_PRIVATE);
         ArrayList<String> array = new ArrayList<>(4);
-        for(int i=0;i<4;i++) {
-            array.add(prefs.getString("transport_" + i, null));
-        }
+        for(int i=0;i<4;i++)
+            array.add(prefs.getString(arrayName + "_" + i, null));
         return array;
+    }
+
+    public static int getNumberOfTransportation(String arrayName, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("Transportation", Context.MODE_PRIVATE);
+        return prefs.getInt(arrayName + "_size", 0);
     }
 }

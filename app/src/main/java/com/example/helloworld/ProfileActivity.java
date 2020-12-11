@@ -64,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //Preferences.clearAddresses(this);
         //Preferences.clearSensibility(this);
+        //Preferences.clearTransportation(this);
 
         //link layout elements to activity
         sensibilityButton = findViewById(R.id.sensibility);
@@ -337,11 +338,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         walkButton.setTag(18);
 
         // Highlight already selected favorite means of transportation
-        ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation(this);
-        for (int l=0;l<4;l++){
-            System.out.println(favoriteTransportation.get(l));
-        }
-
+        ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation("Transportation",this);
         for (int i = 15;i<19;i++){
             ImageButton button = transportationPopupView.findViewWithTag(i);
             String transportation = button.getContentDescription().toString();
@@ -363,10 +360,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 int key = i-15;
                 String value = buttonClicked.getContentDescription().toString();
                 if (buttonClicked.isActivated()){
-                    Preferences.addTransportation(key,value,ProfileActivity.this);
-                } else if (!buttonClicked.isActivated()){
-                    Preferences.removeTransportation(key,ProfileActivity.this);
+                    Preferences.addTransportation("Transportation",key,value,ProfileActivity.this);
                 }
+                else if (!buttonClicked.isActivated()){
+                    Preferences.removeTransportation("Transportation",key,ProfileActivity.this);
+                }
+                System.out.println(Preferences.getPrefTransportation("Transportation",ProfileActivity.this));
             }
         };
 

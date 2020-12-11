@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg_popup"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    tools:context=".ProfileActivity">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/transportation_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_transportation_message"
+        android:layout_marginBottom="10dp"/>
+    <View
+        android:id="@+id/line_transportation"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_alignLeft="@id/transportation_message"
+        android:layout_alignRight="@id/transportation_message"
+        android:layout_alignStart="@id/transportation_message"
+        android:layout_alignEnd="@id/transportation_message"
+        android:background="#e6e6e6"
+        android:layout_below="@id/transportation_message"
+        android:layout_marginBottom="10dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/line_transportation"
+        android:layout_alignStart="@id/line_transportation"
+        android:layout_alignEnd="@id/line_transportation"
+        android:layout_alignRight="@id/line_transportation"
+        android:layout_below="@id/line_transportation">
+
+        <ImageButton
+            android:id="@+id/car_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/button_car"
+            android:contentDescription="@string/car_button"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:background="#00ffffff"/>
+        <ImageButton
+            android:id="@+id/tram_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/button_tram"
+            android:contentDescription="@string/tram_button"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:background="#00ffffff"/>
+        <ImageButton
+            android:id="@+id/bike_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/button_bike"
+            android:contentDescription="@string/bike_button"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:background="#00ffffff"/>
+        <ImageButton
+            android:id="@+id/walk_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/button_walk"
+            android:contentDescription="@string/walk_button"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:background="#00ffffff"/>
+
+    </LinearLayout>
+</RelativeLayout>

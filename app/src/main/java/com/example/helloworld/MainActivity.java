@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText startPoint;
     private EditText endPoint;
 
-    int buttonClicked;
+    EditText buttonClicked;
     PopupWindow popUp;
 
     @Override
@@ -115,18 +115,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id>=0) {
-                    switch (buttonClicked) {
-                        case 0 :
-                            startPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
-                            startPoint.setSelection(startPoint.length()); // set cursor at end of text
-                            popUp.dismiss(); //
-                            break;
-                        case 1 :
-                            endPoint.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
-                            endPoint.setSelection(startPoint.length()); // set cursor at end of text
-                            popUp.dismiss();
-                            break;
-                    }
+                    buttonClicked.setText(Preferences.getPrefAddresses("Address", MainActivity.this).get((int) id));
+                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+                    popUp.dismiss();
                 }
             }
         };
@@ -134,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v){
-        buttonClicked = (int) v.getTag();
+        int i = (int) v.getTag();
+        buttonClicked = v.findViewWithTag(i);
         popUp = showFavoriteAddresses();
         popUp.showAsDropDown(v, 0, 0); // show popup like dropdown list
     }

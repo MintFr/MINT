@@ -85,4 +85,34 @@ public class Preferences {
         editor.clear();
         editor.apply();
     }
+
+    public static void addTransportation(int key, String value, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("transportation",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("transport_"+key, value);
+        editor.apply();
+    }
+
+    public static void removeTransportation(int key, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("transportation",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("transport_"+key);
+        editor.apply();
+    }
+
+    public static void clearTransportation(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("transportation",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static ArrayList<String> getPrefTransportation(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
+        ArrayList<String> array = new ArrayList<>(4);
+        for(int i=0;i<4;i++) {
+            array.add(prefs.getString("transport_" + i, null));
+        }
+        return array;
+    }
 }

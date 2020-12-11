@@ -51,23 +51,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button addButton;
     private EditText enterAddress;
     private String addedAddress;
-    private TextView address1;
-    private TextView address2;
-    private TextView address3;
-    private TextView address4;
-    private TextView address5;
-    private ImageButton remove1;
-    private ImageButton remove2;
-    private ImageButton remove3;
-    private ImageButton remove4;
-    private ImageButton remove5;
 
-    // sensibility //
-    private Button veryHighBtn;
-    private Button highBtn;
-    private Button moderateBtn;
-    private Button lowBtn;
-    private Button noSensibilityBtn;
+    // sensibility
     private TextView setSensibility;
 
     int activated =0;
@@ -129,16 +114,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //link elements from popup window
         addButton = addressPopupView.findViewById(R.id.button_add);
         enterAddress = addressPopupView.findViewById(R.id.enter_adress);
-        address1 = addressPopupView.findViewById(R.id.adress1);
-        address2 = addressPopupView.findViewById(R.id.adress2);
-        address3 = addressPopupView.findViewById(R.id.adress3);
-        address4 = addressPopupView.findViewById(R.id.adress4);
-        address5 = addressPopupView.findViewById(R.id.adress5);
-        remove1 = addressPopupView.findViewById(R.id.remove_btn_1);
-        remove2 = addressPopupView.findViewById(R.id.remove_btn_2);
-        remove3 = addressPopupView.findViewById(R.id.remove_btn_3);
-        remove4 = addressPopupView.findViewById(R.id.remove_btn_4);
-        remove5 = addressPopupView.findViewById(R.id.remove_btn_5);
+        TextView address1 = addressPopupView.findViewById(R.id.adress1);
+        TextView address2 = addressPopupView.findViewById(R.id.adress2);
+        TextView address3 = addressPopupView.findViewById(R.id.adress3);
+        TextView address4 = addressPopupView.findViewById(R.id.adress4);
+        TextView address5 = addressPopupView.findViewById(R.id.adress5);
+        ImageButton remove1 = addressPopupView.findViewById(R.id.remove_btn_1);
+        ImageButton remove2 = addressPopupView.findViewById(R.id.remove_btn_2);
+        ImageButton remove3 = addressPopupView.findViewById(R.id.remove_btn_3);
+        ImageButton remove4 = addressPopupView.findViewById(R.id.remove_btn_4);
+        ImageButton remove5 = addressPopupView.findViewById(R.id.remove_btn_5);
 
         //set tags to know which address to display
         address1.setTag(0);
@@ -257,11 +242,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sensibilityPopupWindow.setFocusable(focusable);
 
         //link elements from popup window
-        veryHighBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
-        highBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
-        moderateBtn = sensibilityPopupView.findViewById(R.id.moderate_sensibility_btn);
-        lowBtn = sensibilityPopupView.findViewById(R.id.low_sensibility_btn);
-        noSensibilityBtn = sensibilityPopupView.findViewById(R.id.no_sensibility_btn);
+        // sensibility //
+        Button veryHighBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
+        Button highBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
+        Button moderateBtn = sensibilityPopupView.findViewById(R.id.moderate_sensibility_btn);
+        Button lowBtn = sensibilityPopupView.findViewById(R.id.low_sensibility_btn);
+        Button noSensibilityBtn = sensibilityPopupView.findViewById(R.id.no_sensibility_btn);
         setSensibility = findViewById(R.id.set_sensibility);
 
         // set Tags to use in onClick
@@ -313,11 +299,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         lowBtn.setOnClickListener(onClickSelect);
         noSensibilityBtn.setOnClickListener(onClickSelect);
 
-        //remove background dimness when popup is dismissed
+        //callback when the popup is dismissed
         sensibilityPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                dim_popup.setVisibility(View.INVISIBLE);
+                dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
+                // display chosen sensibility on main profile page
                 if(!setSensibility.getText().toString().equals(Preferences.getSensibility("Sensibility", ProfileActivity.this))){
                     setSensibility.setText(Preferences.getSensibility("Sensibility",ProfileActivity.this));
                 }
@@ -326,6 +313,78 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         /////////////////////////////////////////////////////////
         // SENSIBILITY POPUP END //
+        /////////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////
+        // TRANSPORTATION POPUP //
+        /////////////////////////////////////////////////////////
+
+        transportationPopupWindow = new PopupWindow(this);
+        transportationPopupWindow.setBackgroundDrawable(null);
+        transportationPopupWindow.setContentView(transportationPopupView);
+        transportationPopupWindow.setWidth(width);
+        transportationPopupWindow.setHeight(height);
+        transportationPopupWindow.setFocusable(focusable);
+
+        ImageButton carButton = transportationPopupView.findViewById(R.id.car_button);
+        ImageButton tramButton = transportationPopupView.findViewById(R.id.tram_button);
+        ImageButton bikeButton = transportationPopupView.findViewById(R.id.bike_button);
+        ImageButton walkButton = transportationPopupView.findViewById(R.id.walk_button);
+
+        carButton.setTag(15);
+        tramButton.setTag(16);
+        bikeButton.setTag(17);
+        walkButton.setTag(18);
+
+        // Highlight already selected favorite means of transportation
+        ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation(this);
+        for (int l=0;l<4;l++){
+            System.out.println(favoriteTransportation.get(l));
+        }
+
+        for (int i = 15;i<19;i++){
+            ImageButton button = transportationPopupView.findViewWithTag(i);
+            String transportation = button.getContentDescription().toString();
+            for (int j = 0;j<4;j++){
+                if (transportation.equals(favoriteTransportation.get(j))){
+                    button.setActivated(true);
+                }
+            }
+        }
+
+
+        // Change state of button once it is clicked
+        View.OnClickListener onTransportationClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                ImageButton buttonClicked = transportationPopupView.findViewWithTag(i);
+                buttonClicked.setActivated(!buttonClicked.isActivated());
+                int key = i-15;
+                String value = buttonClicked.getContentDescription().toString();
+                if (buttonClicked.isActivated()){
+                    Preferences.addTransportation(key,value,ProfileActivity.this);
+                } else if (!buttonClicked.isActivated()){
+                    Preferences.removeTransportation(key,ProfileActivity.this);
+                }
+            }
+        };
+
+        carButton.setOnClickListener(onTransportationClick);
+        tramButton.setOnClickListener(onTransportationClick);
+        bikeButton.setOnClickListener(onTransportationClick);
+        walkButton.setOnClickListener(onTransportationClick);
+
+        //callback when popup is dismissed
+        transportationPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
+            }
+        });
+
+        /////////////////////////////////////////////////////////
+        // TRANSPORTATION POPUP END //
         /////////////////////////////////////////////////////////
 
         //Bottom Menu
@@ -351,11 +410,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 addressPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
             case 2:
-                //buttonView=R.layout.popup_favorite_transportation;
+                transportationPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
         }
-
-
     }
 
 }

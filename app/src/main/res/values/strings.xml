@@ -48,4 +48,9 @@
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
     <string name="user_name">"Gérard\nDupont"</string>
+    <string name="favorite_transportation_message">Sélectionnez vos modes de transport favoris</string>
+    <string name="walk_button">walk_button</string>
+    <string name="bike_button">bike_button</string>
+    <string name="tram_button">tram_button</string>
+    <string name="car_button">car_button</string>
 </resources>

@@ -27,7 +27,9 @@
         android:layout_alignRight="@id/message_sensibility"
         android:background="#e6e6e6"
         android:layout_below="@id/message_sensibility"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:layout_alignStart="@id/message_sensibility"
+        android:layout_alignEnd="@id/message_sensibility" />
 
     <Button
         android:id="@+id/very_high_sensibility_btn"

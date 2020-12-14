@@ -48,4 +48,7 @@
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
     <string name="user_name">"Gérard\nDupont"</string>
+    <string name="button_recherche">Rechercher</string>
+    <string name="text_options">Options</string>
+    <string name="description_logo">Logo Mint : Deux feuilles de menthe vertes parcourues par des flèches</string>
 </resources>

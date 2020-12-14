@@ -10,14 +10,18 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -39,7 +43,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MapView map;
     IMapController mapController;
     private EditText startPoint;
+    private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
+    private EditText latitude;
+    private EditText longitude;
+    private Button inversionButton;
     private int POSITION_PERMISSION_CODE = 1;
 
     EditText buttonClicked;
@@ -119,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // If the permission is already allowed, we use the user's position
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    startPoint.setText("Ma position");
-                    startPoint.setSelection(startPoint.length()); // set cursor at end of text
+                    buttonClicked.setText("Ma position");
+                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                     popUp.dismiss();
                 }
                 // If not, we ask the permission to use his position
@@ -139,6 +147,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set the listview as popup content
         popupWindow.setContentView(addressListView);
 
+        // startPoint/endPoint inversion
+        inversionButton = findViewById(R.id.inversion);
+        inversionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startPoint2.setText(startPoint.getText());$
+                Editable startText = startPoint.getText();
+                Editable endText = endPoint.getText();
+                endPoint.setText(startText);
+                startPoint.setText(endText);
+            }
+        });
+
         return popupWindow;
     }
 
@@ -152,11 +173,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .setMessage("Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.")
                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener(){
                         @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                            startPoint.setText("Ma position");
-                            startPoint.setSelection(startPoint.length()); // set cursor at end of text
+                            buttonClicked.setText("Ma position");
+                            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                             popUp.dismiss();
                         }
                     })

@@ -7,10 +7,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -33,6 +37,8 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -40,7 +46,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
     IMapController mapController;
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText buttonClicked;
     PopupWindow popUp;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +136,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // If the permission is already allowed, we use the user's position
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    buttonClicked.setText("Ma position");
-                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+                    //buttonClicked.setText("Ma position");
+                    //buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                     popUp.dismiss();
+                    getLocation();
                 }
                 // If not, we ask the permission to use his position
                 else {
@@ -165,6 +173,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return popupWindow;
     }
 
+    /////////////////////////////////////////////////////////
+    // GEOLOCATION //
+    /////////////////////////////////////////////////////////
+
     // Ask the permission to the user to use his geolocalisation
     private void requestLocalisationPermission(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -178,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                            buttonClicked.setText("Ma position");
-                            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+                            //buttonClicked.setText("Ma position");
+                            //buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                             popUp.dismiss();
                         }
                     })
@@ -208,6 +220,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    // Return the user's position
+    @SuppressLint("MissingPermission")
+    private void getLocation(){
+        try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onLocationChanged(Location location){
+        //Toast.makeText(this, "" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_SHORT).show();
+        String position = location.getLatitude() + "," + location.getLongitude();
+        buttonClicked.setText(position);
+        buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+        try {
+            // ce qui suis ne fonctionne pas, je ne sais pas pq
+            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            String address = addresses.get(0).getAddressLine(0);
+
+            buttonClicked.setText(address);
+            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStatusChanged (String provider, int status, Bundle extras){
+
+    }
+
+    @Override
+    public void onProviderEnabled (String provider){
+
+    }
+
+    @Override
+    public void onProviderDisabled (String provider){
+
+    }
+
+    /////////////////////////////////////////////////////////
+    // GEOLOCATION //
+    /////////////////////////////////////////////////////////
 
     private AdapterView.OnItemClickListener onItemClickListener(){
         return new AdapterView.OnItemClickListener() {

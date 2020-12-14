@@ -53,4 +53,7 @@
     <string name="bike_button">bike_button</string>
     <string name="tram_button">tram_button</string>
     <string name="car_button">car_button</string>
+    <string name="position_request"><u>Ma position</u></string>
+    <string name="remove">remove</string>
+    <string name="icon">icon</string>
 </resources>

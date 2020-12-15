@@ -12,7 +12,15 @@
         android:id="@+id/mapView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" >
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation" />
+
+    </org.osmdroid.views.MapView>
 
     <EditText
         android:id="@+id/PointDeDepart"
@@ -49,6 +57,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PointDeDepart" />
+
+    <Button
+        android:id="@+id/inversion"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:drawableTop="@drawable/ic_baseline_swap_vert_35"
+        app:layout_constraintBottom_toBottomOf="@+id/PointDarrivee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/PointDeDepart" />
 
     <ImageView
         android:id="@+id/logo"
@@ -90,13 +110,6 @@
         app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PointDarrivee" />
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"

@@ -7,7 +7,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -35,6 +43,8 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -42,12 +52,16 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
     IMapController mapController;
     private EditText startPoint;
+    private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
+    private EditText latitude;
+    private EditText longitude;
+    private Button inversionButton;
     private Button search;
     private int POSITION_PERMISSION_CODE = 1;
 
@@ -59,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText buttonClicked;
     PopupWindow popUp;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,9 +174,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // If the permission is already allowed, we use the user's position
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    buttonClicked.setText("Ma position");
-                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+                    //buttonClicked.setText("Ma position");
+                    //buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                     popUp.dismiss();
+                    getLocation();
                 }
                 // If not, we ask the permission to use his position
                 else {
@@ -179,8 +195,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set the listview as popup content
         popupWindow.setContentView(addressListView);
 
+        // startPoint/endPoint inversion
+        inversionButton = findViewById(R.id.inversion);
+        inversionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startPoint2.setText(startPoint.getText());$
+                Editable startText = startPoint.getText();
+                Editable endText = endPoint.getText();
+                endPoint.setText(startText);
+                startPoint.setText(endText);
+            }
+        });
+
         return popupWindow;
     }
+
+    /////////////////////////////////////////////////////////
+    // GEOLOCATION //
+    /////////////////////////////////////////////////////////
 
     // Ask the permission to the user to use his geolocalisation
     private void requestLocalisationPermission(){
@@ -192,8 +225,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .setMessage("Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.")
                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener(){
                         @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
                             buttonClicked.setText("Ma position");
                             buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
@@ -227,6 +260,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // Callback when the user clicks on an item in the listView
+    // Return user's position in coordinates
+    @SuppressLint("MissingPermission")
+    private void getLocation(){
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
+    }
+
+    // Print user's position
+    // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
+    public void onLocationChanged(Location location) {
+        String position = location.getLatitude() + "," + location.getLongitude();
+        buttonClicked.setText(position);
+        buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+    }
+
+    /////////////////////////////////////////////////////////
+    // GEOLOCATION //
+    /////////////////////////////////////////////////////////
+
     private AdapterView.OnItemClickListener onItemClickListener(){
         return new AdapterView.OnItemClickListener() {
             @Override

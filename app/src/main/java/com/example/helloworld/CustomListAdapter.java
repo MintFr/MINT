@@ -63,7 +63,19 @@ public class CustomListAdapter extends BaseAdapter {
                 icon.setImageResource(R.drawable.ic_star);
             }
             else{
+                final View finalConvertView = convertView;
+                final int finalPosition = position;
                 remove.setVisibility(View.VISIBLE);
+                remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finalConvertView.setVisibility(View.GONE);
+                        items.remove(finalPosition);
+                        notifyDataSetChanged();
+                        Preferences.removeLastAddress("lastAddress",finalPosition,context);
+                        nbLastAdd--;
+                    }
+                });
                 icon.setImageResource(R.drawable.ic_history);
             }
         }

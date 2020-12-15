@@ -116,6 +116,9 @@ public class Preferences {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(arrayName + "_" + key);
         int newSize = (prefs.getInt(arrayName+"_size",0))-1;
+        for(int i=key;i<newSize;i++) {
+            editor.putString(arrayName + "_" + i, prefs.getString(arrayName + "_" + (i + 1), null));
+        }
         editor.putInt(arrayName+"_size",newSize);
         editor.apply();
     }

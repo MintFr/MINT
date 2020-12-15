@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Preferences.clearLastAddresses(this);
+        //Preferences.clearLastAddresses(this);
 
         startPoint = findViewById(R.id.PointDeDepart);
         endPoint = findViewById(R.id.PointDarrivee);
@@ -106,13 +106,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
         //Map
-        /*map = findViewById(R.id.mapView);
+        map = findViewById(R.id.mapView);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint startPoint = new GeoPoint(47.21, -1.55);
         mapController = map.getController();
         mapController.setZoom(15.0);
-        mapController.setCenter(startPoint);*/
+        mapController.setCenter(startPoint);
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

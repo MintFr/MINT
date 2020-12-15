@@ -52,8 +52,9 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="300px"
-        android:layout_height="300px"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/description_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -61,15 +62,15 @@
 
     <Button
         android:id="@+id/recherche"
-        android:layout_width="315px"
-        android:layout_height="90px"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
         android:layout_marginTop="7dp"
         android:background="@drawable/recherche"
-        android:text="Rechercher"
         android:fontFamily="@font/quicksand_regular"
+        android:text="@string/button_recherche"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="42px"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.814"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,12 +78,12 @@
 
     <TextView
         android:id="@+id/options"
-        android:layout_width="171px"
-        android:layout_height="66px"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
         android:layout_marginTop="6dp"
-        android:gravity="center_horizontal"
-        android:text="Options"
         android:fontFamily="@font/quicksand_regular"
+        android:gravity="center_horizontal"
+        android:text="@string/text_options"
         android:textAlignment="center"
         android:textColor="#084528"
         app:layout_constraintEnd_toEndOf="parent"

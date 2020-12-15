@@ -221,49 +221,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Return the user's position
+    // Return user's position in coordinates
     @SuppressLint("MissingPermission")
     private void getLocation(){
-        try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
     }
 
-    public void onLocationChanged(Location location){
-        //Toast.makeText(this, "" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_SHORT).show();
+    // Print user's position
+    // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
+    public void onLocationChanged(Location location) {
         String position = location.getLatitude() + "," + location.getLongitude();
         buttonClicked.setText(position);
         buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
-        try {
-            // ce qui suis ne fonctionne pas, je ne sais pas pq
-            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            String address = addresses.get(0).getAddressLine(0);
-
-            buttonClicked.setText(address);
-            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged (String provider, int status, Bundle extras){
-
-    }
-
-    @Override
-    public void onProviderEnabled (String provider){
-
-    }
-
-    @Override
-    public void onProviderDisabled (String provider){
-
     }
 
     /////////////////////////////////////////////////////////

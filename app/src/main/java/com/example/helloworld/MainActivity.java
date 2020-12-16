@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CustomListAdapter adapter = new CustomListAdapter(this, addressList);
 
         addressListView = new ListView(this);
+
         // add location button to the list
         TextView localisationRequest = new TextView(this);
         localisationRequest.setText(R.string.position_request);
@@ -174,8 +175,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // If the permission is already allowed, we use the user's position
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    //buttonClicked.setText("Ma position");
-                    //buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                     popUp.dismiss();
                     getLocation();
                 }
@@ -217,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Ask the permission to the user to use his geolocalisation
     private void requestLocalisationPermission(){
+        // If the permission was denied previously,
+        // we open a dialog to ask for the permission to access to the user's position
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
 
@@ -240,13 +241,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     })
                     .create().show();
+        // If the permission was NOT denied previously,
+        // we simply ask for the permission to access to the user's position
         } else {
             ActivityCompat.requestPermissions(this, new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
         }
     }
 
-    // Return the answer of the localisation permission request
+    // Return the answer of the localisation permission request in a "short popup window"
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == POSITION_PERMISSION_CODE) {
@@ -259,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Callback when the user clicks on an item in the listView
+    // Callback - when the user clicks on an item in the listView
     // Return user's position in coordinates
     @SuppressLint("MissingPermission")
     private void getLocation(){

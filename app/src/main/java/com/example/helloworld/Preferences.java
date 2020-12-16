@@ -181,7 +181,7 @@ public class Preferences {
         SharedPreferences prefs = context.getSharedPreferences("Transportation", Context.MODE_PRIVATE);
         ArrayList<String> array = new ArrayList<>(4);
         for(int i=0;i<4;i++)
-            array.add(prefs.getString(arrayName + "_" + i, null));
+            array.add(prefs.getString(arrayName + "_" + i, "--"));
         return array;
     }
 

@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -54,6 +55,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     // sensibility
     private TextView setSensibility;
+
+    // transportation
+    ImageView carIcon;
+    ImageView tramIcon;
+    ImageView bikeIcon;
+    ImageView walkIcon;
 
     int activated =0;
 
@@ -235,6 +242,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SENSIBILITY POPUP //
         /////////////////////////////////////////////////////////
 
+        // Create the Popup Window
         sensibilityPopupWindow = new PopupWindow(this);
         sensibilityPopupWindow.setBackgroundDrawable(null);
         sensibilityPopupWindow.setContentView(sensibilityPopupView);
@@ -251,13 +259,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Button noSensibilityBtn = sensibilityPopupView.findViewById(R.id.no_sensibility_btn);
         setSensibility = findViewById(R.id.set_sensibility);
 
-        // set Tags to use in onClick
+        // set Tags to use in "onClickSelect"
         veryHighBtn.setTag(10);
         highBtn.setTag(11);
         moderateBtn.setTag(12);
         lowBtn.setTag(13);
         noSensibilityBtn.setTag(14);
 
+        // this is the sensibility that is displayed directly in the profile page
         setSensibility.setText(Preferences.getSensibility("Sensibility",this));
 
         // Highlight the sensibility if it has already been selected
@@ -269,8 +278,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-
-        // Highlight the sensibility that is clicked
+        // Highlight the sensibility when you click
         View.OnClickListener onClickSelect = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,12 +290,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     Preferences.setSensibility("Sensibility", sensibility, ProfileActivity.this);
                     for (int j = 10; j<=14; j++){
                         if(j!=i) {
+                            // uncheck all other buttons once a button is clicked
                             sensibilityPopupView.findViewWithTag(j).setActivated(false);
                         }
                     }
+                    // dismiss the popup once you have selected a sensibility
                     sensibilityPopupWindow.dismiss(); // Remove popup
                 }
                 else {
+                    // if clicking the button deactivates it, remove the sensibility from preferences
                     Preferences.removeSensibility("Sensibility", ProfileActivity.this);
                 }
             }
@@ -320,6 +331,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // TRANSPORTATION POPUP //
         /////////////////////////////////////////////////////////
 
+        // Create the Popup Window
         transportationPopupWindow = new PopupWindow(this);
         transportationPopupWindow.setBackgroundDrawable(null);
         transportationPopupWindow.setContentView(transportationPopupView);
@@ -327,11 +339,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         transportationPopupWindow.setHeight(height);
         transportationPopupWindow.setFocusable(focusable);
 
+        // Link elements from the popup
         ImageButton carButton = transportationPopupView.findViewById(R.id.car_button);
         ImageButton tramButton = transportationPopupView.findViewById(R.id.tram_button);
         ImageButton bikeButton = transportationPopupView.findViewById(R.id.bike_button);
         ImageButton walkButton = transportationPopupView.findViewById(R.id.walk_button);
+        carIcon = findViewById(R.id.car_icon);
+        tramIcon = findViewById(R.id.tram_icon);
+        bikeIcon = findViewById(R.id.bike_icon);
+        walkIcon = findViewById(R.id.walk_icon);
 
+        // on opening of profile page, display favorite means of transportation
+        displayFavoriteTransportation();
+
+        // Tags to determine which button is clicked in "onTransportationClick"
         carButton.setTag(15);
         tramButton.setTag(16);
         bikeButton.setTag(17);
@@ -379,6 +400,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDismiss() {
                 dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
+                displayFavoriteTransportation(); // check again which means of transportation have been selected
             }
         });
 
@@ -411,6 +433,37 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 2:
                 transportationPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
+        }
+    }
+
+    public ImageView findIconFromInt(int i){
+        ImageView icon = new ImageView(ProfileActivity.this);
+        switch (i){
+            case 0:
+                icon=carIcon;
+                break;
+            case 1:
+                icon=tramIcon;
+                break;
+            case 2:
+                icon=bikeIcon;
+                break;
+            case 3:
+                icon=walkIcon;
+                break;
+        }
+        return icon;
+    }
+
+    public void displayFavoriteTransportation(){
+        for(int i = 0;i<4;i++){
+            ImageView selectedIcon = findIconFromInt(i); // gets the right icon from the index
+            if (Preferences.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
+                selectedIcon.setVisibility(View.GONE);
+            }
+            else {
+                selectedIcon.setVisibility(View.VISIBLE);
+            }
         }
     }
 

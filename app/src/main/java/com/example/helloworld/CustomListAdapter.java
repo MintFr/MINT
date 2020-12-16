@@ -49,6 +49,11 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return position != 0 && position != nbLastAdd + 1;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -81,6 +86,7 @@ public class CustomListAdapter extends BaseAdapter {
         }
         else {
             convertView = inflater.inflate(R.layout.list_header,parent,false);
+            convertView.setClickable(false);
             TextView text = convertView.findViewById(R.id.text_item);
             text.setText(items.get(position));
         }

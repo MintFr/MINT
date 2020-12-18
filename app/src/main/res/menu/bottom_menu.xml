@@ -4,14 +4,14 @@
     <item
         android:id="@+id/itineraire"
         android:title="@string/itineraire"
-        android:icon="@drawable/baseline_directions_black_18dp"
+        android:icon="@drawable/bottomnavigation_directions"
         android:fontFamily="@font/quicksand_regular"
 
         />
     <item
         android:id="@+id/cartes"
         android:title="@string/cartes"
-        android:icon="@drawable/baseline_map_black_18dp"
+        android:icon="@drawable/bottomnavigation_map"
         android:fontFamily="@font/quicksand_regular"
 
         />
@@ -20,7 +20,7 @@
     <item
         android:id="@+id/profil"
         android:title="@string/profil"
-        android:icon="@drawable/baseline_account_circle_black_18dp"
+        android:icon="@drawable/bottomnavigation_profile"
         android:fontFamily="@font/quicksand_regular"
 
         />

@@ -104,9 +104,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemIconTint="@drawable/bottomnavigation_color_state"
-        app:itemTextColor="@drawable/bottomnavigation_color_state"
-        android:background="#DDDDDD"
+        app:itemTextColor="#999999"
+        android:background="#F8F8F8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

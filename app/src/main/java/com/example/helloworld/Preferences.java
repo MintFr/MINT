@@ -93,7 +93,7 @@ public class Preferences {
     // History
 
     public static ArrayList<String> getLastAddresses(String arrayName, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("lastAddresses", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
         int size = prefs.getInt(arrayName + "_size", 0);
         ArrayList<String> array = new ArrayList<>(size);
         for(int i=0;i<size;i++)
@@ -101,18 +101,18 @@ public class Preferences {
         return array;
     }
     public static void addLastAddress(String arrayName, int key, String value, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("lastAddresses",Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("lastAddress",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         int newSize = (prefs.getInt(arrayName+"_size",0))+1;
         editor.putInt(arrayName+"_size",newSize);
-        for(int i=newSize-1;i>=key;i--) {
+        for(int i=newSize-2;i>=key;i--) {
             editor.putString(arrayName + "_" + (i+1), prefs.getString(arrayName + "_" + i, null));
         }
         editor.putString(arrayName+"_"+key,value);
         editor.apply();
     }
     public static void removeLastAddress(String arrayName, int key, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("lastAddresses",Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("lastAddress",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(arrayName + "_" + key);
         int newSize = (prefs.getInt(arrayName+"_size",0))-1;
@@ -123,30 +123,19 @@ public class Preferences {
         editor.apply();
     }
     public static int getNumberOfLastAddresses(String arrayName, Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("lastAddresses", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
         int numberOfAddresses = prefs.getInt(arrayName + "_size", 0);
         return numberOfAddresses;
     }
 
-    public static void moveAddressFirst(String arrayName,int key,Context context){
-        SharedPreferences prefs = context.getSharedPreferences("lastAddresses",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        int size = prefs.getInt(arrayName+"_size",0);
-        String moved = prefs.getString(arrayName+ "_"+key,null);
-        editor.remove(arrayName+"_"+key);
-        for(int j=key;j<size;j++) {
-            editor.putString(arrayName + "_" + j, prefs.getString(arrayName + "_" + (j + 1), null));
-        }
-        editor.remove(arrayName+"_"+size);
-        for(int i=size-1;i>=0;i--) {
-            editor.putString(arrayName + "_" + (i+1), prefs.getString(arrayName + "_" + i, null));
-        }
-        editor.putString(arrayName+"_0",moved);
-        editor.apply();
+    public static void moveAddressFirst(int key, Context context){
+        String movedAddress = getLastAddresses("lastAddress",context).get(key);
+        removeLastAddress("lastAddress",key,context);
+        addLastAddress("lastAddress",0,movedAddress,context);
     }
 
     public static void clearLastAddresses(Context context){
-        SharedPreferences prefs = context.getSharedPreferences("lastAddresses", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();

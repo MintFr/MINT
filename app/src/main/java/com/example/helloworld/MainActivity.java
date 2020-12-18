@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Preferences.clearLastAddresses(this);
+        Preferences.clearLastAddresses(this);
 
         startPoint = findViewById(R.id.PointDeDepart);
         endPoint = findViewById(R.id.PointDarrivee);
@@ -257,16 +257,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else {
                 int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); // get the number of addresses in the history
-                //int[] sameAddresses = getSameAddresses(start,end);
-                Preferences.addLastAddress("lastAddress", 0, endPoint.getText().toString(), MainActivity.this);
-                Preferences.addLastAddress("lastAddress", 0, startPoint.getText().toString(), MainActivity.this);
-                nbLastAdd = nbLastAdd+2;
+                int[] sameAddresses = getSameAddresses(start,end);
+                if (sameAddresses[0]==-1&&sameAddresses[1]==-1) {
+                    Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                    Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                    nbLastAdd = nbLastAdd + 2;
+                }
+                else if (sameAddresses[0]!=-1&&sameAddresses[1]==-1){
+                    Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                    Preferences.moveAddressFirst(sameAddresses[0]+1,MainActivity.this);
+                    nbLastAdd++;
+                }
+                else if (sameAddresses[0]==-1&&sameAddresses[1]!=-1) {
+                    Preferences.moveAddressFirst(sameAddresses[1],MainActivity.this);
+                    Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                    nbLastAdd++;
+                }
+                else {
+                    Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
+                    Preferences.moveAddressFirst(sameAddresses[1]<sameAddresses[0]?sameAddresses[0]:sameAddresses[0]+1, MainActivity.this);
+                }
+                // check if number of addresses has gone over 3 and remove the ones over 3
                 if (nbLastAdd == 5) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 } else if (nbLastAdd == 4) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-
                 }
             }
         }
@@ -308,21 +324,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int[] arr = new int[2];
         arr[0]=-1;
         arr[1]=-1;
-        if(Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this)==0){
-            arr[0]=arr[1]=-1;
-        }
-        else {
-            for (int j = 0; j < Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); j++) {
-                String lastAddress = Preferences.getLastAddresses("lastAddress", MainActivity.this).get(j);
-                if (start.equals(lastAddress)) {
-                    arr[0]=j;
-                }
-                if (end.equals(lastAddress)) {
-                    arr[1]=j;
-                }
-                if (!(start.equals(lastAddress)||end.equals(lastAddress))){
-                    arr[0]=arr[1]=-1;
-                }
+        for (int j = 0; j < Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); j++) {
+            String lastAddress = Preferences.getLastAddresses("lastAddress", MainActivity.this).get(j);
+            if (start.equals(lastAddress)) {
+                arr[0]=j;
+            }
+            else if (end.equals(lastAddress)) {
+                arr[1]=j;
             }
         }
         return arr;

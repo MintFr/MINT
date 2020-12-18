@@ -77,7 +77,7 @@ public class CustomListAdapter extends BaseAdapter {
                         finalConvertView.setVisibility(View.GONE);
                         items.remove(finalPosition);
                         notifyDataSetChanged();
-                        Preferences.removeLastAddress("lastAddress",finalPosition,context);
+                        Preferences.removeLastAddress("lastAddress",finalPosition-1,context);
                         nbLastAdd--;
                     }
                 });

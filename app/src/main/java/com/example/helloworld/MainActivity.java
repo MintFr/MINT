@@ -10,6 +10,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -54,16 +55,14 @@ import org.osmdroid.views.MapView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private MapView map;
     IMapController mapController;
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
     private EditText latitude;
     private EditText longitude;
-    private Button inversionButton;
     private Button search;
-    private int POSITION_PERMISSION_CODE = 1;
+    private final int POSITION_PERMISSION_CODE = 1;
 
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
         //Map
-        map = findViewById(R.id.mapView);
+        MapView map = findViewById(R.id.mapView);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint startPoint = new GeoPoint(47.21, -1.55);
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         popupWindow.setContentView(addressListView);
 
         // startPoint/endPoint inversion
-        inversionButton = findViewById(R.id.inversion);
+        Button inversionButton = findViewById(R.id.inversion);
         inversionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -298,30 +297,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int i = (int) v.getTag();
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
-        if(i==2){
-            if (start.length() == 0 || end.length() == 0){
+        if(i==2) {
+            if (start.length() == 0 || end.length() == 0) {
                 // if nothing has been typed in, nothing happens and you get a message
-                Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs",Toast.LENGTH_SHORT).show();
-            }
-            else if (start.equals(end)){
+                Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
+            } else if (start.equals(end)) {
                 // if both addresses are the same, do nothing
-                Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes",Toast.LENGTH_SHORT).show();
-            }
-            else {
-                int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); // get the number of addresses in the history
+                Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes", Toast.LENGTH_SHORT).show();
+            } else {
+                int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress", MainActivity.this); // get the number of addresses in the history
                 //int[] sameAddresses = getSameAddresses(start,end);
                 Preferences.addLastAddress("lastAddress", 0, endPoint.getText().toString(), MainActivity.this);
                 Preferences.addLastAddress("lastAddress", 0, startPoint.getText().toString(), MainActivity.this);
-                nbLastAdd = nbLastAdd+2;
+                nbLastAdd = nbLastAdd + 2;
                 if (nbLastAdd == 5) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 } else if (nbLastAdd == 4) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-
                 }
+
+                //start itinerary calculation
+                Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                intent.putExtra("param1", start);
+                intent.putExtra("param2", end);
+                startActivity(intent);
+                finish();
             }
         }
+
+
     }
 
     // when the focus is on the edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow

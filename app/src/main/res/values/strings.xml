@@ -60,4 +60,7 @@
     <string name="option_departure_prompt">Départ</string>
     <string name="calendar_date_hint"><u>01/01/2020</u></string>
     <string name="search_button">Rechercher</string>
+    <string name="button_recherche">Rechercher</string>
+    <string name="text_options">Options</string>
+    <string name="description_logo">Logo Mint : Deux feuilles de menthe vertes parcourues par des flèches</string>
 </resources>

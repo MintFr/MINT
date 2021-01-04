@@ -12,7 +12,15 @@
         android:id="@+id/mapView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" >
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation" />
+
+    </org.osmdroid.views.MapView>
 
     <EditText
         android:id="@+id/PointDeDepart"
@@ -52,10 +60,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PointDeDepart" />
 
+    <Button
+        android:id="@+id/inversion"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/PointDarrivee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/PointDeDepart" />
+
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="300px"
-        android:layout_height="300px"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/description_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,15 +83,15 @@
 
     <Button
         android:id="@+id/recherche"
-        android:layout_width="315px"
-        android:layout_height="90px"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
         android:layout_marginTop="7dp"
         android:background="@drawable/recherche"
-        android:text="@string/search_button"
         android:fontFamily="@font/quicksand_regular"
+        android:text="@string/button_recherche"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="42px"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.814"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,25 +99,18 @@
 
     <TextView
         android:id="@+id/options"
-        android:layout_width="171px"
-        android:layout_height="66px"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
         android:layout_marginTop="6dp"
-        android:gravity="center_horizontal"
-        android:text="Options"
         android:fontFamily="@font/quicksand_regular"
+        android:gravity="center_horizontal"
+        android:text="@string/text_options"
         android:textAlignment="center"
         android:textColor="#084528"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PointDarrivee" />
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"

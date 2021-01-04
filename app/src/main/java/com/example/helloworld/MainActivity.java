@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button inversionButton;
     private Button search;
     private int POSITION_PERMISSION_CODE = 1;
+    boolean GpsStatus = false;
 
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
@@ -173,16 +174,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
 
+                // We need this parameters to check if the GPS of the phone is activated
                 locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
                 assert locationManager != null;
-                boolean GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
                 // If the permission is already allowed, we use the user's position
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        GpsStatus == true) {
-                    popUp.dismiss();
-                    getLocation();
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    // If GPS' phone is activated
+                    if (GpsStatus){
+                        popUp.dismiss();
+                        getLocation();
+                    }
+                    // If not, we need to say to the user to activate it
+                    else {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Echec de la localisation")
+                                .setMessage("Nous n'arrivons pas à vous localiser. Vérifiez que vous avez bien activé la localisation de votre téléphone.")
+                                .setNeutralButton("ok", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create().show();
+                    }
                 }
                 // If not, we ask the permission to use his position
                 else {
@@ -235,8 +252,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                            buttonClicked.setText("Ma position");
-                            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+                            //buttonClicked.setText("Ma position");
+                            //buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                             popUp.dismiss();
                         }
                     })

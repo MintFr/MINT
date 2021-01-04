@@ -172,9 +172,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         localisationRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+                assert locationManager != null;
+                boolean GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
                 // If the permission is already allowed, we use the user's position
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        GpsStatus == true) {
                     popUp.dismiss();
                     getLocation();
                 }

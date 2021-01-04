@@ -56,4 +56,5 @@
     <string name="position_request"><u>Ma position</u></string>
     <string name="remove">remove</string>
     <string name="icon">icon</string>
+    <string name="option_transportation_prompt">Mode de transport</string>
 </resources>

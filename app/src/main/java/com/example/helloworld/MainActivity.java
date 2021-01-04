@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Preferences.clearLastAddresses(this);
+        //Preferences.clearLastAddresses(this);
 
         startPoint = findViewById(R.id.PointDeDepart);
         endPoint = findViewById(R.id.PointDarrivee);

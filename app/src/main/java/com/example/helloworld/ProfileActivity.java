@@ -1,9 +1,11 @@
 package com.example.helloworld;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -392,6 +394,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
+
+        //Slide animation
+        bottomNav.setSelectedItemId(R.id.profil);
+
+        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.itineraire:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                        return true;
+                    case R.id.cartes:
+                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                        return true;
+                    case R.id.profil:
+                        return true;
+                    default:
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -413,5 +439,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+
+
 
 }

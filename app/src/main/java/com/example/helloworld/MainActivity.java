@@ -10,6 +10,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -89,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
 
+
+
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
             @Override
@@ -135,6 +138,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
+        //Slide animation
+        bottomNav.setSelectedItemId(R.id.itineraire);
+
+        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.itineraire:
+                        return true;
+                    case R.id.cartes:
+                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        return true;
+                    case R.id.profil:
+                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                        return true;
+                    default:
+                }
+                return false;
+            }
+        });
     }
 
     private PopupWindow showFavoriteAddresses() {
@@ -379,4 +405,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return arr;
     }
+
 }
+
+
+

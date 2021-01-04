@@ -61,4 +61,8 @@
     <string name="waiting_message">Calcul itinéraire en cours</string>
     <string name="itinerary_end_message">Calcul terminé</string>
     <string name="itinerary_step">Etapes itinéraire</string>
+    <string name="error404">Erreur 404 : page non trouvée</string>
+    <string name="connexion_success">connexion success</string>
+    <string name="error_url_format">erreur : URL incorrecte</string>
+    <string name="connexion_failed">erreur de connexion</string>
 </resources>

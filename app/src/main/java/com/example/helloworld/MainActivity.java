@@ -317,10 +317,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 }
 
-                //start itinerary calculation
+
+                //conversion addresses to coord
+                String pdaLat, pdaLong, pddLat, pddLong;
+                pdaLat = "0";
+                pdaLong = "1";
+                pddLat = "2";
+                pddLong = "3";
+
+
+                //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                intent.putExtra("param1", start);
-                intent.putExtra("param2", end);
+                intent.putExtra("param1", pdaLat);
+                intent.putExtra("param2", pdaLong);
+                intent.putExtra("param3", pddLong);
+                intent.putExtra("param4", pddLong);
                 startActivity(intent);
                 finish();
             }

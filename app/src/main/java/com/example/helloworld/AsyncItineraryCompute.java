@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,9 +22,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 
-public class AsyncItineraryCompute extends AsyncTask<String, Integer, String> {
+public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject> {
 
     private AppCompatActivity myActivity;
 
@@ -32,9 +34,10 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, String> {
         myActivity = LoadingPageActivity;
     }
 
-    //Prepare task and show waiting view
+
     @Override
     protected void onPreExecute() {
+        //Prepare task and show waiting view
         myActivity.setContentView(R.layout.activity_loading_page);
         //progress.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
 
@@ -42,37 +45,53 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected JSONObject doInBackground(String... strings) {
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 
         URL url;
         HttpURLConnection urlConnection = null;
         String result = null;
+        int error = 0;
 
         try{
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection(); // Open
             InputStream in = new BufferedInputStream(urlConnection.getInputStream()); // Stream
             publishProgress(2);
-            result = readStream(in); // Read stream
+            result = readStream(in);
         }
-        catch (MalformedURLException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+            error = 1;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            error = 2;
+        }
+
         finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
         publishProgress(4);
-//        JSONObject json = null;
-//        try{
-//            json = new JSONObject(result);
-//        }catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-        return result;
+        JSONObject json = null;
+        try{
+            switch (error){
+                case 0 :
+                    json = new JSONObject(result);
+                    break;
+                case 1 :
+                    json.put("message",myActivity.getString(R.string.error_url_format));
+                    break;
+                case 2 :
+                    json.put("message",myActivity.getString(R.string.connexion_failed));
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 
 
@@ -83,23 +102,32 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected void onPostExecute(final String c) {
-        String result = c;
+    protected void onPostExecute(final JSONObject c) {
+        if (c == null){
+            Toast.makeText(myActivity, R.string.error404, Toast.LENGTH_SHORT).show();
+        }else{
+            try {
+                Toast.makeText(myActivity, c.getString("message"), Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-        //à utiliser pour lire les JSON, penser à modifier le paramètre d'entrée
-//        try{
-//            JSONArray items = json.getJSONArray("items");
-//            for (int i = 0; i<items.length(); i++)
-//            {
-//                //get coord of points from JSON
-//                Iterator<String> it = json.keys();
-//
-//                //JSONObject flickr_entry = items.getJSONObject(i);
-//                //String urlmedia = flickr_entry.getJSONObject("media").getString("m");
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        //Reading JSON
+        ArrayList<String[]> coord = new ArrayList<>();
+        try{
+            JSONArray items = c.getJSONArray("items");
+            for (int i = 0; i<items.length(); i++)
+            {
+                JSONObject point = items.getJSONObject(i);
+                String longitude = point.getString("longitude");
+                String latitude = point.getString("latitude");
+                String p[] = {latitude,longitude};
+                coord.add(p);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         TextView text = myActivity.findViewById(R.id.text);
         text.setText(R.string.itinerary_end_message); // Updates the textview
@@ -114,10 +142,9 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, String> {
             public void run() {
                 //Send to the next Activity
                 Intent intent = new Intent(myActivity.getApplicationContext(), ItineraryActivity.class);
-                intent.putExtra("text",c);
+               // intent.putExtra("text",c);
                 myActivity.startActivity(intent);
                 myActivity.finish();
-
             }
         }, ITINERARY_END_SCREEN_TIMEOUT);
 

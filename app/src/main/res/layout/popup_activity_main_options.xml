@@ -8,15 +8,25 @@
     android:paddingBottom="20dp"
     android:paddingRight="20dp"
     android:paddingLeft="20dp"
-    tools:context=".ProfileActivity">
+    tools:context=".MainActivity">
     <TextView
         android:id="@+id/option_transportation_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:textStyle="bold"
         android:text="@string/option_transportation_prompt" />
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/transportation_icons"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@id/option_transportation_prompt"
+        android:layout_alignLeft="@id/option_transportation_prompt"
+        android:layout_alignEnd="@id/option_transportation_prompt"
+        android:layout_alignRight="@id/option_transportation_prompt"
         android:layout_below="@id/option_transportation_prompt">
 
         <ImageButton
@@ -26,8 +36,6 @@
             android:layout_weight="1"
             android:src="@drawable/button_car"
             android:contentDescription="@string/car_button"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -38,8 +46,6 @@
             android:layout_weight="1"
             android:src="@drawable/button_tram"
             android:contentDescription="@string/tram_button"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -50,8 +56,6 @@
             android:layout_weight="1"
             android:src="@drawable/button_bike"
             android:contentDescription="@string/bike_button"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -62,12 +66,64 @@
             android:layout_weight="1"
             android:src="@drawable/button_walk"
             android:contentDescription="@string/walk_button"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
 
     </LinearLayout>
+    <View
+        android:id="@+id/option_separation"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@id/transportation_icons"
+        android:layout_alignStart="@id/transportation_icons"
+        android:layout_alignRight="@id/transportation_icons"
+        android:layout_alignEnd="@id/transportation_icons"
+        android:background="#e0e0e0"
+        android:layout_below="@id/transportation_icons"/>
+    <TextView
+        android:id="@+id/option_departure_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_below="@id/option_separation"
+        android:textStyle="bold"
+        android:text="@string/option_departure_prompt" />
+    <ImageView
+        android:id="@+id/option_calendar_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_calendar"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:padding="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/option_departure_prompt"/>
+    <TextView
+        android:id="@+id/departue_date_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:layout_alignTop="@id/option_calendar_icon"
+        android:layout_toRightOf="@id/option_calendar_icon"
+        android:layout_toEndOf="@id/option_calendar_icon"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/calendar_date_hint"
+        android:layout_alignBottom="@id/option_calendar_icon"
+        android:background="null"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/departue_date_prompt"
+        android:layout_toRightOf="@id/option_calendar_icon"
+        android:layout_toEndOf="@id/option_calendar_icon"/>
 
 </RelativeLayout>

@@ -57,4 +57,7 @@
     <string name="remove">remove</string>
     <string name="icon">icon</string>
     <string name="option_transportation_prompt">Mode de transport</string>
+    <string name="option_departure_prompt">Départ</string>
+    <string name="calendar_date_hint"><u>01/01/2020</u></string>
+    <string name="search_button">Rechercher</string>
 </resources>

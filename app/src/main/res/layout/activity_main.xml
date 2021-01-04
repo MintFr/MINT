@@ -67,7 +67,7 @@
         android:layout_height="90px"
         android:layout_marginTop="7dp"
         android:background="@drawable/recherche"
-        android:text="Rechercher"
+        android:text="@string/search_button"
         android:fontFamily="@font/quicksand_regular"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"

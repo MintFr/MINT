@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText startPoint;
     private EditText endPoint;
     private Button search;
+    private Button option;
     private int POSITION_PERMISSION_CODE = 1;
 
     ArrayList<String> lastAddressList;
@@ -92,12 +93,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
+        // sets the callbacks for when the prompts are selected
         startPoint.setOnFocusChangeListener(this);
         startPoint.addTextChangedListener(textChangedListener);
         endPoint.setOnFocusChangeListener(this);
         endPoint.addTextChangedListener(textChangedListener);
         search.setOnClickListener(this);
 
+        // set the tags for when onClick is called
         startPoint.setTag(0);
         endPoint.setTag(1);
         search.setTag(2);
@@ -123,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menuItem.setChecked(true);
     }
 
+    // function that creates the popup window on selection of editTexts
     private PopupWindow showFavoriteAddresses() {
 
         // initialize a pop up window type
@@ -258,24 +262,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else {
                 int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); // get the number of addresses in the history
-                int[] sameAddresses = getSameAddresses(start,end);
+                int[] sameAddresses = getSameAddresses(start,end); // returns which of the start or end adress already exists in the list and its index in the list
+                // if none of the adresses already exist, add them
                 if (sameAddresses[0]==-1&&sameAddresses[1]==-1) {
                     Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
                     Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                    nbLastAdd = nbLastAdd + 2;
+                    nbLastAdd = nbLastAdd + 2; // the number of adresses has increased by 2
                 }
+                // if the startpoint already exists, move it to first position and add endpoint
                 else if (sameAddresses[0]!=-1&&sameAddresses[1]==-1){
                     Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
                     Preferences.moveAddressFirst(sameAddresses[0]+1,MainActivity.this);
-                    nbLastAdd++;
+                    nbLastAdd++; // the number of adresses has increased by 1
                 }
+                // if the endpoint already exists, move it to first position and add startpoint
                 else if (sameAddresses[0]==-1&&sameAddresses[1]!=-1) {
                     Preferences.moveAddressFirst(sameAddresses[1],MainActivity.this);
                     Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                    nbLastAdd++;
+                    nbLastAdd++; // the number of adresses has increased by 1
                 }
+                // if both adresses already exist, we move both adresses to first position
                 else {
                     Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
+                    // if the endpoint was after the startpoint in the list, the index at which we have to find the adress is one higher
                     Preferences.moveAddressFirst(sameAddresses[1]<sameAddresses[0]?sameAddresses[0]:sameAddresses[0]+1, MainActivity.this);
                 }
                 // check if number of addresses has gone over 3 and remove the ones over 3
@@ -303,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // This is used to check when the user clicks outside of the edittext
+    // This is used to check when the user clicks outside of the edittext // DONT CHANGE \\
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -321,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.dispatchTouchEvent( event );
     }
 
+    // returns the index of the adresses that already exist in the history list, returns -1 if doesnt exist
     public int[] getSameAddresses(String start, String end){
         int[] arr = new int[2];
         arr[0]=-1;

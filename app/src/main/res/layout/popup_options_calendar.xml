@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/layout_bg_popup">
     <CalendarView
+        android:id="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

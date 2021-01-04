@@ -8,9 +8,12 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,25 +27,32 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,11 +69,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
+    private View dimPopup;
     private EditText latitude;
     private EditText longitude;
-    private Button inversionButton;
+    private ImageButton inversionButton;
     private Button search;
     private Button option;
+    private Button dateBtn;
+    private Button timeBtn;
     private int POSITION_PERMISSION_CODE = 1;
 
     ArrayList<String> lastAddressList;
@@ -74,7 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText buttonClicked;
     PopupWindow popUp;
+    PopupWindow popUpCalendar;
     LocationManager locationManager;
+    TimePicker timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startPoint = findViewById(R.id.PointDeDepart);
         endPoint = findViewById(R.id.PointDarrivee);
         search = findViewById(R.id.recherche);
+        option = findViewById(R.id.options);
+        dimPopup = findViewById(R.id.dim_popup);
 
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
@@ -114,11 +131,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         endPoint.setOnFocusChangeListener(this);
         endPoint.addTextChangedListener(textChangedListener);
         search.setOnClickListener(this);
+        option.setOnClickListener(this);
 
         // set the tags for when onClick is called
         startPoint.setTag(0);
         endPoint.setTag(1);
         search.setTag(2);
+        option.setTag(3);
 
         Context context = getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
@@ -216,6 +235,139 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return popupWindow;
     }
 
+    private PopupWindow showOptions() {
+        // create the views for both popUpWindows
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View optionPopupView = inflater.inflate(R.layout.popup_activity_main_options,null);
+        final View calendarPopupView = inflater.inflate(R.layout.popup_options_calendar,null);
+
+        // create popUpWindows
+        PopupWindow popupOptions = new PopupWindow(this);
+        popupOptions.setFocusable(true);
+        popupOptions.setBackgroundDrawable(null);
+        popupOptions.setContentView(optionPopupView);
+
+        // remove background dimness on dismiss
+        popupOptions.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimPopup.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // get id of transportation buttons
+        ImageButton carButton = optionPopupView.findViewById(R.id.car_button);
+        ImageButton tramButton = optionPopupView.findViewById(R.id.tram_button);
+        ImageButton bikeButton = optionPopupView.findViewById(R.id.bike_button);
+        ImageButton walkButton = optionPopupView.findViewById(R.id.walk_button);
+
+        // set tags for the onClick callback
+        carButton.setTag(4);
+        tramButton.setTag(5);
+        bikeButton.setTag(6);
+        walkButton.setTag(7);
+
+        // create the new onClick callback
+        View.OnClickListener onTransportationClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                ImageButton buttonClicked = optionPopupView.findViewWithTag(i);
+                buttonClicked.setActivated(!buttonClicked.isActivated());
+            }
+        };
+
+        // assign the onClick callback
+        carButton.setOnClickListener(onTransportationClick);
+        tramButton.setOnClickListener(onTransportationClick);
+        bikeButton.setOnClickListener(onTransportationClick);
+        walkButton.setOnClickListener(onTransportationClick);
+
+        // get current date and time
+        final Calendar cldr = Calendar.getInstance();
+        int year = cldr.get(Calendar.YEAR);
+        int month = cldr.get(Calendar.MONTH);
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int hour = cldr.get(Calendar.HOUR_OF_DAY);
+        int minutes = cldr.get(Calendar.MINUTE);
+
+        // set default date and time to current date and time
+        dateBtn = optionPopupView.findViewById(R.id.date_calendar);
+        String defaultDate = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
+        dateBtn.setText(defaultDate);
+
+        timeBtn = optionPopupView.findViewById(R.id.time_text);
+        String defaultTime = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
+        timeBtn.setText(defaultTime);
+
+        // set date
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpCalendar = new PopupWindow(MainActivity.this);
+                popUpCalendar.setFocusable(true);
+                popUpCalendar.setBackgroundDrawable(null);
+                popUpCalendar.setContentView(calendarPopupView);
+                popUpCalendar.showAtLocation(getWindow().getDecorView(), Gravity.CENTER,0,0);
+
+                CalendarView calendarView = calendarPopupView.findViewById(R.id.calendar);
+
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                        String dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
+                        dateBtn.setText(dateText);
+                    }
+                });
+            }
+        });
+
+        // set time
+        final Dialog timeDialog = new Dialog(this);
+        timeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        timeDialog.setContentView(R.layout.popup_options_timepicker);
+        timeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // time picker dialog
+                timePicker = timeDialog.findViewById(R.id.time_picker);
+                timePicker.setIs24HourView(true);
+                timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                    @Override
+                    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                        String time = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
+                        timeBtn.setText(time);
+                    }
+                });
+                timeDialog.show();
+                timeDialog.setTitle("Choisissez une heure de départ");
+                timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+        });
+
+        Button startTime = optionPopupView.findViewById(R.id.start_time);
+        startTime.setActivated(true);
+        Button endTime = optionPopupView.findViewById(R.id.end_time);
+        startTime.setTag(8);
+        endTime.setTag(9);
+
+        View.OnClickListener onStartEndTimeClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                Button button1 = optionPopupView.findViewWithTag(i);
+                Button button2 = optionPopupView.findViewWithTag(i==8?9:8);
+                button1.setActivated(true);
+                button2.setActivated(false);
+            }
+        };
+
+        startTime.setOnClickListener(onStartEndTimeClick);
+        endTime.setOnClickListener(onStartEndTimeClick);
+
+        return popupOptions;
+    }
+
     /////////////////////////////////////////////////////////
     // GEOLOCATION //
     /////////////////////////////////////////////////////////
@@ -264,7 +416,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Callback when the user clicks on an item in the listView
     // Return user's position in coordinates
     @SuppressLint("MissingPermission")
     private void getLocation(){
@@ -284,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // GEOLOCATION //
     /////////////////////////////////////////////////////////
 
+    // Callback when the user clicks on an item in the listView
     private AdapterView.OnItemClickListener onItemClickListener(){
         return new AdapterView.OnItemClickListener() {
             @Override
@@ -297,12 +449,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
     }
 
-    // Method called when the user clicks on "search" (tag = 2)
+    // Method called when the user clicks on "search" or "option"
     @Override
     public void onClick(View v){
         int i = (int) v.getTag();
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
+        // things to do when user clicks search
         if(i==2){
             if (start.length() == 0 || end.length() == 0){
                 // if nothing has been typed in, nothing happens and you get a message
@@ -347,6 +500,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 }
             }
+        }
+        // things to do when user clicks options
+        else if (i==3){
+            popUp = showOptions();
+            dimPopup.setVisibility(View.VISIBLE);
+            popUp.showAtLocation(v,Gravity.CENTER,0,0);
         }
     }
 

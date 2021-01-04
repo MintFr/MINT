@@ -63,4 +63,7 @@
     <string name="button_recherche">Rechercher</string>
     <string name="text_options">Options</string>
     <string name="description_logo">Logo Mint : Deux feuilles de menthe vertes parcourues par des flèches</string>
+    <string name="default_time">00:00</string>
+    <string name="time_prompt">Heure</string>
+    <string name="date_prompt">Date</string>
 </resources>

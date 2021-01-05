@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject> {
+public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> {
 
     private AppCompatActivity myActivity;
 
@@ -45,7 +45,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
     }
 
     @Override
-    protected JSONObject doInBackground(String... strings) {
+    protected JSONArray doInBackground(String... strings) {
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 
@@ -75,21 +75,31 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
                 urlConnection.disconnect();
             }
         }
+
         publishProgress(4);
-        JSONObject json = new JSONObject();
+
+
+
+        JSONArray json = new JSONArray();
+
         try{
+            JSONObject message = new JSONObject();
             switch (error){
                 case 0 :
-                    json = new JSONObject(result);
+                    json = new JSONArray(result);
+                    message.put("message",myActivity.getString(R.string.connexion_success));
                     break;
                 case 1 :
-                    json.put("message",myActivity.getString(R.string.error_url_format));
+                    message.put("message",myActivity.getString(R.string.error_url_format));
                     break;
                 case 2 :
-                    json.put("message", String.format("%s\n%s", myActivity.getString(R.string.connexion_failed), strings[0]));
+                    message.put("message", String.format("%s\n%s", myActivity.getString(R.string.connexion_failed), strings[0]));
+                    break;
                 default:
                     break;
             }
+            json.put(json.length(),message);
+
         }catch (JSONException e) {
             e.printStackTrace();
         }
@@ -104,12 +114,12 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
     }
 
     @Override
-    protected void onPostExecute(final JSONObject c) {
+    protected void onPostExecute(final JSONArray c) {
         if (c == null){
             Toast.makeText(myActivity, R.string.error404, Toast.LENGTH_SHORT).show();
         }else{
             try {
-                Toast.makeText(myActivity, c.getString("message"), Toast.LENGTH_LONG).show();
+                Toast.makeText(myActivity, c.getJSONObject(c.length()-1).getString("message"), Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -120,14 +130,15 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
         //Reading JSON
         final ArrayList<double[]> coord = new ArrayList<>();
         try{
-            JSONArray items = c.getJSONArray("items");
-            for (int i = 0; i<items.length(); i++)
+            for (int i = 0; i<c.length()-1; i++)        //-1 to avoid the "message" element
             {
-                JSONObject point = items.getJSONObject(i);
+                JSONObject point = c.getJSONObject(i);
                 double longitude = point.getDouble("longitude");
                 double latitude = point.getDouble("latitude");
                 double[] p = {latitude,longitude};
                 coord.add(p);
+                Toast.makeText(myActivity, ""+p, Toast.LENGTH_LONG).show();
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

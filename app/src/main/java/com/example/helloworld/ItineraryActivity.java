@@ -46,9 +46,11 @@ public class ItineraryActivity extends AppCompatActivity  {
         mapController.setCenter(defaultPoint);
         map.setBuiltInZoomControls(true);
 
+
+        //Points construction
         Intent intent = getIntent();
         ArrayList<double[]> response = new ArrayList<>();
-        boolean bool = (intent != null);
+        boolean bool = true;    //(intent != null);
         int i = 0;
         while (bool){
             double[] point = intent.getDoubleArrayExtra(String.valueOf(i));
@@ -60,15 +62,15 @@ public class ItineraryActivity extends AppCompatActivity  {
             }
         }
 
-        //Points
-        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+        //Points on map
+        ArrayList<OverlayItem> items = new ArrayList<>();
         for (int j = 0; j < items.size();j++){
             items.add(new OverlayItem("point "+j, "",
                     new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
         }
 
-        //Overlay
-        ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(items,
+        //Overlay of points
+        ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<>(items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
@@ -86,11 +88,11 @@ public class ItineraryActivity extends AppCompatActivity  {
         map.getOverlays().add(mOverlay);
 
 
-        //display points
+        //display points with coordinates in array, under the map
         TextView viewPoint1 = (TextView) findViewById(R.id.point1);
         TextView viewPoint2 = (TextView) findViewById(R.id.point2);
 
-        if (response.size() != 0){
+        if (response.size() > 0){
             viewPoint1.setText(String.format("%s : %s,%s", getString(R.string.itinerary_point1), response.get(0)[0], response.get(0)[1]));
             viewPoint2.setText(String.format("%s : %s,%s", getString(R.string.itinerary_point2), response.get(1)[0], response.get(1)[1]));
         } else {

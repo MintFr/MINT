@@ -195,7 +195,7 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/profile_second_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -207,9 +207,10 @@
 
                     <TextView
                         android:id="@+id/exposition_today"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:layout_gravity="start|center_vertical|end"
+                        android:layout_weight="3"
                         android:gravity="start"
                         android:maxWidth="180dp"
                         android:text="@string/exposure_last_travel_text"
@@ -218,33 +219,29 @@
 
                     <ImageView
                         android:id="@+id/graph"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:layout_gravity="start|center_vertical|end"
                         android:layout_marginStart="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
-                        android:layout_toStartOf="@+id/text_right"
-                        android:layout_toLeftOf="@id/exposition_today"
-                        android:layout_toEndOf="@id/exposition_today"
-                        android:layout_toRightOf="@id/text_right"
+                        android:layout_weight="1"
                         android:contentDescription="@string/graph_pie"
                         android:src="@drawable/graph_pie" />
 
                     <TextView
                         android:id="@+id/text_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
+                        android:layout_width="0dp"
+                        android:layout_height="62dp"
+                        android:layout_gravity="center|start|end"
+                        android:layout_weight="1"
                         android:fontFamily="@font/quicksand_bold"
-                        android:gravity="end"
+                        android:gravity="center|center_horizontal|center_vertical"
                         android:text="@string/max_value_exposure"
                         android:textColor="#89BE89"
                         android:textSize="32sp" />
-                </RelativeLayout>
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/profile_third_box"

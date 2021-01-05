@@ -158,9 +158,9 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
             public void run() {
                 //Send to the next Activity
                 Intent intent = new Intent(myActivity.getApplicationContext(), ItineraryActivity.class);
-                int i = 1;
+                int i = 0;
                 for (double[] p:coord) {
-                    intent.putExtra("point"+i,p);
+                    intent.putExtra(String.format("point%d", i),p);
                     i++;
                 }
                 myActivity.startActivity(intent);

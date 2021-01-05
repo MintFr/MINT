@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ItineraryActivity"></activity>
+        <activity android:name=".ItineraryActivity" />
         <activity android:name=".LoadingPageActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

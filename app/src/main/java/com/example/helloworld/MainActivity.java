@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView addressListView;
     String start;
     String end;
+
+    private Double pdaLat;
+    private Double pdaLong;
+    private Double pddLat;
+    private Double pddLong;
 
     EditText buttonClicked;
     PopupWindow popUp;
@@ -294,6 +300,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Method called when the user clicks on "search" (tag = 2)
     @Override
     public void onClick(View v){
+        pdaLat = null;
+        pdaLong = null;
+        pddLat = null;
+        pddLong = null;
         int i = (int) v.getTag();
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
@@ -318,19 +328,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
 
-                //conversion addresses to coord
-                String pdaLat, pdaLong, pddLat, pddLong;
-                pdaLat = "0";
-                pdaLong = "1";
-                pddLat = "2";
-                pddLong = "3";
+                //Conversion addresses to spatial coordinates
+                //For the start point
+//                Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
+//                try {
+//                    List addressListStart = geocoderStart.getFromLocationName(start, 1);
+//                    if (addressListStart != null && addressListStart.size() > 0){
+//                        Address addressStart = (Address) addressListStart.get(0);
+//                        Double pddLat = addressStart.getLatitude();
+//                        Double pddLong = addressStart.getLongitude();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                //For the end point
+//                Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
+//                try {
+//                    List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
+//                    if (addressListEnd != null && addressListEnd.size() > 0) {
+//                        Address addressEnd = (Address) addressListEnd.get(0);
+//                        pdaLat = addressEnd.getLatitude();
+//                        pdaLong = addressEnd.getLongitude();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+                pdaLat = 47.21213;
+                pdaLong = -1.55479;
+                pddLat = 47.24811;
+                pddLong = -1.54978;
+
 
 
                 //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
                 intent.putExtra("param1", pdaLat);
                 intent.putExtra("param2", pdaLong);
-                intent.putExtra("param3", pddLong);
+                intent.putExtra("param3", pddLat);
                 intent.putExtra("param4", pddLong);
                 startActivity(intent);
                 finish();

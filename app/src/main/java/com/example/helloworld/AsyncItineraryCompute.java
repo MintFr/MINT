@@ -76,7 +76,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
             }
         }
         publishProgress(4);
-        JSONObject json = null;
+        JSONObject json = new JSONObject();
         try{
             switch (error){
                 case 0 :
@@ -86,7 +86,9 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
                     json.put("message",myActivity.getString(R.string.error_url_format));
                     break;
                 case 2 :
-                    json.put("message",myActivity.getString(R.string.connexion_failed));
+                    json.put("message", String.format("%s\n%s", myActivity.getString(R.string.connexion_failed), strings[0]));
+                default:
+                    break;
             }
         }catch (JSONException e) {
             e.printStackTrace();
@@ -107,22 +109,24 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
             Toast.makeText(myActivity, R.string.error404, Toast.LENGTH_SHORT).show();
         }else{
             try {
-                Toast.makeText(myActivity, c.getString("message"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(myActivity, c.getString("message"), Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
+
+
         //Reading JSON
-        ArrayList<String[]> coord = new ArrayList<>();
+        final ArrayList<double[]> coord = new ArrayList<>();
         try{
             JSONArray items = c.getJSONArray("items");
             for (int i = 0; i<items.length(); i++)
             {
                 JSONObject point = items.getJSONObject(i);
-                String longitude = point.getString("longitude");
-                String latitude = point.getString("latitude");
-                String p[] = {latitude,longitude};
+                double longitude = point.getDouble("longitude");
+                double latitude = point.getDouble("latitude");
+                double[] p = {latitude,longitude};
                 coord.add(p);
             }
         } catch (JSONException e) {
@@ -142,7 +146,11 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONObject
             public void run() {
                 //Send to the next Activity
                 Intent intent = new Intent(myActivity.getApplicationContext(), ItineraryActivity.class);
-               // intent.putExtra("text",c);
+                int i = 1;
+                for (double[] p:coord) {
+                    intent.putExtra("point"+i,p);
+                    i++;
+                }
                 myActivity.startActivity(intent);
                 myActivity.finish();
             }

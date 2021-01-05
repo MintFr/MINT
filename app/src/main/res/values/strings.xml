@@ -65,4 +65,7 @@
     <string name="connexion_success">connexion success</string>
     <string name="error_url_format">erreur : URL incorrecte</string>
     <string name="connexion_failed">erreur de connexion</string>
+    <string name="itinerary_point1">"Point de départ </string>
+    <string name="itinerary_point2">Point d\'arrivée </string>
+
 </resources>

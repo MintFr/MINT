@@ -14,18 +14,16 @@ public class LoadingPageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         //Get parameters corresponding to addresses from the main activity
-        String param1 = intent.getStringExtra("param1");
-        String param2 = intent.getStringExtra("param2");
-        String param3 = intent.getStringExtra("param3");
-        String param4 = intent.getStringExtra("param4");
+        double param1 = intent.getDoubleExtra("param1",0.0);
+        double param2 = intent.getDoubleExtra("param2",0.0);
+        double param3 = intent.getDoubleExtra("param3",0.0);
+        double param4 = intent.getDoubleExtra("param4",0.0);
 
 
         //build url
-        String url = "http://ser-info-03.ec-nantes.fr:8080/itinerarytest/itinerary?pdaLat="+param1+
-                "&pdaLong="+param2+"&pddLat="+param3+"&pddLong"+param4;
-        ////url to test hello web service
-        //String url = "http://ser-info-03.ec-nantes.fr:8080/hello?name=mint"
-        //String url = "https://google.com/";
+        String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerarytest/itinerary?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong%s",
+                param1, param2, param3, param4);
+
         //start of the async task
         AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
         task.execute(url);

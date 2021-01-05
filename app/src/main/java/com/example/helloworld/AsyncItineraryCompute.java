@@ -23,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> {
@@ -137,7 +138,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
                 double latitude = point.getDouble("latitude");
                 double[] p = {latitude,longitude};
                 coord.add(p);
-                Toast.makeText(myActivity, ""+p, Toast.LENGTH_LONG).show();
+                Toast.makeText(myActivity, Arrays.toString(p), Toast.LENGTH_LONG).show();
 
             }
         } catch (JSONException e) {

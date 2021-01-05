@@ -53,7 +53,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         boolean bool = true;    //(intent != null);
         int i = 0;
         while (bool){
-            double[] point = intent.getDoubleArrayExtra(String.valueOf(i));
+            double[] point = intent.getDoubleArrayExtra(String.format("point%d", i));
             i++;
             if (point != null) {
                 response.add(point);

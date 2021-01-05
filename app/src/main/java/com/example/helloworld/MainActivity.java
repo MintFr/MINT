@@ -190,18 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         getLocation();
                     }
 
-                    // If the GPS' phone is NOT activated, we need to say to the user to activate it
+                    // If the GPS' phone is NOT activated, we ask him/her to activate it
                     else {
-                        /*new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Echec de la localisation")
-                                .setMessage("Nous n'arrivons pas à vous localiser. Vérifiez que vous avez bien activé la localisation de votre téléphone.")
-                                .setNeutralButton("ok", new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create().show();*/
                         showAlertMessageNoGps();
                     }
                 }
@@ -300,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showAlertMessageNoGps() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Echec de la localisation")
-                .setMessage("Votre localiser n'est pas activée. Voulez-vous l'activer ?")
+                .setMessage("Votre localisation n'est pas activée. Voulez-vous l'activer ?")
                 .setPositiveButton("oui", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

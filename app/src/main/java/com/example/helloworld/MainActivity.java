@@ -12,6 +12,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button dateBtn;
     private Button timeBtn;
     private int POSITION_PERMISSION_CODE = 1;
+    boolean GpsStatus = false; //true if the user's location is activated on the phone
 
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
@@ -176,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CustomListAdapter adapter = new CustomListAdapter(this, addressList);
 
         addressListView = new ListView(this);
+
         // add location button to the list
         TextView localisationRequest = new TextView(this);
         localisationRequest.setText(R.string.position_request);
@@ -191,19 +194,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set on item selected
         addressListView.setOnItemClickListener(onItemClickListener());
 
-        //User's position
+        //User's location
         localisationRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // If the permission is already allowed, we use the user's position
+
+                // We need this parameters to check if the GPS of the phone is activated
+                locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+                assert locationManager != null;
+                GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                // If the permission to access to the user's location is already allowed, we use it
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    //buttonClicked.setText("Ma position");
-                    //buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
-                    popUp.dismiss();
-                    getLocation();
+
+                    // We also need that the GPS' phone is activated. We check this here.
+                    if (GpsStatus){
+                        popUp.dismiss();
+                        getLocation();
+                    }
+
+                    // If the GPS' phone is NOT activated, we ask him/her to activate it
+                    else {
+                        showAlertMessageNoGps();
+                    }
                 }
-                // If not, we ask the permission to use his position
+
+                // If we don't have the permission, we ask the permission to use his location
                 else {
                     requestLocalisationPermission();
                 }
@@ -369,11 +386,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /////////////////////////////////////////////////////////
-    // GEOLOCATION //
+    // LOCATION //
     /////////////////////////////////////////////////////////
 
-    // Ask the permission to the user to use his geolocalisation
+    // Ask the permission to the user to use his location
     private void requestLocalisationPermission(){
+        // If the permission WAS DENIED PREVIOUSLY,
+        // we open a dialog to ask for the permission to access to the user's location
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
 
@@ -383,10 +402,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            // If the user click on this button, we ask her/him the permission to use her/his position
                             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                            buttonClicked.setText("Ma position");
-                            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                             popUp.dismiss();
                         }
                     })
@@ -398,17 +416,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     })
                     .create().show();
         } else {
+            // If the permission was NOT denied previously, we ask for the permission to access to the user's position
             ActivityCompat.requestPermissions(this, new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
         }
     }
 
-    // Return the answer of the localisation permission request
+    // Return the answer of the location permission request in a "short popup window" at the bottom of the screen
+    // and print the user's position if we have the permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == POSITION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Autorisation ACCORDÉE", Toast.LENGTH_SHORT).show();
+                // If the permission to access to the user's location is  allowed AND if the GPS' phone is activated,
+                // we use this location
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && GpsStatus) {
+                    popUp.dismiss();
+                    getLocation();
+                }
             }
             else {
                 Toast.makeText(this, "Autorisation REFUSÉE", Toast.LENGTH_SHORT).show();
@@ -416,6 +443,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Ask to the user to activate his location
+    private void showAlertMessageNoGps() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Echec de la localisation")
+                .setMessage("Votre localisation n'est pas activée. Voulez-vous l'activer ?")
+                .setPositiveButton("oui", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
+                        popUp.dismiss();
+                    }
+                })
+                .setNegativeButton("non", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
+
+    // Callback - when the user clicks on an item in the listView
     // Return user's position in coordinates
     @SuppressLint("MissingPermission")
     private void getLocation(){
@@ -432,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /////////////////////////////////////////////////////////
-    // GEOLOCATION //
+    // LOCATION //
     /////////////////////////////////////////////////////////
 
     // Callback when the user clicks on an item in the listView

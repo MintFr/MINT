@@ -1,0 +1,289 @@
+Index: app/src/main/java/com/example/helloworld/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.helloworld;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.core.app.ActivityCompat;\r\nimport androidx.core.content.ContextCompat;\r\n\r\nimport android.Manifest;\r\nimport android.content.Context;\r\nimport android.content.DialogInterface;\r\nimport android.content.pm.PackageManager;\r\nimport android.graphics.Rect;\r\nimport android.os.Bundle;\r\nimport android.preference.PreferenceManager;\r\nimport android.text.Editable;\r\nimport android.text.TextWatcher;\r\nimport android.util.Pair;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.WindowManager;\r\nimport android.view.inputmethod.InputMethodManager;\r\nimport android.widget.AdapterView;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ListView;\r\nimport android.widget.PopupWindow;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView;\r\n\r\nimport java.util.ArrayList;\r\n\r\nimport org.osmdroid.api.IMapController;\r\nimport org.osmdroid.config.Configuration;\r\nimport org.osmdroid.tileprovider.tilesource.TileSourceFactory;\r\nimport org.osmdroid.util.GeoPoint;\r\nimport org.osmdroid.views.MapView;\r\n\r\npublic class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {\r\n    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;\r\n    private MapView map;\r\n    IMapController mapController;\r\n    private EditText startPoint;\r\n    private EditText endPoint;\r\n    private Button search;\r\n    private int POSITION_PERMISSION_CODE = 1;\r\n\r\n    ArrayList<String> lastAddressList;\r\n    ArrayList<String> addressList;\r\n    ListView addressListView;\r\n    String start;\r\n    String end;\r\n\r\n    EditText buttonClicked;\r\n    PopupWindow popUp;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        //Preferences.clearLastAddresses(this);\r\n\r\n        startPoint = findViewById(R.id.PointDeDepart);\r\n        endPoint = findViewById(R.id.PointDarrivee);\r\n        search = findViewById(R.id.recherche);\r\n\r\n        start = startPoint.getText().toString();\r\n        end = endPoint.getText().toString();\r\n\r\n        // check if the editText is empty and if so disable add button\r\n        TextWatcher textChangedListener = new TextWatcher() {\r\n            @Override\r\n            public void beforeTextChanged(CharSequence s, int start, int count, int after) {\r\n\r\n            }\r\n\r\n            @Override\r\n            public void onTextChanged(CharSequence s, int start, int before, int count) {\r\n                search.setEnabled(s.toString().length()!=0);\r\n            }\r\n\r\n            @Override\r\n            public void afterTextChanged(Editable s) {\r\n\r\n            }\r\n        };\r\n\r\n        startPoint.setOnFocusChangeListener(this);\r\n        startPoint.addTextChangedListener(textChangedListener);\r\n        endPoint.setOnFocusChangeListener(this);\r\n        endPoint.addTextChangedListener(textChangedListener);\r\n        search.setOnClickListener(this);\r\n\r\n        startPoint.setTag(0);\r\n        endPoint.setTag(1);\r\n        search.setTag(2);\r\n\r\n        Context context = getApplicationContext();\r\n        Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));\r\n\r\n        //Map\r\n        map = findViewById(R.id.mapView);\r\n        map.setTileSource(TileSourceFactory.MAPNIK); //render\r\n        map.setMultiTouchControls(true);\r\n        GeoPoint startPoint = new GeoPoint(47.21, -1.55);\r\n        mapController = map.getController();\r\n        mapController.setZoom(15.0);\r\n        mapController.setCenter(startPoint);\r\n\r\n        //Bottom Menu\r\n        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);\r\n        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));\r\n        Menu menu = bottomNav.getMenu();\r\n        MenuItem menuItem = menu.getItem(0);\r\n        menuItem.setChecked(true);\r\n    }\r\n\r\n    private PopupWindow showFavoriteAddresses() {\r\n\r\n        // initialize a pop up window type\r\n        PopupWindow popupWindow = new PopupWindow(this);\r\n\r\n        lastAddressList = Preferences.getLastAddresses(\"lastAddress\",this);\r\n        addressList = Preferences.getPrefAddresses(\"Address\", this);\r\n        lastAddressList.add(0,\"Mes dernières adresses :\");\r\n        addressList.add(0,\"Mes adresses favorites :\");\r\n\r\n        addressList.addAll(0,lastAddressList);\r\n\r\n        CustomListAdapter adapter = new CustomListAdapter(this, addressList);\r\n\r\n        addressListView = new ListView(this);\r\n        // add location button to the list\r\n        TextView localisationRequest = new TextView(this);\r\n        localisationRequest.setText(R.string.position_request);\r\n        localisationRequest.setPadding(30,30,30,0);\r\n        addressListView.addHeaderView(localisationRequest);\r\n        addressListView.setHeaderDividersEnabled(false);\r\n\r\n        // set our adapter and pass our pop up window contents\r\n        addressListView.setAdapter(adapter);\r\n        addressListView.setDivider(null);\r\n        addressListView.setDividerHeight(0);\r\n\r\n        // set on item selected\r\n        addressListView.setOnItemClickListener(onItemClickListener());\r\n\r\n        //User's position\r\n        localisationRequest.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                // If the permission is already allowed, we use the user's position\r\n                if (ContextCompat.checkSelfPermission(MainActivity.this,\r\n                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\r\n                    buttonClicked.setText(\"Ma position\");\r\n                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text\r\n                    popUp.dismiss();\r\n                }\r\n                // If not, we ask the permission to use his position\r\n                else {\r\n                    requestLocalisationPermission();\r\n                }\r\n            }\r\n        });\r\n\r\n        // some other visual settings for popup window\r\n        popupWindow.setFocusable(false);\r\n        popupWindow.setWidth((int)getResources().getDimension(R.dimen.start_point_width));\r\n        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.layout_bg_popup));\r\n        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);\r\n\r\n        // set the listview as popup content\r\n        popupWindow.setContentView(addressListView);\r\n\r\n        return popupWindow;\r\n    }\r\n\r\n    // Ask the permission to the user to use his geolocalisation\r\n    private void requestLocalisationPermission(){\r\n        if (ActivityCompat.shouldShowRequestPermissionRationale(this,\r\n                Manifest.permission.ACCESS_FINE_LOCATION)) {\r\n\r\n            new AlertDialog.Builder(this)\r\n                    .setTitle(\"Autorisation nécessaire\")\r\n                    .setMessage(\"Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.\")\r\n                    .setPositiveButton(\"autoriser\", new DialogInterface.OnClickListener(){\r\n                        @Override\r\n                        public void onClick(DialogInterface dialog, int which){\r\n                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {\r\n                                    Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);\r\n                            buttonClicked.setText(\"Ma position\");\r\n                            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text\r\n                            popUp.dismiss();\r\n                        }\r\n                    })\r\n                    .setNegativeButton(\"annuler\", new DialogInterface.OnClickListener() {\r\n                        @Override\r\n                        public void onClick(DialogInterface dialog, int which) {\r\n                            dialog.dismiss();\r\n                        }\r\n                    })\r\n                    .create().show();\r\n        } else {\r\n            ActivityCompat.requestPermissions(this, new String[] {\r\n                    Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);\r\n        }\r\n    }\r\n\r\n    // Return the answer of the localisation permission request\r\n    @Override\r\n    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {\r\n        if (requestCode == POSITION_PERMISSION_CODE) {\r\n            if (grantResults.length > 0 && grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {\r\n                Toast.makeText(this, \"Autorisation ACCORDÉE\", Toast.LENGTH_SHORT).show();\r\n            }\r\n            else {\r\n                Toast.makeText(this, \"Autorisation REFUSÉE\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        }\r\n    }\r\n\r\n    // Callback when the user clicks on an item in the listView\r\n    private AdapterView.OnItemClickListener onItemClickListener(){\r\n        return new AdapterView.OnItemClickListener() {\r\n            @Override\r\n            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {\r\n                if (id>=0) {\r\n                    buttonClicked.setText(addressList.get((int)id));\r\n                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text\r\n                    popUp.dismiss();\r\n                }\r\n            }\r\n        };\r\n    }\r\n\r\n    // Method called when the user clicks on \"search\" (tag = 2)\r\n    @Override\r\n    public void onClick(View v){\r\n        int i = (int) v.getTag();\r\n        start = startPoint.getText().toString();\r\n        end = endPoint.getText().toString();\r\n        if(i==2){\r\n            if (start.length() == 0 || end.length() == 0){\r\n                // if nothing has been typed in, nothing happens and you get a message\r\n                Toast.makeText(MainActivity.this, \"Vous devez remplir les deux champs\",Toast.LENGTH_SHORT).show();\r\n            }\r\n            else if (start.equals(end)){\r\n                // if both addresses are the same, do nothing\r\n                Toast.makeText(MainActivity.this, \"Veuillez rentrer deux adresses différentes\",Toast.LENGTH_SHORT).show();\r\n            }\r\n            else {\r\n                int nbLastAdd = Preferences.getNumberOfLastAddresses(\"lastAddress\",MainActivity.this); // get the number of addresses in the history\r\n                //int[] sameAddresses = getSameAddresses(start,end);\r\n                Preferences.addLastAddress(\"lastAddress\", 0, endPoint.getText().toString(), MainActivity.this);\r\n                Preferences.addLastAddress(\"lastAddress\", 0, startPoint.getText().toString(), MainActivity.this);\r\n                nbLastAdd = nbLastAdd+2;\r\n                if (nbLastAdd == 5) {\r\n                    Preferences.removeLastAddress(\"lastAddress\", nbLastAdd + 1, MainActivity.this);\r\n                    Preferences.removeLastAddress(\"lastAddress\", nbLastAdd, MainActivity.this);\r\n                } else if (nbLastAdd == 4) {\r\n                    Preferences.removeLastAddress(\"lastAddress\", nbLastAdd, MainActivity.this);\r\n\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    // when the focus is on the edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow\r\n    @Override\r\n    public void onFocusChange(View v, boolean hasFocus){\r\n        int i = (int) v.getTag();\r\n        buttonClicked = v.findViewWithTag(i);\r\n        if(hasFocus) {\r\n            popUp = showFavoriteAddresses();\r\n            popUp.showAsDropDown(v, 0, 10); // show popup like dropdown list\r\n        }\r\n        if(!hasFocus){\r\n            popUp.dismiss();\r\n        }\r\n    }\r\n\r\n    // This is used to check when the user clicks outside of the edittext\r\n    @Override\r\n    public boolean dispatchTouchEvent(MotionEvent event) {\r\n        if (event.getAction() == MotionEvent.ACTION_DOWN) {\r\n            View v = getCurrentFocus();\r\n            if ( v instanceof EditText) {\r\n                Rect outRect = new Rect();\r\n                v.getGlobalVisibleRect(outRect);\r\n                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {\r\n                    v.clearFocus();\r\n                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);\r\n                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);\r\n                }\r\n            }\r\n        }\r\n        return super.dispatchTouchEvent( event );\r\n    }\r\n\r\n    public int[] getSameAddresses(String start, String end){\r\n        int[] arr = new int[2];\r\n        arr[0]=-1;\r\n        arr[1]=-1;\r\n        if(Preferences.getNumberOfLastAddresses(\"lastAddress\",MainActivity.this)==0){\r\n            arr[0]=arr[1]=-1;\r\n        }\r\n        else {\r\n            for (int j = 0; j < Preferences.getNumberOfLastAddresses(\"lastAddress\",MainActivity.this); j++) {\r\n                String lastAddress = Preferences.getLastAddresses(\"lastAddress\", MainActivity.this).get(j);\r\n                if (start.equals(lastAddress)) {\r\n                    arr[0]=j;\r\n                }\r\n                if (end.equals(lastAddress)) {\r\n                    arr[1]=j;\r\n                }\r\n                if (!(start.equals(lastAddress)||end.equals(lastAddress))){\r\n                    arr[0]=arr[1]=-1;\r\n                }\r\n            }\r\n        }\r\n        return arr;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/helloworld/MainActivity.java	(revision 6f2bc4eb279f1bee1cfe467c39a52d8e7df210b7)
++++ app/src/main/java/com/example/helloworld/MainActivity.java	(date 1609838264481)
+@@ -7,7 +7,15 @@
+ import androidx.core.content.ContextCompat;
+ 
+ import android.Manifest;
++import android.annotation.SuppressLint;
+ import android.content.Context;
++import android.content.DialogInterface;
++import android.content.pm.PackageManager;
++import android.location.Address;
++import android.location.Geocoder;
++import android.location.Location;
++import android.location.LocationListener;
++import android.location.LocationManager;
+ import android.content.DialogInterface;
+ import android.content.pm.PackageManager;
+ import android.graphics.Rect;
+@@ -35,6 +43,8 @@
+ import com.google.android.material.bottomnavigation.BottomNavigationView;
+ 
+ import java.util.ArrayList;
++import java.util.List;
++import java.util.Locale;
+ 
+ import org.osmdroid.api.IMapController;
+ import org.osmdroid.config.Configuration;
+@@ -42,14 +52,19 @@
+ import org.osmdroid.util.GeoPoint;
+ import org.osmdroid.views.MapView;
+ 
+-public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
++public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
+     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+     private MapView map;
+     IMapController mapController;
+     private EditText startPoint;
++    private EditText startPoint2; // for starPoint/endPoint inversion
+     private EditText endPoint;
++    private EditText latitude;
++    private EditText longitude;
++    private Button inversionButton;
+     private Button search;
+     private int POSITION_PERMISSION_CODE = 1;
++    boolean GpsStatus = false; //true if the user's location is activated on the phone
+ 
+     ArrayList<String> lastAddressList;
+     ArrayList<String> addressList;
+@@ -59,6 +74,7 @@
+ 
+     EditText buttonClicked;
+     PopupWindow popUp;
++    LocationManager locationManager;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -137,6 +153,7 @@
+         CustomListAdapter adapter = new CustomListAdapter(this, addressList);
+ 
+         addressListView = new ListView(this);
++
+         // add location button to the list
+         TextView localisationRequest = new TextView(this);
+         localisationRequest.setText(R.string.position_request);
+@@ -152,18 +169,42 @@
+         // set on item selected
+         addressListView.setOnItemClickListener(onItemClickListener());
+ 
+-        //User's position
++        //User's location
+         localisationRequest.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                // If the permission is already allowed, we use the user's position
++
++                // We need this parameters to check if the GPS of the phone is activated
++                locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
++                assert locationManager != null;
++                GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
++
++                // If the permission to access to the user's location is already allowed, we use it
+                 if (ContextCompat.checkSelfPermission(MainActivity.this,
+                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+-                    buttonClicked.setText("Ma position");
+-                    buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+-                    popUp.dismiss();
++
++                    // We also need that the GPS' phone is activated. We check this here.
++                    if (GpsStatus){
++                        popUp.dismiss();
++                        getLocation();
++                    }
++
++                    // If the GPS' phone is NOT activated, we need to say to the user to activate it
++                    else {
++                        new AlertDialog.Builder(MainActivity.this)
++                                .setTitle("Echec de la localisation")
++                                .setMessage("Nous n'arrivons pas à vous localiser. Vérifiez que vous avez bien activé la localisation de votre téléphone.")
++                                .setNeutralButton("ok", new DialogInterface.OnClickListener(){
++                                    @Override
++                                    public void onClick(DialogInterface dialog, int which) {
++                                        dialog.dismiss();
++                                    }
++                                })
++                                .create().show();
++                    }
+                 }
+-                // If not, we ask the permission to use his position
++
++                // If we don't have the permission, we ask the permission to use his location
+                 else {
+                     requestLocalisationPermission();
+                 }
+@@ -179,11 +220,30 @@
+         // set the listview as popup content
+         popupWindow.setContentView(addressListView);
+ 
++        // startPoint/endPoint inversion
++        inversionButton = findViewById(R.id.inversion);
++        inversionButton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                //startPoint2.setText(startPoint.getText());$
++                Editable startText = startPoint.getText();
++                Editable endText = endPoint.getText();
++                endPoint.setText(startText);
++                startPoint.setText(endText);
++            }
++        });
++
+         return popupWindow;
+     }
+ 
+-    // Ask the permission to the user to use his geolocalisation
++    /////////////////////////////////////////////////////////
++    // LOCATION //
++    /////////////////////////////////////////////////////////
++
++    // Ask the permission to the user to use his location
+     private void requestLocalisationPermission(){
++        // If the permission WAS DENIED PREVIOUSLY,
++        // we open a dialog to ask for the permission to access to the user's location
+         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                 Manifest.permission.ACCESS_FINE_LOCATION)) {
+ 
+@@ -192,11 +252,10 @@
+                     .setMessage("Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.")
+                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener(){
+                         @Override
+-                        public void onClick(DialogInterface dialog, int which){
+-                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {
++                        public void onClick(DialogInterface dialog, int which) {
++                            // If the user click on this button, we ask her/him the permission to use her/his position
++                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
+-                            buttonClicked.setText("Ma position");
+-                            buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
+                             popUp.dismiss();
+                         }
+                     })
+@@ -208,17 +267,33 @@
+                     })
+                     .create().show();
+         } else {
++            // If the permission was NOT denied previously, we ask for the permission to access to the user's position
+             ActivityCompat.requestPermissions(this, new String[] {
+                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
+         }
++
++        // If the permission to access to the user's location is already allowed AND if the GPS' phone is activated,
++        // we use this location
++        /*if (ContextCompat.checkSelfPermission(MainActivity.this,
++                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && GpsStatus) {
++            getLocation();
++        }*/
+     }
+ 
+-    // Return the answer of the localisation permission request
++    // Return the answer of the location permission request in a "short popup window" at the bottom of the screen
++    // and print the user's position if we have the permission
+     @Override
+     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+         if (requestCode == POSITION_PERMISSION_CODE) {
+             if (grantResults.length > 0 && grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
+                 Toast.makeText(this, "Autorisation ACCORDÉE", Toast.LENGTH_SHORT).show();
++                // If the permission to access to the user's location is  allowed AND if the GPS' phone is activated,
++                // we use this location
++                if (ContextCompat.checkSelfPermission(MainActivity.this,
++                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && GpsStatus) {
++                    popUp.dismiss();
++                    getLocation();
++                }
+             }
+             else {
+                 Toast.makeText(this, "Autorisation REFUSÉE", Toast.LENGTH_SHORT).show();
+@@ -226,7 +301,26 @@
+         }
+     }
+ 
+-    // Callback when the user clicks on an item in the listView
++    // Callback - when the user clicks on an item in the listView
++    // Return user's position in coordinates
++    @SuppressLint("MissingPermission")
++    private void getLocation(){
++        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
++        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
++    }
++
++    // Print user's position
++    // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
++    public void onLocationChanged(Location location) {
++        String position = location.getLatitude() + "," + location.getLongitude();
++        buttonClicked.setText(position);
++        buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
++    }
++
++    /////////////////////////////////////////////////////////
++    // LOCATION //
++    /////////////////////////////////////////////////////////
++
+     private AdapterView.OnItemClickListener onItemClickListener(){
+         return new AdapterView.OnItemClickListener() {
+             @Override
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:focusableInTouchMode=\"true\"\r\n    tools:context=\".MainActivity\"\r\n    android:background=\"@drawable/background_map\">\r\n\r\n    <org.osmdroid.views.MapView\r\n        android:id=\"@+id/mapView\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"match_parent\"\r\n        tools:ignore=\"MissingConstraints\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/PointDeDepart\"\r\n        android:layout_width=\"@dimen/start_point_width\"\r\n        android:layout_height=\"50dp\"\r\n        android:layout_marginTop=\"21dp\"\r\n        android:background=\"@drawable/button_text_color\"\r\n        android:hint=\"@string/start_point\"\r\n        android:fontFamily=\"@font/quicksand_regular\"\r\n        android:textAllCaps=\"false\"\r\n        android:textSize=\"16sp\"\r\n        android:textColor=\"#999999\"\r\n        android:textAlignment=\"center\"\r\n        android:gravity=\"center_horizontal|center_vertical\"\r\n        android:focusable=\"true\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/logo\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/PointDarrivee\"\r\n        android:layout_width=\"@dimen/start_point_width\"\r\n        android:layout_height=\"50dp\"\r\n        android:layout_marginTop=\"11dp\"\r\n        android:background=\"@drawable/button_text_color\"\r\n        android:fontFamily=\"@font/quicksand_regular\"\r\n        android:textSize=\"16sp\"\r\n        android:hint=\"@string/end_point\"\r\n        android:textAllCaps=\"false\"\r\n        android:textColor=\"#999999\"\r\n        android:textAlignment=\"center\"\r\n        android:gravity=\"center_horizontal|center_vertical\"\r\n        android:focusable=\"true\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/PointDeDepart\" />\r\n\r\n    <ImageView\r\n        android:id=\"@+id/logo\"\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"100dp\"\r\n        android:contentDescription=\"@string/description_logo\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:srcCompat=\"@drawable/mint_icone_seule__1_\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/recherche\"\r\n        android:layout_width=\"120dp\"\r\n        android:layout_height=\"40dp\"\r\n        android:layout_marginTop=\"7dp\"\r\n        android:background=\"@drawable/recherche\"\r\n        android:fontFamily=\"@font/quicksand_regular\"\r\n        android:text=\"@string/button_recherche\"\r\n        android:textAllCaps=\"false\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"17sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.814\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/options\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/options\"\r\n        android:layout_width=\"70dp\"\r\n        android:layout_height=\"30dp\"\r\n        android:layout_marginTop=\"6dp\"\r\n        android:fontFamily=\"@font/quicksand_regular\"\r\n        android:gravity=\"center_horizontal\"\r\n        android:text=\"@string/text_options\"\r\n        android:textAlignment=\"center\"\r\n        android:textColor=\"#084528\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.843\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/PointDarrivee\" />\r\n\r\n    <FrameLayout\r\n        android:id=\"@+id/fragment_container\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_above=\"@id/bottom_navigation\"\r\n        />\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        app:itemTextAppearance=\"@style/BottomStyle\"\r\n        android:id=\"@+id/bottom_navigation\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_gravity=\"bottom\"\r\n        app:itemIconTint=\"@drawable/bottomnavigation_color_state\"\r\n        app:itemTextColor=\"@drawable/bottomnavigation_color_state\"\r\n        android:background=\"#DDDDDD\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:menu=\"@menu/bottom_menu\"\r\n        tools:ignore=\"MissingConstraints\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 6f2bc4eb279f1bee1cfe467c39a52d8e7df210b7)
++++ app/src/main/res/layout/activity_main.xml	(date 1609838264488)
+@@ -12,7 +12,15 @@
+         android:id="@+id/mapView"
+         android:layout_width="0dp"
+         android:layout_height="match_parent"
+-        tools:ignore="MissingConstraints" />
++        tools:ignore="MissingConstraints" >
++
++        <FrameLayout
++            android:id="@+id/fragment_container"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:layout_above="@id/bottom_navigation" />
++
++    </org.osmdroid.views.MapView>
+ 
+     <EditText
+         android:id="@+id/PointDeDepart"
+@@ -50,6 +58,18 @@
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/PointDeDepart" />
+ 
++    <Button
++        android:id="@+id/inversion"
++        android:layout_width="35dp"
++        android:layout_height="35dp"
++        android:background="#00FFFFFF"
++        android:drawableTop="@drawable/ic_baseline_swap_vert_35"
++        app:layout_constraintBottom_toBottomOf="@+id/PointDarrivee"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias=".99"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="@+id/PointDeDepart" />
++
+     <ImageView
+         android:id="@+id/logo"
+         android:layout_width="100dp"
+@@ -91,13 +111,6 @@
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/PointDarrivee" />
+ 
+-    <FrameLayout
+-        android:id="@+id/fragment_container"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:layout_above="@id/bottom_navigation"
+-        />
+-
+     <com.google.android.material.bottomnavigation.BottomNavigationView
+         app:itemTextAppearance="@style/BottomStyle"
+         android:id="@+id/bottom_navigation"

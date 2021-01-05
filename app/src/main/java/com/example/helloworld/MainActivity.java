@@ -10,6 +10,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     // If the GPS' phone is NOT activated, we need to say to the user to activate it
                     else {
-                        new AlertDialog.Builder(MainActivity.this)
+                        /*new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("Echec de la localisation")
                                 .setMessage("Nous n'arrivons pas à vous localiser. Vérifiez que vous avez bien activé la localisation de votre téléphone.")
                                 .setNeutralButton("ok", new DialogInterface.OnClickListener(){
@@ -200,7 +201,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         dialog.dismiss();
                                     }
                                 })
-                                .create().show();
+                                .create().show();*/
+                        showAlertMessageNoGps();
                     }
                 }
 
@@ -271,13 +273,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(this, new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
         }
-
-        // If the permission to access to the user's location is already allowed AND if the GPS' phone is activated,
-        // we use this location
-        /*if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && GpsStatus) {
-            getLocation();
-        }*/
     }
 
     // Return the answer of the location permission request in a "short popup window" at the bottom of the screen
@@ -299,6 +294,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Autorisation REFUSÉE", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // Ask to the user to activate his location
+    private void showAlertMessageNoGps() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Echec de la localisation")
+                .setMessage("Votre localiser n'est pas activée. Voulez-vous l'activer ?")
+                .setPositiveButton("oui", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
+                        popUp.dismiss();
+                    }
+                })
+                .setNegativeButton("non", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
     // Callback - when the user clicks on an item in the listView

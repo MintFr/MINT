@@ -354,8 +354,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    e.printStackTrace();
 //                }
 
-                pdaLat = 47.21213;
-                pdaLong = -1.55479;
+
+                pdaLat = 47.23592051820992;
+                pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
                 pddLong = -1.54978;
 

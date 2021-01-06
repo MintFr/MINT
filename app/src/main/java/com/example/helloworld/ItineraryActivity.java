@@ -42,7 +42,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary);
 
-        //Itinerary display
+        //Map display
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
@@ -51,6 +51,11 @@ public class ItineraryActivity extends AppCompatActivity  {
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
         map.setBuiltInZoomControls(false);
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        //                              Zone à modifier                                           //
+        ////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //Points construction
@@ -121,6 +126,10 @@ public class ItineraryActivity extends AppCompatActivity  {
         }
 
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        //                              Zone à modifier                                           //
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
         //Bottom Menu
@@ -134,6 +143,7 @@ public class ItineraryActivity extends AppCompatActivity  {
 
     }
 
+    //Methods to center map on points, useless for the app, but useful to debug
     public void onClickP1(View view) {
         mapController.setCenter(startPoint);
     }

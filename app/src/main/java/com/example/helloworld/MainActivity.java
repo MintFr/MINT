@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -75,10 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText longitude;
     private ImageButton inversionButton;
     private Button search;
+    private final int POSITION_PERMISSION_CODE = 1;
     private Button option;
     private Button dateBtn;
     private Button timeBtn;
-    private int POSITION_PERMISSION_CODE = 1;
     boolean GpsStatus = false; //true if the user's location is activated on the phone
 
     ArrayList<String> lastAddressList;
@@ -86,6 +87,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView addressListView;
     String start;
     String end;
+
+    private Double pdaLat;
+    private Double pdaLong;
+    private Double pddLat;
+    private Double pddLong;
 
     EditText buttonClicked;
     PopupWindow popUp;
@@ -528,6 +534,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Method called when the user clicks on "search" or "option"
     @Override
     public void onClick(View v){
+        pdaLat = null;
+        pdaLong = null;
+        pddLat = null;
+        pddLong = null;
         int i = (int) v.getTag();
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
@@ -535,9 +545,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(i==2){
             if (start.length() == 0 || end.length() == 0){
                 // if nothing has been typed in, nothing happens and you get a message
-                Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs",Toast.LENGTH_SHORT).show();
-            }
-            else if (start.equals(end)){
+                Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
+            } else if (start.equals(end)) {
                 // if both addresses are the same, do nothing
                 Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes",Toast.LENGTH_SHORT).show();
             }
@@ -575,15 +584,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (nbLastAdd == 4) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 }
-            }
-        }
-        // things to do when user clicks options
+                pdaLat = 47.23592051820992;
+                pdaLong = -1.638742699120431;
+                pddLat = 47.24811;
+                pddLong = -1.54978;
+
+
+
+                //start itinerary calculation activity
+                Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                intent.putExtra("param1", pdaLat);
+                intent.putExtra("param2", pdaLong);
+                intent.putExtra("param3", pddLat);
+                intent.putExtra("param4", pddLong);
+                startActivity(intent);
+                finish();}}
         else if (i==3){
-            popUp = showOptions();
-            dimPopup.setVisibility(View.VISIBLE);
-            popUp.showAtLocation(v,Gravity.CENTER,0,0);
-        }
-    }
+                    popUp = showOptions();
+                    dimPopup.setVisibility(View.VISIBLE);
+                    popUp.showAtLocation(v,Gravity.CENTER,0,0);
+                }
+
+
+                //Conversion addresses to spatial coordinates
+                //For the start point
+//                Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
+//                try {
+//                    List addressListStart = geocoderStart.getFromLocationName(start, 1);
+//                    if (addressListStart != null && addressListStart.size() > 0){
+//                        Address addressStart = (Address) addressListStart.get(0);
+//                        Double pddLat = addressStart.getLatitude();
+//                        Double pddLong = addressStart.getLongitude();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                //For the end point
+//                Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
+//                try {
+//                    List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
+//                    if (addressListEnd != null && addressListEnd.size() > 0) {
+//                        Address addressEnd = (Address) addressListEnd.get(0);
+//                        pdaLat = addressEnd.getLatitude();
+//                        pdaLong = addressEnd.getLongitude();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+
+
+                }
+            //}
+        //}
+        // things to do when user clicks options
+
 
     // when the focus is on the edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow
     @Override

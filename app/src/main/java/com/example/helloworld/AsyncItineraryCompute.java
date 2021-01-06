@@ -45,7 +45,24 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
     }
 
+    /**
+     * @param strings
+     * Background task to send a request to ECN server with parameters such as start point, end point,
+     * transport.
+     * And reception of a JSONArray like :
+     *         [{"type":route,
+     *            "exposition":0.60,
+     *             "time":444.1,
+     *             "points": [{"longitude":42.155,"latitude":55.244444},{...},{...},...]}
+     *         ,{..}]
+     *
+     * But now, response is only : [{"longitude":42.155,"latitude":55.244444},{...},{...},...]
+     *
+     * @return JSONArray
+     */
+
     @Override
+
     protected JSONArray doInBackground(String... strings) {
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
@@ -59,8 +76,8 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection(); // Open
             InputStream in = new BufferedInputStream(urlConnection.getInputStream()); // Stream
-            publishProgress(2);
-            result = readStream(in);
+            publishProgress(2); //"marker" to display progress on splash screen
+            result = readStream(in); //read text file
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
@@ -82,12 +99,11 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
 
         JSONArray json = new JSONArray();
-
         try{
-            JSONObject message = new JSONObject();
+            JSONObject message = new JSONObject(); // to debug, maybe to delete for real version of the app
             switch (error){
                 case 0 :
-                    json = new JSONArray(result);
+                    json = new JSONArray(result); //create JSONArray from text file JSON encoded
                     message.put("message",myActivity.getString(R.string.connexion_success));
                     break;
                 case 1 :
@@ -114,6 +130,10 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         pb.setProgress(values[0]);
     }
 
+    /**
+     * Function to decode JSONArray and extract attributes
+     * @param c
+     */
     @Override
     protected void onPostExecute(final JSONArray c) {
         if (c == null){
@@ -127,6 +147,9 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         }
 
 
+
+     ///////////////////////////////////////////////////////////////////////////////////////////////
+     //Change this part to adapt to new format of response
 
         //Reading JSON
         final ArrayList<double[]> coord = new ArrayList<>();
@@ -145,6 +168,8 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
             e.printStackTrace();
         }
 
+     ///////////////////////////////////////////////////////////////////////////////////////////////
+
         TextView text = myActivity.findViewById(R.id.text);
         text.setText(R.string.itinerary_end_message); // Updates the textview
         ProgressBar pb = myActivity.findViewById(R.id.progress_bar);
@@ -153,6 +178,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
         int ITINERARY_END_SCREEN_TIMEOUT = 1000;
 
+        //send to the itinerary activity, with delay to let user see the message "calcul terminé"
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -170,6 +196,11 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
     }
 
+    /**
+    * Method to read server response, which is as text file, and put it in a String object.
+     * @param is
+     * @return String
+    */
     private String readStream(InputStream is) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader r = new BufferedReader(new InputStreamReader(is),1000);

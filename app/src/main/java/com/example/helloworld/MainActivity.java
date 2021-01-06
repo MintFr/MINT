@@ -584,6 +584,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (nbLastAdd == 4) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 }
+
+
+
+                //test
                 pdaLat = 47.23592051820992;
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
@@ -599,6 +603,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("param4", pddLong);
                 startActivity(intent);
                 finish();}}
+
+
+        // things to do when user clicks options
+
         else if (i==3){
                     popUp = showOptions();
                     dimPopup.setVisibility(View.VISIBLE);
@@ -637,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             //}
         //}
-        // things to do when user clicks options
+
 
 
     // when the focus is on the edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow

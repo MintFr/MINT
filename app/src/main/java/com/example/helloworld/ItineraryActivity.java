@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +28,12 @@ import static java.lang.Double.parseDouble;
 public class ItineraryActivity extends AppCompatActivity  {
 
     private MapView map = null;
-    private final ArrayList<double[]> response = new ArrayList<>();
+    private ArrayList<double[]> response = new ArrayList<>();
+    private IMapController mapController = null;
+    private GeoPoint startPoint;
+    private GeoPoint endPoint;
+
+
 
 
 
@@ -41,10 +47,10 @@ public class ItineraryActivity extends AppCompatActivity  {
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint defaultPoint = new GeoPoint(47.21, -1.55);
-        IMapController mapController = map.getController();
+        mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
-        map.setBuiltInZoomControls(true);
+        map.setBuiltInZoomControls(false);
 
 
         //Points construction
@@ -62,12 +68,25 @@ public class ItineraryActivity extends AppCompatActivity  {
             }
         }
 
+        Toast.makeText(this, String.format("%d", response.size()), Toast.LENGTH_SHORT).show();
+
+        if (response.size() > 0) {
+            startPoint = new GeoPoint(response.get(0)[0], response.get(0)[1]);
+            endPoint = new GeoPoint(response.get(1)[0], response.get(1)[1]);
+        }else{
+            startPoint = new GeoPoint(47.21, -1.55);
+            endPoint = new GeoPoint(47.21, -1.55);
+            Toast.makeText(this, String.format("taille de response = %d", response.size()), Toast.LENGTH_SHORT).show();
+        }
+
+
         //Points on map
         ArrayList<OverlayItem> items = new ArrayList<>();
-        for (int j = 0; j < items.size();j++){
+        for (int j = 0; j < response.size();j++){
             items.add(new OverlayItem("point "+j, "",
                     new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
         }
+
 
         //Overlay of points
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<>(items,
@@ -116,26 +135,10 @@ public class ItineraryActivity extends AppCompatActivity  {
     }
 
     public void onClickP1(View view) {
-        IMapController mapController = map.getController();
-        GeoPoint startPoint;
-        if (response.size() != 0) {
-            startPoint = new GeoPoint(response.get(0)[0], response.get(0)[1]);
-        }else{
-            startPoint = new GeoPoint(47.21, -1.55);
-        }
         mapController.setCenter(startPoint);
-
-
     }
 
     public void onClickP2(View view) {
-        IMapController mapController = map.getController();
-        GeoPoint endPoint;
-        if (response.size() != 0) {
-            endPoint = new GeoPoint(response.get(response.size()-1)[0], response.get(response.size()-1)[1]);
-        }else{
-            endPoint = new GeoPoint(47.21, -1.55);
-        }
         mapController.setCenter(endPoint);
     }
 }

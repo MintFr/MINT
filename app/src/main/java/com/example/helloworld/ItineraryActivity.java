@@ -59,7 +59,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary);
 
-        //Itinerary display
+        //Map display
         map = findViewById(R.id.map);
         //final MapBoxTileSource tileSource = new MapBoxTileSource();
         //tileSource.retrieveAccessToken(this);
@@ -204,7 +204,7 @@ public class ItineraryActivity extends AppCompatActivity  {
             }
         };
         // add infowindow to the polyline
-        
+
         line.setInfoWindow(infoWindow);
         line.showInfoWindow(); // we want the infowindow to already be showing without having to click
         map.getOverlayManager().add(line);
@@ -284,6 +284,7 @@ public class ItineraryActivity extends AppCompatActivity  {
 
     }
 
+    //Methods to center map on points, useless for the app, but useful to debug
     public void onClickP1(View view) {
         mapController.setCenter(startPoint);
     }

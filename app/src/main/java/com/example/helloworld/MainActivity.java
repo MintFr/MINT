@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
 
+
+
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
             @Override
@@ -160,6 +162,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
+        //Slide animation
+        bottomNav.setSelectedItemId(R.id.itineraire);
+
+        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.itineraire:
+                        return true;
+                    case R.id.cartes:
+                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        return true;
+                    case R.id.profil:
+                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                        return true;
+                    default:
+                }
+                return false;
+            }
+        });
     }
 
     // function that creates the popup window on selection of editTexts
@@ -608,4 +633,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return arr;
     }
+
 }
+
+
+

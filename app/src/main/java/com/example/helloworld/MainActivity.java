@@ -584,10 +584,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (nbLastAdd == 4) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 }
-                pdaLat = 47.23592051820992;
+                //Conversion addresses to spatial coordinates
+                //For the start point
+                Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
+                try {
+                    List addressListStart = geocoderStart.getFromLocationName(start, 1);
+                    if (addressListStart != null && addressListStart.size() > 0){
+                        Address addressStart = (Address) addressListStart.get(0);
+                        pddLat = addressStart.getLatitude();
+                        pddLong = addressStart.getLongitude();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //For the end point
+                Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
+                try {
+                    List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
+                    if (addressListEnd != null && addressListEnd.size() > 0) {
+                        Address addressEnd = (Address) addressListEnd.get(0);
+                        pdaLat = addressEnd.getLatitude();
+                        pdaLong = addressEnd.getLongitude();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*pdaLat = 47.23592051820992;
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
-                pddLong = -1.54978;
+                pddLong = -1.54978;*/
 
 
 
@@ -606,31 +631,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
 
-                //Conversion addresses to spatial coordinates
-                //For the start point
-//                Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
-//                try {
-//                    List addressListStart = geocoderStart.getFromLocationName(start, 1);
-//                    if (addressListStart != null && addressListStart.size() > 0){
-//                        Address addressStart = (Address) addressListStart.get(0);
-//                        Double pddLat = addressStart.getLatitude();
-//                        Double pddLong = addressStart.getLongitude();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                //For the end point
-//                Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
-//                try {
-//                    List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
-//                    if (addressListEnd != null && addressListEnd.size() > 0) {
-//                        Address addressEnd = (Address) addressListEnd.get(0);
-//                        pdaLat = addressEnd.getLatitude();
-//                        pdaLong = addressEnd.getLongitude();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+
 
 
 

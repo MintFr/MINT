@@ -146,8 +146,12 @@ public class ItineraryActivity extends AppCompatActivity  {
         map.getOverlays().add(endMarker);
 
         //display points with coordinates in array, under the map
-        TextView viewPoint1 = (TextView) findViewById(R.id.point1);
-        TextView viewPoint2 = (TextView) findViewById(R.id.point2);
+        TextView viewPoint1 = (TextView) findViewById(R.id.start_point);
+        TextView viewPoint2 = (TextView) findViewById(R.id.end_point);
+
+        //display time and pollution
+        TextView time = findViewById(R.id.time);
+        TextView pollution = findViewById(R.id.pollution);
 
         // get start and end addresses
         String start = getString(R.string.itinerary_point1)+" : "+(Preferences.getAddress("startAddress",ItineraryActivity.this));
@@ -156,6 +160,13 @@ public class ItineraryActivity extends AppCompatActivity  {
         if (response.size() > 0){
             viewPoint1.setText(start);
             viewPoint2.setText(end);
+            int timeInt = (int) itinerary.getTime();
+            String timeStr = timeInt +" min";
+            time.setText(timeStr);
+            String str = "3";
+            str = str.replaceAll("3", "³");
+            String polStr = itinerary.getPollution()+"µg/m"+str;
+            pollution.setText(polStr);
         } else {
             viewPoint1.setText("error");
             viewPoint2.setText("error");
@@ -165,6 +176,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);

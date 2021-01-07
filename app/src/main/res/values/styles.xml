@@ -22,6 +22,12 @@
         <item name="android:textColor">@drawable/button_text</item>
     </style>
 
+    <style name="bold" >
+        <item name="fontFamily">@font/quicksand_bold</item>
+    </style>
+
+
+
 
 
 

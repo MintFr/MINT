@@ -24,53 +24,114 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/colorAccent"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<LinearLayout
+    android:id="@+id/itinerary_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/layout_bg_title">
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="time"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
+        style="@style/bold"
+        android:layout_weight="1"/>
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="#EDEDED"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exposition :"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/pollution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
+        style="@style/bold"
+        android:layout_weight="1"/>
 
-            android:background="@color/colorPrimary"
-            android:fontFamily="@font/quicksand"
-            android:gravity="center"
-            android:text="@string/itinerary_step"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorAccent"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:padding="12dp"/>
-
-        <TextView
-            android:id="@+id/point1"
+</LinearLayout>
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:onClick="onClickP1"
-            android:background="@color/colorPrimaryDark"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/textView4"
+            android:layout_height="2dp"
+            android:background="#EDEDED"/>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            tools:visibility="invisible" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/marker"
+                    android:layout_marginBottom="-8dp"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:background="@color/colorAccent"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="-8dp"
+                    android:src="@drawable/marker"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/start_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Départ"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:onClick="onClickP1"
+                    android:textSize="18sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#EDEDED"/>
+                <TextView
+                    android:id="@+id/end_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Arrivée"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:onClick="onClickP2"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/point2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:onClick="onClickP2"
-            android:background="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

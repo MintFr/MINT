@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Itinerary {
     String type;
-    Float pollution;
-    Float time;
+    double pollution;
+    double time;
     ArrayList<double[]> points;
 
-    public Itinerary(String type,Float pollution, Float time, ArrayList<double[]> points) {
+    public Itinerary(String type,double pollution, double time, ArrayList<double[]> points) {
         this.type=type;
         this.pollution=pollution;
         this.time=time;
@@ -23,7 +23,7 @@ public class Itinerary {
         this.type = type;
     }
 
-    public Float getPollution() {
+    public double getPollution() {
         return pollution;
     }
 
@@ -31,7 +31,7 @@ public class Itinerary {
         this.pollution = pollution;
     }
 
-    public Float getTime() {
+    public double getTime() {
         return time;
     }
 

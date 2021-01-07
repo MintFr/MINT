@@ -626,6 +626,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
                 pddLong = -1.54978;*/
+                int[] options = {0,2,0,4};      // rien = {0,0,0,0} et tout = {1,2,3,4}
+
+
+                int[] transport = new int[4];
+                for(int k=0;k<4;k++){
+                    if (options.length > 0){
+                        transport[k] = options[k];
+                    }else{
+                        transport[k] = k+1;
+                    }
+                }
+
 
                 //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
@@ -633,6 +645,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("param2", pdaLong);
                 intent.putExtra("param3", pddLat);
                 intent.putExtra("param4", pddLong);
+                intent.putExtra("param5", transport);
                 startActivity(intent);
                 finish();
 

@@ -58,7 +58,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:background="#00FFFFFF"
-        android:src="@drawable/ic_swap"
+        android:src="@drawable/ic_outline_swap_vertical_circle_24"
         app:layout_constraintBottom_toBottomOf="@+id/PointDarrivee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".99"

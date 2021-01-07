@@ -1,6 +1,8 @@
 package com.example.helloworld;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +23,12 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.Polyline;
+import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Double.parseDouble;
 
@@ -84,18 +89,60 @@ public class ItineraryActivity extends AppCompatActivity  {
                     new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
         }
 
+        ArrayList<double[]> points = new ArrayList<double[]>();
+        points.add(new double[]{47.205461, -1.559122});
+        points.add(new double[]{47.205559,-1.558233});
+        points.add(new double[]{47.206165,-1.558373});
+        points.add(new double[]{47.20622,-1.557744});
+
+        Itinerary itinerary = new Itinerary("voiture",0.5f,52f,points);
+
         //Overlay of points
+
+        // polyline for itinerary
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        for (int j = 0; j<itinerary.getPointSize();j++){
+            geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0],itinerary.getPoints().get(j)[1]));
+        }
+
+        //Paintlists for the effect on the polyline
+        final Paint paintBorder = new Paint();
+        paintBorder.setStrokeWidth(30);
+        paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintBorder.setColor(Color.WHITE);
+        paintBorder.setStrokeCap(Paint.Cap.ROUND);
+        paintBorder.setStrokeJoin(Paint.Join.ROUND);
+        paintBorder.setShadowLayer(15,0,10,getResources().getColor(R.color.colorTransparentBlack));
+        paintBorder.setAntiAlias(true);
+
+        final Paint paintInside = new Paint();
+        paintInside.setStrokeWidth(10);
+        paintInside.setStyle(Paint.Style.FILL);
+        paintInside.setColor(getResources().getColor(R.color.colorAccent));
+        paintInside.setStrokeCap(Paint.Cap.ROUND);
+        paintInside.setStrokeJoin(Paint.Join.ROUND);
+        paintInside.setAntiAlias(true);
+
+        Polyline line = new Polyline(map);
+        line.setPoints(geoPoints);
+        line.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
+        line.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
+        map.getOverlayManager().add(line);
+
+        // start and end markers
         Marker startMarker = new Marker(map);
-        System.out.println(startPoint);
-        //GeoPoint startPosition = new GeoPoint(response.get(0)[0],response.get(0)[1]);
-        startMarker.setPosition(startPoint);
+        GeoPoint startPosition = new GeoPoint(itinerary.getPoints().get(0)[0],itinerary.getPoints().get(0)[1]);
+        startMarker.setPosition(startPosition);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+        startMarker.setFlat(true);
+        startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+        map.getOverlays().add(startMarker);
 
         Marker endMarker = new Marker(map);
-        System.out.println(endPoint);
-        //GeoPoint endPosition = new GeoPoint(response.get(response.size()-1)[0],response.get(response.size()-1)[1]);
-        endMarker.setPosition(endPoint);
-
-        map.getOverlays().add(startMarker);
+        GeoPoint endPosition = new GeoPoint(itinerary.getPoints().get(itinerary.getPointSize()-1)[0],itinerary.getPoints().get(itinerary.getPointSize()-1)[1]);
+        endMarker.setPosition(endPosition);
+        endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(endMarker);
 
         //display points with coordinates in array, under the map

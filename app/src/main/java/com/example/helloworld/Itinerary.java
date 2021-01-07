@@ -14,4 +14,40 @@ public class Itinerary {
         this.time=time;
         this.points=points;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Float getPollution() {
+        return pollution;
+    }
+
+    public void setPollution(Float pollution) {
+        this.pollution = pollution;
+    }
+
+    public Float getTime() {
+        return time;
+    }
+
+    public void setTime(Float time) {
+        this.time = time;
+    }
+
+    public ArrayList<double[]> getPoints() {
+        return points;
+    }
+
+    public void setPoints(ArrayList<double[]> points) {
+        this.points = points;
+    }
+
+    public int getPointSize() {
+        return points.size();
+    }
 }

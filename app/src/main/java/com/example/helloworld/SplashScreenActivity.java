@@ -16,7 +16,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         //redirect to MainActivity after 3 seconds
 
         //handler post delayed
-        int SPLASH_SCREEN_TIMEOUT = 3000;
+        int SPLASH_SCREEN_TIMEOUT = 1000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -8,6 +8,18 @@ import java.util.Set;
 
 public class Preferences {
 
+    public static void addAddress(String key, String value, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getAddress(String key, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
+        return prefs.getString(key, null);
+    }
+
     // SENSIBILITY //
     public static void setSensibility(String key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("sensibility",Context.MODE_PRIVATE);

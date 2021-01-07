@@ -15,9 +15,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
@@ -33,10 +35,6 @@ public class ItineraryActivity extends AppCompatActivity  {
     private GeoPoint startPoint;
     private GeoPoint endPoint;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +48,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
-        map.setBuiltInZoomControls(false);
-
+        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
 
         //Points construction
         Intent intent = getIntent();
@@ -87,41 +84,36 @@ public class ItineraryActivity extends AppCompatActivity  {
                     new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
         }
 
-
         //Overlay of points
-        ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<>(items,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
+        Marker startMarker = new Marker(map);
+        System.out.println(startPoint);
+        //GeoPoint startPosition = new GeoPoint(response.get(0)[0],response.get(0)[1]);
+        startMarker.setPosition(startPoint);
 
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                }, this);
-        mOverlay.setFocusItemsOnTap(true);
+        Marker endMarker = new Marker(map);
+        System.out.println(endPoint);
+        //GeoPoint endPosition = new GeoPoint(response.get(response.size()-1)[0],response.get(response.size()-1)[1]);
+        endMarker.setPosition(endPoint);
 
-        map.getOverlays().add(mOverlay);
-
+        map.getOverlays().add(startMarker);
+        map.getOverlays().add(endMarker);
 
         //display points with coordinates in array, under the map
         TextView viewPoint1 = (TextView) findViewById(R.id.point1);
         TextView viewPoint2 = (TextView) findViewById(R.id.point2);
 
+        // get start and end addresses
+        String start = getString(R.string.itinerary_point1)+" : "+(Preferences.getAddress("startAddress",ItineraryActivity.this));
+        String end = getString(R.string.itinerary_point2)+" : "+(Preferences.getAddress("endAddress",ItineraryActivity.this));
+
         if (response.size() > 0){
-            viewPoint1.setText(String.format("%s : %s,%s", getString(R.string.itinerary_point1), response.get(0)[0], response.get(0)[1]));
-            viewPoint2.setText(String.format("%s : %s,%s", getString(R.string.itinerary_point2), response.get(1)[0], response.get(1)[1]));
+            viewPoint1.setText(start);
+            viewPoint2.setText(end);
         } else {
             viewPoint1.setText("error");
             viewPoint2.setText("error");
 
         }
-
-
-
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -129,8 +121,6 @@ public class ItineraryActivity extends AppCompatActivity  {
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
-        
-
 
     }
 

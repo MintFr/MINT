@@ -393,12 +393,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // the buttons for selecting of you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
         startTime.setActivated(true);
         Button endTime = optionPopupView.findViewById(R.id.end_time);
         startTime.setTag(8);
         endTime.setTag(9);
 
+        // actions when either start or end time is clicked (unclicks the other one)
         View.OnClickListener onStartEndTimeClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -497,7 +499,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .create().show();
     }
 
-    // Callback - when the user clicks on an item in the listView
     // Return user's position in coordinates
     @SuppressLint("MissingPermission")
     private void getLocation(){
@@ -514,7 +515,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /////////////////////////////////////////////////////////
-    // LOCATION //
+    // LOCATION END //
     /////////////////////////////////////////////////////////
 
     // Callback when the user clicks on an item in the listView
@@ -614,8 +615,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pddLat = 47.24811;
                 pddLong = -1.54978;*/
 
-
-
                 //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
                 intent.putExtra("param1", pdaLat);
@@ -623,23 +622,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("param3", pddLat);
                 intent.putExtra("param4", pddLong);
                 startActivity(intent);
-                finish();}}
+                finish();
+
+                Preferences.addAddress("startAddress",start,MainActivity.this);
+                Preferences.addAddress("endAddress",end,MainActivity.this);
+
+            }
+        }
+        // things to do when user clicks options
         else if (i==3){
                     popUp = showOptions();
                     dimPopup.setVisibility(View.VISIBLE);
                     popUp.showAtLocation(v,Gravity.CENTER,0,0);
                 }
-
-
-
-
-
-
-                }
-            //}
-        //}
-        // things to do when user clicks options
-
+    }
 
     // when the focus is on the edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow
     @Override

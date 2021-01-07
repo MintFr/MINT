@@ -19,7 +19,6 @@ public class LoadingPageActivity extends AppCompatActivity {
         double param3 = intent.getDoubleExtra("param3",0.0);
         double param4 = intent.getDoubleExtra("param4",0.0);
 
-
         //build url
         String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerarytest/itinerary?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s",
                 param1, param2, param3, param4);

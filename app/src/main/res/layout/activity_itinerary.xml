@@ -23,13 +23,13 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-<LinearLayout
+    <LinearLayout
     android:id="@+id/itinerary_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -75,60 +75,95 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="@android:color/background_light">
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:gravity="center">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/marker"
-                    android:layout_marginBottom="-8dp"/>
                 <View
+                    android:id="@+id/line_shadow"
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/gradient_shadow"
+                    app:layout_constraintTop_toTopOf="@id/start_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/end_icon"
+                    android:translationX="3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+                <View
+                    android:id="@+id/line_border"
+                    android:layout_width="6dp"
+                    android:layout_height="0dp"
+                    android:background="@color/cardview_light_background"
+                    app:layout_constraintTop_toTopOf="@id/start_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/end_icon"
+                    />
+                <View
+                    android:id="@+id/line"
                     android:layout_width="3dp"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:background="@color/colorAccent"/>
+                    android:background="@color/colorAccent"
+                    app:layout_constraintTop_toTopOf="@id/start_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/end_icon"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="7dp"/>
                 <ImageView
+                    android:id="@+id/start_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="-8dp"
-                    android:src="@drawable/marker"/>
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marker"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+                <ImageView
+                    android:id="@+id/end_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marker"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <LinearLayout
+                android:id="@+id/steps_linear_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/start_point"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="Départ"
-                    android:paddingLeft="10dp"
-                    android:paddingStart="10dp"
                     android:onClick="onClickP1"
+                    android:padding="10dp"
+                    android:text="Départ"
                     android:textSize="18sp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="#EDEDED"/>
+                    android:background="#EDEDED" />
+
                 <TextView
                     android:id="@+id/end_point"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="Arrivée"
-                    android:paddingLeft="10dp"
-                    android:paddingStart="10dp"
                     android:onClick="onClickP2"
+                    android:padding="10dp"
+                    android:text="Arrivée"
                     android:textSize="18sp" />
             </LinearLayout>
 

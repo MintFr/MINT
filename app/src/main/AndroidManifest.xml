@@ -33,6 +33,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data android:name="MAPBOX_MAPID" android:value="mapbox://styles/cleric2020/ckjo468g30i4619s3kl3p4f00" />
+        <meta-data android:name="MAPBOX_ACCESS_TOKEN" android:value="pk.eyJ1IjoiY2xlcmljMjAyMCIsImEiOiJja2pvM3JtODAwNWdqMnpvNWx5b29kdmZtIn0.lQe_6TUFStX48Y24feOl-Q" />
     </application>
 
 </manifest>

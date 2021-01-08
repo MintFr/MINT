@@ -3,10 +3,15 @@ package com.example.helloworld;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
+import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
@@ -25,10 +33,12 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import static java.lang.Double.parseDouble;
 
@@ -47,6 +57,10 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         //Itinerary display
         map = findViewById(R.id.map);
+        //final MapBoxTileSource tileSource = new MapBoxTileSource();
+        //tileSource.retrieveAccessToken(this);
+        //tileSource.retrieveMapBoxMapId(this);
+        //map.setTileSource(tileSource);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint defaultPoint = new GeoPoint(47.21, -1.55);
@@ -95,7 +109,17 @@ public class ItineraryActivity extends AppCompatActivity  {
         points.add(new double[]{47.206165,-1.558373});
         points.add(new double[]{47.20622,-1.557744});
 
-        Itinerary itinerary = new Itinerary("voiture",0.5f,52f,points);
+        ArrayList<int[]> stepTime = new ArrayList<>();
+        stepTime.add(new int[]{84});
+        stepTime.add(new int[]{62});
+        stepTime.add(new int[]{73});
+
+        ArrayList<int[]> stepDistance = new ArrayList<>();
+        stepDistance.add(new int[]{92});
+        stepDistance.add(new int[]{65});
+        stepDistance.add(new int[]{85});
+
+        Itinerary itinerary = new Itinerary("piéton",0.5f,52f, stepTime,stepDistance,points);
 
         //Overlay of points
 
@@ -145,11 +169,12 @@ public class ItineraryActivity extends AppCompatActivity  {
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(endMarker);
 
-        //display points with coordinates in array, under the map
+        //display details under the map
+        //start and end
         TextView viewPoint1 = (TextView) findViewById(R.id.start_point);
         TextView viewPoint2 = (TextView) findViewById(R.id.end_point);
 
-        //display time and pollution
+        //time and pollution
         TextView time = findViewById(R.id.time);
         TextView pollution = findViewById(R.id.pollution);
 
@@ -158,15 +183,36 @@ public class ItineraryActivity extends AppCompatActivity  {
         String end = getString(R.string.itinerary_point2)+" : "+(Preferences.getAddress("endAddress",ItineraryActivity.this));
 
         if (response.size() > 0){
+            // start and end
             viewPoint1.setText(start);
             viewPoint2.setText(end);
+            // time
             int timeInt = (int) itinerary.getTime();
             String timeStr = timeInt +" min";
             time.setText(timeStr);
+            //pollution
             String str = "3";
-            str = str.replaceAll("3", "³");
+            str = str.replaceAll("3", "³"); // set the 3 to superscript
             String polStr = itinerary.getPollution()+"µg/m"+str;
             pollution.setText(polStr);
+            if (itinerary.getPointSize()>2){
+                for (int k=1;k<itinerary.getPointSize();k++){
+                    // k is going to be the index at which we add the step
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null);
+                    TextView stepTimeMin = stepView.findViewById(R.id.step_time_min);
+                    TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
+                    TextView stepDist = stepView.findViewById(R.id.step_distance);
+                    int timeMin = (stepTime.get(k-1)[0] % 3600)/60; // amount of minutes it takes to travel this step
+                    int timeSec = (stepTime.get(k-1)[0] % 60 ); // remaining seconds
+                    stepTimeMin.setText(String.format("%02d",timeMin));
+                    stepTimeSec.setText(String.format("%02d",timeSec));
+                    stepDist.setText(String.format("%d",stepDistance.get(k-1)[0]));
+                    // add the textView to the linearlayout which contains the steps
+                    LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
+                    stepsLayout.addView(stepView,k+1);
+                }
+            }
         } else {
             viewPoint1.setText("error");
             viewPoint2.setText("error");

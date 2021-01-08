@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public class ItineraryActivity extends AppCompatActivity  {
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
+    private InfoWindow infoWindow;
+    private Polyline line;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +123,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         stepDistance.add(new int[]{65});
         stepDistance.add(new int[]{85});
 
-        Itinerary itinerary = new Itinerary("piéton",0.5f,52f, stepTime,stepDistance,points);
+        Itinerary itinerary = new Itinerary("piéton",0.5,52, stepTime,stepDistance,points);
 
         //Overlay of points
 
@@ -147,10 +151,62 @@ public class ItineraryActivity extends AppCompatActivity  {
         paintInside.setStrokeJoin(Paint.Join.ROUND);
         paintInside.setAntiAlias(true);
 
-        Polyline line = new Polyline(map);
+        line = new Polyline(map);
         line.setPoints(geoPoints);
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
+        // find all the corresponding views
+        TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
+        ImageView transportationInfo = infoWindowView.findViewById(R.id.transportation);
+        final ImageView pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
+        // set values for time, transportation and pollution
+        //time
+        String s = Double.toString(itinerary.getTime());
+        timeInfo.setText(s);
+        //transportation
+        switch (itinerary.getType()){
+            case "piéton" :
+                System.out.println(0);
+                transportationInfo.setImageResource(R.drawable.ic_walk_activated);
+                break;
+            case "voiture" :
+                System.out.println(1);
+                transportationInfo.setImageResource(R.drawable.ic_car_activated);
+                break;
+            case "transport en commun" :
+                System.out.println(2);
+                transportationInfo.setImageResource(R.drawable.ic_tram_activated);
+                break;
+            case "vélo" :
+                System.out.println(3);
+                transportationInfo.setImageResource(R.drawable.ic_bike_activated);
+                break;
+        }
+        //pollution
+        if((itinerary.getPollution()>=0)&&(itinerary.getPollution()<0.33)){
+            pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
+        }
+        else if((itinerary.getPollution()>=0.33)&&(itinerary.getPollution()<0.66)){
+            pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
+        }
+        else if((itinerary.getPollution()>=0.66)&&(itinerary.getPollution()<=1)){
+            pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
+        }
+        infoWindow = new InfoWindow(infoWindowView,map) {
+            @Override
+            public void onOpen(Object item) {
+            }
+
+            @Override
+            public void onClose() {
+            }
+        };
+        // add infowindow to the polyline
+        
+        line.setInfoWindow(infoWindow);
+        line.showInfoWindow(); // we want the infowindow to already be showing without having to click
         map.getOverlayManager().add(line);
 
         // start and end markers
@@ -197,10 +253,9 @@ public class ItineraryActivity extends AppCompatActivity  {
             pollution.setText(polStr);
             if (itinerary.getPointSize()>2){
                 for (int k=1;k<itinerary.getPointSize();k++){
-                    // k is going to be the index at which we add the step
-                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null);
-                    TextView stepTimeMin = stepView.findViewById(R.id.step_time_min);
+                    // k is going to be the index at which we add the stepView
+                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
+                    TextView stepTimeMin = stepView.findViewById(R.id.step_time_min); // get the different textViews from the base view
                     TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
                     int timeMin = (stepTime.get(k-1)[0] % 3600)/60; // amount of minutes it takes to travel this step
@@ -235,5 +290,14 @@ public class ItineraryActivity extends AppCompatActivity  {
 
     public void onClickP2(View view) {
         mapController.setCenter(endPoint);
+    }
+
+    public void onClickInfoWindow(View view){
+        if(infoWindow.isOpen()){
+            line.closeInfoWindow();
+        }
+        else if (!infoWindow.isOpen()){
+            line.showInfoWindow();
+        }
     }
 }

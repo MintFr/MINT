@@ -67,6 +67,11 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#EDEDED"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -165,6 +170,7 @@
             </LinearLayout>
 
         </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 

@@ -23,9 +23,7 @@ public class LoadingPageActivity extends AppCompatActivity {
         int[] options = Preferences.getOptionTransportation(this);
 
         //build url
-        String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
-                        "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transport=%s,%s,%s,%s",
-                param1, param2, param3, param4,options[0],options[1],options[2],options[3]);
+        String url = "http://ser-info-03.ec-nantes.fr:8080/itinerary/itinerary4?pdaLat=47.21213&pdaLong=-1.55479&pddLat=47.24811&pddLong=-1.54978&transportation=1,1,1";
         //start of the async task
         AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
         task.execute(url);

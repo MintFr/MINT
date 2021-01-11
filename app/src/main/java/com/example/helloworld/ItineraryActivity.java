@@ -83,64 +83,52 @@ public class ItineraryActivity extends AppCompatActivity  {
         itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
 
 
+//        //Points on map
+//        ArrayList<OverlayItem> items = new ArrayList<>();
+//        for (int j = 0; j < response.size();j++){
+//            items.add(new OverlayItem("point "+j, "",
+//                    new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
+//        }
+//
+//        ArrayList<double[]> points = new ArrayList<>();
+//        points.add(new double[]{47.205461,-1.559122});
+//        points.add(new double[]{47.205559,-1.558233});
+//        points.add(new double[]{47.206165,-1.558373});
+//        points.add(new double[]{47.20622,-1.557744});
+//
+//        ArrayList<double[]> points1 = new ArrayList<>();
+//        points1.add(new double[]{47.205461,-1.559122});
+//        points1.add(new double[]{47.206058,-1.55925});
+//        points1.add(new double[]{47.20622,-1.557744});
+//
+//        ArrayList<int[]> stepTime = new ArrayList<>();
+//        stepTime.add(new int[]{84});
+//        stepTime.add(new int[]{62});
+//        stepTime.add(new int[]{73});
+//
+//        ArrayList<int[]> stepTime1 = new ArrayList<>();
+//        stepTime1.add(new int[]{100});
+//        stepTime1.add(new int[]{62});
+//
+//        ArrayList<int[]> stepDistance = new ArrayList<>();
+//        stepDistance.add(new int[]{92});
+//        stepDistance.add(new int[]{65});
+//        stepDistance.add(new int[]{85});
+//
+//        ArrayList<int[]> stepDistance1 = new ArrayList<>();
+//        stepDistance1.add(new int[]{150});
+//        stepDistance1.add(new int[]{65});
+//
+//        Itinerary iti = new Itinerary("piéton",0.5,5, stepTime,stepDistance,points);
+//        Itinerary iti1 = new Itinerary("voiture",0.7,2, stepTime1,stepDistance1,points1);
+//
+//        ArrayList<Itinerary> itineraries = new ArrayList<>();
+//        itineraries.add(iti);
+//        itineraries.add(iti1);
 
-        if (response.size() > 0) {
-            startPoint = new GeoPoint(response.get(0)[0], response.get(0)[1]);
-            endPoint = new GeoPoint(response.get(1)[0], response.get(1)[1]);
-        }else{
-            startPoint = new GeoPoint(47.21, -1.55);
-            endPoint = new GeoPoint(47.21, -1.55);
-            Toast.makeText(this, String.format("taille de response = %d", response.size()), Toast.LENGTH_SHORT).show();
+        for (int j=0;j<itineraries.size()-1;j++){
+            displayItinerary(itineraries.get(j), itineraries);
         }
-
-
-        //Points on map
-        ArrayList<OverlayItem> items = new ArrayList<>();
-        for (int j = 0; j < response.size();j++){
-            items.add(new OverlayItem("point "+j, "",
-                    new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
-        }
-
-        ArrayList<double[]> points = new ArrayList<>();
-        points.add(new double[]{47.205461,-1.559122});
-        points.add(new double[]{47.205559,-1.558233});
-        points.add(new double[]{47.206165,-1.558373});
-        points.add(new double[]{47.20622,-1.557744});
-
-        ArrayList<double[]> points1 = new ArrayList<>();
-        points1.add(new double[]{47.205461,-1.559122});
-        points1.add(new double[]{47.206058,-1.55925});
-        points1.add(new double[]{47.20622,-1.557744});
-
-        ArrayList<int[]> stepTime = new ArrayList<>();
-        stepTime.add(new int[]{84});
-        stepTime.add(new int[]{62});
-        stepTime.add(new int[]{73});
-
-        ArrayList<int[]> stepTime1 = new ArrayList<>();
-        stepTime1.add(new int[]{100});
-        stepTime1.add(new int[]{62});
-
-        ArrayList<int[]> stepDistance = new ArrayList<>();
-        stepDistance.add(new int[]{92});
-        stepDistance.add(new int[]{65});
-        stepDistance.add(new int[]{85});
-
-        ArrayList<int[]> stepDistance1 = new ArrayList<>();
-        stepDistance1.add(new int[]{150});
-        stepDistance1.add(new int[]{65});
-
-        Itinerary iti = new Itinerary("piéton",0.5,5, stepTime,stepDistance,points);
-        Itinerary iti1 = new Itinerary("voiture",0.7,2, stepTime1,stepDistance1,points1);
-
-        ArrayList<Itinerary> itineraries = new ArrayList<>();
-        itineraries.add(iti);
-        itineraries.add(iti1);
-
-        for (int j=0; j<itineraries.size();j++){
-            displayItinerary(itineraries.get(j),itineraries);
-        }
-
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));

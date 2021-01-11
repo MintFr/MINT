@@ -147,28 +147,17 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         }
 
 
-
-     ///////////////////////////////////////////////////////////////////////////////////////////////
-     //Change this part to adapt to new format of response
-
         //Reading JSON
-        final ArrayList<double[]> coord = new ArrayList<>();
+        final ArrayList<Itinerary> itineraries = new ArrayList<>();
         try{
-            for (int i = 0; i<c.length()-1; i++)        //-1 to avoid the "message" element
+            for (int i = 0; i<c.length(); i++)
             {
-                JSONObject point = c.getJSONObject(i);
-                double longitude = point.getDouble("longitude");
-                double latitude = point.getDouble("latitude");
-                double[] p = {latitude,longitude};
-                coord.add(p);
-                Toast.makeText(myActivity, Arrays.toString(p), Toast.LENGTH_LONG).show();
-
+                Itinerary itinerary = new Itinerary(c.getJSONObject(i));
+                itineraries.add(itinerary);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-     ///////////////////////////////////////////////////////////////////////////////////////////////
 
         TextView text = myActivity.findViewById(R.id.text);
         text.setText(R.string.itinerary_end_message); // Updates the textview
@@ -184,11 +173,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
             public void run() {
                 //Send to the next Activity
                 Intent intent = new Intent(myActivity.getApplicationContext(), ItineraryActivity.class);
-                int i = 0;
-                for (double[] p:coord) {
-                    intent.putExtra(String.format("point%d", i),p);
-                    i++;
-                }
+                intent.putExtra("itineraries",itineraries);
                 myActivity.startActivity(intent);
                 myActivity.finish();
             }

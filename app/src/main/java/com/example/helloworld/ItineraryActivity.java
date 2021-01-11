@@ -54,10 +54,15 @@ public class ItineraryActivity extends AppCompatActivity  {
     private InfoWindow infoWindow;
     private Polyline line;
 
+    LayoutInflater inflater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary);
+
+        // inflater used to display different views
+        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         //Itinerary display
         map = findViewById(R.id.map);
@@ -108,7 +113,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         }
 
         ArrayList<double[]> points = new ArrayList<double[]>();
-        points.add(new double[]{47.205461, -1.559122});
+        points.add(new double[]{47.205461,-1.559122});
         points.add(new double[]{47.205559,-1.558233});
         points.add(new double[]{47.206165,-1.558373});
         points.add(new double[]{47.20622,-1.557744});
@@ -125,8 +130,21 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         Itinerary itinerary = new Itinerary("piéton",0.5,52, stepTime,stepDistance,points);
 
-        //Overlay of points
+        displayItinerary(itinerary);
 
+        displayDetails(itinerary);
+
+        //Bottom Menu
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+    }
+
+    //DISPLAY ITINERARY
+    public void displayItinerary(Itinerary itinerary){
         // polyline for itinerary
         List<GeoPoint> geoPoints = new ArrayList<>();
         for (int j = 0; j<itinerary.getPointSize();j++){
@@ -155,7 +173,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         line.setPoints(geoPoints);
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
         final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
         // find all the corresponding views
         TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
@@ -201,7 +219,7 @@ public class ItineraryActivity extends AppCompatActivity  {
             }
         };
         // add infowindow to the polyline
-        
+
         line.setInfoWindow(infoWindow);
         line.showInfoWindow(); // we want the infowindow to already be showing without having to click
         map.getOverlayManager().add(line);
@@ -221,8 +239,10 @@ public class ItineraryActivity extends AppCompatActivity  {
         endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(endMarker);
+    }
 
-        //display details under the map
+    //DISPLAY DETAILS UNDER MAP
+    public void displayDetails(Itinerary itinerary){
         //start and end
         TextView viewPoint1 = (TextView) findViewById(R.id.start_point);
         TextView viewPoint2 = (TextView) findViewById(R.id.end_point);
@@ -235,7 +255,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         String start = getString(R.string.itinerary_point1)+" : "+(Preferences.getAddress("startAddress",ItineraryActivity.this));
         String end = getString(R.string.itinerary_point2)+" : "+(Preferences.getAddress("endAddress",ItineraryActivity.this));
 
-        if (response.size() > 0){
+        if (itinerary.getPointSize() > 0){
             // start and end
             viewPoint1.setText(start);
             viewPoint2.setText(end);
@@ -255,11 +275,11 @@ public class ItineraryActivity extends AppCompatActivity  {
                     TextView stepTimeMin = stepView.findViewById(R.id.step_time_min); // get the different textViews from the base view
                     TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
-                    int timeMin = (stepTime.get(k-1)[0] % 3600)/60; // amount of minutes it takes to travel this step
-                    int timeSec = (stepTime.get(k-1)[0] % 60 ); // remaining seconds
+                    int timeMin = (itinerary.getStepTime().get(k-1)[0] % 3600)/60; // amount of minutes it takes to travel this step
+                    int timeSec = (itinerary.getStepTime().get(k-1)[0] % 60 ); // remaining seconds
                     stepTimeMin.setText(String.format("%02d",timeMin));
                     stepTimeSec.setText(String.format("%02d",timeSec));
-                    stepDist.setText(String.format("%d",stepDistance.get(k-1)[0]));
+                    stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)[0]));
                     // add the textView to the linearlayout which contains the steps
                     LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
                     stepsLayout.addView(stepView,k+1);
@@ -268,17 +288,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         } else {
             viewPoint1.setText("error");
             viewPoint2.setText("error");
-
         }
-
-        //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);
-
     }
 
     public void onClickP1(View view) {

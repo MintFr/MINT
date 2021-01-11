@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
 
-
-
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
             @Override
@@ -318,6 +316,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bikeButton.setTag(6);
         walkButton.setTag(7);
 
+        // display already selected means of transportation
+        for (int j=0; j<4;j++){
+            ImageButton button = optionPopupView.findViewWithTag(j+4);
+            int[] options = Preferences.getOptionTransportation(MainActivity.this);
+            if (options[j]!=0){
+                button.setActivated(true);
+            }
+        }
+
         // create the new onClick callback
         View.OnClickListener onTransportationClick = new View.OnClickListener() {
             @Override
@@ -405,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // the buttons for selecting of you want start time or end time. start time is automatically selected
+        // the buttons for selecting if you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
         startTime.setActivated(true);
         Button endTime = optionPopupView.findViewById(R.id.end_time);

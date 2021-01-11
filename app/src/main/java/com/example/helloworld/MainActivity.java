@@ -523,6 +523,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onLocationChanged(Location location) {
         String position = location.getLatitude() + "," + location.getLongitude();
         buttonClicked.setText(position);
+        //buttonClicked.getId();
         buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
     }
 
@@ -629,7 +630,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
                 pddLong = -1.54978;
-                int[] options = {0,2,0,4};      // rien = {0,0,0,0} et tout = {1,2,3,4}
+                int[] options = {0,1,0,1};      // rien = {0,0,0,0} et tout = {1,1,1,1}
+                //voiture, transport en commun, vélo, piétons
 
 
                 int[] transport = new int[4];

@@ -11,6 +11,8 @@ public class Address {
     private Coordinates coordinates;
 
     public Address() {
+        this.locationName = null;
+        this.coordinates = new Coordinates();
     }
 
     public Address(String locationName, Coordinates coordinates) {

@@ -25,7 +25,7 @@ public class LoadingPageActivity extends AppCompatActivity {
         //build url
         String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
                         "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transport=%s,%s,%s,%s",
-                param1, param2, param3, param4,options[0],options[1],options[2],options[3]);
+                param1, param2, param3, param4,1,options[1],options[2],options[3]);
         //start of the async task
         AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
         task.execute(url);

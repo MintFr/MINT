@@ -74,5 +74,6 @@
     <string name="connexion_failed">erreur de connexion</string>
     <string name="itinerary_point1">"Point de départ </string>
     <string name="itinerary_point2">Point d\'arrivée </string>
+    <string name="position_text">Ma position</string>
 
 </resources>

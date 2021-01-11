@@ -122,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
 
+        this.endAddress = new com.example.helloworld.Address();
+        this.startAddress = new com.example.helloworld.Address();
+
+
 
 
         // check if the editText is empty and if so disable add button
@@ -525,8 +529,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Print user's position
     // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
     public void onLocationChanged(Location location) {
-        String position = location.getLatitude() + "," + location.getLongitude();
-        buttonClicked.setText(position);
+//        String position = location.getLatitude() + "," + location.getLongitude();
+//        buttonClicked.setText(position);
+        buttonClicked.setText(R.string.position_text);
+        Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());
+        switch (buttonClicked.getId()) {
+            case R.id.PointDeDepart :
+                startAddress.setLocationName(String.valueOf(R.string.position_text));
+                startAddress.setCoordinates(coordinates);
+                break;
+            case R.id.PointDarrivee:
+                endAddress.setLocationName(String.valueOf(R.string.position_text));
+                endAddress.setCoordinates(coordinates);
+                break;
+            default:
+                break;
+        }
         buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
     }
 
@@ -601,31 +619,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (nbLastAdd == 4) {
                     Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                 }
+
+
+
+                ////////////////////////////////////////////////////////////////////////////////////
                 //Conversion addresses to spatial coordinates
                 //For the start point
                 Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
                 try {
-                    List addressListStart = geocoderStart.getFromLocationName(start, 1);
-                    if (addressListStart != null && addressListStart.size() > 0){
-                        Address addressStart = (Address) addressListStart.get(0);
-                        pddLat = addressStart.getLatitude();
-                        pddLong = addressStart.getLongitude();
+                    if(!start.equals(R.string.position_text)){
+                        List addressListStart = geocoderStart.getFromLocationName(start, 1);
+                        if (addressListStart != null && addressListStart.size() > 0){
+                            Address addressStart = (Address) addressListStart.get(0);
+                            Coordinates coordinates = new Coordinates(addressStart.getLatitude(),addressStart.getLongitude());
+                            startAddress.setCoordinates(coordinates);
+                        }
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 //For the end point
                 Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
                 try {
-                    List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
-                    if (addressListEnd != null && addressListEnd.size() > 0) {
-                        Address addressEnd = (Address) addressListEnd.get(0);
-                        pdaLat = addressEnd.getLatitude();
-                        pdaLong = addressEnd.getLongitude();
+                    if(!end.equals(R.string.position_text)) {
+                        List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
+                        if (addressListEnd != null && addressListEnd.size() > 0) {
+                            Address addressEnd = (Address) addressListEnd.get(0);
+                            endAddress.setLocationName(end);
+                            Coordinates coordinates = new Coordinates(addressEnd.getLatitude(),addressEnd.getLongitude());
+                            startAddress.setCoordinates(coordinates);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
 
                 //Tests
                 /*
@@ -647,7 +677,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 */
 
-
+                ////////////////////////////////////////////////////////////////////////////////////
                 //start itinerary calculation activity if the device has an internet connection
                 if (CheckInternet()){
                     Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
@@ -659,14 +689,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     finish();
                 }
                 else{
-                    Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();}
-            }}
+                    Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
+                }
                 //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                intent.putExtra("param1", pdaLat);
-                intent.putExtra("param2", pdaLong);
-                intent.putExtra("param3", pddLat);
-                intent.putExtra("param4", pddLong);
+                intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
+                intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
+                intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
+                intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
                 startActivity(intent);
                 finish();
 

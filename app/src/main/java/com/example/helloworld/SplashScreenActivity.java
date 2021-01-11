@@ -13,7 +13,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        //redirect to MainActivity after 3 seconds
+        //redirect to MainActivity after 1 seconds
 
         //handler post delayed
         int SPLASH_SCREEN_TIMEOUT = 1000;

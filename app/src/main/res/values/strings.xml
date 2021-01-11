@@ -3,10 +3,10 @@
     <!-- Bottom Menu -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="itineraire">Itinéraire</string>
-    <string name="cartes">Cartes</string>
-    <string name="profil">Profil</string>
-    <string name="title_activity_accueil">MainActivity</string>
+    <string name="itinerary">Itinéraire</string>
+    <string name="maps">Cartes</string>
+    <string name="profile">Profil</string>
+    <string name="title_activity_homepage">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -22,16 +22,16 @@
         <item>Pollution en direct</item>
         <item>Pollens en direct</item>
     </string-array>
-    <string name="enter_adress">Entrer une nouvelle adresse</string>
-    <string name="favorite_adresses_button"><u>Mes adresses favorites</u></string>
+    <string name="enter_address">Entrer une nouvelle adresse</string>
+    <string name="favorite_addresses_button"><u>Mes adresses favorites</u></string>
     <string name="favorite_transportation_button"><u>Mes modes de transport favoris</u></string>
     <string name="sensibility_button"><u>Sensibilité</u></string>
     <string name="add">ajouter</string>
-    <string name="adress1">première adresse favorite</string>
-    <string name="adress2">deuxième adresse favorite</string>
-    <string name="adress3">troisième adresse favorite</string>
-    <string name="adress4">quatrième adresse favorite</string>
-    <string name="adress5">cinquième adresse favorite</string>
+    <string name="address1">première adresse favorite</string>
+    <string name="address2">deuxième adresse favorite</string>
+    <string name="address3">troisième adresse favorite</string>
+    <string name="address4">quatrième adresse favorite</string>
+    <string name="address5">cinquième adresse favorite</string>
     <string name="very_high_sensibility">Très élevée</string>
     <string name="high_sensibility">Élevée</string>
     <string name="moderate_sensibility">Modérée</string>
@@ -59,7 +59,7 @@
     <string name="option_departure_prompt">Départ</string>
     <string name="calendar_date_hint"><u>01/01/2020</u></string>
     <string name="search_button">Rechercher</string>
-    <string name="button_recherche">Rechercher</string>
+    <string name="button_search">Rechercher</string>
     <string name="text_options">Options</string>
     <string name="description_logo">Logo Mint : Deux feuilles de menthe vertes parcourues par des flèches</string>
     <string name="default_time">00:00</string>
@@ -69,10 +69,12 @@
     <string name="itinerary_end_message">Calcul terminé</string>
     <string name="itinerary_step">Etapes itinéraire</string>
     <string name="error404">Erreur 404 : page non trouvée</string>
-    <string name="connexion_success">connexion success</string>
+    <string name="connection_success">connexion success</string>
     <string name="error_url_format">erreur : URL incorrecte</string>
-    <string name="connexion_failed">erreur de connexion</string>
+    <string name="connection_failed">erreur de connexion</string>
     <string name="itinerary_point1">"Point de départ </string>
     <string name="itinerary_point2">Point d\'arrivée </string>
+    <string name="button_options_start">de départ</string>
+    <string name="button_options_end">d\'arrivée</string>
 
 </resources>

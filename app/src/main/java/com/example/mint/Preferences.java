@@ -1,11 +1,12 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
+/**
+ * This class is used to record the user's preferences in terms of sensibility, addresses and transportation
+ */
 public class Preferences {
 
     // SENSIBILITY //

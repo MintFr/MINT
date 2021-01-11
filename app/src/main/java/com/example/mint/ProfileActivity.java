@@ -1,13 +1,9 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,31 +12,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
+/**
+ * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
+ */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button sensibilityButton;
-    private Button favoriteAdressesButton;
+    private Button favoriteAddressesButton;
     private Button favoriteTransportationButton;
 
     private View dim_popup;
@@ -77,19 +69,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //link layout elements to activity
         sensibilityButton = findViewById(R.id.sensibility);
-        favoriteAdressesButton = findViewById(R.id.favorite_adresses);
+        favoriteAddressesButton = findViewById(R.id.favorite_addresses);
         favoriteTransportationButton = findViewById(R.id.favorite_transportation);
 
         dim_popup = findViewById(R.id.dim_popup);
 
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
-        favoriteAdressesButton.setTag(1);
+        favoriteAddressesButton.setTag(1);
         favoriteTransportationButton.setTag(2);
 
         //launches "onClick" when one button is clicked
         sensibilityButton.setOnClickListener(this);
-        favoriteAdressesButton.setOnClickListener(this);
+        favoriteAddressesButton.setOnClickListener(this);
         favoriteTransportationButton.setOnClickListener(this);
 
         // used to call the layout which is going to be in the popup window
@@ -123,12 +115,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //link elements from popup window
         addButton = addressPopupView.findViewById(R.id.button_add);
-        enterAddress = addressPopupView.findViewById(R.id.enter_adress);
-        TextView address1 = addressPopupView.findViewById(R.id.adress1);
-        TextView address2 = addressPopupView.findViewById(R.id.adress2);
-        TextView address3 = addressPopupView.findViewById(R.id.adress3);
-        TextView address4 = addressPopupView.findViewById(R.id.adress4);
-        TextView address5 = addressPopupView.findViewById(R.id.adress5);
+        enterAddress = addressPopupView.findViewById(R.id.enter_address);
+        TextView address1 = addressPopupView.findViewById(R.id.address1);
+        TextView address2 = addressPopupView.findViewById(R.id.address2);
+        TextView address3 = addressPopupView.findViewById(R.id.address3);
+        TextView address4 = addressPopupView.findViewById(R.id.address4);
+        TextView address5 = addressPopupView.findViewById(R.id.address5);
         ImageButton remove1 = addressPopupView.findViewById(R.id.remove_btn_1);
         ImageButton remove2 = addressPopupView.findViewById(R.id.remove_btn_2);
         ImageButton remove3 = addressPopupView.findViewById(R.id.remove_btn_3);
@@ -419,21 +411,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         menuItem.setChecked(true);
 
         //Slide animation
-        bottomNav.setSelectedItemId(R.id.profil);
+        bottomNav.setSelectedItemId(R.id.profile);
 
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.itineraire:
+                    case R.id.itinerary:
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                         return true;
-                    case R.id.cartes:
+                    case R.id.maps:
                         startActivity(new Intent(getApplicationContext(),MapActivity.class));
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         return true;
-                    case R.id.profil:
+                    case R.id.profile:
                         return true;
                     default:
                 }

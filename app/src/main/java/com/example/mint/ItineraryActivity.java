@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,10 +21,10 @@ import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import static java.lang.Double.parseDouble;
-
+/**
+ * Activity for the itinerary page, on which the user can see the various itineraries calculated for them
+ */
 public class ItineraryActivity extends AppCompatActivity  {
 
     private MapView map = null;

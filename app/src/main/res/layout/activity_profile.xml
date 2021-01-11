@@ -17,7 +17,7 @@
             android:layout_height="84dp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_logo"
-            android:src="@drawable/mint_icone_seule__1_" />
+            android:src="@drawable/mint_icon" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                         android:textSize="14sp"/>
 
                     <Button
-                        android:id="@+id/favorite_adresses"
+                        android:id="@+id/favorite_addresses"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/sensibility"
@@ -124,7 +124,7 @@
                         android:background="#00FFFFFF"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
-                        android:text="@string/favorite_adresses_button"
+                        android:text="@string/favorite_addresses_button"
                         android:textAllCaps="false"
                         android:textColor="#999999"
                         android:textSize="16sp" />
@@ -133,7 +133,7 @@
                         android:id="@+id/favorite_transportation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/favorite_adresses"
+                        android:layout_below="@id/favorite_addresses"
                         android:layout_alignStart="@id/user_image"
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"

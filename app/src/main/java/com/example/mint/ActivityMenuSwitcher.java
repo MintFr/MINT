@@ -1,16 +1,9 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.MenuItem;
 
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,11 +36,11 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
         int itemId = item.getItemId();
         Class<? extends Activity> target = null;
 
-        if (itemId == R.id.itineraire) {
+        if (itemId == R.id.itinerary) {
             target = MainActivity.class;
-        } else if (itemId == R.id.cartes) {
+        } else if (itemId == R.id.maps) {
             target = MapActivity.class;
-        } else if (itemId == R.id.profil) {
+        } else if (itemId == R.id.profile) {
             target = ProfileActivity.class;
         }
 
@@ -60,11 +53,11 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
         }
 
         switch (item.getItemId()){
-            case R.id.itineraire:
+            case R.id.itinerary:
                 return true;
-            case R.id.cartes:
+            case R.id.maps:
                 return true;
-            case R.id.profil:
+            case R.id.profile:
                 return true;
         }
 

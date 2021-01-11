@@ -92,11 +92,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String start;
     String end;
 
-    private Double pdaLat;
-    private Double pdaLong;
-    private Double pddLat;
-    private Double pddLong;
-
     EditText buttonClicked;
     PopupWindow popUp;
     PopupWindow popUpCalendar;
@@ -569,10 +564,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Method called when the user clicks on "search" or "option"
     @Override
     public void onClick(View v){
-        pdaLat = null;
-        pdaLong = null;
-        pddLat = null;
-        pddLong = null;
         int i = (int) v.getTag();
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
@@ -627,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //For the start point
                 Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
                 try {
-                    if(!start.equals(R.string.position_text)){
+                    if(!start.equals(R.string.position_text)){  //check if location is not chosen
                         List addressListStart = geocoderStart.getFromLocationName(start, 1);
                         if (addressListStart != null && addressListStart.size() > 0){
                             Address addressStart = (Address) addressListStart.get(0);
@@ -642,7 +633,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //For the end point
                 Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
                 try {
-                    if(!end.equals(R.string.position_text)) {
+                    if(!end.equals(R.string.position_text)) {       //check if location is not chosen
                         List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
                         if (addressListEnd != null && addressListEnd.size() > 0) {
                             Address addressEnd = (Address) addressListEnd.get(0);
@@ -681,24 +672,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //start itinerary calculation activity if the device has an internet connection
                 if (CheckInternet()){
                     Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                    intent.putExtra("param1", pdaLat);
-                    intent.putExtra("param2", pdaLong);
-                    intent.putExtra("param3", pddLat);
-                    intent.putExtra("param4", pddLong);
+                    intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
+                    intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
+                    intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
+                    intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
                     startActivity(intent);
                     finish();
                 }
                 else{
                     Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
                 }
-                //start itinerary calculation activity
-                Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
-                intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
-                intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
-                intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
-                startActivity(intent);
-                finish();
 
                 Preferences.addAddress("startAddress",start,MainActivity.this);
                 Preferences.addAddress("endAddress",end,MainActivity.this);

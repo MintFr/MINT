@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Preferences.clearLastAddresses(this);
 
+        // Clear last preferences
+        Preferences.clearOptionTransportation(MainActivity.this);
+
         startPoint = findViewById(R.id.PointDeDepart);
         endPoint = findViewById(R.id.PointDarrivee);
         search = findViewById(R.id.recherche);
@@ -322,6 +325,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int i = (int) v.getTag();
                 ImageButton buttonClicked = optionPopupView.findViewWithTag(i);
                 buttonClicked.setActivated(!buttonClicked.isActivated());
+                if (buttonClicked.isActivated()){
+                    String key = (String) buttonClicked.getContentDescription();
+                    int value = Integer.parseInt(key);
+                    Preferences.addOptionTransportation(key,value,MainActivity.this);
+                }
+                else if (!buttonClicked.isActivated()){
+                    String key = (String) buttonClicked.getContentDescription();
+                    Preferences.addOptionTransportation(key,0,MainActivity.this);
+                }
             }
         };
 
@@ -613,7 +625,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 /*pdaLat = 47.23592051820992;
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
-                pddLong = -1.54978;*/
+                pddLong = -1.54978;
                 int[] options = {0,2,0,4};      // rien = {0,0,0,0} et tout = {1,2,3,4}
 
 
@@ -625,6 +637,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         transport[k] = k+1;
                     }
                 }
+                */
 
 
                 //start itinerary calculation activity
@@ -633,7 +646,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("param2", pdaLong);
                 intent.putExtra("param3", pddLat);
                 intent.putExtra("param4", pddLong);
-                intent.putExtra("param5", transport);
                 startActivity(intent);
                 finish();
 

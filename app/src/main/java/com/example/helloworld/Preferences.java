@@ -7,14 +7,43 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Preferences {
-
+    //  OPTION //
+    public static void setOptionTransportation(int[] value, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        for (int i=1;i<=4;i++){
+            editor.putInt("option_"+i, value[i]);
+        }
+        editor.apply();
+    }
+    public static void addOptionTransportation(String key, int value, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("option_"+key,value);
+        editor.apply();
+    }
+    public static int[] getOptionTransportation(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
+        int[] options = new int[4];
+        for (int i=0;i<4;i++){
+            options[i]=prefs.getInt("option_"+(i+1),0);
+        }
+        return options;
+    }
+    public static void clearOptionTransportation(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
+    // for the itinerary
     public static void addAddress(String key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key, value);
         editor.apply();
     }
-
+    // for the itinerary
     public static String getAddress(String key, Context context){
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
         return prefs.getString(key, null);

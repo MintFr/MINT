@@ -163,24 +163,21 @@ public class ItineraryActivity extends AppCompatActivity  {
         final ImageView pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
         // set values for time, transportation and pollution
         //time
-        String s = Double.toString(itinerary.getTime());
+        int t = Double.valueOf(itinerary.getTime()).intValue();
+        String s = Integer.toString(t);
         timeInfo.setText(s);
         //transportation
         switch (itinerary.getType()){
             case "piéton" :
-                System.out.println(0);
                 transportationInfo.setImageResource(R.drawable.ic_walk_activated);
                 break;
             case "voiture" :
-                System.out.println(1);
                 transportationInfo.setImageResource(R.drawable.ic_car_activated);
                 break;
             case "transport en commun" :
-                System.out.println(2);
                 transportationInfo.setImageResource(R.drawable.ic_tram_activated);
                 break;
             case "vélo" :
-                System.out.println(3);
                 transportationInfo.setImageResource(R.drawable.ic_bike_activated);
                 break;
         }

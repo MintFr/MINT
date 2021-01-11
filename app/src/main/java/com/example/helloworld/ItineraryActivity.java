@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,8 +52,6 @@ public class ItineraryActivity extends AppCompatActivity  {
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
-    private InfoWindow infoWindow;
-    private Polyline line;
 
     LayoutInflater inflater;
 
@@ -112,27 +111,45 @@ public class ItineraryActivity extends AppCompatActivity  {
                     new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
         }
 
-        ArrayList<double[]> points = new ArrayList<double[]>();
+        ArrayList<double[]> points = new ArrayList<>();
         points.add(new double[]{47.205461,-1.559122});
         points.add(new double[]{47.205559,-1.558233});
         points.add(new double[]{47.206165,-1.558373});
         points.add(new double[]{47.20622,-1.557744});
+
+        ArrayList<double[]> points1 = new ArrayList<>();
+        points1.add(new double[]{47.205461,-1.559122});
+        points1.add(new double[]{47.206058,-1.55925});
+        points1.add(new double[]{47.20622,-1.557744});
 
         ArrayList<int[]> stepTime = new ArrayList<>();
         stepTime.add(new int[]{84});
         stepTime.add(new int[]{62});
         stepTime.add(new int[]{73});
 
+        ArrayList<int[]> stepTime1 = new ArrayList<>();
+        stepTime1.add(new int[]{100});
+        stepTime1.add(new int[]{62});
+
         ArrayList<int[]> stepDistance = new ArrayList<>();
         stepDistance.add(new int[]{92});
         stepDistance.add(new int[]{65});
         stepDistance.add(new int[]{85});
 
-        Itinerary itinerary = new Itinerary("piéton",0.5,52, stepTime,stepDistance,points);
+        ArrayList<int[]> stepDistance1 = new ArrayList<>();
+        stepDistance1.add(new int[]{150});
+        stepDistance1.add(new int[]{65});
 
-        displayItinerary(itinerary);
+        Itinerary iti = new Itinerary("piéton",0.5,5, stepTime,stepDistance,points);
+        Itinerary iti1 = new Itinerary("voiture",0.7,2, stepTime1,stepDistance1,points1);
 
-        displayDetails(itinerary);
+        ArrayList<Itinerary> itineraries = new ArrayList<>();
+        itineraries.add(iti);
+        itineraries.add(iti1);
+
+        for (int j=0; j<itineraries.size();j++){
+            displayItinerary(itineraries.get(j),itineraries);
+        }
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -144,7 +161,7 @@ public class ItineraryActivity extends AppCompatActivity  {
     }
 
     //DISPLAY ITINERARY
-    public void displayItinerary(Itinerary itinerary){
+    public void displayItinerary(final Itinerary itinerary,ArrayList<Itinerary> list){
         // polyline for itinerary
         List<GeoPoint> geoPoints = new ArrayList<>();
         for (int j = 0; j<itinerary.getPointSize();j++){
@@ -164,16 +181,17 @@ public class ItineraryActivity extends AppCompatActivity  {
         final Paint paintInside = new Paint();
         paintInside.setStrokeWidth(10);
         paintInside.setStyle(Paint.Style.FILL);
-        paintInside.setColor(getResources().getColor(R.color.colorAccent));
+        paintInside.setColor(getResources().getColor(R.color.colorLightGreen));
         paintInside.setStrokeCap(Paint.Cap.ROUND);
         paintInside.setStrokeJoin(Paint.Join.ROUND);
         paintInside.setAntiAlias(true);
 
-        line = new Polyline(map);
+        Polyline line = new Polyline(map);
         line.setPoints(geoPoints);
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
 
+        // SETUP INFO WINDOW
         final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
         // find all the corresponding views
         TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
@@ -209,7 +227,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         else if((itinerary.getPollution()>=0.66)&&(itinerary.getPollution()<=1)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
-        infoWindow = new InfoWindow(infoWindowView,map) {
+        final InfoWindow infoWindow = new InfoWindow(infoWindowView,map) {
             @Override
             public void onOpen(Object item) {
             }
@@ -218,15 +236,34 @@ public class ItineraryActivity extends AppCompatActivity  {
             public void onClose() {
             }
         };
-        // add infowindow to the polyline
 
+        // add infowindow to the polyline
         line.setInfoWindow(infoWindow);
         line.showInfoWindow(); // we want the infowindow to already be showing without having to click
+
+        RelativeLayout layout = infoWindowView.findViewById(R.id.layout);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoWindow.close();
+            }
+        });
+
+        // add line to map
         map.getOverlayManager().add(line);
+
+        // on click behaviour of line
+        line.setOnClickListener(new Polyline.OnClickListener() {
+            @Override
+            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                displayDetails(itinerary);
+                return true;
+            }
+        });
 
         // start and end markers
         Marker startMarker = new Marker(map);
-        GeoPoint startPosition = new GeoPoint(itinerary.getPoints().get(0)[0],itinerary.getPoints().get(0)[1]);
+        GeoPoint startPosition = geoPoints.get(0);
         startMarker.setPosition(startPosition);
         startMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         startMarker.setFlat(true);
@@ -234,7 +271,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         map.getOverlays().add(startMarker);
 
         Marker endMarker = new Marker(map);
-        GeoPoint endPosition = new GeoPoint(itinerary.getPoints().get(itinerary.getPointSize()-1)[0],itinerary.getPoints().get(itinerary.getPointSize()-1)[1]);
+        GeoPoint endPosition = geoPoints.get(itinerary.getPointSize()-1);
         endMarker.setPosition(endPosition);
         endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
@@ -269,6 +306,12 @@ public class ItineraryActivity extends AppCompatActivity  {
             String polStr = itinerary.getPollution()+"µg/m"+str;
             pollution.setText(polStr);
             if (itinerary.getPointSize()>2){
+                // first we want to clear all previous steps that might already be displayed
+                LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
+                int index = stepsLayout.indexOfChild(viewPoint2); // this is the number of steps from the previously displayed itinerary
+                if (index>2) { // <=> if there is already something displayed in the stepsLayout
+                    stepsLayout.removeViews(2, index - 2);
+                }
                 for (int k=1;k<itinerary.getPointSize();k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
@@ -281,7 +324,6 @@ public class ItineraryActivity extends AppCompatActivity  {
                     stepTimeSec.setText(String.format("%02d",timeSec));
                     stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)[0]));
                     // add the textView to the linearlayout which contains the steps
-                    LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
                     stepsLayout.addView(stepView,k+1);
                 }
             }
@@ -299,12 +341,4 @@ public class ItineraryActivity extends AppCompatActivity  {
         mapController.setCenter(endPoint);
     }
 
-    public void onClickInfoWindow(View view){
-        if(infoWindow.isOpen()){
-            line.closeInfoWindow();
-        }
-        else if (!infoWindow.isOpen()){
-            line.showInfoWindow();
-        }
-    }
 }

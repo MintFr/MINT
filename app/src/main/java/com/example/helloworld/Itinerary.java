@@ -3,12 +3,12 @@ package com.example.helloworld;
 import java.util.ArrayList;
 
 public class Itinerary {
-    String type; // type of transportation
-    double pollution; // total exposition to pollution
-    double time; // total itinerary time
-    ArrayList<int[]> stepTime; // time between steps in sec
-    ArrayList<int[]> stepDistance; // distance between steps in metres
-    ArrayList<double[]> points; // coordinates of each point
+    public String type; // type of transportation
+    public double pollution; // total exposition to pollution
+    public double time; // total itinerary time
+    public ArrayList<int[]> stepTime; // time between steps in sec
+    public ArrayList<int[]> stepDistance; // distance between steps in metres
+    public ArrayList<double[]> points; // coordinates of each point
 
     public Itinerary(String type,double pollution, double time, ArrayList<int[]> stepTime, ArrayList<int[]> stepDistance, ArrayList<double[]> points) {
         this.type=type;

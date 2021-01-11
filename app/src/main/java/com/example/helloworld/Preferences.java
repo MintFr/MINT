@@ -30,12 +30,24 @@ public class Preferences {
         }
         return options;
     }
+    public static int getNumberItinerary(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
+        int number=0;
+        for (int i=0;i<4;i++){
+            if (prefs.getInt("option_"+(i+1),0)!=0){
+                number++;
+            }
+        }
+        return number;
+    }
     public static void clearOptionTransportation(Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
     }
+    //  OPTION END //
+
     // for the itinerary
     public static void addAddress(String key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);

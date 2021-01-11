@@ -79,20 +79,10 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         //Points construction
         Intent intent = getIntent();
-        ArrayList<double[]> response = new ArrayList<>();
-        boolean bool = true;    //(intent != null);
-        int i = 0;
-        while (bool){
-            double[] point = intent.getDoubleArrayExtra(String.format("point%d", i));
-            i++;
-            if (point != null) {
-                response.add(point);
-            }else{
-                bool = false;
-            }
-        }
+        ArrayList<Itinerary> itineraries = new ArrayList<>();
+        itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
 
-        Toast.makeText(this, String.format("%d", response.size()), Toast.LENGTH_SHORT).show();
+
 
         if (response.size() > 0) {
             startPoint = new GeoPoint(response.get(0)[0], response.get(0)[1]);
@@ -333,6 +323,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         }
     }
 
+    //Methods to center map on points, useless for the app, but useful to debug
     public void onClickP1(View view) {
         mapController.setCenter(startPoint);
     }

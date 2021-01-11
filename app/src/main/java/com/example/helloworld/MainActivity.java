@@ -530,6 +530,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onLocationChanged(Location location) {
         String position = location.getLatitude() + "," + location.getLongitude();
         buttonClicked.setText(position);
+        //buttonClicked.getId();
         buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
     }
 
@@ -629,10 +630,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*pdaLat = 47.23592051820992;
+
+                //Tests
+                /*
+                pdaLat = 47.23592051820992;
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
-                pddLong = -1.54978;*/
+                pddLong = -1.54978;
+                int[] options = {0,1,0,1};      // rien = {0,0,0,0} et tout = {1,1,1,1}
+                //voiture, transport en commun, vélo, piétons
+
+
+                int[] transport = new int[4];
+                for(int k=0;k<4;k++){
+                    if (options.length > 0){
+                        transport[k] = options[k];
+                    }else{
+                        transport[k] = k+1;
+                    }
+                }
+                */
+
 
                 //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);

@@ -75,37 +75,55 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         //Points construction
         Intent intent = getIntent();
-        ArrayList<double[]> response = new ArrayList<>();
-        boolean bool = true;    //(intent != null);
-        int i = 0;
-        while (bool){
-            double[] point = intent.getDoubleArrayExtra(String.format("point%d", i));
-            i++;
-            if (point != null) {
-                response.add(point);
-            }else{
-                bool = false;
-            }
-        }
-
-        Toast.makeText(this, String.format("%d", response.size()), Toast.LENGTH_SHORT).show();
-
-        if (response.size() > 0) {
-            startPoint = new GeoPoint(response.get(0)[0], response.get(0)[1]);
-            endPoint = new GeoPoint(response.get(1)[0], response.get(1)[1]);
-        }else{
-            startPoint = new GeoPoint(47.21, -1.55);
-            endPoint = new GeoPoint(47.21, -1.55);
-            Toast.makeText(this, String.format("taille de response = %d", response.size()), Toast.LENGTH_SHORT).show();
-        }
+        ArrayList<Itinerary> itineraries = new ArrayList<>();
+        itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
 
 
-        //Points on map
-        ArrayList<OverlayItem> items = new ArrayList<>();
-        for (int j = 0; j < response.size();j++){
-            items.add(new OverlayItem("point "+j, "",
-                    new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
-        }
+
+//        boolean bool = true;    //(intent != null);
+//        int i = 0;
+//        while (bool){
+//            i++;
+//            if (point != null) {
+//                response.add(point);
+//            }else{
+//                bool = false;
+//            }
+//        }
+
+
+
+//        ArrayList<double[]> response = new ArrayList<>();
+//        boolean bool = true;    //(intent != null);
+//        int i = 0;
+//        while (bool){
+//            double[] point = intent.getDoubleArrayExtra(String.format("point%d", i));
+//            i++;
+//            if (point != null) {
+//                response.add(point);
+//            }else{
+//                bool = false;
+//            }
+//        }
+
+//        Toast.makeText(this, String.format("%d", response.size()), Toast.LENGTH_SHORT).show();
+//
+//        if (response.size() > 0) {
+//            startPoint = new GeoPoint(response.get(0)[0], response.get(0)[1]);
+//            endPoint = new GeoPoint(response.get(1)[0], response.get(1)[1]);
+//        }else{
+//            startPoint = new GeoPoint(47.21, -1.55);
+//            endPoint = new GeoPoint(47.21, -1.55);
+//            Toast.makeText(this, String.format("taille de response = %d", response.size()), Toast.LENGTH_SHORT).show();
+//        }
+
+
+//        //Points on map
+//        ArrayList<OverlayItem> items = new ArrayList<>();
+//        for (int j = 0; j < response.size();j++){
+//            items.add(new OverlayItem("point "+j, "",
+//                    new GeoPoint(response.get(j)[0],response.get(j)[1]))); // Lat/Lon decimal degrees
+//        }
 
         ArrayList<double[]> points = new ArrayList<double[]>();
         points.add(new double[]{47.205461, -1.559122});

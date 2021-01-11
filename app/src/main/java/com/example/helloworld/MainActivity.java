@@ -622,7 +622,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*pdaLat = 47.23592051820992;
+
+                //Tests
+                /*
+                pdaLat = 47.23592051820992;
                 pdaLong = -1.638742699120431;
                 pddLat = 47.24811;
                 pddLong = -1.54978;

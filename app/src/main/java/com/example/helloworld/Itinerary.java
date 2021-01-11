@@ -4,9 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Itinerary {
+public class Itinerary implements Serializable {
     private String type; // type of transportation
     private double pollution; // total exposition to pollution
     private double time; // total itinerary time

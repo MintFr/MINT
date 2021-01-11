@@ -23,6 +23,8 @@ import android.location.LocationManager;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -67,6 +69,8 @@ import org.osmdroid.views.MapView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
+    private com.example.helloworld.Address startAddress;
+    private com.example.helloworld.Address endAddress;
     IMapController mapController;
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
@@ -523,7 +527,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onLocationChanged(Location location) {
         String position = location.getLatitude() + "," + location.getLongitude();
         buttonClicked.setText(position);
-        //buttonClicked.getId();
         buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
     }
 
@@ -645,6 +648,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 */
 
 
+                //start itinerary calculation activity if the device has an internet connection
+                if (CheckInternet()){
+                    Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                    intent.putExtra("param1", pdaLat);
+                    intent.putExtra("param2", pdaLong);
+                    intent.putExtra("param3", pddLat);
+                    intent.putExtra("param4", pddLong);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();}
+            }}
                 //start itinerary calculation activity
                 Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
                 intent.putExtra("param1", pdaLat);
@@ -715,6 +731,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return arr;
     }
+
+    //Check if the device has an internet connection
+    public boolean CheckInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            return true;
+        }
+        return false;
+    }//end of check int
+
 
 }
 

@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Preferences.clearLastAddresses(this);
 
+        // Clear last preferences
+        Preferences.clearOptionTransportation(MainActivity.this);
+
         startPoint = findViewById(R.id.PointDeDepart);
         endPoint = findViewById(R.id.PointDarrivee);
         search = findViewById(R.id.recherche);
@@ -322,6 +325,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int i = (int) v.getTag();
                 ImageButton buttonClicked = optionPopupView.findViewWithTag(i);
                 buttonClicked.setActivated(!buttonClicked.isActivated());
+                if (buttonClicked.isActivated()){
+                    String key = (String) buttonClicked.getContentDescription();
+                    int value = Integer.parseInt(key);
+                    Preferences.addOptionTransportation(key,value,MainActivity.this);
+                }
+                else if (!buttonClicked.isActivated()){
+                    String key = (String) buttonClicked.getContentDescription();
+                    Preferences.addOptionTransportation(key,0,MainActivity.this);
+                }
             }
         };
 

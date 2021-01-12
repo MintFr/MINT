@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 public class Coordinates {
     private double latitude;

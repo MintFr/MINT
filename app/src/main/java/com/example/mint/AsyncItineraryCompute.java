@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,8 +24,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
+/**
+ * TODO Explain aim and use of class here
+ */
 public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> {
 
     private AppCompatActivity myActivity;
@@ -62,7 +64,6 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
      */
 
     @Override
-
     protected JSONArray doInBackground(String... strings) {
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
@@ -103,14 +104,14 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
             JSONObject message = new JSONObject(); // to debug, maybe to delete for real version of the app
             switch (error){
                 case 0 :
-                    json = new JSONArray(result); //create JSONArray from text file JSON encoded
-                    message.put("message",myActivity.getString(R.string.connexion_success));
+                    json = new JSONArray(result);
+                    message.put("message",myActivity.getString(R.string.connection_success));
                     break;
                 case 1 :
                     message.put("message",myActivity.getString(R.string.error_url_format));
                     break;
                 case 2 :
-                    message.put("message", String.format("%s\n%s", myActivity.getString(R.string.connexion_failed), strings[0]));
+                    message.put("message", String.format("%s\n%s", myActivity.getString(R.string.connection_failed), strings[0]));
                     break;
                 default:
                     break;

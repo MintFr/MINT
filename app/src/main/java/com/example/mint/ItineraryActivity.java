@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -44,8 +44,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.Inflater;
 
-import static java.lang.Double.parseDouble;
-
+/**
+ * Activity for the itinerary page, on which the user can see the various itineraries calculated for them
+ */
 public class ItineraryActivity extends AppCompatActivity  {
 
     private MapView map = null;
@@ -324,5 +325,4 @@ public class ItineraryActivity extends AppCompatActivity  {
     public void onClickP2(View view) {
         mapController.setCenter(endPoint);
     }
-
 }

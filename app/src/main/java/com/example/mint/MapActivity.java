@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +20,9 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+/**
+ * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
+ */
 public class MapActivity extends AppCompatActivity {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
@@ -63,19 +63,19 @@ public class MapActivity extends AppCompatActivity {
         menuItem.setChecked(true);
 
         //Slide animation
-        bottomNav.setSelectedItemId(R.id.cartes);
+        bottomNav.setSelectedItemId(R.id.maps);
 
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.itineraire:
+                    case R.id.itinerary:
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                         return true;
-                    case R.id.cartes:
+                    case R.id.maps:
                         return true;
-                    case R.id.profil:
+                    case R.id.profile:
                         startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true;

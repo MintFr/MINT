@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,12 +54,12 @@ public class Itinerary implements Serializable {
     public Itinerary(JSONObject json){
         //Reading JSON
         try{
-
-            this.type = json.getString("type");
+            this.type = json.getString("transport");
             this.pollution = json.getDouble("exposition");
             this.time = json.getDouble("duration");
-            this.stepTime = (ArrayList<int[]>) json.get("stepTime");
-            this.stepDistance = (ArrayList<int[]>) json.get("stepDistance");
+            this.points = new ArrayList<double[]>();
+            //this.stepTime = (ArrayList<int[]>) json.get("stepTime");
+            //this.stepDistance = (ArrayList<int[]>) json.get("stepDistance");
             JSONArray steps = json.getJSONArray("pointsItinerary");
 
             for (int i = 0; i<steps.length(); i++)
@@ -69,6 +69,13 @@ public class Itinerary implements Serializable {
                 double latitude = point.getDouble("latitude");
                 double[] p = {latitude,longitude};
                 this.points.add(p);
+            }
+            int s = this.points.size();
+            this.stepTime = new ArrayList<>();
+            this.stepDistance = new ArrayList<>();
+            for (int j=0;j<s-1;j++){
+                this.stepTime.add(new int[]{0});
+                this.stepDistance.add(new int[]{0});
             }
         } catch (JSONException e) {
             e.printStackTrace();

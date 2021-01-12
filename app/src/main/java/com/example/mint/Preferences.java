@@ -1,11 +1,12 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
+/**
+ * This class is used to record the user's preferences in terms of sensibility, addresses and transportation
+ */
 public class Preferences {
     //  OPTION //
     public static void setOptionTransportation(int[] value, Context context){
@@ -30,12 +31,24 @@ public class Preferences {
         }
         return options;
     }
+    public static int getNumberItinerary(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
+        int number=0;
+        for (int i=0;i<4;i++){
+            if (prefs.getInt("option_"+(i+1),0)!=0){
+                number++;
+            }
+        }
+        return number;
+    }
     public static void clearOptionTransportation(Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
     }
+    //  OPTION END //
+
     // for the itinerary
     public static void addAddress(String key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);

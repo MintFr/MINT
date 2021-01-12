@@ -3,6 +3,7 @@
     <color name="colorPrimary">#084528</color>
     <color name="colorPrimaryDark">#DDDDDD</color>
     <color name="colorAccent">#89BE89</color>
+    <color name="colorLightGreen">#D3EBD3</color>
     <color name="colorPrimaryLight">#ffffff</color>
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
 </resources>

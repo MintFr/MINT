@@ -116,7 +116,7 @@
         android:layout_marginRight="10dp"
         android:layout_below="@id/option_departure_prompt"/>
     <TextView
-        android:id="@+id/departue_date_prompt"
+        android:id="@+id/departure_date_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date_prompt"
@@ -133,7 +133,7 @@
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:textColor="@color/colorAccent"
-        android:layout_below="@id/departue_date_prompt"
+        android:layout_below="@id/departure_date_prompt"
         android:layout_toRightOf="@id/option_calendar_icon"
         android:layout_toEndOf="@id/option_calendar_icon"/>
     <ImageView
@@ -148,7 +148,7 @@
         android:layout_marginTop="15dp"
         android:layout_below="@id/option_calendar_icon"/>
     <TextView
-        android:id="@+id/departue_time_prompt"
+        android:id="@+id/departure_time_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time_prompt"
@@ -166,7 +166,7 @@
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:textColor="@color/colorAccent"
-        android:layout_below="@id/departue_time_prompt"
+        android:layout_below="@id/departure_time_prompt"
         android:layout_toRightOf="@id/option_clock_icon"
         android:layout_toEndOf="@id/option_clock_icon"/>
     <Button
@@ -186,7 +186,7 @@
         android:layout_marginLeft="15dp"
         android:layout_below="@id/date_calendar"
         android:layout_marginTop="15dp"
-        android:text="de départ"/>
+        android:text="@string/button_options_start"/>
     <Button
         android:id="@+id/end_time"
         android:layout_width="wrap_content"
@@ -202,6 +202,6 @@
         android:layout_marginLeft="15dp"
         android:layout_below="@id/date_calendar"
         android:layout_marginTop="15dp"
-        android:text="d'arrivée"/>
+        android:text="@string/button_options_end"/>
 
 </RelativeLayout>

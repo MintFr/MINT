@@ -96,11 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String start;
     String end;
 
-    private Double pdaLat;
-    private Double pdaLong;
-    private Double pddLat;
-    private Double pddLong;
-
     EditText buttonClicked;
     PopupWindow popUp;
     PopupWindow popUpCalendar;
@@ -330,15 +325,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bikeButton.setTag(6);
         walkButton.setTag(7);
 
-        // display already selected means of transportation
-        for (int j=0; j<4;j++){
-            ImageButton button = optionPopupView.findViewWithTag(j+4);
-            int[] options = Preferences.getOptionTransportation(MainActivity.this);
-            if (options[j]!=0){
-                button.setActivated(true);
-            }
-        }
-
         // create the new onClick callback
         View.OnClickListener onTransportationClick = new View.OnClickListener() {
             @Override
@@ -426,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // the buttons for selecting if you want start time or end time. start time is automatically selected
+        // the buttons for selecting of you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
         startTime.setActivated(true);
         Button endTime = optionPopupView.findViewById(R.id.end_time);
@@ -663,6 +649,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
 
                 //Tests
                 /*

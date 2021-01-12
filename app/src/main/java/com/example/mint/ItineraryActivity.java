@@ -41,6 +41,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -180,8 +181,8 @@ public class ItineraryActivity extends AppCompatActivity  {
         // set values for time, transportation and pollution
         //time
         int t = Double.valueOf(itinerary.getTime()).intValue();
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH' h' mm' min '");
-        String s = timeFormat.format(t);
+        String s = convertIntToHour(t);
+        System.out.println(s);
         //String s = Integer.toString(t);
         timeInfo.setText(s);
         //transportation
@@ -279,9 +280,7 @@ public class ItineraryActivity extends AppCompatActivity  {
             viewPoint1.setText(start);
             viewPoint2.setText(end);
             // time
-            int timeInt = (int) itinerary.getTime();
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH' h' mm' min'");
-            String timeStr = timeFormat.format(timeInt);
+            String timeStr = convertIntToHour( (int) itinerary.getTime());
             time.setText(timeStr);
             System.out.println(timeStr);
             //pollution
@@ -317,6 +316,14 @@ public class ItineraryActivity extends AppCompatActivity  {
         }
     }
 
+    private String convertIntToHour(int seconds) {
+        int minutes = seconds / (int) 60;
+        int hours = minutes /(int) 60 ;
+        String res = String.format("%s h %s min",hours, minutes);
+        return res;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     //Methods to center map on points, useless for the app, but useful to debug
     public void onClickP1(View view) {
         mapController.setCenter(startPoint);

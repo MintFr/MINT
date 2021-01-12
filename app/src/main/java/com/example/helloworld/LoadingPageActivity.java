@@ -21,11 +21,18 @@ public class LoadingPageActivity extends AppCompatActivity {
 
 
         int[] options = Preferences.getOptionTransportation(this);
+        boolean noOptions = true;
+        for (int i:options) {
+            if (i > 0) noOptions = false;
+        }
+        if (noOptions){
+            options = new int[] {1,1,1,1};      //default case, all transports
+        }
 
         //build url
         String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
                         "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transportation=%s,%s,%s,%s",
-                param1, param2, param3, param4,1,options[1],options[2],options[3]);
+                param1, param2, param3, param4,options[0],options[1],options[2],options[3]);
         //start of the async task
         System.out.println(url);
         AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);

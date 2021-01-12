@@ -26,7 +26,7 @@ public class LoadingPageActivity extends AppCompatActivity {
         int[] options = Preferences.getOptionTransportation(this);
         boolean noOptions = true;
         for (int i:options) {
-            if (i > 0) noOptions = false;
+            if (i != 0) noOptions = false;
         }
         if (noOptions){
             options = new int[] {1,1,1,1};      //default case, all transports

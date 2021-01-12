@@ -187,16 +187,16 @@ public class ItineraryActivity extends AppCompatActivity  {
         timeInfo.setText(s);
         //transportation
         switch (itinerary.getType()){
-            case "piéton" :
+            case "Piéton" :
                 transportationInfo.setImageResource(R.drawable.ic_walk_activated);
                 break;
-            case "voiture" :
+            case "Voiture" :
                 transportationInfo.setImageResource(R.drawable.ic_car_activated);
                 break;
-            case "transport en commun" :
+            case "Transport en commun" :
                 transportationInfo.setImageResource(R.drawable.ic_tram_activated);
                 break;
-            case "vélo" :
+            case "Vélo" :
                 transportationInfo.setImageResource(R.drawable.ic_bike_activated);
                 break;
         }

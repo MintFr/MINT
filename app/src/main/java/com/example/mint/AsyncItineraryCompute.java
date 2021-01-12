@@ -151,7 +151,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         //Reading JSON
         final ArrayList<Itinerary> itineraries = new ArrayList<>();
         try{
-            for (int i = 0; i<c.length()-1; i++)            //to delete error message
+            for (int i = 0; i<c.length(); i++)            //to delete error message
             {
                 Itinerary itinerary = new Itinerary(c.getJSONObject(i));
                 itineraries.add(itinerary);

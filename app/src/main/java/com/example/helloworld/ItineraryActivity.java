@@ -38,6 +38,7 @@ import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -178,7 +179,9 @@ public class ItineraryActivity extends AppCompatActivity  {
         // set values for time, transportation and pollution
         //time
         int t = Double.valueOf(itinerary.getTime()).intValue();
-        String s = Integer.toString(t);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH' h' mm' min '");
+        String s = timeFormat.format(t);
+        //String s = Integer.toString(t);
         timeInfo.setText(s);
         //transportation
         switch (itinerary.getType()){
@@ -276,8 +279,10 @@ public class ItineraryActivity extends AppCompatActivity  {
             viewPoint2.setText(end);
             // time
             int timeInt = (int) itinerary.getTime();
-            String timeStr = timeInt +" min";
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH' h' mm' min'");
+            String timeStr = timeFormat.format(timeInt);
             time.setText(timeStr);
+            System.out.println(timeStr);
             //pollution
             String str = "3";
             str = str.replaceAll("3", "³"); // set the 3 to superscript

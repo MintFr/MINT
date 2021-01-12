@@ -11,20 +11,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp" />
-    <TextView
-        android:id="@+id/min"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:text=" min"
-        android:layout_toRightOf="@id/time_info"/>
+<!--    <TextView-->
+<!--        android:id="@+id/min"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:text=" min"-->
+<!--        android:layout_toRightOf="@id/time_info"/>-->
     <View
         android:id="@+id/line"
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="#BEBDBD"
         android:layout_marginRight="10dp"
-        android:layout_toRightOf="@id/min"
+        android:layout_toRightOf="@id/time_info"
         android:layout_alignTop="@id/time_info"
         android:layout_alignBottom="@id/time_info"/>
     <ImageView

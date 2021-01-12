@@ -57,11 +57,14 @@ public class Itinerary implements Serializable {
             this.type = json.getString("transport");
             this.pollution = json.getDouble("exposition");
             this.time = json.getDouble("duration");
-            JSONArray c = json.getJSONArray("pointsItinerary");
-            this.points = new ArrayList<>();
-            for (int i = 0; i<c.length()-1; i++)
+            this.points = new ArrayList<double[]>();
+            //this.stepTime = (ArrayList<int[]>) json.get("stepTime");
+            //this.stepDistance = (ArrayList<int[]>) json.get("stepDistance");
+            JSONArray steps = json.getJSONArray("pointsItinerary");
+
+            for (int i = 0; i<steps.length(); i++)
             {
-                JSONObject point = c.getJSONObject(i);
+                JSONObject point = steps.getJSONObject(i);
                 double longitude = point.getDouble("longitude");
                 double latitude = point.getDouble("latitude");
                 double[] p = {latitude,longitude};
@@ -78,6 +81,8 @@ public class Itinerary implements Serializable {
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * Copy constructor

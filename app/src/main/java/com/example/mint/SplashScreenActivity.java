@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+/**
+ * TODO Explain aim and use of class here
+ */
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Override

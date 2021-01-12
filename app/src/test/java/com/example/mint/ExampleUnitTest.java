@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import org.junit.Test;
 

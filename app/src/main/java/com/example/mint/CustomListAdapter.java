@@ -1,7 +1,6 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * TODO Explain aim and use of class here
+ */
 public class CustomListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<String> items;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.helloworld">
+    package="com.example.mint">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -17,18 +17,18 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ItineraryActivity" />
-        <activity android:name=".LoadingPageActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name="com.example.mint.ItineraryActivity" />
+        <activity android:name="com.example.mint.LoadingPageActivity" />
+        <activity android:name="com.example.mint.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.example.mint.MapActivity" />
+        <activity android:name="com.example.mint.ProfileActivity" />
+        <activity android:name="com.example.mint.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

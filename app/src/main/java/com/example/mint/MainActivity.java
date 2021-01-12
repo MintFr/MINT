@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.mint;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -66,11 +66,15 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+/**
+ * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
+ * among other things
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
-    private com.example.helloworld.Address startAddress;
-    private com.example.helloworld.Address endAddress;
+    private com.example.mint.Address startAddress;
+    private com.example.mint.Address endAddress;
     IMapController mapController;
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
@@ -109,21 +113,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //Preferences.clearLastAddresses(this);
-
         // Clear last preferences
         Preferences.clearOptionTransportation(MainActivity.this);
 
-        startPoint = findViewById(R.id.PointDeDepart);
-        endPoint = findViewById(R.id.PointDarrivee);
-        search = findViewById(R.id.recherche);
+        startPoint = findViewById(R.id.startPoint);
+        endPoint = findViewById(R.id.endPoint);
+        search = findViewById(R.id.search);
+
         option = findViewById(R.id.options);
         dimPopup = findViewById(R.id.dim_popup);
 
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
 
-        this.endAddress = new com.example.helloworld.Address();
-        this.startAddress = new com.example.helloworld.Address();
+        this.endAddress = new com.example.mint.Address();
+        this.startAddress = new com.example.mint.Address();
 
 
 
@@ -181,19 +185,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menuItem.setChecked(true);
 
         //Slide animation
-        bottomNav.setSelectedItemId(R.id.itineraire);
+        bottomNav.setSelectedItemId(R.id.itinerary);
 
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.itineraire:
+                    case R.id.itinerary:
                         return true;
-                    case R.id.cartes:
+                    case R.id.maps:
                         startActivity(new Intent(getApplicationContext(),MapActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true;
-                    case R.id.profil:
+                    case R.id.profile:
                         startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
                         overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                         return true;
@@ -241,28 +245,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
 
-                // We need this parameters to check if the GPS of the phone is activated
+                // We need this parameter to check if the phone's GPS is activated
                 locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
                 assert locationManager != null;
                 GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-                // If the permission to access to the user's location is already allowed, we use it
+                // If the permission to access to the user's location is already given, we use it
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                    // We also need that the GPS' phone is activated. We check this here.
+                    // We also need the phone's GPS to be activated. We check this here.
                     if (GpsStatus){
                         popUp.dismiss();
                         getLocation();
                     }
 
-                    // If the GPS' phone is NOT activated, we ask him/her to activate it
+                    // If the phone's GPS is NOT activated, we ask the user to activate it
                     else {
                         showAlertMessageNoGps();
                     }
                 }
 
-                // If we don't have the permission, we ask the permission to use his location
+                // If we don't have the permission, we ask the permission to use their location
                 else {
                     requestLocalisationPermission();
                 }
@@ -451,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // LOCATION //
     /////////////////////////////////////////////////////////
 
-    // Ask the permission to the user to use his location
+    // Ask the permission to the user to use their location
     private void requestLocalisationPermission(){
         // If the permission WAS DENIED PREVIOUSLY,
         // we open a dialog to ask for the permission to access to the user's location
@@ -505,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Ask to the user to activate his location
+    // Ask the user to turn on their location
     private void showAlertMessageNoGps() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Echec de la localisation")
@@ -543,11 +547,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonClicked.setText(R.string.position_text);
         Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());
         switch (buttonClicked.getId()) {
-            case R.id.PointDeDepart :
+            case R.id.startPoint :
                 startAddress.setLocationName(String.valueOf(R.string.position_text));
                 startAddress.setCoordinates(coordinates);
                 break;
-            case R.id.PointDarrivee:
+            case R.id.endPoint:
                 endAddress.setLocationName(String.valueOf(R.string.position_text));
                 endAddress.setCoordinates(coordinates);
                 break;
@@ -603,18 +607,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else if (sameAddresses[0]!=-1&&sameAddresses[1]==-1){
                     Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
                     Preferences.moveAddressFirst(sameAddresses[0]+1,MainActivity.this);
-                    nbLastAdd++; // the number of adresses has increased by 1
+                    nbLastAdd++; // the number of addresses has increased by 1
                 }
                 // if the endpoint already exists, move it to first position and add startpoint
                 else if (sameAddresses[0]==-1&&sameAddresses[1]!=-1) {
                     Preferences.moveAddressFirst(sameAddresses[1],MainActivity.this);
                     Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                    nbLastAdd++; // the number of adresses has increased by 1
+                    nbLastAdd++; // the number of addresses has increased by 1
                 }
-                // if both adresses already exist, we move both adresses to first position
+                // if both addresses already exist, we move both addresses to first position
                 else {
                     Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                    // if the endpoint was after the startpoint in the list, the index at which we have to find the adress is one higher
+                    // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
                     Preferences.moveAddressFirst(sameAddresses[1]<sameAddresses[0]?sameAddresses[0]:sameAddresses[0]+1, MainActivity.this);
                 }
                 // check if number of addresses has gone over 3 and remove the ones over 3
@@ -740,7 +744,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.dispatchTouchEvent( event );
     }
 
-    // returns the index of the adresses that already exist in the history list, returns -1 if doesnt exist
+    // returns the index of the addresses that already exist in the history list, returns -1 if doesnt exist
     public int[] getSameAddresses(String start, String end){
         int[] arr = new int[2];
         arr[0]=-1;

@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itineraire"
-        android:title="@string/itineraire"
+        android:id="@+id/itinerary"
+        android:title="@string/itinerary"
         android:icon="@drawable/bottomnavigation_directions"
         android:fontFamily="@font/quicksand_regular"
 
         />
     <item
-        android:id="@+id/cartes"
-        android:title="@string/cartes"
+        android:id="@+id/maps"
+        android:title="@string/maps"
         android:icon="@drawable/bottomnavigation_map"
         android:fontFamily="@font/quicksand_regular"
 
@@ -18,8 +18,8 @@
 
 
     <item
-        android:id="@+id/profil"
-        android:title="@string/profil"
+        android:id="@+id/profile"
+        android:title="@string/profile"
         android:icon="@drawable/bottomnavigation_profile"
         android:fontFamily="@font/quicksand_regular"
 

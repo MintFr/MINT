@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
-    android:background="@color/cardview_light_background">
+    android:background="@color/cardview_light_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
     <ImageView
         android:id="@+id/transportation_icon"
         android:layout_width="wrap_content"

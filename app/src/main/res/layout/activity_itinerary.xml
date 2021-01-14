@@ -3,6 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_itinerary_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ItineraryActivity">
@@ -15,10 +16,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </org.osmdroid.views.MapView>
+
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/itinerary_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -36,48 +37,54 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="time"
+        android:text="@string/itinerary_default_time"
         android:layout_margin="20dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         style="@style/bold"
         android:layout_weight="1"/>
     <View
+        android:id="@+id/vertical_separator"
         android:layout_width="2dp"
         android:layout_height="match_parent"
         android:background="#EDEDED"/>
     <TextView
+        android:id="@+id/exposition_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exposition :"
+        android:text="@string/itinerary_exposition"
         android:layout_margin="20dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_weight="1"/>
     <TextView
         android:id="@+id/pollution"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="--"
+        android:text="@string/default_exposition"
         android:layout_margin="20dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         style="@style/bold"
         android:layout_weight="1"/>
 
 </LinearLayout>
         <View
+            android:id="@+id/title_separator"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#EDEDED"/>
         <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/itinerary_steps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="@android:color/background_light">
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/itinerary_line"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -153,6 +160,7 @@
                     android:text="Départ"
                     android:textSize="18sp" />
                 <View
+                    android:id="@+id/steps_separator"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#EDEDED" />

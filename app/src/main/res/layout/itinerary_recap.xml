@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recap_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ItineraryActivity">
+    <TextView
+        android:id="@+id/recap_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recap_title"
+        android:padding="20dp"
+        android:textSize="18sp"
+        style="@style/bold"
+        android:background="@drawable/layout_bg_title"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#EDEDED"
+        android:layout_below="@id/recap_title"/>
+    <LinearLayout
+        android:id="@+id/recap_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/recap_title">
+    </LinearLayout>
+</RelativeLayout>

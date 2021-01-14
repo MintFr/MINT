@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //Preferences.clearLastAddresses(this);
-        // Clear last preferences
+        // Clear last options we entered
         Preferences.clearOptionTransportation(MainActivity.this);
 
         startPoint = findViewById(R.id.startPoint);

@@ -77,5 +77,10 @@
     <string name="button_options_start">de départ</string>
     <string name="button_options_end">d\'arrivée</string>
     <string name="position_text">Ma position</string>
+    <string name="recap_title">Itinéraires</string>
+    <string name="default_exposition">--</string>
+    <string name="itinerary_exposition">Exposition :</string>
+    <string name="itinerary_default_time">time</string>
+    <string name="exposition_unit">µg/m³</string>
 
 </resources>

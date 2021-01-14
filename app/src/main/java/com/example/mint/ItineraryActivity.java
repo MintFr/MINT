@@ -39,6 +39,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
@@ -126,7 +127,7 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         // display each itinerary we just got from the Async task
         for (int j=0;j<itineraries.size()-1;j++){
-            displayItinerary(itineraries.get(j), itineraries);
+            displayItinerary(itineraries.get(j), itineraries,j);
         }
 
         // display recap
@@ -185,7 +186,7 @@ public class ItineraryActivity extends AppCompatActivity  {
     }
 
     //DISPLAY ITINERARY
-    private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list){
+    private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){
         // polyline for itinerary
         List<GeoPoint> geoPoints = new ArrayList<>();
         for (int j = 0; j<itinerary.getPointSize();j++){
@@ -196,6 +197,9 @@ public class ItineraryActivity extends AppCompatActivity  {
         line.setPoints(geoPoints);
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
         line.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
+
+        // this is to be able to identify the line later on
+        line.setId(String.valueOf(i));
 
         // SETUP INFO WINDOW
         final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
@@ -330,6 +334,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         }
     }
 
+    //DISPLAY RECAP
     private void displayRecap(final ArrayList<Itinerary> list){
         // REMOVE DETAILS
         ConstraintLayout activityLayout = findViewById(R.id.activity_itinerary_layout); // get a reference to the activity layout
@@ -383,7 +388,7 @@ public class ItineraryActivity extends AppCompatActivity  {
                 @Override
                 public void onClick(View v) {
                     int i = (int) v.getTag();
-                    Polyline line = (Polyline) map.getOverlays().get(i+1);
+                    Polyline line = findPolylineFromId(String.valueOf(i));
                     GeoPoint pos = line.getInfoWindowLocation();
                     hightlightItinerary(line,map,pos,list.get(i),list.size());
                 }
@@ -396,15 +401,18 @@ public class ItineraryActivity extends AppCompatActivity  {
         polyline.showInfoWindow();
         polyline.setInfoWindowLocation(eventPos);
         displayDetails(itinerary);
+
         // highlight the polyline
         polyline.getOutlinePaintLists().clear(); // reset polyline appearance
         polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorderSelected));
         polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintInsideSelected));
+
         // we remove it from the list of overlays and then add it again on top of all the other lines so it's in front
         mapView.getOverlays().remove(polyline);
-        mapView.getOverlays().add(4,polyline);
+        mapView.getOverlays().add(size-1,polyline);
+
         // reset all other lines to original appearance
-        for (int i=1;i<size;i++){
+        for (int i=1;i<size;i++){ // we know that the polylines have indexes ranging from 1 to list.size()-1 because of the order in which we drew them
             Polyline selectedLine = (Polyline) map.getOverlays().get(i);
             if (selectedLine!=polyline){
                 resetPolylineAppearance(selectedLine);
@@ -420,11 +428,23 @@ public class ItineraryActivity extends AppCompatActivity  {
         return res;
     }
 
-    public void resetPolylineAppearance(Polyline polyline){
+    private void resetPolylineAppearance(Polyline polyline){
         polyline.getOutlinePaintLists().clear();
         // add the default paint style
         polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
         polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
+    }
+
+    private Polyline findPolylineFromId(String id){
+        // this function is used to find a polyline from its id which was user-selected (in our case, the id is its rank in the itinirary list)
+        // to do this we go through all the polylines until we find the one whose id matches the requested id
+        int i =1;
+        Polyline line = (Polyline) map.getOverlays().get(i);
+        while (!line.getId().equals(id)){
+            line = (Polyline) map.getOverlays().get(i);
+            i++;
+        }
+        return line;
     }
 
     ///////////////////////////////////////////////////////////////////////////

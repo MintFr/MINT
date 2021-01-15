@@ -319,11 +319,11 @@ public class ItineraryActivity extends AppCompatActivity  {
                     TextView stepTimeMin = stepView.findViewById(R.id.step_time_min); // get the different textViews from the base view
                     TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
-                    int timeMin = (itinerary.getStepTime().get(k-1)[0] % 3600)/60; // amount of minutes it takes to travel this step
-                    int timeSec = (itinerary.getStepTime().get(k-1)[0] % 60 ); // remaining seconds
+                    int timeMin = (itinerary.getStepTime().get(k-1) % 3600)/60; // amount of minutes it takes to travel this step
+                    int timeSec = (itinerary.getStepTime().get(k-1) % 60 ); // remaining seconds
                     stepTimeMin.setText(String.format("%02d",timeMin));
                     stepTimeSec.setText(String.format("%02d",timeSec));
-                    stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)[0]));
+                    stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)));
                     // add the textView to the linearlayout which contains the steps
                     stepsLayout.addView(stepView,k+1);
                 }
@@ -429,6 +429,7 @@ public class ItineraryActivity extends AppCompatActivity  {
     }
 
     private void resetPolylineAppearance(Polyline polyline){
+        // clear all previous paints
         polyline.getOutlinePaintLists().clear();
         // add the default paint style
         polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));

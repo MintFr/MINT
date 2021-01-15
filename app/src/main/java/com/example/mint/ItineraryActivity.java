@@ -313,7 +313,7 @@ public class ItineraryActivity extends AppCompatActivity  {
                 if (index>2) { // <=> if there is already something displayed in the stepsLayout
                     stepsLayout.removeViews(2, index - 2);
                 }
-                for (int k=1;k<itinerary.getPointSize();k++){
+                for (int k=1;k<itinerary.getPointSize()-2;k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.step_time_min); // get the different textViews from the base view
@@ -340,6 +340,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         ConstraintLayout activityLayout = findViewById(R.id.activity_itinerary_layout); // get a reference to the activity layout
         LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
         detailLayout.setVisibility(View.GONE); // remove the details
+
         // ADD RECAP LAYOUT
         recapView = inflater.inflate(R.layout.itinerary_recap,null); // get the recap view and inflate it
         recapView.setId(ViewCompat.generateViewId()); // set an id for it so we can use constraintSet
@@ -348,6 +349,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         set.clone(activityLayout);
         set.connect(recapView.getId(),ConstraintSet.BOTTOM,R.id.bottom_navigation,ConstraintSet.TOP);
         set.applyTo(activityLayout); // add constraints to the recapView
+
         // ADD DIFFERENT ITINERARIES
         LinearLayout recapList = recapView.findViewById(R.id.recap_list);
         for (int i=0;i<list.size()-1;i++){
@@ -376,14 +378,17 @@ public class ItineraryActivity extends AppCompatActivity  {
                     transportationIcon.setImageResource(R.drawable.ic_tram_activated);
                     break;
             }
+
+            // set the parameters for the new view we are going to add
             int height = getResources().getDimensionPixelSize(R.dimen.list_item_height);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     height);
             listItem.setLayoutParams(params);
             recapList.addView(listItem,i); // add the view to the layout
+
             // highlight itinerary when you click on an itinerary
-            listItem.setTag(i);
+            listItem.setTag(i); // this will used to find the corresponding itinerary
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -406,7 +406,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         recapLayout.post(new Runnable() {
             @Override
             public void run() {
-                sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
     }

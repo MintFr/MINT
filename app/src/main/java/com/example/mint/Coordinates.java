@@ -29,4 +29,13 @@ public class Coordinates {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    public boolean isZero(){
+        if (this.latitude==0 & this.longitude==0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

@@ -675,6 +675,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ////////////////////////////////////////////////////////////////////////////////////
                 //start itinerary calculation activity if the device has an internet connection
                 if (CheckInternet()){
+                    if (!endAddress.getCoordinates().isZero() & !startAddress.getCoordinates().isZero()){
                     Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
                     intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
                     intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
@@ -683,6 +684,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(intent);
                     finish();
                 }
+                    else{
+                        Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
+                    }
+
+                    }
                 else{
                     Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
                 }

@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
+    private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
+    private boolean idBool = false; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private View dimPopup;
     private EditText latitude;
     private EditText longitude;
@@ -523,28 +525,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getLocation(){
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
+
+        // We now need to know where we have to write the location : in the startPoint or in the endPoint
+        if (idButton == startPoint.getId()){
+            idBool = true;
+        }
+        if (idButton == endPoint.getId()) {
+            idBool = false;
+        }
     }
 
     // Print user's position
     // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
     public void onLocationChanged(Location location) {
-//        String position = location.getLatitude() + "," + location.getLongitude();
-//        buttonClicked.setText(position);
-        buttonClicked.setText(R.string.position_text);
+        //String position = location.getLatitude() + "," + location.getLongitude();
         Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());
-        switch (buttonClicked.getId()) {
-            case R.id.startPoint :
-                startAddress.setLocationName(String.valueOf(R.string.position_text));
-                startAddress.setCoordinates(coordinates);
-                break;
-            case R.id.endPoint:
-                endAddress.setLocationName(String.valueOf(R.string.position_text));
-                endAddress.setCoordinates(coordinates);
-                break;
-            default:
-                break;
+        // We write the location in the good place : startPoint or endPoint
+        if (idBool){
+            startAddress.setLocationName(String.valueOf(R.string.position_text));
+            startAddress.setCoordinates(coordinates);
+            startPoint.setText("Ma position");
+            startPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+        } else {
+            endAddress.setLocationName(String.valueOf(R.string.position_text));
+            endAddress.setCoordinates(coordinates);
+            endPoint.setText("Ma position");
+            endPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+
         }
-        buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
     }
 
     /////////////////////////////////////////////////////////
@@ -742,6 +750,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onFocusChange(View v, boolean hasFocus){
         int i = (int) v.getTag();
         buttonClicked = v.findViewWithTag(i);
+        idButton = buttonClicked.getId(); // We use this later to know where we have to write the location : in the startPoint or in the endPoint
         if(hasFocus) {
             popUp = showFavoriteAddresses();
             popUp.showAsDropDown(v, 0, 10); // show popup like dropdown list

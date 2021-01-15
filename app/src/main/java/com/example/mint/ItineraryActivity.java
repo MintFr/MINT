@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,6 +26,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.ViewCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
@@ -64,6 +66,11 @@ public class ItineraryActivity extends AppCompatActivity  {
     private GeoPoint startPoint;
     private GeoPoint endPoint;
 
+    private BottomSheetBehavior sheetBehaviorDetail;
+    private BottomSheetBehavior sheetBehaviorRecap;
+    private LinearLayout detailLayout;
+    private RelativeLayout recapLayout;
+
     Paint paintBorder;
     Paint paintInside;
     Paint paintBorderSelected;
@@ -78,8 +85,22 @@ public class ItineraryActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary);
 
+        //Bottom Menu
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
         // inflater used to display different views
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // get the bottom sheets and their behaviors
+        detailLayout = findViewById(R.id.itinerary_detail_layout);
+        recapLayout = findViewById(R.id.itinerary_recap_layout);
+        sheetBehaviorDetail = BottomSheetBehavior.from(detailLayout);
+        sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
 
         //Map display
         map = findViewById(R.id.map);
@@ -175,14 +196,6 @@ public class ItineraryActivity extends AppCompatActivity  {
         endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(endMarker);
-
-        //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);
     }
 
     //DISPLAY ITINERARY
@@ -269,7 +282,7 @@ public class ItineraryActivity extends AppCompatActivity  {
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                hightlightItinerary(polyline,mapView,eventPos,itinerary,list.size()); // function that highlights an itinerary
+                highlightItinerary(polyline,mapView,eventPos,itinerary,list.size()); // function that highlights an itinerary
                 return true;
             }
         });
@@ -277,14 +290,15 @@ public class ItineraryActivity extends AppCompatActivity  {
 
     //DISPLAY DETAILS UNDER MAP
     private void displayDetails(Itinerary itinerary){
-        // hide recap
-        recapView.setVisibility(View.GONE);
-        // show details layout
-        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+//        // hide recap
+//        recapView.setVisibility(View.GONE);
+//        // show details layout
+//        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
+//        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+
         //start and end
-        TextView viewPoint1 = (TextView) findViewById(R.id.start_point);
-        TextView viewPoint2 = (TextView) findViewById(R.id.end_point);
+        TextView viewPoint1 = findViewById(R.id.start_point);
+        TextView viewPoint2 = findViewById(R.id.end_point);
 
         //time and pollution
         TextView time = findViewById(R.id.time);
@@ -332,26 +346,15 @@ public class ItineraryActivity extends AppCompatActivity  {
             viewPoint1.setText("error");
             viewPoint2.setText("error");
         }
+        sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_HIDDEN);
+        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
 
     //DISPLAY RECAP
     private void displayRecap(final ArrayList<Itinerary> list){
-        // REMOVE DETAILS
-        ConstraintLayout activityLayout = findViewById(R.id.activity_itinerary_layout); // get a reference to the activity layout
-        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-        detailLayout.setVisibility(View.GONE); // remove the details
-
-        // ADD RECAP LAYOUT
-        recapView = inflater.inflate(R.layout.itinerary_recap,null); // get the recap view and inflate it
-        recapView.setId(ViewCompat.generateViewId()); // set an id for it so we can use constraintSet
-        activityLayout.addView(recapView); // add view to the general layout
-        ConstraintSet set = new ConstraintSet();
-        set.clone(activityLayout);
-        set.connect(recapView.getId(),ConstraintSet.BOTTOM,R.id.bottom_navigation,ConstraintSet.TOP);
-        set.applyTo(activityLayout); // add constraints to the recapView
-
         // ADD DIFFERENT ITINERARIES
-        LinearLayout recapList = recapView.findViewById(R.id.recap_list);
+        LinearLayout recapList = findViewById(R.id.recap_list);
+        recapList.removeAllViews();
         for (int i=0;i<list.size()-1;i++){
             // get list item view and the views inside it
             View listItem = inflater.inflate(R.layout.recap_list_item,null);
@@ -379,7 +382,7 @@ public class ItineraryActivity extends AppCompatActivity  {
                     break;
             }
 
-            // set the parameters for the new view we are going to add
+            // set the height and width of the list item
             int height = getResources().getDimensionPixelSize(R.dimen.list_item_height);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -395,13 +398,20 @@ public class ItineraryActivity extends AppCompatActivity  {
                     int i = (int) v.getTag();
                     Polyline line = findPolylineFromId(String.valueOf(i));
                     GeoPoint pos = line.getInfoWindowLocation();
-                    hightlightItinerary(line,map,pos,list.get(i),list.size());
+                    highlightItinerary(line,map,pos,list.get(i),list.size());
                 }
             });
         }
+        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HIDDEN);
+        recapLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
     }
 
-    private void hightlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos,Itinerary itinerary,int size) {
+    private void highlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos,Itinerary itinerary,int size) {
         // show infowindow and details
         polyline.showInfoWindow();
         polyline.setInfoWindowLocation(eventPos);

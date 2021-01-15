@@ -674,7 +674,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 ////////////////////////////////////////////////////////////////////////////////////
                 //start itinerary calculation activity if the device has an internet connection
-                if (CheckInternet()){
+                int error = 0;
+                if (!CheckInternet()){ //no internet connection
+                    error = 2;
+                }
+                else if (endAddress.getCoordinates().isZero() & startAddress.getCoordinates().isZero()){ //conversion impossible
+                    error = 1;
+                }
+
+
+                switch (error){
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                        intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
+                        intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
+                        intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
+                        intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case 1:
+                        Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
+
+
+
+                }
+
+
+
+                /*if (CheckInternet()){
                     if (!endAddress.getCoordinates().isZero() & !startAddress.getCoordinates().isZero()){
                     Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
                     intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
@@ -691,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 else{
                     Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
                 Preferences.addAddress("startAddress",start,MainActivity.this);
                 Preferences.addAddress("endAddress",end,MainActivity.this);

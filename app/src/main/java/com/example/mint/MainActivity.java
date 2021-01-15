@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // initialize a pop up window type
         PopupWindow popupWindow = new PopupWindow(this);
-
+        //popupWindow.setOutsideTouchable(true);
         lastAddressList = Preferences.getLastAddresses("lastAddress",this);
         addressList = Preferences.getPrefAddresses("Address", this);
         lastAddressList.add(0,"Mes dernières adresses :");

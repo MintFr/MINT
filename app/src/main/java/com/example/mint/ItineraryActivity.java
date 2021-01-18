@@ -65,6 +65,8 @@ public class ItineraryActivity extends AppCompatActivity  {
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
+    GeoPoint startPosition;
+    GeoPoint endPosition;
 
     private BottomSheetBehavior sheetBehaviorDetail;
     private BottomSheetBehavior sheetBehaviorRecap;
@@ -182,7 +184,7 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         // start and end markers (we only need to draw them once)
         Marker startMarker = new Marker(map);
-        GeoPoint startPosition = new GeoPoint(itineraries.get(0).getPoints().get(0)[0],itineraries.get(0).getPoints().get(0)[1]);
+        startPosition = new GeoPoint(itineraries.get(0).getPoints().get(0)[0],itineraries.get(0).getPoints().get(0)[1]);
         startMarker.setPosition(startPosition);
         startMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         startMarker.setFlat(true);
@@ -191,7 +193,7 @@ public class ItineraryActivity extends AppCompatActivity  {
 
         int indexEnd = itineraries.get(0).getPointSize()-1;
         Marker endMarker = new Marker(map);
-        GeoPoint endPosition = new GeoPoint(itineraries.get(0).getPoints().get(indexEnd)[0],itineraries.get(0).getPoints().get(indexEnd)[1]);
+        endPosition = new GeoPoint(itineraries.get(0).getPoints().get(indexEnd)[0],itineraries.get(0).getPoints().get(indexEnd)[1]);
         endMarker.setPosition(endPosition);
         endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
@@ -439,6 +441,7 @@ public class ItineraryActivity extends AppCompatActivity  {
     private String convertIntToHour(int seconds) {
         int minutes = seconds / (int) 60;
         int hours = minutes /(int) 60 ;
+        minutes = minutes - hours*60;
         String res = String.format("%s h %s min",hours, minutes);
         return res;
     }
@@ -466,10 +469,11 @@ public class ItineraryActivity extends AppCompatActivity  {
     ///////////////////////////////////////////////////////////////////////////
     //Methods to center map on points, useless for the app, but useful to debug
     public void onClickP1(View view) {
-        mapController.setCenter(startPoint);
+        System.out.println(startPosition);
+        mapController.setCenter(startPosition);
     }
 
     public void onClickP2(View view) {
-        mapController.setCenter(endPoint);
+        mapController.setCenter(endPosition);
     }
 }

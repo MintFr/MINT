@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,10 +24,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
@@ -58,13 +61,14 @@ import java.util.zip.Inflater;
 /**
  * Activity for the itinerary page, on which the user can see the various itineraries calculated for them
  */
-public class ItineraryActivity extends AppCompatActivity  {
+public class ItineraryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private MapView map = null;
     private ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
+
     GeoPoint startPosition;
     GeoPoint endPosition;
 
@@ -73,36 +77,73 @@ public class ItineraryActivity extends AppCompatActivity  {
     private LinearLayout detailLayout;
     private RelativeLayout recapLayout;
 
+    private FloatingActionButton zoomInButton;
+    private FloatingActionButton zoomOutButton;
+    private FloatingActionButton locateButton;
+    private FloatingActionButton recapButton;
+
     Paint paintBorder;
     Paint paintInside;
     Paint paintBorderSelected;
     Paint paintInsideSelected;
 
+    ArrayList<Itinerary> itineraries;
+
     LayoutInflater inflater;
 
-    View recapView; // this is so we can toggle its visibility on and off
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary);
 
-        //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);
-
         // inflater used to display different views
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        /////////////////////////
+        //// BOTTOM SHEETS /////
+        ////////////////////////
+
+        // i dont really know what this does but it fixed some bugs so dont touch
+        final CoordinatorLayout coordinator = findViewById(R.id.coordinator);
+        ViewCompat.postOnAnimation(coordinator, new Runnable() {
+            @Override
+            public void run() {
+                ViewCompat.postInvalidateOnAnimation(coordinator);
+            }
+        });
 
         // get the bottom sheets and their behaviors
         detailLayout = findViewById(R.id.itinerary_detail_layout);
         recapLayout = findViewById(R.id.itinerary_recap_layout);
         sheetBehaviorDetail = BottomSheetBehavior.from(detailLayout);
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
+
+        recapButton = findViewById(R.id.recap_fab);
+        recapButton.setOnClickListener(this);
+        recapButton.setTag(10);
+
+        /////////////////////////
+        ///// MAP CONTROL //////
+        ////////////////////////
+
+        // get the buttons for map control
+        zoomInButton = findViewById(R.id.zoom_in);
+        zoomOutButton = findViewById(R.id.zoom_out);
+        locateButton = findViewById(R.id.locate);
+
+        // attribute the onClickListener and set Tags
+        zoomInButton.setOnClickListener(this);
+        zoomOutButton.setOnClickListener(this);
+        locateButton.setOnClickListener(this);
+
+        zoomInButton.setTag(13);
+        zoomOutButton.setTag(12);
+        locateButton.setTag(11);
+
+        /////////////////////////
+        ///// MAP DISPLAY //////
+        ////////////////////////
 
         //Map display
         map = findViewById(R.id.map);
@@ -118,9 +159,13 @@ public class ItineraryActivity extends AppCompatActivity  {
         mapController.setCenter(defaultPoint);
         map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
 
+        /////////////////////////
+        ///// ITINERARIES //////
+        ////////////////////////
+
         //Get itineraries from the Async task
         Intent intent = getIntent();
-        ArrayList<Itinerary> itineraries = new ArrayList<>();
+        itineraries = new ArrayList<>();
         itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
 
         //Paintlists for the effect on the polyline
@@ -156,19 +201,28 @@ public class ItineraryActivity extends AppCompatActivity  {
         // display recap
         displayRecap(itineraries);
 
-        // behaviour when you click outside the line
-        final ArrayList<Itinerary> finalItineraries = itineraries;
+        // behaviour when you click outside the line on the map
         MapEventsReceiver mReceive = new MapEventsReceiver() {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 // behaviour when you click anywhere on the map : we want to reset everything back to normal
                 InfoWindow.closeAllInfoWindowsOn(map);
-                for (int i = 1; i<finalItineraries.size(); i++){ // we go through all the polylines that are displayed
+                for (int i = 1; i<itineraries.size(); i++){ // we go through all the polylines that are displayed
                     Polyline selectedLine = (Polyline) map.getOverlays().get(i);
                     resetPolylineAppearance(selectedLine);
                 }
-                // remove details in the bottom window and display recap instead
-                displayRecap(finalItineraries);
+                // if a line is selected, display recap, else, do nothing
+//                boolean lineSelected = false;
+//                int i=1;
+//                while (!lineSelected&&i<finalItineraries.size()){
+//                    Polyline l = (Polyline) map.getOverlays().get(i);
+//                    if (l.getOutlinePaintLists().contains(paintBorderSelected)){
+//                        lineSelected=true;
+//                        displayRecap(finalItineraries);
+//                    }
+//                    i++;
+//                }
+                displayRecap(itineraries);
                 return true;
             }
 
@@ -198,6 +252,14 @@ public class ItineraryActivity extends AppCompatActivity  {
         endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(endMarker);
+
+        //Bottom Menu
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
     }
 
     //DISPLAY ITINERARY
@@ -292,12 +354,6 @@ public class ItineraryActivity extends AppCompatActivity  {
 
     //DISPLAY DETAILS UNDER MAP
     private void displayDetails(Itinerary itinerary){
-//        // hide recap
-//        recapView.setVisibility(View.GONE);
-//        // show details layout
-//        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-//        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
-
         //start and end
         TextView viewPoint1 = findViewById(R.id.start_point);
         TextView viewPoint2 = findViewById(R.id.end_point);
@@ -348,7 +404,10 @@ public class ItineraryActivity extends AppCompatActivity  {
             viewPoint1.setText("error");
             viewPoint2.setText("error");
         }
-        sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_HIDDEN);
+        sheetBehaviorRecap.setPeekHeight(0); // so that the sheet can be hidden
+        sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        changeAnchor(recapButton,R.id.itinerary_detail_layout); // this attaches the map control buttons to the new bottom sheet (in this case details)
+        sheetBehaviorDetail.setPeekHeight((int)getResources().getDimension(R.dimen.peek_height));
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
 
@@ -404,11 +463,15 @@ public class ItineraryActivity extends AppCompatActivity  {
                 }
             });
         }
-        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HIDDEN);
+        sheetBehaviorDetail.setPeekHeight(0); // so that the sheet can be hidden
+        sheetBehaviorDetail.setState(sheetBehaviorDetail.getState()==BottomSheetBehavior.STATE_EXPANDED? BottomSheetBehavior.STATE_COLLAPSED:BottomSheetBehavior.STATE_COLLAPSED);
+        changeAnchor(recapButton,R.id.itinerary_recap_layout); // this attaches the control buttons to the new bottom sheet (in this case recap)
+        sheetBehaviorRecap.setPeekHeight((int)getResources().getDimension(R.dimen.peek_height)); // reassign the original peekheight so we can get the top of the view
+        // we have to do it this way because of a bug from the google bottom sheet behavior
         recapLayout.post(new Runnable() {
             @Override
             public void run() {
-                sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_EXPANDED);
+                sheetBehaviorRecap.setState(sheetBehaviorRecap.getState()==BottomSheetBehavior.STATE_COLLAPSED? BottomSheetBehavior.STATE_EXPANDED: BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }
@@ -466,8 +529,8 @@ public class ItineraryActivity extends AppCompatActivity  {
         return line;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //Methods to center map on points, useless for the app, but useful to debug
+    //////////////////////////////////
+    // Methods to center map on points
     public void onClickP1(View view) {
         System.out.println(startPosition);
         mapController.setCenter(startPosition);
@@ -475,5 +538,34 @@ public class ItineraryActivity extends AppCompatActivity  {
 
     public void onClickP2(View view) {
         mapController.setCenter(endPosition);
+    }
+
+    ////////////////////////////////
+    // Function to control map
+
+    @Override
+    public void onClick(View v) {
+        int i = (int) v.getTag();
+        switch (i) {
+            case 10: // recap button
+                displayRecap(itineraries);
+                break;
+            case 11: // center on lines
+                Polyline line = (Polyline) map.getOverlays().get(1);
+                map.zoomToBoundingBox(line.getBounds(),true,120);
+                break;
+            case 12: // zoom out
+                map.getController().zoomOut();
+                break;
+            case 13: // zoom in
+                map.getController().zoomIn();
+                break;
+        }
+    }
+
+    public void changeAnchor(FloatingActionButton fab, int id){
+        CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        p.setAnchorId(id);
+        fab.setLayoutParams(p);
     }
 }

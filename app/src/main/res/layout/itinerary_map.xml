@@ -17,4 +17,5 @@
         app:layout_constraintTop_toTopOf="parent">
     </org.osmdroid.views.MapView>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

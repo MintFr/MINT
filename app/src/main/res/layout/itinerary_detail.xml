@@ -9,8 +9,8 @@
     android:orientation="vertical"
     android:layout_gravity="bottom"
     android:paddingBottom="@dimen/bottom_navigation_height"
-    app:behavior_hideable="true"
     app:behavior_peekHeight="@dimen/peek_height"
+    app:behavior_hideable="false"
     android:focusable="false"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 

@@ -689,6 +689,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else if (endAddress.getCoordinates().isZero() & startAddress.getCoordinates().isZero()){ //conversion impossible
                     error = 1;
                 }
+                else if (startAddress.getCoordinates().getLatitude()<47.0 |
+                        startAddress.getCoordinates().getLatitude()>47.4|
+                        startAddress.getCoordinates().getLongitude()<-1.8|
+                        startAddress.getCoordinates().getLongitude()>-1.3){
+                    //System.out.pri
+                    error = 3;
+                }
+                else if (endAddress.getCoordinates().getLatitude()<47.0 |
+                        endAddress.getCoordinates().getLatitude()>47.4|
+                        endAddress.getCoordinates().getLongitude()<-1.8|
+                        endAddress.getCoordinates().getLongitude()>-1.3) {
+                    error = 4;
+                }
+
 
 
                 switch (error){
@@ -706,6 +720,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case 2:
                         Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(this, "Point de départ hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:
+                        Toast.makeText(this, "Point d'arrivée hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
+                        break;
 
 
 

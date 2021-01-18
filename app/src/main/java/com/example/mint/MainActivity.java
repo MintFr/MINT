@@ -238,14 +238,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addressListView.setOnItemClickListener(onItemClickListener());
 
         //User's location
-        localisationRequest.setOnClickListener(new View.OnClickListener() {
+        localisationRequest.setOnClickListener(new View.OnClickListener() { //OnClick for location_request button = "Ma position"
             @Override
             public void onClick(View v) {
 
                 // We need this parameter to check if the phone's GPS is activated
                 locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-                assert locationManager != null;
-                GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                assert locationManager != null; //check if there the app is allowed to access location
+                GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
 
                 // If the permission to access to the user's location is already given, we use it
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // If we don't have the permission, we ask the permission to use their location
                 else {
-                    requestLocalisationPermission();
+                    requestLocalisationPermission(); //line 447
                 }
             }
         });
@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this) //create a dialog window to autorise access to location only if the user previously refused to grant location
                     .setTitle("Autorisation nécessaire")
                     .setMessage("Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.")
                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener(){
@@ -476,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Return the answer of the location permission request in a "short popup window" at the bottom of the screen
+    // Return the answer of the location permission request in a "short toast window" at the bottom of the screen
     // and print the user's position if we have the permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -488,7 +488,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && GpsStatus) {
                     popUp.dismiss();
-                    getLocation();
+                    getLocation(); //getLocation to avoid clicking again on "Ma position"
                 }
             }
             else {
@@ -505,13 +505,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("oui", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)); //access to phone's settings to activate GPS
                         ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                 Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
                         popUp.dismiss();
                     }
                 })
-                .setNegativeButton("non", new DialogInterface.OnClickListener(){
+                .setNegativeButton("non", new DialogInterface.OnClickListener(){ //refuse to activate GPS
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -523,6 +523,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Return user's position in coordinates
     @SuppressLint("MissingPermission")
     private void getLocation(){
+        //Access user's location
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
 

@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.layout_bg_popup));
         popupWindow.setHeight((int)getResources().getDimension(R.dimen.list_view_height));
 
+
         // set the listview as popup content
         popupWindow.setContentView(addressListView);
 

@@ -44,11 +44,9 @@ public class Address {
         this.coordinates = coordinates;
     }
 
-    public void coordinatesToLocationName(){
-        
+    public void setCoordinates(double latitude, double longitude) {
+        this.coordinates.setLatitude(latitude);
+        this.coordinates.setLongitude(longitude);
     }
 
-    public void locationNameToCoordinates(){
-
-    }
 }

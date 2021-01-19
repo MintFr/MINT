@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -48,11 +49,13 @@ import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.Inflater;
 
 /**
@@ -204,8 +207,22 @@ public class ItineraryActivity extends AppCompatActivity  {
     private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){
         // polyline for itinerary
         List<GeoPoint> geoPoints = new ArrayList<>();
+        List<Address> streets = new ArrayList<>();
         for (int j = 0; j<itinerary.getPointSize();j++){
             geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0],itinerary.getPoints().get(j)[1]));
+            //System.out.println(itinerary.getPoints().get(j)[0]);
+            Address address = new Address();
+            try {
+                Geocoder geocoder = new Geocoder(ItineraryActivity.this, Locale.getDefault());
+                List<android.location.Address> addresses = geocoder.getFromLocation(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1],1);
+                String a = addresses.get(0).getAddressLine(0);
+                System.out.println(a);
+                address.setCoordinates(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]);
+                address.setLocationName(a);
+                streets.add(address);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         final Polyline line = new Polyline(map);
@@ -476,4 +493,22 @@ public class ItineraryActivity extends AppCompatActivity  {
     public void onClickP2(View view) {
         mapController.setCenter(endPosition);
     }
+
+    public List<Steps> detailItinerary(List<Steps> steps){
+        List<Steps> newSteps = new ArrayList<>();
+        String address = steps.get(0).getAddress();
+        int distance = steps.get(0).getDistance();
+        for (Steps step:steps){
+            if (step.getAddress().equals(address)){
+                distance += step.getDistance();
+            }
+            else{
+                newSteps.add(new Steps(address, distance));
+                address = step.getAddress();
+                distance = step.getDistance();
+            }
+        }
+        return newSteps;
+    }
 }
+

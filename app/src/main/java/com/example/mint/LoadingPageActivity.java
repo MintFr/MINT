@@ -16,13 +16,18 @@ public class LoadingPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading_page);
 
         Intent intent = getIntent();
-        //Get parameters corresponding to addresses from the main activity
+        //Get parameters corresponding to addresses from the main activity (by default we put centrale nantes and chu hotel dieu)
         double param1 = intent.getDoubleExtra("param1",0.0);
         double param2 = intent.getDoubleExtra("param2",0.0);
         double param3 = intent.getDoubleExtra("param3",0.0);
-        double param4 = intent.getDoubleExtra("param4",0.0);
+        double param4 = intent.getDoubleExtra("param4", 0.0);
 
-
+        if (param1==0.0&&param2==0.0&&param3==0.0&&param4==0.0){
+            param1=47.2484039066116;
+            param2=-1.549636963829987;
+            param3=47.212191574506164;
+            param4=-1.5535549386503666;
+        }
         int[] options = Preferences.getOptionTransportation(this);
         boolean noOptions = true;
         for (int i:options) {

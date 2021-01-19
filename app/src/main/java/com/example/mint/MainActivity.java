@@ -274,7 +274,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         popupWindow.setFocusable(false);
         popupWindow.setWidth((int)getResources().getDimension(R.dimen.start_point_width));
         popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.layout_bg_popup));
-        popupWindow.setHeight((int)getResources().getDimension(R.dimen.list_view_height));
+        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED); // To avoid that the popup hide the keyboard
+        popupWindow.setOutsideTouchable(false); // To avoid that the popup hide the keyboard
 
 
         // set the listview as popup content

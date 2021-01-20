@@ -548,6 +548,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         int i = (int) v.getTag();
         switch (i) {
             case 10: // recap button
+                // reset everything back to normal and display itinerary
+                InfoWindow.closeAllInfoWindowsOn(map);
+                for (int j = 1; j<itineraries.size(); j++){ // we go through all the polylines that are displayed
+                    Polyline selectedLine = (Polyline) map.getOverlays().get(j);
+                    resetPolylineAppearance(selectedLine);
+                }
                 displayRecap(itineraries);
                 break;
             case 11: // center on lines

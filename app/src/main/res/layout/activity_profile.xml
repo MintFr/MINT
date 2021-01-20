@@ -75,7 +75,9 @@
                         android:paddingBottom="15dp"
                         android:text="@string/param_button"
                         android:textColor="#999999"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <Button
                         android:id="@+id/sensibility"

@@ -31,6 +31,8 @@ import java.util.ArrayList;
  */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private TextView parameters;
+
     private Button sensibilityButton;
     private Button favoriteAddressesButton;
     private Button favoriteTransportationButton;
@@ -68,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //Preferences.clearTransportation(this);
 
         //link layout elements to activity
+        parameters = findViewById(R.id.parameters);
         sensibilityButton = findViewById(R.id.sensibility);
         favoriteAddressesButton = findViewById(R.id.favorite_addresses);
         favoriteTransportationButton = findViewById(R.id.favorite_transportation);
@@ -83,6 +86,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sensibilityButton.setOnClickListener(this);
         favoriteAddressesButton.setOnClickListener(this);
         favoriteTransportationButton.setOnClickListener(this);
+
+        // on click callback for parameters : open new activity
+        parameters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+            }
+        });
 
         // used to call the layout which is going to be in the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);

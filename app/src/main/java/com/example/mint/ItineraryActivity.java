@@ -464,7 +464,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             });
         }
         sheetBehaviorDetail.setPeekHeight(0); // so that the sheet can be hidden
-        sheetBehaviorDetail.setState(sheetBehaviorDetail.getState()==BottomSheetBehavior.STATE_EXPANDED? BottomSheetBehavior.STATE_COLLAPSED:BottomSheetBehavior.STATE_COLLAPSED);
+        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_COLLAPSED);
         changeAnchor(recapButton,R.id.itinerary_recap_layout); // this attaches the control buttons to the new bottom sheet (in this case recap)
         sheetBehaviorRecap.setPeekHeight((int)getResources().getDimension(R.dimen.peek_height)); // reassign the original peekheight so we can get the top of the view
         // we have to do it this way because of a bug from the google bottom sheet behavior

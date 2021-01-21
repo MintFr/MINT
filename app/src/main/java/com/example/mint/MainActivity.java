@@ -690,7 +690,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!CheckInternet()){ //no internet connection
                     error = 2;
                 }
-                else if (endAddress.getCoordinates().isZero() & startAddress.getCoordinates().isZero()){ //conversion impossible
+                else if (endAddress.getCoordinates().isZero() || startAddress.getCoordinates().isZero()){ //conversion impossible
                     error = 1;
                 }
                 else if (startAddress.getCoordinates().getLatitude()<47.0 |

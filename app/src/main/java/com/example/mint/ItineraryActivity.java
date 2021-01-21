@@ -197,6 +197,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         for (int j=0;j<itineraries.size()-1;j++){
             displayItinerary(itineraries.get(j), itineraries,j);
         }
+        Preferences.setLastPollution((int)itineraries.get(0).getPollution(),this);
 
         // display recap
         displayRecap(itineraries);

@@ -3,12 +3,107 @@ package com.example.mint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * This class is used to record the user's preferences in terms of sensibility, addresses and transportation
  */
 public class Preferences {
-    //  OPTION //
+    // TIME HANDLING //
+    // this will be used to handle the storage of pollution over different days and months, to check when a new day/month/year starts
+    public static void setDate(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("date",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        final Calendar cldr = Calendar.getInstance();
+        int year = cldr.get(Calendar.YEAR);
+        int month = cldr.get(Calendar.MONTH);
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        editor.putInt("year",year);
+        editor.putInt("month",month);
+        editor.putInt("day",day);
+        editor.apply();
+    }
+    public static int[] getLastDate(Context context){
+        // this returns the last date we stored
+        // this is going to be used to check whether we have started a new day or month or year since the date was last saved
+        SharedPreferences prefs = context.getSharedPreferences("date",Context.MODE_PRIVATE);
+        // we are going to store the date as so : {day,month,year}
+        int[] lastDate = new int[3];
+        lastDate[0] = prefs.getInt("day",0);
+        lastDate[1] = prefs.getInt("month",0);
+        lastDate[2] = prefs.getInt("year",0);
+        return lastDate;
+    }
+    public static int[] getCurrentDate(){
+        // this doesn't use sharedPreferences but we put it here anyway to have all the time handling methods in the same place
+        final Calendar cldr = Calendar.getInstance();
+        int year = cldr.get(Calendar.YEAR);
+        int month = cldr.get(Calendar.MONTH);
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int[] date = {day,month,year};
+        return date;
+    }
+
+    //////////////////////////////
+    // POLLUTION
+    public static void setLastPollution(int value, Context context){
+        // Stores the pollution from the last itinerary
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("lastPollution",value);
+        editor.apply();
+    }
+    public static int getLastPollution(Context context){
+        // Returns the pollution from the last itinerary
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        int lastPollution = prefs.getInt("lastPollution",0);
+        return lastPollution;
+    }
+    public static void setPollutionToday(int value, Context context){
+        // Stores the pollution from today
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("pollutionToday",value);
+        editor.apply();
+    }
+    public static int getPollutionToday(Context context){
+        // Returns the pollution from today
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        int pollutionToday = prefs.getInt("pollutionToday",0);
+        return pollutionToday;
+    }
+    public static void setPollutionMonth(int month, ArrayList<Integer> values, Context context){
+        // Stores the pollution from this month
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        for (int i=1;i<=values.size();i++){
+            // we are going to store the pollution from a day like so :
+            // for example, for the 22 of october, the key is "22_10"
+            editor.putInt(i+"_"+month,values.get(i-1));
+        }
+        editor.apply();
+    }
+    public static ArrayList<Integer> getPollutionMonth(int month,Context context){
+        // Returns the pollution values for a month
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        ArrayList<Integer> values = new ArrayList<>();
+        for (int i=1;i<=31;i++){
+            values.add(prefs.getInt(i+"_"+month,0));
+        }
+        return values;
+    }
+    public static void addDayPollutionToMonth(int[] date, int value, Context context){
+        // adds the pollution from one day to the array of pollutions from a month
+        // we are going to store the pollution from a day like so :
+        // for example, for the 22 of october, the key is "22_10"
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(date[0]+"_"+date[1],value);
+        editor.apply();
+    }
+
+    /////////////////////
+    //  OPTION
     public static void setOptionTransportation(int[] value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

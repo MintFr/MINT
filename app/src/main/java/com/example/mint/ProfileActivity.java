@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.text.Editable;
@@ -25,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
@@ -44,7 +50,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private PopupWindow sensibilityPopupWindow;
     private PopupWindow transportationPopupWindow;
 
-    // addresses //
+    // pollution profile
+    private TextView pollutionToday;
+    private LineChart graph;
+
+    // addresses
     private Button addButton;
     private EditText enterAddress;
     private String addedAddress;
@@ -76,6 +86,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         favoriteTransportationButton = findViewById(R.id.favorite_transportation);
 
         dim_popup = findViewById(R.id.dim_popup);
+
+        // handle the pollution
+        pollutionToday = findViewById(R.id.exposure_today);
+        resetPollutionNewDay(); // check whether a new day has started and if so reset pollution to 0 and store the last value
+        setPollutionToday(); // Get the pollution from the last itineraries and changes the pollution from today accordingly
+
+        // handle the graph
+        // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
+        ArrayList<Integer> valuesTest = new ArrayList<>();
+        for (int j=0;j<31;j++){
+            valuesTest.add((int) (Math.random() * 100));
+        }
+        Preferences.setPollutionMonth(1,valuesTest,this);
+        graph = findViewById(R.id.chart);
+        setUpGraph();
 
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
@@ -495,6 +520,45 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 selectedIcon.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private void setPollutionToday(){
+        int pollution = Preferences.getPollutionToday(this);
+        int lastPol = Preferences.getLastPollution(this);
+        System.out.println(lastPol);
+        pollution+=lastPol;
+        Preferences.setPollutionToday(pollution,this);
+        pollutionToday.setText(Integer.toString(pollution));
+    }
+
+    private void resetPollutionNewDay(){
+        // what this function does is check whether we have started a new day or not everytime we open the profile activity
+        // If so, we save the new day value in the preferences, to be used as a comparison for the next time this function is called
+        // Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
+
+        // first we check whether today is a new day or not
+        // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
+        int[] lastDate = Preferences.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
+        int[] currentDate = Preferences.getCurrentDate(); // this is the current date
+
+        if (currentDate[0]!=lastDate[0]){
+            Preferences.setDate(ProfileActivity.this); // we replace the last saved date with today's date
+            // then we add the pollution from the last day to the array of this month's pollution
+            Preferences.addDayPollutionToMonth(lastDate,Preferences.getPollutionToday(ProfileActivity.this),ProfileActivity.this);
+            Preferences.setPollutionToday(0,ProfileActivity.this); // we start over with a value of 0
+        }
+    }
+
+    private void setUpGraph(){
+        ArrayList<Integer> values = Preferences.getPollutionMonth(1,this);
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i=0;i<values.size();i++){
+            entries.add(new Entry(i+1,values.get(i)));
+        }
+        LineDataSet dataSet = new LineDataSet(entries,"Janvier");
+        LineData lineData = new LineData(dataSet);
+        graph.setData(lineData);
+        graph.invalidate(); // refresh
     }
 
 

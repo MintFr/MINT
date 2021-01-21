@@ -55,12 +55,10 @@ public class Itinerary implements Serializable {
     public Itinerary(JSONObject json){
         //Reading JSON
         try{
-            Random rand = new Random();
-            double pollution = rand.nextInt(100) + 1;
+            int r = (int) (Math.random() * 100);
             this.type = json.getString("transport");
             //this.pollution = json.getDouble("exposition");
-            this.pollution = pollution;
-            this.pollution =
+            this.pollution = (double) r;
             this.time = json.getDouble("duration");
             this.points = new ArrayList<>();
             JSONArray steps = json.getJSONArray("pointsItinerary");

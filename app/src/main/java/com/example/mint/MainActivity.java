@@ -721,6 +721,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case 1:
                         Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                        intent1.putExtra("param1", 47.2484039066116);
+                        intent1.putExtra("param2", -1.549636963829987);
+                        intent1.putExtra("param3", 47.212191574506164);
+                        intent1.putExtra("param4", -1.5535549386503666);
+                        startActivity(intent1);
+                        finish();
                         break;
                     case 2:
                         Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();

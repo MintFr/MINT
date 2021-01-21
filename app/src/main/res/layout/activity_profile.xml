@@ -21,7 +21,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/bottom_navigation_height">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -218,7 +219,8 @@
                         android:maxWidth="180dp"
                         android:text="@string/exposure_last_travel_text"
                         android:textColor="#999999"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        style="@style/bold"/>
 
                     <ImageView
                         android:id="@+id/graph"
@@ -232,37 +234,57 @@
                         android:layout_weight="1"
                         android:contentDescription="@string/graph_pie"
                         android:src="@drawable/graph_pie" />
-
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center">
                     <TextView
                         android:id="@+id/exposure_today"
-                        android:layout_width="0dp"
-                        android:layout_height="62dp"
-                        android:layout_gravity="center|start|end"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand_bold"
-                        android:gravity="center|center_horizontal|center_vertical"
+                        android:layout_centerHorizontal="true"
                         android:text="@string/max_value_exposure"
                         android:textColor="@color/colorAccent"
-                        android:textSize="32sp" />
+                        android:textSize="32sp"
+                        style="@style/bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-8dp"
+                            android:text="@string/exposition_unit"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorAccent"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/exposure_today"/>
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/profile_third_box"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/chart_week"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:contentDescription="@string/graph_week"
-                        android:src="@drawable/chart_week" />
+                        android:src="@drawable/chart_week" />-->
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
+
                 </RelativeLayout>
 
             </LinearLayout>

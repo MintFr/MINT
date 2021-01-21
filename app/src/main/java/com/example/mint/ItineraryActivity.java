@@ -307,13 +307,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
         //pollution
-        if((itinerary.getPollution()>=0)&&(itinerary.getPollution()<0.33)){
+        if((itinerary.getPollution()>=0)&&(itinerary.getPollution()<33)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
         }
-        else if((itinerary.getPollution()>=0.33)&&(itinerary.getPollution()<0.66)){
+        else if((itinerary.getPollution()>=33)&&(itinerary.getPollution()<66)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
         }
-        else if((itinerary.getPollution()>=0.66)&&(itinerary.getPollution()<=1)){
+        else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=100)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
         final InfoWindow infoWindow = new InfoWindow(infoWindowView,map) {
@@ -340,7 +340,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // add line to map
         map.getOverlays().add(line);
-        System.out.println("index de la ligne : "+map.getOverlayManager().indexOf(line));
 
         // on click behaviour of line (highlight it, show details, show infowindow)
         line.setOnClickListener(new Polyline.OnClickListener() {

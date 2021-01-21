@@ -35,7 +35,7 @@
         android:paddingLeft="30dp"
         android:gravity="center_vertical"
         android:text="@string/settings_faq"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:clickable="true"
         android:focusable="true"
         android:layout_below="@id/settings_separator_1" />
@@ -52,7 +52,7 @@
         android:paddingLeft="30dp"
         android:gravity="center_vertical"
         android:text="@string/settings_language"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_below="@id/settings_separator_2"/>
     <View
         android:id="@+id/settings_separator_3"
@@ -76,7 +76,7 @@
         android:paddingLeft="30dp"
         android:gravity="center_vertical"
         android:text="@string/settings_legal"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:clickable="true"
         android:focusable="true"
         android:layout_below="@id/settings_separator_3"/>
@@ -100,7 +100,7 @@
         android:paddingLeft="30dp"
         android:gravity="center_vertical"
         android:text="@string/settings_dark_mode"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_below="@id/settings_separator_4"/>
     <View
         android:id="@+id/settings_separator_5"

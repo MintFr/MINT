@@ -212,7 +212,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical|end"
-                        android:layout_weight="3"
+                        android:paddingLeft="10dp"
+                        android:layout_weight="2"
                         android:gravity="start"
                         android:maxWidth="180dp"
                         android:text="@string/exposure_last_travel_text"
@@ -233,7 +234,7 @@
                         android:src="@drawable/graph_pie" />
 
                     <TextView
-                        android:id="@+id/text_right"
+                        android:id="@+id/exposure_today"
                         android:layout_width="0dp"
                         android:layout_height="62dp"
                         android:layout_gravity="center|start|end"
@@ -241,7 +242,7 @@
                         android:fontFamily="@font/quicksand_bold"
                         android:gravity="center|center_horizontal|center_vertical"
                         android:text="@string/max_value_exposure"
-                        android:textColor="#89BE89"
+                        android:textColor="@color/colorAccent"
                         android:textSize="32sp" />
                 </LinearLayout>
 

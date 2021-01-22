@@ -25,7 +25,7 @@ public class Preferences {
         int month = cldr.get(Calendar.MONTH);
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         editor.putInt("year",year);
-        editor.putInt("month",month);
+        editor.putInt("month",(month+1));
         editor.putInt("day",day);
         editor.apply();
     }
@@ -57,7 +57,7 @@ public class Preferences {
         int year = cldr.get(Calendar.YEAR);
         int month = cldr.get(Calendar.MONTH);
         int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int[] date = {day,month,year};
+        int[] date = {day,(month+1),year};
         return date;
     }
 

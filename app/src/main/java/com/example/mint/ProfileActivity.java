@@ -1,14 +1,19 @@
 package com.example.mint;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -79,7 +84,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private PopupWindow transportationPopupWindow;
 
 
-    // TODO javadoc comments
+    /**
+     * This activity handles the input of various preferences and the display of the pollution exposure throughout time
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,15 +108,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // handle the pollution
         pollutionToday = findViewById(R.id.exposure_today);
         resetPollutionNewDay(); // check whether a new day has started and if so reset pollution to 0 and store the last value
-        setPollutionToday(); // Get the pollution from the last itineraries and changes the pollution from today accordingly
+        setPollutionToday(); // Get the pollution from the last itineraries and change the pollution from today accordingly
+        Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this); // update graph with today's pollution
+
+
+        // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
+//        ArrayList<Integer> valuesTest = new ArrayList<>();
+//        ArrayList<Integer> valuesTest2 = new ArrayList<>();
+//        for (int j=0;j<31;j++){
+//            valuesTest.add((int) (Math.random() * 100));
+//        }
+//        for (int j=0;j<31;j++){
+//            valuesTest2.add(0);
+//        }
+//        Preferences.setPollutionMonth(1,valuesTest2,this);
+//        Preferences.setPollutionMonth(2,valuesTest2,this);
 
         // handle the graph
-        // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
-        ArrayList<Integer> valuesTest = new ArrayList<>();
-        for (int j=0;j<31;j++){
-            valuesTest.add((int) (Math.random() * 100));
-        }
-        Preferences.setPollutionMonth(1,valuesTest,this);
         graph = findViewById(R.id.chart);
         setUpGraph();
 
@@ -559,17 +575,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * This adds the pollution from the last itinerary to today's pollution
      */
     private void setPollutionToday(){
+        // get the pollution from today
         int pollution = Preferences.getPollutionToday(this);
+        // get the pollution from the last itinerary
         int lastPol = Preferences.getLastPollution(this);
-        System.out.println(lastPol);
+        // add it to the pollution from today
         pollution+=lastPol;
+        // save it in the preferences
         Preferences.setPollutionToday(pollution,this);
+        System.out.println(pollution);
+        // display new pollution
         pollutionToday.setText(Integer.toString(pollution));
+        // reset the last pollution now that it has been saved (so that it doesn't keep adding it as soon as we reopen the profile)
+        Preferences.setLastPollution(0,this);
     }
 
     /**
-     * what this function does is check whether we have started a new day or not everytime we open the profile activity
-     * If so, we save the new day value in the preferences, to be used as a comparison for the next time this function is called
+     * This method checks whether we have started a new day or not every time we open the profile activity
+     * If so, we save the new date value in the preferences, to be used as a comparison for the next time this function is called
      * Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
      */
     private void resetPollutionNewDay(){
@@ -590,10 +613,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * This handles all the graph values and appearance settings
      */
     private void setUpGraph(){
-        // MONTH GRAPH
-
         // we get the pollution data from preferences
-        ArrayList<Integer> values = Preferences.getPollutionMonth(1,this);
+        ArrayList<Integer> values = Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this);
 
         // we convert it a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
@@ -602,7 +623,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         // LineDataSet allows for individual styling of this data (for if we have several data sets)
-        LineDataSet dataSet = new LineDataSet(entries,"Janvier");
+        LineDataSet dataSet = new LineDataSet(entries,null);
+        dataSet.setColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setLineWidth(3);
+        dataSet.setDrawCircles(false);
+        dataSet.setDrawValues(false);
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+
+        // Axis styling
+        // Y axis
+        YAxis yAxisRight = graph.getAxisRight();
+        YAxis yAxisLeft = graph.getAxisLeft();
+        yAxisRight.setEnabled(false);
+        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setGridLineWidth(0.5f);
+        yAxisLeft.setGridColor(getResources().getColor(R.color.colorLightGrey));
+        yAxisLeft.setTypeface(Typeface.DEFAULT);
+        yAxisLeft.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // X axis
+        XAxis xAxis = graph.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisMaximum(Preferences.getCurrentDate()[0]);
+        xAxis.setAxisMinimum(0);
+        xAxis.setTypeface(Typeface.DEFAULT);
+        xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
 
         // LineData allows for styling of the whole chart
         LineData lineData = new LineData(dataSet);

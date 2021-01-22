@@ -113,7 +113,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     LayoutInflater inflater;
 
     /**
-     * TODO comment
+     * On create of this activity, display itineraries and the recap of all the itineraries
      * @param savedInstanceState
      */
     @Override
@@ -554,12 +554,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * TODO comment
-     * @param polyline
-     * @param mapView
-     * @param eventPos
-     * @param itinerary
-     * @param size
+     * This method makes the selected itinerary stand out
+     * @param polyline : the polyline of the itinerary that will be highlighted
+     * @param mapView : the background map
+     * @param eventPos : the geoPoint at which you click on the itinerary
+     * @param itinerary : the itinerary that will be highlighted
+     * @param size : the size of the itinerary ArrayList
      */
     private void highlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos,Itinerary itinerary,int size) {
         // show infowindow and details
@@ -588,9 +588,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * TODO comment
+     * Convert a time in seconds to hours
      * @param seconds
-     * @return
+     * @return String
      */
     private String convertIntToHour(int seconds) {
         int minutes = seconds / (int) 60;
@@ -601,7 +601,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * TODO comment
+     * Reset the appearance of a polyline that was highlighted
      * @param polyline
      */
     private void resetPolylineAppearance(Polyline polyline){
@@ -673,9 +673,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * TODO comment
-     * @param fab
-     * @param id
+     * This method changes the anchor for the map control buttons when the bottom menu changes
+     * @param fab : the bottom-most button
+     * @param id : the id of the view which we want to attach the buttons to
      */
     public void changeAnchor(FloatingActionButton fab, int id){
         CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();

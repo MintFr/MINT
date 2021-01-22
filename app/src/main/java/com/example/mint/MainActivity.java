@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimePicker timePicker;
 
     /**
-     * TODO comment
+     * This activity handles the input of start and end points and the itinerary options
      * @param savedInstanceState
      */
     @Override
@@ -285,8 +285,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * TODO javadoc comment
-     * @return
+     * This method creates the popup window for the options
+     * @return PopupWindow : the options popup window
      */
     private PopupWindow showOptions() {
         // create the views for both popUpWindows

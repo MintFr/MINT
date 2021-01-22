@@ -39,6 +39,8 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="40dp"
+                    android:outlineSpotShadowColor="@color/colorAccent"
                     android:padding="20dp">
 
                     <ImageView
@@ -208,6 +210,8 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="30dp"
+                    android:outlineSpotShadowColor="@color/colorAccent"
                     android:padding="20dp">
 
                     <TextView
@@ -241,16 +245,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center">
-                    <TextView
-                        android:id="@+id/exposure_today"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/max_value_exposure"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="32sp"
-                        style="@style/bold"/>
+                        <TextView
+                            android:id="@+id/exposure_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/quicksand_bold"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/max_value_exposure"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="32sp"
+                            style="@style/bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -272,6 +276,8 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="20dp"
+                    android:outlineSpotShadowColor="@color/colorAccent"
                     android:padding="20dp">
 
                     <com.github.mikephil.charting.charts.LineChart

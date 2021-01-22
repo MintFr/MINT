@@ -71,39 +71,60 @@ import org.osmdroid.views.MapView;
  * among other things
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
+
+    private View dimPopup;
+
+    /**
+     * GEOLOC
+     */
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
+    private boolean idBool = false; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
+    boolean GpsStatus = false; //true if the user's location is activated on the phone
+    private final int POSITION_PERMISSION_CODE = 1;
+    LocationManager locationManager;
+
+    /**
+     * MAP
+     */
     private MapView map;
+    IMapController mapController;
+
+    /**
+     * START AND END POINTS
+     */
     private com.example.mint.Address startAddress;
     private com.example.mint.Address endAddress;
-    IMapController mapController;
+
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
-    private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
-    private boolean idBool = false; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
-    private View dimPopup;
     private EditText latitude;
     private EditText longitude;
-    private ImageButton inversionButton;
-    private Button search;
-    private final int POSITION_PERMISSION_CODE = 1;
-    private Button option;
-    private Button dateBtn;
-    private Button timeBtn;
-    boolean GpsStatus = false; //true if the user's location is activated on the phone
-
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
     ListView addressListView;
     String start;
     String end;
-
     EditText buttonClicked;
+    private ImageButton inversionButton;
+    private Button search;
+
+
+    /**
+     * Options
+     */
+    private Button option;
+    private Button dateBtn;
+    private Button timeBtn;
     PopupWindow popUp;
     PopupWindow popUpCalendar;
-    LocationManager locationManager;
     TimePicker timePicker;
 
+    /**
+     * TODO comment
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,12 +226,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    // function that creates the popup window on selection of editTexts
+    /**
+     * function that creates the popup window on selection of editTexts
+     * @return
+     */
     private PopupWindow showFavoriteAddresses() {
 
         // initialize a pop up window type
         PopupWindow popupWindow = new PopupWindow(this);
-        //popupWindow.setOutsideTouchable(true);
         lastAddressList = Preferences.getLastAddresses("lastAddress",this);
         addressList = Preferences.getPrefAddresses("Address", this);
         lastAddressList.add(0,"Mes dernières adresses :");
@@ -218,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         addressList.addAll(0,lastAddressList);
 
+        // Adapter adapts the list of addresses for style
         CustomListAdapter adapter = new CustomListAdapter(this, addressList);
 
         addressListView = new ListView(this);
@@ -298,6 +322,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return popupWindow;
     }
 
+    /**
+     * TODO javadoc comment
+     * @return
+     */
     private PopupWindow showOptions() {
         // create the views for both popUpWindows
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -335,8 +363,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 int i = (int) v.getTag();
+
+                //check which transportation button was clicked
                 ImageButton buttonClicked = optionPopupView.findViewWithTag(i);
                 buttonClicked.setActivated(!buttonClicked.isActivated());
+
+                //add or remove transportation accordingly (if it was added or removed)
                 if (buttonClicked.isActivated()){
                     String key = (String) buttonClicked.getContentDescription();
                     int value = Integer.parseInt(key);
@@ -417,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // the buttons for selecting of you want start time or end time. start time is automatically selected
+        // the buttons for selecting if you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
         startTime.setActivated(true);
         Button endTime = optionPopupView.findViewById(R.id.end_time);
@@ -563,7 +595,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // LOCATION END //
     /////////////////////////////////////////////////////////
 
-    // Callback when the user clicks on an item in the listView
+
+    /**
+     * Callback when the user clicks on an item in the listView
+     * @return
+     */
     private AdapterView.OnItemClickListener onItemClickListener(){
         return new AdapterView.OnItemClickListener() {
             @Override
@@ -577,12 +613,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
     }
 
-    // Method called when the user clicks on "search" or "option"
+    /**
+     * Method called when the user clicks on "search" or "option"
+     * @param v
+     */
     @Override
     public void onClick(View v){
-        int i = (int) v.getTag();
+        int i = (int) v.getTag(); //if 2 : search, if 3 : option
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
+
         // things to do when user clicks search
         if(i==2){
             if (start.length() == 0 || end.length() == 0){
@@ -593,20 +633,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes",Toast.LENGTH_SHORT).show();
             }
             else {
-                int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); // get the number of addresses in the history
-                int[] sameAddresses = getSameAddresses(start,end); // returns which of the start or end adress already exists in the list and its index in the list
-                // if none of the adresses already exist, add them
+                // get the number of addresses in the history
+                int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this);
+
+                // returns which of the start or end address already exists in the list and its index in the list
+                int[] sameAddresses = getSameAddresses(start,end);
+
+                // if none of the addresses already exist, add them
                 if (sameAddresses[0]==-1&&sameAddresses[1]==-1) {
                     Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
                     Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                    nbLastAdd = nbLastAdd + 2; // the number of adresses has increased by 2
+                    nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
                 }
+
                 // if the startpoint already exists, move it to first position and add endpoint
                 else if (sameAddresses[0]!=-1&&sameAddresses[1]==-1){
                     Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
                     Preferences.moveAddressFirst(sameAddresses[0]+1,MainActivity.this);
                     nbLastAdd++; // the number of addresses has increased by 1
                 }
+
                 // if the endpoint already exists, move it to first position and add startpoint
                 else if (sameAddresses[0]==-1&&sameAddresses[1]!=-1) {
                     Preferences.moveAddressFirst(sameAddresses[1],MainActivity.this);
@@ -777,7 +823,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
     }
 
-    // when the focus is on the edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow
+    /**
+     * when the focus is on the start or endpoint edittext, display popupWindow, when the edittext loses focus, dismiss popupWindow
+     * @param v
+     * @param hasFocus
+     */
     @Override
     public void onFocusChange(View v, boolean hasFocus){
         int i = (int) v.getTag();
@@ -792,7 +842,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // This is used to check when the user clicks outside of the edittext // DONT CHANGE \\
+    /**
+     * This is used to check when the user clicks outside of the start or endpoint edittext // DONT CHANGE \\
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -810,11 +862,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.dispatchTouchEvent( event );
     }
 
-    // returns the index of the addresses that already exist in the history list, returns -1 if doesnt exist
+    /**
+     * returns the index of the addresses that already exist in the history list, returns -1 if doesnt exist
+     * @param start
+     * @param end
+     * @return
+     */
     public int[] getSameAddresses(String start, String end){
         int[] arr = new int[2];
-        arr[0]=-1;
-        arr[1]=-1;
+        arr[0]=-1; // startpoint
+        arr[1]=-1; // endpoint
         for (int j = 0; j < Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); j++) {
             String lastAddress = Preferences.getLastAddresses("lastAddress", MainActivity.this).get(j);
             if (start.equals(lastAddress)) {
@@ -827,7 +884,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return arr;
     }
 
-    //Check if the device has an internet connection
+    /**
+     * Check if the device has an internet connection
+     * @return
+     */
     public boolean CheckInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||

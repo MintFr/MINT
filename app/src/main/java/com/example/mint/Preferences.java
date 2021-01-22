@@ -9,8 +9,14 @@ import java.util.Calendar;
  * This class is used to record the user's preferences in terms of sensibility, addresses and transportation
  */
 public class Preferences {
+
     // TIME HANDLING //
     // this will be used to handle the storage of pollution over different days and months, to check when a new day/month/year starts
+
+    /**
+     * TODO comment
+     * @param context
+     */
     public static void setDate(Context context){
         SharedPreferences prefs = context.getSharedPreferences("date",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -23,10 +29,16 @@ public class Preferences {
         editor.putInt("day",day);
         editor.apply();
     }
+
+    /**
+     * this returns the last date we stored
+     * @param context
+     * @return
+     */
     public static int[] getLastDate(Context context){
-        // this returns the last date we stored
         // this is going to be used to check whether we have started a new day or month or year since the date was last saved
         SharedPreferences prefs = context.getSharedPreferences("date",Context.MODE_PRIVATE);
+
         // we are going to store the date as so : {day,month,year}
         int[] lastDate = new int[3];
         lastDate[0] = prefs.getInt("day",0);
@@ -34,6 +46,11 @@ public class Preferences {
         lastDate[2] = prefs.getInt("year",0);
         return lastDate;
     }
+
+    /**
+     * TODO comment
+     * @return
+     */
     public static int[] getCurrentDate(){
         // this doesn't use sharedPreferences but we put it here anyway to have all the time handling methods in the same place
         final Calendar cldr = Calendar.getInstance();
@@ -46,6 +63,12 @@ public class Preferences {
 
     //////////////////////////////
     // POLLUTION
+
+    /**
+     * TODO comment
+     * @param value
+     * @param context
+     */
     public static void setLastPollution(int value, Context context){
         // Stores the pollution from the last itinerary
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
@@ -328,5 +351,5 @@ public class Preferences {
         return prefs.getInt(arrayName + "_size", 0);
     }
 
-    // END TRANPORTATION //
+    // END TRANSPORTATION //
 }

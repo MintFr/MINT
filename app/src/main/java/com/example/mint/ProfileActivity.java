@@ -37,39 +37,49 @@ import java.util.List;
  */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView parameters;
-
-    private Button sensibilityButton;
-    private Button favoriteAddressesButton;
-    private Button favoriteTransportationButton;
-
+    /**
+     * dim the screen behind the popup window
+     */
     private View dim_popup;
 
-    private int buttonView;
-    private PopupWindow addressPopupWindow;
-    private PopupWindow sensibilityPopupWindow;
-    private PopupWindow transportationPopupWindow;
+    /**
+     * parameters textView
+     */
+    private TextView parameters;
 
-    // pollution profile
+    /**
+     * pollution profile
+     */
     private TextView pollutionToday;
     private LineChart graph;
 
-    // addresses
+    /**
+     * favorite addresses
+     */
     private Button addButton;
+    private Button favoriteAddressesButton;
     private EditText enterAddress;
-    private String addedAddress;
+    private PopupWindow addressPopupWindow;
 
-    // sensibility
+    /**
+     * sensibility
+     */
     private TextView setSensibility;
+    private Button sensibilityButton;
+    private PopupWindow sensibilityPopupWindow;
 
-    // transportation
-    ImageView carIcon;
-    ImageView tramIcon;
-    ImageView bikeIcon;
-    ImageView walkIcon;
+    /**
+     * transportation
+     */
+    private ImageView carIcon;
+    private ImageView tramIcon;
+    private ImageView bikeIcon;
+    private ImageView walkIcon;
+    private Button favoriteTransportationButton;
+    private PopupWindow transportationPopupWindow;
 
-    int activated =0;
 
+    // TODO javadoc comments
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // create the popup window
         int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
         int height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup dismiss it
+        boolean focusable = true; // lets user tap outside the popup dismiss it
         addressPopupWindow = new PopupWindow(this);
         addressPopupWindow.setBackgroundDrawable(null);
         addressPopupWindow.setContentView(addressPopupView);
@@ -438,7 +448,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // TRANSPORTATION POPUP END //
         /////////////////////////////////////////////////////////
 
-        //Bottom Menu
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU //
+        /////////////////////////////////////////////////////////
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
         bottomNav.setItemIconTintList(null);
@@ -446,7 +459,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
-        //Slide animation
+        /////////////////////////////////////////////////////////
+        // SLIDE ANIMATION //
+        /////////////////////////////////////////////////////////
+
         bottomNav.setSelectedItemId(R.id.profile);
 
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -471,6 +487,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    // TODO javadoc comments
+    // When you click on the various buttons on the profile page
     @Override
     public void onClick(View v){
         int buttonClicked = (int) v.getTag();
@@ -478,19 +496,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         dim_popup.setVisibility(View.VISIBLE);
         switch (buttonClicked) {
             case 0:
-                // show the popup window
+                // show the sensibility popup window
                 sensibilityPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
             case 1:
-                // show the popup window
+                // show the addresses popup window
                 addressPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
             case 2:
+                // show the transportation popup window
                 transportationPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
         }
     }
 
+    /**
+     * Get icon from int
+     * @param i
+     * @return
+     */
     public ImageView findIconFromInt(int i){
         ImageView icon = new ImageView(ProfileActivity.this);
         switch (i){
@@ -510,6 +534,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return icon;
     }
 
+    // TODO javadoc comments
     public void displayFavoriteTransportation(){
         for(int i = 0;i<4;i++){
             ImageView selectedIcon = findIconFromInt(i); // gets the right icon from the index
@@ -522,6 +547,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // TODO javadoc comments
     private void setPollutionToday(){
         int pollution = Preferences.getPollutionToday(this);
         int lastPol = Preferences.getLastPollution(this);
@@ -531,6 +557,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         pollutionToday.setText(Integer.toString(pollution));
     }
 
+    // TODO javadoc comments
     private void resetPollutionNewDay(){
         // what this function does is check whether we have started a new day or not everytime we open the profile activity
         // If so, we save the new day value in the preferences, to be used as a comparison for the next time this function is called
@@ -549,6 +576,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // TODO javadoc comments
     private void setUpGraph(){
         ArrayList<Integer> values = Preferences.getPollutionMonth(1,this);
         List<Entry> entries = new ArrayList<Entry>();

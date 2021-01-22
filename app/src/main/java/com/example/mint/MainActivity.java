@@ -241,17 +241,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         addressList.addAll(0,lastAddressList);
 
+        addressList.add(0,"Ma position");
+
         // Adapter adapts the list of addresses for style
         CustomListAdapter adapter = new CustomListAdapter(this, addressList);
 
         addressListView = new ListView(this);
-
-        // add location button to the list
-        TextView localisationRequest = new TextView(this);
-        localisationRequest.setText(R.string.position_request);
-        localisationRequest.setPadding(30,30,30,0);
-        addressListView.addHeaderView(localisationRequest);
-        addressListView.setHeaderDividersEnabled(false);
 
         // set our adapter and pass our pop up window contents
         addressListView.setAdapter(adapter);
@@ -260,39 +255,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // set on item selected
         addressListView.setOnItemClickListener(onItemClickListener());
-
-        //User's location
-        localisationRequest.setOnClickListener(new View.OnClickListener() { //OnClick for location_request button = "Ma position"
-            @Override
-            public void onClick(View v) {
-
-                // We need this parameter to check if the phone's GPS is activated
-                locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-                assert locationManager != null; //check if there the app is allowed to access location
-                GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
-
-                // If the permission to access to the user's location is already given, we use it
-                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                    // We also need the phone's GPS to be activated. We check this here.
-                    if (GpsStatus){
-                        popUp.dismiss();
-                        getLocation();
-                    }
-
-                    // If the phone's GPS is NOT activated, we ask the user to activate it
-                    else {
-                        showAlertMessageNoGps();
-                    }
-                }
-
-                // If we don't have the permission, we ask the permission to use their location
-                else {
-                    requestLocalisationPermission(); //line 447
-                }
-            }
-        });
 
         // some other visual settings for popup window
         popupWindow.setFocusable(false);
@@ -604,10 +566,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (id>=0) {
+                if (id>0) {
                     buttonClicked.setText(addressList.get((int)id));
                     buttonClicked.setSelection(buttonClicked.length()); // set cursor at end of text
                     popUp.dismiss();
+                }
+                // if we click on My Position, ask permission for geolocalisation
+                if (id==0) {
+                    // We need this parameter to check if the phone's GPS is activated
+                    locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+                    assert locationManager != null; //check if there the app is allowed to access location
+                    GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
+
+                    // If the permission to access to the user's location is already given, we use it
+                    if (ContextCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                        // We also need the phone's GPS to be activated. We check this here.
+                        if (GpsStatus){
+                            popUp.dismiss();
+                            getLocation();
+                        }
+
+                        // If the phone's GPS is NOT activated, we ask the user to activate it
+                        else {
+                            showAlertMessageNoGps();
+                        }
+                    }
+
+                    // If we don't have the permission, we ask the permission to use their location
+                    else {
+                        requestLocalisationPermission(); //line 447
+                    }
                 }
             }
         };

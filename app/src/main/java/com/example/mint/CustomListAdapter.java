@@ -29,14 +29,16 @@ public class CustomListAdapter extends BaseAdapter {
         nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",context);
     }
 
+    //returns total number of items in the list
     @Override
     public int getCount() {
-        return items.size(); //returns total of items in the list
+        return items.size();
     }
 
+    //returns list item at the specified position
     @Override
     public Object getItem(int position) {
-        return items.get(position); //returns list item at the specified position
+        return items.get(position);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class CustomListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position){
-        if(position==0 || position == nbLastAdd+1) {
+        if(position ==1 || position == nbLastAdd+2) {
             return 1; // header item
         }
         else {
@@ -61,7 +63,7 @@ public class CustomListAdapter extends BaseAdapter {
      */
     @Override
     public boolean isEnabled(int position) {
-        return position != 0 && position != nbLastAdd + 1;
+        return position !=1 && position != nbLastAdd + 2;
     }
 
     /**
@@ -87,6 +89,10 @@ public class CustomListAdapter extends BaseAdapter {
             if (position>nbLastAdd+1){
                 remove.setVisibility(View.GONE);
                 icon.setImageResource(R.drawable.ic_star);
+            }
+            if (position==0){
+                remove.setVisibility(View.GONE);
+                icon.setImageResource(R.drawable.ic_locate);
             }
 
             else{
@@ -114,6 +120,7 @@ public class CustomListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_header,parent,false);
             convertView.setClickable(false);
             TextView text = convertView.findViewById(R.id.text_item);
+            // fill the text with the value inside the list "items"
             text.setText(items.get(position));
         }
         return convertView;

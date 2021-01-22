@@ -487,8 +487,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    // TODO javadoc comments
-    // When you click on the various buttons on the profile page
+    /**
+     * Displays the various popup windows when you click on each button
+     * @param v : the view which has been clicked. We identify each one with a tag
+     */
     @Override
     public void onClick(View v){
         int buttonClicked = (int) v.getTag();
@@ -512,8 +514,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Get icon from int
-     * @param i
-     * @return
+     * @param i : index which corresponds to the icon
+     * @return : the ImageView of the corresponding icon
      */
     public ImageView findIconFromInt(int i){
         ImageView icon = new ImageView(ProfileActivity.this);
@@ -534,20 +536,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return icon;
     }
 
-    // TODO javadoc comments
+    /**
+     * This method displays the already selected favorite means of transportation on the main profile page
+     */
     public void displayFavoriteTransportation(){
+        // we go through all the means of transportation
         for(int i = 0;i<4;i++){
-            ImageView selectedIcon = findIconFromInt(i); // gets the right icon from the index
+            // gets the right icon from the index
+            ImageView selectedIcon = findIconFromInt(i);
             if (Preferences.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
+                // if this means of transporation is not in the preferences list, we do not display it
                 selectedIcon.setVisibility(View.GONE);
             }
             else {
+                // if it is, we display it
                 selectedIcon.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    // TODO javadoc comments
+    /**
+     * This adds the pollution from the last itinerary to today's pollution
+     */
     private void setPollutionToday(){
         int pollution = Preferences.getPollutionToday(this);
         int lastPol = Preferences.getLastPollution(this);
@@ -557,12 +567,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         pollutionToday.setText(Integer.toString(pollution));
     }
 
-    // TODO javadoc comments
+    /**
+     * what this function does is check whether we have started a new day or not everytime we open the profile activity
+     * If so, we save the new day value in the preferences, to be used as a comparison for the next time this function is called
+     * Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
+     */
     private void resetPollutionNewDay(){
-        // what this function does is check whether we have started a new day or not everytime we open the profile activity
-        // If so, we save the new day value in the preferences, to be used as a comparison for the next time this function is called
-        // Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
-
         // first we check whether today is a new day or not
         // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
         int[] lastDate = Preferences.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
@@ -576,17 +586,32 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    // TODO javadoc comments
+    /**
+     * This handles all the graph values and appearance settings
+     */
     private void setUpGraph(){
+        // MONTH GRAPH
+
+        // we get the pollution data from preferences
         ArrayList<Integer> values = Preferences.getPollutionMonth(1,this);
-        List<Entry> entries = new ArrayList<Entry>();
+
+        // we convert it a list of "entries" which is a class from the MPAndroidChart library
+        List<Entry> entries = new ArrayList<>();
         for (int i=0;i<values.size();i++){
             entries.add(new Entry(i+1,values.get(i)));
         }
+
+        // LineDataSet allows for individual styling of this data (for if we have several data sets)
         LineDataSet dataSet = new LineDataSet(entries,"Janvier");
+
+        // LineData allows for styling of the whole chart
         LineData lineData = new LineData(dataSet);
+
+        // Apply our data to the chart
         graph.setData(lineData);
-        graph.invalidate(); // refresh
+
+        // refresh
+        graph.invalidate();
     }
 
 

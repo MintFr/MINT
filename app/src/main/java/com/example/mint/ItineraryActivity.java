@@ -351,7 +351,7 @@ public class ItineraryActivity extends AppCompatActivity  {
                 for (int k=1;k<STEPS.size();k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
-                    TextView stepTimeMin = stepView.findViewById(R.id.step_time_min); // get the different textViews from the base view
+                    TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
                     //TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
                     //TextView street = stepView.findViewById(R.id.street);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);

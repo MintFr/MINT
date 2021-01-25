@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <!--<ImageView
-        android:id="@+id/time_icon"
+    <ImageView
+        android:id="@+id/location_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:src="@drawable/ic_time"
-        android:layout_centerVertical="true"/>-->
+        android:src="@drawable/ic_location"
+        android:layout_centerVertical="true"/>
     <!--<TextView
         android:id="@+id/street"
         android:layout_width="wrap_content"
@@ -21,14 +21,15 @@
 <!--        android:layout_toRightOf=-->
 
     <TextView
-        android:id="@+id/step_time_min"
-        android:layout_width="wrap_content"
+        android:id="@+id/address"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
+        android:layout_toRightOf="@id/location_icon"
         android:text="00"/>
-<!--        android:layout_toRightOf="@id/time_icon"-->
+
 
 <!--    <TextView
         android:id="@+id/min"
@@ -46,13 +47,7 @@
         android:paddingBottom="10dp"
         android:layout_toRightOf="@id/min"
         android:text="00"/>-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_toRightOf="@id/step_time_min"
-        android:text="s"/>
+
     <TextView
         android:id="@+id/step_distance"
         android:layout_width="wrap_content"
@@ -75,5 +70,5 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#EDEDED"
-        android:layout_below="@id/step_time_min"/>
+        android:layout_below="@id/address"/>
 </RelativeLayout>

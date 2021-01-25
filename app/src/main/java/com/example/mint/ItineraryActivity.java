@@ -514,7 +514,12 @@ public class ItineraryActivity extends AppCompatActivity  {
                 List<android.location.Address> addresses = geocoder.getFromLocation(itinerary.getPoints().get(j+1)[0], itinerary.getPoints().get(j)[1],1);
                 System.out.println(addresses);
                 String a = addresses.get(0).getAddressLine(0);
-                //String a = addresses.get(0).getThoroughfare();
+                if (addresses.get(0).getThoroughfare() != null){
+                    a = addresses.get(0).getThoroughfare();
+                }
+                else if(addresses.get(0).getFeatureName() != null){
+                    a = addresses.get(0).getFeatureName();
+                }
                 System.out.println("a" + a);
                 address.setCoordinates(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]);
                 address.setLocationName(a);

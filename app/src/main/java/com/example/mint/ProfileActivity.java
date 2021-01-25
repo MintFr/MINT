@@ -12,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.text.Editable;
@@ -28,14 +30,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
@@ -107,9 +116,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // handle the pollution
         pollutionToday = findViewById(R.id.exposure_today);
-        resetPollutionNewDay(); // check whether a new day has started and if so reset pollution to 0 and store the last value
-        setPollutionToday(); // Get the pollution from the last itineraries and change the pollution from today accordingly
-        Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this); // update graph with today's pollution
+        // check whether a new day has started and if so reset pollution to 0 and store the last value
+        resetPollutionNewDay();
+        // Get the pollution from the last itineraries and change the pollution from today accordingly
+        setPollutionToday();
+
+        // UPDATE PREFERENCES
+        // update the pollution for this month
+        Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
+        // update the pollution for this year
+        Preferences.addMonthPollutionToYear(Preferences.getCurrentDate()[1],Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this),this);
 
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
@@ -126,7 +142,47 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // handle the graph
         graph = findViewById(R.id.chart);
-        setUpGraph();
+        setUpGraph(0); // by default we display the week
+
+        // handle the buttons
+        Button weekBtn = findViewById(R.id.week);
+        Button monthBtn = findViewById(R.id.month);
+        Button yearBtn = findViewById(R.id.year);
+
+        weekBtn.setTag(100);
+        monthBtn.setTag(101);
+        yearBtn.setTag(102);
+
+        ArrayList<View> buttons = new ArrayList<>();
+        buttons.add(weekBtn);
+        buttons.add(monthBtn);
+        buttons.add(yearBtn);
+
+        weekBtn.setActivated(true); // by default we start with weekly graph
+
+        final LinearLayout btnView = findViewById(R.id.graph_buttons_layout);
+
+
+        View.OnClickListener onClickGraphButton = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                v.setActivated(true);
+                setUpGraph(i-100);
+                for (int j=0;j<3;j++){
+                    Button b = btnView.findViewWithTag(j+100);
+                    if (!b.equals(v)){
+                        b.setActivated(false);
+                    }
+                }
+
+            }
+        };
+
+        weekBtn.setOnClickListener(onClickGraphButton);
+        monthBtn.setOnClickListener(onClickGraphButton);
+        yearBtn.setOnClickListener(onClickGraphButton);
+
 
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
@@ -611,15 +667,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * This handles all the graph values and appearance settings
+     * @param range : whether we want to display a week, a month or a year (0 for week, 1 for month, 2 for year)
      */
-    private void setUpGraph(){
+    private void setUpGraph(int range){
         // we get the pollution data from preferences
-        ArrayList<Integer> values = Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this);
+        ArrayList<Integer> values = Preferences.getPollutionYear(Preferences.getCurrentDate()[2],this);
 
-        // we convert it a list of "entries" which is a class from the MPAndroidChart library
+        // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
-        for (int i=0;i<values.size();i++){
-            entries.add(new Entry(i+1,values.get(i)));
+        // we use the java date format to calculate how many days have gone by since the beginning of the year
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+        String inputString1 = Preferences.getCurrentDate()[0]+" "+Preferences.getCurrentDate()[1]+" "+Preferences.getCurrentDate()[2];
+        String inputString2 = "00 01 "+Preferences.getCurrentDate()[2];
+        int diffDays=0;
+        try {
+            Date date1 = myFormat.parse(inputString1);
+            Date date2 = myFormat.parse(inputString2);
+            long diff = date1.getTime() - date2.getTime(); // number of days that have gone by in milliseconds
+            diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            System.out.println ("Days: " + diffDays);
+            for (int i=1;i<=diffDays;i++){
+                entries.add(new Entry(i,values.get(i-1)));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         // LineDataSet allows for individual styling of this data (for if we have several data sets)
@@ -646,10 +717,122 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setAxisMaximum(Preferences.getCurrentDate()[0]);
-        xAxis.setAxisMinimum(0);
         xAxis.setTypeface(Typeface.DEFAULT);
         xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // according to which button was clicked (week, month or year), we change the range of the x axis :
+        switch (range){
+            case 0 :
+                // in the case that we want to show the week :
+                // first we change the range of the x axis
+                int currentDayOfWeek = (Preferences.getCurrentDate()[3])-1; // day of week starts with 1 for sunday, so we do -1 to start with monday
+                final int xAxisMin = (diffDays-currentDayOfWeek)+1;
+                xAxis.setAxisMinimum(xAxisMin); // we have to add one because if we dont we will have a one day difference
+                xAxis.setAxisMaximum(diffDays+(7-currentDayOfWeek));
+                // then we change the labels of the x axis
+                final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
+                xAxisLabelWeek.add("Lun");
+                xAxisLabelWeek.add("Mar");
+                xAxisLabelWeek.add("Mer");
+                xAxisLabelWeek.add("Jeu");
+                xAxisLabelWeek.add("Ven");
+                xAxisLabelWeek.add("Sam");
+                xAxisLabelWeek.add("Dim");
+                // this formats the values to be the new ones we just created :
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return xAxisLabelWeek.get((int) (value-xAxisMin));
+                    }
+                });
+                graph.invalidate();
+                break;
+            case 1 :
+                // in the case that we want to show the month :
+                // first we change the range of the x axis
+                int dayOfMonth = Preferences.getCurrentDate()[0]; // same principle as the day of week
+                int lengthOfMonth = Preferences.getCurrentDate()[4]; // this is the number of days in the current month
+                final int xAxisMinMonth = diffDays-dayOfMonth+1;
+                xAxis.setAxisMinimum(xAxisMinMonth);
+                xAxis.setAxisMaximum((diffDays-dayOfMonth)+lengthOfMonth);
+                // then we change the labels of the x axis
+                final ArrayList<String> xAxisLabelMonth = new ArrayList<>();
+                for (int i=1;i<=Preferences.getCurrentDate()[4];i++){
+                    xAxisLabelMonth.add(String.valueOf(i));
+                }
+                // this formats the values to be the new ones we just created :
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return xAxisLabelMonth.get((int) value-xAxisMinMonth);
+                    }
+                });
+                graph.invalidate();
+                break;
+            case 2 :
+                // in the case that we want to show the month :
+                // first we change the range of the x axis
+                xAxis.setAxisMinimum(1);
+                xAxis.setAxisMaximum(values.size());
+                // then we change the labels of the x axis
+                final ArrayList<String> xAxisLabelYear = new ArrayList<>();
+                xAxisLabelYear.add("Jan");
+                xAxisLabelYear.add("Fev");
+                xAxisLabelYear.add("Mar");
+                xAxisLabelYear.add("Avr");
+                xAxisLabelYear.add("Mai");
+                xAxisLabelYear.add("Jui");
+                xAxisLabelYear.add("Jui");
+                xAxisLabelYear.add("Aou");
+                xAxisLabelYear.add("Sep");
+                xAxisLabelYear.add("Oct");
+                xAxisLabelYear.add("Nov");
+                xAxisLabelYear.add("Dec");
+                // this formats the values to be the new ones we just created :
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        if (value<=31){
+                            return xAxisLabelYear.get(0);
+                        }
+                        else if (value<=59){
+                            return xAxisLabelYear.get(1);
+                        }
+                        else if (value<=90){
+                            return xAxisLabelYear.get(2);
+                        }
+                        else if (value<=120){
+                            return xAxisLabelYear.get(3);
+                        }
+                        else if (value<=151){
+                            return xAxisLabelYear.get(4);
+                        }
+                        else if (value<=181){
+                            return xAxisLabelYear.get(5);
+                        }
+                        else if (value<=212){
+                            return xAxisLabelYear.get(6);
+                        }
+                        else if (value<=243){
+                            return xAxisLabelYear.get(7);
+                        }
+                        else if (value<=273){
+                            return xAxisLabelYear.get(8);
+                        }
+                        else if (value<=304){
+                            return xAxisLabelYear.get(9);
+                        }
+                        else if (value<=335){
+                            return xAxisLabelYear.get(10);
+                        }
+                        else {
+                            return xAxisLabelYear.get(11);
+                        }
+                    }
+                });
+                graph.invalidate();
+                break;
+        }
 
         // LineData allows for styling of the whole chart
         LineData lineData = new LineData(dataSet);

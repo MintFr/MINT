@@ -273,11 +273,45 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
+                    <LinearLayout
+                        android:id="@+id/graph_buttons_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/week"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="semaine"
+                            android:background="@drawable/graph_button_states"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorDarkGrey"/>
+                        <Button
+                            android:id="@+id/month"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="mois"
+                            android:background="@drawable/graph_button_states"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorDarkGrey"/>
+                        <Button
+                            android:id="@+id/year"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="année"
+                            android:background="@drawable/graph_button_states"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorDarkGrey"/>
+                    </LinearLayout>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp" />
+                        android:layout_height="250dp"
+                        android:layout_below="@id/graph_buttons_layout"/>
 
                 </RelativeLayout>
 

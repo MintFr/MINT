@@ -57,7 +57,9 @@ public class Preferences {
         int year = cldr.get(Calendar.YEAR);
         int month = cldr.get(Calendar.MONTH);
         int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int[] date = {day,(month+1),year};
+        int dayOfWeek = cldr.get(Calendar.DAY_OF_WEEK);
+        int daysInMonth = cldr.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int[] date = {day,(month+1),year,dayOfWeek,daysInMonth};
         return date;
     }
 
@@ -101,8 +103,8 @@ public class Preferences {
         SharedPreferences.Editor editor = prefs.edit();
         for (int i=1;i<=values.size();i++){
             // we are going to store the pollution from a day like so :
-            // for example, for the 22 of october, the key is "22_10"
-            editor.putInt(i+"_"+month,values.get(i-1));
+            // for example, for the 22 of october of 2021, the key is "22_10_2021"
+            editor.putInt(i+"_"+month+"_"+getCurrentDate()[2],values.get(i-1));
         }
         editor.apply();
     }
@@ -111,18 +113,64 @@ public class Preferences {
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
         ArrayList<Integer> values = new ArrayList<>();
         for (int i=1;i<=31;i++){
-            values.add(prefs.getInt(i+"_"+month,0));
+            values.add(prefs.getInt(i+"_"+month+"_"+getCurrentDate()[2],0));
         }
         return values;
     }
     public static void addDayPollutionToMonth(int[] date, int value, Context context){
         // adds the pollution from one day to the array of pollutions from a month
         // we are going to store the pollution from a day like so :
-        // for example, for the 22 of october, the key is "22_10"
+        // for example, for the 22 of october 2021, the key is "22_10_2021"
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(date[0]+"_"+date[1],value);
+        editor.putInt(date[0]+"_"+date[1]+"_"+date[2],value);
         editor.apply();
+    }
+    public static void addMonthPollutionToYear(int month, ArrayList<Integer> values, Context context){
+        // this adds the pollution from one month to array of pollutions for a year
+        // the pollution is stored with the same key : "day_month"
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        for (int i =1;i<=values.size();i++){
+            editor.putInt(i+"_"+month+"_"+getCurrentDate()[2],values.get(i-1));
+        }
+        editor.apply();
+    }
+    public static ArrayList<Integer> getPollutionYear(int year,Context context){
+        SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
+        ArrayList<Integer> pollutionYear = new ArrayList<>();
+        int[] date = {1,1,year};
+        boolean sameMonth = true;
+        for (int i=1;i<=12;i++){
+            while (sameMonth){
+                pollutionYear.add(prefs.getInt(date[0]+"_"+i+"_"+date[2],0));
+                date[0]++;
+                sameMonth=checkIfSameMonth(date);
+            }
+            sameMonth=true;
+            date[0]=1;
+        }
+        return pollutionYear;
+    }
+
+    /**
+     * This method checks if the date is the last one in the given month, if so return false, else return true
+     * @param date the given date
+     * @return
+     */
+    public static boolean checkIfSameMonth(int[] date){
+        if ((date[0]==31&&(date[1]==1||date[1]==3||date[1]==5||date[1]==7||date[1]==8||date[1]==10||date[1]==12))){
+            return false;
+        }
+        else if ((date[0]==30&&(date[1]==4||date[1]==6||date[1]==9||date[1]==11))){
+            return false;
+        }
+        else if (date[0]==28&&date[1]==2){
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     /////////////////////

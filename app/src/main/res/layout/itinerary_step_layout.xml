@@ -2,13 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <ImageView
+    <!--<ImageView
         android:id="@+id/time_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:src="@drawable/ic_time"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"/>-->
+    <!--<TextView
+        android:id="@+id/street"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:text="None"
+        />-->
+<!--        android:layout_toRightOf=-->
+
     <TextView
         android:id="@+id/step_time_min"
         android:layout_width="wrap_content"
@@ -16,9 +27,10 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:layout_toRightOf="@id/time_icon"
         android:text="00"/>
-    <TextView
+<!--        android:layout_toRightOf="@id/time_icon"-->
+
+<!--    <TextView
         android:id="@+id/min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,13 +45,13 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_toRightOf="@id/min"
-        android:text="00"/>
+        android:text="00"/>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_toRightOf="@id/step_time_sec"
+        android:layout_toRightOf="@id/step_time_min"
         android:text="s"/>
     <TextView
         android:id="@+id/step_distance"

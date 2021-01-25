@@ -46,6 +46,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -319,6 +320,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tramButton.setTag(5);
         bikeButton.setTag(6);
         walkButton.setTag(7);
+
+        // Highlight already selected favorite means of transportation
+        ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation("Transportation",this);
+        for (int i = 4;i<8;i++){
+            ImageButton button = optionPopupView.findViewWithTag(i);
+            String transportation = button.getContentDescription().toString();
+            for (int j = 0;j<4;j++){
+                String favoriteTransportationString = "0";
+                if (favoriteTransportation.get(j).equals("car_button")){
+                    favoriteTransportationString = "1";
+                }
+                if (favoriteTransportation.get(j).equals("tram_button")){
+                    favoriteTransportationString = "2";
+                }
+                if (favoriteTransportation.get(j).equals("bike_button")){
+                    favoriteTransportationString = "3";
+                }
+                if (favoriteTransportation.get(j).equals("walk_button")){
+                    favoriteTransportationString = "4";
+                }
+                if (transportation.equals(favoriteTransportationString)){
+                    button.setActivated(true);
+                }
+            }
+        }
 
         // create the new onClick callback
         View.OnClickListener onTransportationClick = new View.OnClickListener() {

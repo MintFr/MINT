@@ -1,8 +1,10 @@
 package com.example.mint;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -485,8 +487,5 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
     }
-
-
-
 
 }

@@ -48,7 +48,7 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
             // Replace current activity
             Intent intent = new Intent(activity, target);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-            activity.startActivity(intent); //pb iciiiiiiiii
+            activity.startActivity(intent);
             activity.finish();
         }
 

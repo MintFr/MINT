@@ -205,6 +205,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    /**
+     * Overrides method (when the activity has detected the user's press of the back key) to return to MainActivity
+     */
+    @Override
+    public void onBackPressed(){
+
+
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        switch(getCallingActivity().getClassName()){
+            case "MapActivity":
+                menuItem = menu.getItem(1);
+                menuItem.setChecked(true);
+                startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
+            case "ProfileActivity":
+                menuItem = menu.getItem(2);
+                menuItem.setChecked(true);
+                break;
+        }
+
+
+        //super.onBackPressed();
+    }
+
     // function that creates the popup window on selection of editTexts
     private PopupWindow showFavoriteAddresses() {
 

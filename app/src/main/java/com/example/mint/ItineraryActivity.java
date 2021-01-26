@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -261,6 +262,16 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }
+
+    /**
+     * Overrides method (when the activity has detected the user's press of the back key) to return to MainActivity
+     */
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 
     //DISPLAY ITINERARY
     private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){

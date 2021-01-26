@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/enter_address"
+        android:inputType="text"
         android:background="@drawable/layout_bg_edit_text"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"

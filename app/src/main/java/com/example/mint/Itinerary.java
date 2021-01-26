@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Itinerary implements Serializable {
     private String type; // type of transportation
@@ -54,8 +55,10 @@ public class Itinerary implements Serializable {
     public Itinerary(JSONObject json){
         //Reading JSON
         try{
+            int r = (int) (Math.random() * 100);
             this.type = json.getString("transport");
-            this.pollution = json.getDouble("exposition");
+            //this.pollution = json.getDouble("exposition");
+            this.pollution = (double) r;
             this.time = json.getDouble("duration");
             this.points = new ArrayList<>();
             JSONArray steps = json.getJSONArray("pointsItinerary");

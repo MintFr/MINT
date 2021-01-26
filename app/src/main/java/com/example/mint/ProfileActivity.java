@@ -115,6 +115,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         addressPopupWindow.setWidth(width);
         addressPopupWindow.setHeight(height);
         addressPopupWindow.setFocusable(focusable);
+        addressPopupWindow.setInputMethodMode(addressPopupWindow.INPUT_METHOD_NEEDED); // To avoid that the popup hide the keyboard
+        addressPopupWindow.setOutsideTouchable(false); // To avoid that the popup hide the keyboard
 
         //remove background dimness when popup is dismissed
         addressPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

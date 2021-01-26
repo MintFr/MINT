@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.mint.MapActivity" />
-        <activity android:name="com.example.mint.ProfileActivity" />
+        <activity android:name="com.example.mint.ProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.example.mint.MainActivity" />
 
         <meta-data

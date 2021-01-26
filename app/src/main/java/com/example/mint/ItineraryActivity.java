@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -51,11 +52,13 @@ import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.Inflater;
 
 /**
@@ -68,7 +71,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
-
     GeoPoint startPosition;
     GeoPoint endPosition;
 
@@ -354,6 +356,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     //DISPLAY DETAILS UNDER MAP
     private void displayDetails(Itinerary itinerary){
+//        // hide recap
+//        recapView.setVisibility(View.GONE);
+//        // show details layout
+//        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
+//        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+        ArrayList<Steps> STEPS = detailItinerary(itinerary);
+        //System.out.println(STEPS);
         //start and end
         TextView viewPoint1 = findViewById(R.id.start_point);
         TextView viewPoint2 = findViewById(R.id.end_point);
@@ -385,17 +394,21 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 if (index>2) { // <=> if there is already something displayed in the stepsLayout
                     stepsLayout.removeViews(2, index - 2);
                 }
-                for (int k=1;k<itinerary.getPointSize()-2;k++){
+                for (int k=1;k<STEPS.size();k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
-                    TextView stepTimeMin = stepView.findViewById(R.id.step_time_min); // get the different textViews from the base view
-                    TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
+                    TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
+                    //TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
+                    //TextView street = stepView.findViewById(R.id.street);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
-                    int timeMin = (itinerary.getStepTime().get(k-1) % 3600)/60; // amount of minutes it takes to travel this step
-                    int timeSec = (itinerary.getStepTime().get(k-1) % 60 ); // remaining seconds
-                    stepTimeMin.setText(String.format("%02d",timeMin));
-                    stepTimeSec.setText(String.format("%02d",timeSec));
-                    stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)));
+                    String streetName = STEPS.get(k-1).getAddress();
+                    int dist = STEPS.get(k-1).getDistance();
+                    //int timeMin = (itinerary.getStepTime().get(k-1) % 3600)/60; // amount of minutes it takes to travel this step
+                    //int timeSec = (itinerary.getStepTime().get(k-1) % 60 ); // remaining seconds
+                    stepTimeMin.setText(streetName);
+                    //stepTimeSec.setText(String.format("%02d",timeSec));
+                    stepDist.setText(String.format("%d",dist));
+                    //stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)));
                     // add the textView to the linearlayout which contains the steps
                     stepsLayout.addView(stepView,k+1);
                 }
@@ -540,6 +553,55 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         mapController.setCenter(endPosition);
     }
 
+    public ArrayList<Steps> detailItinerary(Itinerary itinerary){
+        List<Steps> steps = new ArrayList<>();
+        //System.out.println(itinerary.getPointSize());
+        //System.out.println(itinerary.getStepDistance().size());
+
+        for (int j = 0; j<itinerary.getStepDistance().size();j++){
+            System.out.println(j);
+
+            Address address = new Address();
+            try {
+                Geocoder geocoder = new Geocoder(ItineraryActivity.this, Locale.getDefault());
+                List<android.location.Address> addresses = geocoder.getFromLocation(itinerary.getPoints().get(j+1)[0], itinerary.getPoints().get(j)[1],1);
+                System.out.println(addresses);
+                String a = addresses.get(0).getAddressLine(0);
+                if (addresses.get(0).getThoroughfare() != null){
+                    a = addresses.get(0).getThoroughfare();
+                }
+                else if(addresses.get(0).getFeatureName() != null){
+                    a = addresses.get(0).getFeatureName();
+                }
+                System.out.println("a" + a);
+                address.setCoordinates(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]);
+                address.setLocationName(a);
+                System.out.println(itinerary.getStepDistance().size());
+                Steps tempStep = new Steps(address.getLocationName(), itinerary.getStepDistance().get(j));
+                steps.add(tempStep);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayList<Steps> newSteps = new ArrayList<>();
+        String address = steps.get(0).getAddress();
+        System.out.println(address);
+        int distance = steps.get(0).getDistance();
+        for (Steps step:steps){
+            System.out.println(step.getAddress());
+            if (step.getAddress().equals(address)){
+                distance += step.getDistance();
+            }
+            else{
+                newSteps.add(new Steps(address, distance));
+                address = step.getAddress();
+                distance = step.getDistance();
+            }
+        }
+        //System.out.println(newSteps);
+        return newSteps;
+    }
+
     ////////////////////////////////
     // Function to control map
 
@@ -575,3 +637,4 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         fab.setLayoutParams(p);
     }
 }
+

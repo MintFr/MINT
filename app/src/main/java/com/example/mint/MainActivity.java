@@ -133,7 +133,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Preferences.clearLastAddresses(this);
         // Clear last options we entered
-        Preferences.clearOptionTransportation(MainActivity.this);
+        ArrayList<String> favoriteTrans = Preferences.getPrefTransportation("Transportation",MainActivity.this);
+        int[] fav = {0,0,0,0};
+        for (int j = 0;j<4;j++) {
+            if (favoriteTrans.get(j).equals("car_button")) {
+                fav[j] = 1;
+            }
+            if (favoriteTrans.get(j).equals("tram_button")) {
+                fav[j] = 2;
+            }
+            if (favoriteTrans.get(j).equals("bike_button")) {
+                fav[j] =3;
+            }
+            if (favoriteTrans.get(j).equals("walk_button")) {
+                fav[j] = 4;
+            }
+        }
+        System.out.println("{"+fav[0]+","+fav[1]+","+fav[2]+","+fav[3]+"}");
+        Preferences.setOptionTransportation(fav,this);
+
 
         startPoint = findViewById(R.id.startPoint);
         endPoint = findViewById(R.id.endPoint);
@@ -322,27 +340,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         walkButton.setTag(7);
 
         // Highlight already selected favorite means of transportation
-        ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation("Transportation",this);
+
+        int[] favoriteTransportation = Preferences.getOptionTransportation(MainActivity.this);
         for (int i = 4;i<8;i++){
             ImageButton button = optionPopupView.findViewWithTag(i);
-            String transportation = button.getContentDescription().toString();
-            for (int j = 0;j<4;j++){
-                String favoriteTransportationString = "0";
-                if (favoriteTransportation.get(j).equals("car_button")){
-                    favoriteTransportationString = "1";
-                }
-                if (favoriteTransportation.get(j).equals("tram_button")){
-                    favoriteTransportationString = "2";
-                }
-                if (favoriteTransportation.get(j).equals("bike_button")){
-                    favoriteTransportationString = "3";
-                }
-                if (favoriteTransportation.get(j).equals("walk_button")){
-                    favoriteTransportationString = "4";
-                }
-                if (transportation.equals(favoriteTransportationString)){
-                    button.setActivated(true);
-                }
+            if (favoriteTransportation[i-4]!=0){
+                button.setActivated(true);
             }
         }
 

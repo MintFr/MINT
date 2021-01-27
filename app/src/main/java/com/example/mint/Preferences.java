@@ -178,8 +178,8 @@ public class Preferences {
     public static void setOptionTransportation(int[] value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        for (int i=1;i<=4;i++){
-            editor.putInt("option_"+i, value[i]);
+        for (int i=0;i<4;i++){
+            editor.putInt("option_"+(i+1), value[i]);
         }
         editor.apply();
     }

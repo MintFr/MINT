@@ -121,6 +121,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     PopupWindow popUp;
     PopupWindow popUpCalendar;
     TimePicker timePicker;
+    // get current date and time
+    final Calendar cldr = Calendar.getInstance();
+    int year;
+    int month;
+    int day;
+    int hour;
+    int minutes;
+    String dateText;
+    String timeText;
+    boolean starting;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
@@ -131,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Preferences.clearLastAddresses(this);
-        // Clear last options we entered
+        // First step to highlight already selected favorite means of transportation
+        // (next and last step in "showOptions()"
         ArrayList<String> favoriteTrans = Preferences.getPrefTransportation("Transportation",MainActivity.this);
         int[] fav = {0,0,0,0};
         for (int j = 0;j<4;j++) {
@@ -152,7 +162,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("{"+fav[0]+","+fav[1]+","+fav[2]+","+fav[3]+"}");
         Preferences.setOptionTransportation(fav,this);
 
+        // get current date and time
+        year = cldr.get(Calendar.YEAR);
+        month = cldr.get(Calendar.MONTH);
+        day = cldr.get(Calendar.DAY_OF_MONTH);
+        hour = cldr.get(Calendar.HOUR_OF_DAY);
+        minutes = cldr.get(Calendar.MINUTE);
 
+        // First step to set default date and time to current date and time
+        // (next and last step in "showOptions()"
+        dateText = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
+        timeText = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
+
+        // First step to select if you want start time or end time. Start time is automatically selected
+        // (next and last step in "showOptions()")
+        starting = true;
+
+        // Initialisation
         startPoint = findViewById(R.id.startPoint);
         endPoint = findViewById(R.id.endPoint);
         search = findViewById(R.id.search);
@@ -165,9 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.endAddress = new com.example.mint.Address();
         this.startAddress = new com.example.mint.Address();
-
-
-
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -340,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         walkButton.setTag(7);
 
         // Highlight already selected favorite means of transportation
-
         int[] favoriteTransportation = Preferences.getOptionTransportation(MainActivity.this);
         for (int i = 4;i<8;i++){
             ImageButton button = optionPopupView.findViewWithTag(i);
@@ -378,22 +400,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bikeButton.setOnClickListener(onTransportationClick);
         walkButton.setOnClickListener(onTransportationClick);
 
-        // get current date and time
-        final Calendar cldr = Calendar.getInstance();
-        int year = cldr.get(Calendar.YEAR);
-        int month = cldr.get(Calendar.MONTH);
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int hour = cldr.get(Calendar.HOUR_OF_DAY);
-        int minutes = cldr.get(Calendar.MINUTE);
-
         // set default date and time to current date and time
         dateBtn = optionPopupView.findViewById(R.id.date_calendar);
-        String defaultDate = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
-        dateBtn.setText(defaultDate);
-
+        dateBtn.setText(dateText);
         timeBtn = optionPopupView.findViewById(R.id.time_text);
-        String defaultTime = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
-        timeBtn.setText(defaultTime);
+        timeBtn.setText(timeText);
 
         // set date
         dateBtn.setOnClickListener(new View.OnClickListener() {
@@ -410,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                        String dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
+                        dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
                         dateBtn.setText(dateText);
                     }
                 });
@@ -430,8 +441,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                     @Override
                     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                        String time = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
-                        timeBtn.setText(time);
+                        timeText = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
+                        timeBtn.setText(timeText);
                     }
                 });
                 timeDialog.show();
@@ -440,12 +451,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // the buttons for selecting if you want start time or end time. start time is automatically selected
+        // the buttons for selecting if you want start time or end time.
         Button startTime = optionPopupView.findViewById(R.id.start_time);
-        startTime.setActivated(true);
-        Button endTime = optionPopupView.findViewById(R.id.end_time);
+        final Button endTime = optionPopupView.findViewById(R.id.end_time);
         startTime.setTag(8);
         endTime.setTag(9);
+
+        // the button "start time" is selected by default
+        if (starting) {
+            startTime.setActivated(true);
+        } else {
+            endTime.setActivated(true);
+        }
 
         // actions when either start or end time is clicked (unclicks the other one)
         View.OnClickListener onStartEndTimeClick = new View.OnClickListener() {
@@ -456,6 +473,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Button button2 = optionPopupView.findViewWithTag(i==8?9:8);
                 button1.setActivated(true);
                 button2.setActivated(false);
+
+                // memorization of the selection of start or end time
+                if (i == 8){
+                    starting = true;
+                } else {
+                    starting = false;
+                }
             }
         };
 

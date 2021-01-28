@@ -226,7 +226,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         for (int j=0;j<itineraries.size()-1;j++){
             displayItinerary(itineraries.get(j), itineraries,j);
         }
-        Preferences.setLastPollution((int)itineraries.get(0).getPollution(),this);
 
         // display recap
         displayRecap(itineraries);
@@ -482,7 +481,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // ADD DIFFERENT ITINERARIES
         LinearLayout recapList = findViewById(R.id.recap_list);
-        recapList.removeAllViews();
+        recapList.removeAllViews(); // remove the last views that were displayed
         for (int i=0;i<list.size()-1;i++){
 
             // get list item view and the views inside it
@@ -490,10 +489,16 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             ImageView transportationIcon = listItem.findViewById(R.id.transportation_icon);
             TextView time = listItem.findViewById(R.id.recap_time);
             TextView exposition = listItem.findViewById(R.id.exposition_value);
+            TextView distance = listItem.findViewById(R.id.distance);
+            ImageButton save = listItem.findViewById(R.id.save);
 
             // set time
             String timeStr = convertIntToHour((int)list.get(i).getTime());
             time.setText(timeStr);
+
+            // set distance
+            String distStr = String.format("%.1f"+" km",list.get(i).getDistance() / 1000);
+            distance.setText(distStr);
 
             // set exposition
             exposition.setText(String.format("%s",list.get(i).getPollution()));
@@ -523,6 +528,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // add the view to the layout
             recapList.addView(listItem,i);
+
+            // save pollution button
+            save.setTag((int)(100+i)); // we add 100 because otherwise we will override the tag for "listItem"
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i = (int) v.getTag() - 100; // this lets us find the corresponding itinerary for which we want to save the pollution data
+                    // we inform the user that he just saved this pollution data to his profile :
+                    Toast.makeText(ItineraryActivity.this, "L'exposition associée à ce trajet a bien été ajoutée à votre profil", Toast.LENGTH_SHORT).show();
+                    // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
+                    Preferences.setLastPollution((int)list.get(i).getPollution(),ItineraryActivity.this);
+                }
+            });
 
             // highlight itinerary when you click on an itinerary
             // this will used to find the corresponding itinerary

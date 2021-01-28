@@ -12,6 +12,7 @@ public class Itinerary implements Serializable {
     private String type; // type of transportation
     private double pollution; // total exposition to pollution
     private double time; // total itinerary time
+    private double distance; // total itinerary distance
     private ArrayList<Integer> stepTime; // time between steps in sec
     private ArrayList<Integer> stepDistance; // distance between steps in metres
     private ArrayList<double[]> points; // coordinates of each point
@@ -24,6 +25,7 @@ public class Itinerary implements Serializable {
         this.type = "n/a";
         this.pollution = 0.;
         this.time = 0.;
+        this.distance = 0.;
         this.stepDistance = new ArrayList<>() ;
         this.stepTime = new ArrayList<>();
         this.points = new ArrayList<>();
@@ -35,14 +37,16 @@ public class Itinerary implements Serializable {
      * @param type
      * @param pollution
      * @param time
+     * @param distance
      * @param stepTime
      * @param stepDistance
      * @param points
      */
-    public Itinerary(String type,double pollution, double time, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points) {
+    public Itinerary(String type,double pollution, double time, double distance, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points) {
         this.type=type;
         this.pollution=pollution;
         this.time=time;
+        this.distance=distance;
         this.stepTime=stepTime;
         this.stepDistance=stepDistance;
         this.points=points;
@@ -55,11 +59,10 @@ public class Itinerary implements Serializable {
     public Itinerary(JSONObject json){
         //Reading JSON
         try{
-            int r = (int) (Math.random() * 100);
             this.type = json.getString("transport");
-            //this.pollution = json.getDouble("exposition");
-            this.pollution = (double) r;
+            this.pollution = (int) json.getDouble("exposition");
             this.time = json.getDouble("duration");
+            this.distance = json.getDouble("distance");
             this.points = new ArrayList<>();
             JSONArray steps = json.getJSONArray("pointsItinerary");
 
@@ -94,6 +97,7 @@ public class Itinerary implements Serializable {
         this.type = itinerary.getType();
         this.pollution = itinerary.getPollution();
         this.time = itinerary.getTime();
+        this.distance = itinerary.getDistance();
         this.stepTime = itinerary.getStepTime();
         this.stepDistance = itinerary.getStepDistance();
         this.points = itinerary.getPoints();
@@ -121,6 +125,14 @@ public class Itinerary implements Serializable {
 
     public void setTime(Float time) {
         this.time = time;
+    }
+
+    public void setDistance(double distance){
+        this.distance = distance;
+    }
+
+    public double getDistance(){
+        return distance;
     }
 
     public ArrayList<Integer> getStepTime() {

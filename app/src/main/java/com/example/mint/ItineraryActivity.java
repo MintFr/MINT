@@ -38,6 +38,7 @@ import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
@@ -81,6 +82,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     GeoPoint startPosition;
     GeoPoint endPosition;
+    List<GeoPoint> markers;
 
     /**
      * LAYOUT AND MENU
@@ -348,9 +350,21 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Marker endMarker = new Marker(map);
         endPosition = new GeoPoint(itineraries.get(0).getPoints().get(indexEnd)[0],itineraries.get(0).getPoints().get(indexEnd)[1]);
         endMarker.setPosition(endPosition);
-        endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
-        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+        endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
         map.getOverlays().add(endMarker);
+
+        // center the map on the itineraries
+        markers = new ArrayList<>();
+        markers.add(startPosition);
+        markers.add(endPosition);
+        final BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
+        map.post(new Runnable() {
+            @Override
+            public void run() {
+                map.zoomToBoundingBox(bounds,true,120);
+            }
+        });
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -803,7 +817,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         int i = (int) v.getTag();
         switch (i) {
             case 10: // recap button
-                // reset everything back to normal and display itinerary
+                // reset everything back to normal and display recap
                 InfoWindow.closeAllInfoWindowsOn(map);
                 for (int j = 1; j<itineraries.size(); j++){ // we go through all the polylines that are displayed
                     Polyline selectedLine = (Polyline) map.getOverlays().get(j);
@@ -812,8 +826,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 displayRecap(itineraries);
                 break;
             case 11: // center on lines
-                Polyline line = (Polyline) map.getOverlays().get(1);
-                map.zoomToBoundingBox(line.getBounds(),true,120);
+                BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
+                map.zoomToBoundingBox(bounds,true,120);
                 break;
             case 12: // zoom out
                 map.getController().zoomOut();

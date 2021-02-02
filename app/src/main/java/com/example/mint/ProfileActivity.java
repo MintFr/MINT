@@ -449,16 +449,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onBackPressed(){
-        //TAG for checking button was indeed pressed
-        Log.v(TAG, "back pressed");
 
         String targetActivity = "No target activity yet";
         // Get previous intent with information of previous activity
         Intent intent = getIntent();
         targetActivity = intent.getStringExtra("previousActivity");
-
-        //Check we have the right target activity
-        Log.v(TAG, targetActivity);
 
         // Creates a new intent to go back to that previous activity
         // Tries to get the class from the name that was passed through the previous intent
@@ -471,6 +466,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         intent.putExtra("previousActivity", this.getClass());
 
         this.startActivity(newIntent);
+
+        //---------TRANSITIONS-----------
+        //For Right-To-Left transitions
+        if(targetActivity.equals("com.example.mint.MainActivity") || targetActivity.equals("com.example.mint.MapActivity")){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            this.finish();
+        }
+
 
         /*
         //handles the bottom navigation view

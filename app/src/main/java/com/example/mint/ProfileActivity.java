@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,12 +20,17 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -126,7 +132,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
         // update the pollution for this year
         Preferences.addMonthPollutionToYear(Preferences.getCurrentDate()[1],Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this),this);
-
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
 //        ArrayList<Integer> valuesTest = new ArrayList<>();
@@ -641,7 +646,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         pollution+=lastPol;
         // save it in the preferences
         Preferences.setPollutionToday(pollution,this);
-        System.out.println(pollution);
         // display new pollution
         pollutionToday.setText(Integer.toString(pollution));
         // reset the last pollution now that it has been saved (so that it doesn't keep adding it as soon as we reopen the profile)
@@ -671,7 +675,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * This handles all the graph values and appearance settings
      * @param range : whether we want to display a week, a month or a year (0 for week, 1 for month, 2 for year)
      */
-    private void setUpGraph(int range){
+    private void setUpGraph(final int range){
         // we get the pollution data from preferences
         ArrayList<Integer> values = Preferences.getPollutionYear(Preferences.getCurrentDate()[2],this);
 
@@ -699,14 +703,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         LineDataSet dataSet = new LineDataSet(entries,null);
         dataSet.setColor(getResources().getColor(R.color.colorAccent));
         dataSet.setLineWidth(3);
-        dataSet.setDrawCircles(false);
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setCircleRadius(5);
+        dataSet.setCircleHoleRadius(3);
         dataSet.setDrawValues(false);
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 
         // Axis styling
         // Y axis
         YAxis yAxisRight = graph.getAxisRight();
-        YAxis yAxisLeft = graph.getAxisLeft();
+        final YAxis yAxisLeft = graph.getAxisLeft();
         yAxisRight.setEnabled(false);
         yAxisLeft.setDrawAxisLine(false);
         yAxisLeft.setGridLineWidth(0.5f);
@@ -715,7 +722,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         yAxisLeft.setTextColor(getResources().getColor(R.color.colorDarkGrey));
 
         // X axis
-        XAxis xAxis = graph.getXAxis();
+        final XAxis xAxis = graph.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
@@ -728,8 +735,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 // in the case that we want to show the week :
                 // first we change the range of the x axis
                 int currentDayOfWeek = (Preferences.getCurrentDate()[3])-1; // day of week starts with 1 for sunday, so we do -1 to start with monday
-                final int xAxisMin = (diffDays-currentDayOfWeek)+1;
-                xAxis.setAxisMinimum(xAxisMin); // we have to add one because if we dont we will have a one day difference
+                final int xAxisMin = (diffDays-currentDayOfWeek)+1; // we have to add one because if we dont we will have a one day difference
+                xAxis.setAxisMinimum(xAxisMin);
                 xAxis.setAxisMaximum(diffDays+(7-currentDayOfWeek));
                 // then we change the labels of the x axis
                 final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
@@ -744,9 +751,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getFormattedValue(float value) {
-                        return xAxisLabelWeek.get((int) (value-xAxisMin));
+                        return xAxisLabelWeek.get((int) (value - xAxisMin));
                     }
                 });
+                dataSet.setDrawCircles(true);
                 graph.invalidate();
                 break;
             case 1 :
@@ -769,6 +777,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         return xAxisLabelMonth.get((int) value-xAxisMinMonth);
                     }
                 });
+                dataSet.setDrawCircles(true);
                 graph.invalidate();
                 break;
             case 2 :
@@ -832,6 +841,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 });
+                // the circles make the graph illegible in the case of the yearly graph so we disable them
+                dataSet.setDrawCircles(false);
                 graph.invalidate();
                 break;
         }
@@ -844,6 +855,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // refresh
         graph.invalidate();
+
+        ImageButton slideLeft = findViewById(R.id.slide_left);
+        ImageButton slideRight = findViewById(R.id.slide_right);
+
+        slideLeft.setTag(110);
+        slideRight.setTag(111);
+
+        View.OnClickListener onSlideClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                switch (range) {
+                    case 0 :
+                        xAxis.setAxisMinimum(i==110?xAxis.getAxisMinimum()-7:xAxis.getAxisMinimum()+7);
+                        xAxis.setAxisMaximum(i==110?xAxis.getAxisMaximum()-7:xAxis.getAxisMaximum()+7);
+                        break;
+                    case 1 :
+                        break;
+                    case 2 :
+                        break;
+                }
+            }
+        };
+
+        slideLeft.setOnClickListener(onSlideClick);
+        slideRight.setOnClickListener(onSlideClick);
+
     }
 
 

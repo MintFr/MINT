@@ -29,7 +29,7 @@ public class MapActivity extends AppCompatActivity {
     private MapView map;
     IMapController mapController;
 
-    private static final String TAG = "MapActivity";
+    //private static final String TAG = "MapActivity"; //--> for debugging
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,9 @@ public class MapActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
 
-
-        //Bottom Menu
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU //
+        /////////////////////////////////////////////////////////
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
         bottomNav.setItemIconTintList(null);
@@ -65,37 +66,14 @@ public class MapActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
 
-
-        //TODO This is redundant with ActivityMenuSwitcher
-        //Slide animation
-        //bottomNav.setSelectedItemId(R.id.maps);
-
-        /*
-        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itinerary:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                        return true;
-                    case R.id.maps:
-                        return true;
-                    case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        return true;
-                    default:
-                }
-                return false;
-            }
-        });
-         */
-
-
-
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU END //
+        /////////////////////////////////////////////////////////
     }
 
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
      */
@@ -135,15 +113,9 @@ public class MapActivity extends AppCompatActivity {
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             this.finish();
         }
-
-        /*
-        //handles the bottom navigation view
-        //TODO Doesn't seem like this is necessary
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);*/
     }
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
 }

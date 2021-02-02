@@ -85,6 +85,7 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
             activity.startActivity(intent);
 
 
+            //---------TRANSITIONS-----------
             //For Left-To-Right transitions
             if(activity.getClass() == MainActivity.class && targetItemId == R.id.maps
                     || activity.getClass() == MainActivity.class && targetItemId == R.id.profile

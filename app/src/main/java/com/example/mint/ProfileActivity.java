@@ -96,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private PopupWindow transportationPopupWindow;
 
 
-    private static final String TAG = "ProfileActivity";
+    //private static final String TAG = "ProfileActivity"; //--> for debugging
 
     /**
      * This activity handles the input of various preferences and the display of the pollution exposure throughout time
@@ -539,6 +539,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         menuItem.setChecked(true);
 
         /////////////////////////////////////////////////////////
+        // BOTTOM MENU END //
+        /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
         // SLIDE ANIMATION //
         /////////////////////////////////////////////////////////
 
@@ -572,21 +575,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
      */
     @Override
     public void onBackPressed(){
-        //TAG for checking button was indeed pressed
-        Log.v(TAG, "back pressed");
 
         String targetActivity = "No target activity yet";
         // Get previous intent with information of previous activity
         Intent intent = getIntent();
         targetActivity = intent.getStringExtra("previousActivity");
-
-        //Check we have the right target activity
-        Log.v(TAG, targetActivity);
 
         // Creates a new intent to go back to that previous activity
         // Tries to get the class from the name that was passed through the previous intent
@@ -600,15 +601,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         this.startActivity(newIntent);
 
-        /*
-        //handles the bottom navigation view
-        //TODO Doesn't seem like this is necessary
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);*/
+        //---------TRANSITIONS-----------
+        //For Right-To-Left transitions
+        if(targetActivity.equals("com.example.mint.MainActivity") || targetActivity.equals("com.example.mint.MapActivity")){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            this.finish();
+        }
     }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
     /**
      * Displays the various popup windows when you click on each button

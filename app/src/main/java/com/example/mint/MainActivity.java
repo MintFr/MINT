@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //boolean GpsStatus = false; //true if the user's location is activated on the phone
 
-    private static final String TAG = "MainActivity";
+    //private static final String TAG = "MainActivity"; //--> for debugging
 
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
@@ -255,58 +255,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
 
-
-        //TODO This is redundant with ActivityMenuSwitcher
-        //Slide animation
-        //bottomNav.setSelectedItemId(R.id.itinerary);
-
-        /*
-        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itinerary:
-                        return true;
-                    case R.id.maps:
-                        Intent intent = new Intent(getApplicationContext(),MapActivity.class);
-                        //intent.putExtra("previousactivity",R.id.itinerary);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        //bottomNav.setSelectedItemId(R.id.itinerary);
-                        return true;
-                    case R.id.profile:
-                        intent = new Intent(getApplicationContext(),MapActivity.class);
-                        //intent.putExtra("previousactivity",R.id.itinerary);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                        //bottomNav.setSelectedItemId(R.id.itinerary);
-                        return true;
-                    default:
-                }
-                return false;
-            }
-        });
-
-         */
-
-
     }
 
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
      */
     @Override
     public void onBackPressed(){
-        //TAG for checking button was indeed pressed
-        Log.v(TAG, "back pressed");
 
         String targetActivity = "No target activity yet";
         // Get previous intent with information of previous activity
         Intent intent = getIntent();
         targetActivity = intent.getStringExtra("previousActivity");
-
-        //Check we have the right target activity
-        Log.v(TAG, targetActivity);
 
         // Creates a new intent to go back to that previous activity
         // Tries to get the class from the name that was passed through the previous intent
@@ -320,15 +283,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.startActivity(newIntent);
 
-        /*
-        //TODO Doesn't seem like this is necessary
-        //handles the bottom navigation view
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);*/
+        //---------TRANSITIONS-----------
+        //For Left-To-Right transitions
+        if(targetActivity.equals("com.example.mint.MapsActivity") || targetActivity.equals("com.example.mint.ProfileActivity")){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            this.finish();
+        }
     }
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
 
     /**

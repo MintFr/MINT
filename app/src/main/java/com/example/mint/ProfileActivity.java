@@ -61,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     int activated =0;
 
-    private static final String TAG = "ProfileActivity";
+    //private static final String TAG = "ProfileActivity"; //--> for debugging
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -407,7 +407,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // TRANSPORTATION POPUP END //
         /////////////////////////////////////////////////////////
 
-        //Bottom Menu
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU //
+        /////////////////////////////////////////////////////////
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
         bottomNav.setItemIconTintList(null);
@@ -415,35 +418,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
-
-        //TODO This is redundant with ActivityMenuSwitcher
-        //Slide animation
-        //bottomNav.setSelectedItemId(R.id.profile);
-
-        /*
-        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itinerary:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                        return true;
-                    case R.id.maps:
-                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                        return true;
-                    case R.id.profile:
-                        return true;
-                    default:
-                }
-                return false;
-            }
-        });
-         */
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU END //
+        /////////////////////////////////////////////////////////
 
     }
 
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
      */
@@ -475,17 +458,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             this.finish();
         }
-
-
-        /*
-        //handles the bottom navigation view
-        //TODO Doesn't seem like this is necessary
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);*/
     }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
     @Override
     public void onClick(View v){

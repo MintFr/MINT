@@ -25,7 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelectedListener {
     private final Activity activity;
-    private BottomNavigationView bottomNav;
 
     ActivityMenuSwitcher(Activity currentActivity) {
         super();
@@ -35,15 +34,15 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
     @Override
     public boolean onNavigationItemSelected(MenuItem targetItem) {
 
-        // GET TARGET CLASS
+        //------- GET TARGET ACTIVITY -------
 
-        // item lets us know which activity will be our target activity
-        // get the id of the item
+        // targetItem lets us know which activity will be our target activity
+        // Get the id of the targetItem
         int targetItemId = targetItem.getItemId();
-        // the target Activity is null at first
+        // The target Activity is null at first
         Class<? extends Activity> target = null;
 
-        //based on the id, attribute the right class to target
+        // Based on the id, attribute the right class to target
         if (targetItemId == R.id.itinerary) {
             target = MainActivity.class;
         } else if (targetItemId == R.id.maps) {
@@ -52,33 +51,12 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
             target = ProfileActivity.class;
         }
 
-        //TODO Previous version, should be deleted after checking everything works out
-        /*
-        //if the target has been attributed and isn't the current activity
-        if (target != null && target != activity.getClass()) {
-            // Replace current activity
-            Intent intent = new Intent(activity, target);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        //-------TRANSITION TO NEXT ACTIVITY-------
 
-            // starts the new activity and finishes the current one
-            activity.startActivity(intent);
-            activity.finish();
-        }
-        switch (item.getItemId()){
-            case R.id.itinerary:
-                return true;
-            case R.id.maps:
-                return true;
-            case R.id.profile:
-                return true;
-        }
-         */
-
-        //this does the transition from the current activity to the next with the right transitions
-        //if the target has been attributed and isn't the current activity
+        // This does the transition from the current activity to the next with the right transitions
         if (target != null && target != activity.getClass()) {
 
-            //Create intent and start next activity
+            // Create intent and start next activity
             Intent intent = new Intent(activity, target);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             intent.putExtra("previousActivity", activity.getClass().getName());
@@ -86,24 +64,24 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
 
 
             //---------TRANSITIONS-----------
-            //For Left-To-Right transitions
+            // For Left-To-Right transitions
             if(activity.getClass() == MainActivity.class && targetItemId == R.id.maps
                     || activity.getClass() == MainActivity.class && targetItemId == R.id.profile
                     || activity.getClass() == MapActivity.class && targetItemId == R.id.profile){
 
-                //override the transition and finish the current activity
+                // Override the transition and finish the current activity
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 activity.finish();
 
                 return true;
             }
 
-            //For Right-To-Left transitions
+            // For Right-To-Left transitions
             if(activity.getClass() == MapActivity.class && targetItemId == R.id.itinerary
                     || activity.getClass() == ProfileActivity.class && targetItemId == R.id.itinerary
                     || activity.getClass() == ProfileActivity.class && targetItemId == R.id.maps){
 
-                //override the transition and finish the current activity
+                // Override the transition and finish the current activity
                 activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 activity.finish();
 

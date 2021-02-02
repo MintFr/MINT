@@ -41,8 +41,8 @@
     <string name="graph_week">graph_week</string>
     <string name="max_value_exposure">312</string>
     <string name="graph_pie">graph_pie</string>
-    <string name="exposure_last_travel_text">Mon exposition lors de mon dernier trajet</string>
-    <string name="param_button">Paramètres</string>
+    <string name="exposure_last_travel_text">Mon exposition aujourd`hui</string>
+    <string name="param_button"><u>Paramètres</u></string>
     <string name="user_image">user_image</string>
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
@@ -82,5 +82,9 @@
     <string name="itinerary_exposition">Exposition :</string>
     <string name="itinerary_default_time">time</string>
     <string name="exposition_unit">µg/m³</string>
+    <string name="settings_faq">F.A.Q.</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_legal">Mentions légales</string>
+    <string name="settings_dark_mode">Mode nuit</string>
 
 </resources>

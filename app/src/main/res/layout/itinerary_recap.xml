@@ -10,7 +10,6 @@
     android:paddingBottom="@dimen/bottom_navigation_height"
     app:behavior_peekHeight="@dimen/peek_height"
     app:behavior_hideable="false"
-    app:gestureInsetBottomIgnored="true"
     android:focusable="false"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
     <TextView

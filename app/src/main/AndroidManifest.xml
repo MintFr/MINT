@@ -17,6 +17,7 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name="com.example.mint.SettingsActivity" />
         <activity android:name="com.example.mint.ItineraryActivity" />
         <activity android:name="com.example.mint.LoadingPageActivity" />
         <activity android:name="com.example.mint.SplashScreenActivity">
@@ -27,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.mint.MapActivity" />
-        <activity android:name="com.example.mint.ProfileActivity" />
+        <activity android:name="com.example.mint.ProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.example.mint.MainActivity" />
 
         <meta-data

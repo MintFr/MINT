@@ -29,6 +29,8 @@ public class MapActivity extends AppCompatActivity {
     private MapView map;
     IMapController mapController;
 
+    private static final String TAG = "MapActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,43 @@ public class MapActivity extends AppCompatActivity {
 
 
     }
-    // TODO ON BACK PRESSED MAP
+
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+        //TAG for checking button was indeed pressed
+        Log.v(TAG, "back pressed");
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        //Check we have the right target activity
+        Log.v(TAG, targetActivity);
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        /*
+        //handles the bottom navigation view
+        //TODO Doesn't seem like this is necessary
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);*/
+    }
 
 }

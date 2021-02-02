@@ -74,14 +74,14 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
         }
          */
 
-        //TODO this does the transition from the current activity to the next with the right transitions
+        //this does the transition from the current activity to the next with the right transitions
         //if the target has been attributed and isn't the current activity
         if (target != null && target != activity.getClass()) {
 
             //Create intent and start next activity
             Intent intent = new Intent(activity, target);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-            intent.putExtra("previousActivity", activity.getClass());
+            intent.putExtra("previousActivity", activity.getClass().getName());
             activity.startActivity(intent);
 
 

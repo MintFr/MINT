@@ -147,9 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.endAddress = new com.example.mint.Address();
         this.startAddress = new com.example.mint.Address();
 
-
-
-
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
             @Override

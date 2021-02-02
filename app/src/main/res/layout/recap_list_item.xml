@@ -36,22 +36,56 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/recap_time_icon"
         android:layout_marginLeft="20dp"
+        android:text="0h 08min"
         style="@style/bold" />
+    <TextView
+        android:id="@+id/seperator_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/recap_time"
+        android:layout_marginLeft="10dp"
+        android:text="|"/>
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/seperator_2"
+        android:layout_marginLeft="10dp"
+        android:text="340 m"/>
     <TextView
         android:id="@+id/exposition_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/exposition_unit"
-        android:layout_marginRight="5dp" />
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@id/save"
+        android:layout_marginRight="30dp"
+        android:text="60"
+        style="@style/bold"
+        android:textColor="@color/colorAccent"/>
     <TextView
         android:id="@+id/exposition_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:layout_alignLeft="@id/exposition_value"
+        android:layout_alignRight="@id/exposition_value"
+        android:layout_below="@id/exposition_value"
+        android:textSize="8dp"
         android:text="@string/exposition_unit"/>
+    <ImageButton
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_save"
+        android:layout_centerVertical="true"
+        android:background="@drawable/round_button_shadow_background"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

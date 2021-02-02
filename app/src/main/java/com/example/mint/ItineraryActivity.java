@@ -39,6 +39,7 @@ import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
@@ -48,6 +49,7 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.PaintList;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
@@ -81,6 +83,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     GeoPoint startPosition;
     GeoPoint endPosition;
+    List<GeoPoint> markers;
 
     /**
      * LAYOUT AND MENU
@@ -102,14 +105,33 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * STYLE
      */
     private Paint paintBorder;
-    private Paint paintInside;
     private Paint paintBorderSelected;
-    private Paint paintInsideSelected;
+
+    private Paint paintInsideG; // color when the pollution is good
+    private Paint paintInsideM; // color when the pollution is medium
+    private Paint paintInsideB; // color when the pollution is bad
+
+    private Paint paintInsideSelectedG; // color when the pollution of the selected itinerary is good
+    private Paint paintInsideSelectedM; // color when the pollution of the selected itinerary is medium
+    private Paint paintInsideSelectedB; // color when the pollution of the selected itinerary is bad
+
+    private PaintList plInside;
+    private PaintList plInsideSelected;
+    private PaintList plBorder;
+    private PaintList plBorderSelected;
+
+
 
     /**
      * ITINERARY
      */
     ArrayList<Itinerary> itineraries;
+
+    /**
+     * POLLUTION DATA
+     */
+    private String sensibility;
+    private int threshold;
 
     /**
      * INFLATER : brings up necessary views
@@ -127,6 +149,29 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // inflater used to display different views
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // get the sensibility from preferences
+        sensibility = Preferences.getSensibility("Sensibility",this);
+        //set the threshold for the display color of the itineraries
+        // TODO change values for threshold once you have the data from captation
+        switch (sensibility){
+            case "Très élevée" :
+                threshold = 5;
+                break;
+            case "Élevée" :
+                threshold = 15;
+                break;
+            case "Modérée" :
+                threshold = 35;
+                break;
+            case "Faible" :
+                threshold = 55;
+                break;
+            case "Pas de sensibilité" :
+            case "--" :
+                threshold = 75;
+                break;
+        }
 
         /////////////////////////
         //// BOTTOM SHEETS /////
@@ -198,8 +243,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         itineraries = new ArrayList<>();
         itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
 
-        //Paintlists for the effect on the polyline
-        paintBorder = new Paint(); // for the white border
+        // Paintlists for the effects on the polylines //
+
+        // for the white border
+        paintBorder = new Paint();
         paintBorder.setStrokeWidth(30);
         paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBorder.setColor(Color.WHITE);
@@ -208,26 +255,50 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         paintBorder.setShadowLayer(15,0,10,getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
 
-        paintBorderSelected = new Paint(paintBorder); // white border when line is selected
+        // white border when line is selected
+        paintBorderSelected = new Paint(paintBorder);
         paintBorderSelected.setStrokeWidth(50);
 
-        paintInside = new Paint(); // inside the white border
-        paintInside.setStrokeWidth(10);
-        paintInside.setStyle(Paint.Style.FILL);
-        paintInside.setColor(getResources().getColor(R.color.colorLightGreen));
-        paintInside.setStrokeCap(Paint.Cap.ROUND);
-        paintInside.setStrokeJoin(Paint.Join.ROUND);
-        paintInside.setAntiAlias(true);
+        // inside the white border GOOD
+        paintInsideG = new Paint();
+        paintInsideG.setStrokeWidth(10);
+        paintInsideG.setStyle(Paint.Style.FILL);
+        paintInsideG.setColor(getResources().getColor(R.color.colorAccent)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A PREFERED ITINERARY
+        paintInsideG.setStrokeCap(Paint.Cap.ROUND);
+        paintInsideG.setStrokeJoin(Paint.Join.ROUND);
+        paintInsideG.setAntiAlias(true);
 
-        paintInsideSelected = new Paint(paintInside); // inside the white border when the line is selected
-        paintInsideSelected.setStrokeWidth(20);
-        paintInsideSelected.setColor(getResources().getColor(R.color.colorAccent));
+        // inside the white border when the line is selected GOOD
+        paintInsideSelectedG = new Paint(paintInsideG);
+        paintInsideSelectedG.setStrokeWidth(20);
+
+        // inside the white border MEDIUM
+        paintInsideM = new Paint(paintInsideG);
+        paintInsideM.setColor(getResources().getColor(R.color.colorLightGreen)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A MEDIUM ITINERARY
+
+        // inside the white border when the line is selected MEDIUM
+        paintInsideSelectedM = new Paint(paintInsideM);
+        paintInsideSelectedM.setStrokeWidth(20);
+
+        // inside the white border BAD
+        paintInsideB = new Paint(paintInsideG);
+        paintInsideB.setColor(getResources().getColor(R.color.colorLightGrey)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A BAD ITINERARY
+
+        // inside the white border when the line is selected BAD
+        paintInsideSelectedB = new Paint(paintInsideB);
+        paintInsideSelectedB.setStrokeWidth(20);
+
+        // paintlists are useful for having several colors inside the polyline,
+        // we will store the paints we created in them, that way we can change their appearance according to the pollution
+        plInside = new MonochromaticPaintList(paintInsideB);
+        plInsideSelected = new MonochromaticPaintList(paintInsideSelectedB);
+        plBorder = new MonochromaticPaintList(paintBorder);
+        plBorderSelected = new MonochromaticPaintList(paintBorderSelected);
 
         // display each itinerary we just got from the Async task
         for (int j=0;j<itineraries.size()-1;j++){
             displayItinerary(itineraries.get(j), itineraries,j);
         }
-        Preferences.setLastPollution((int)itineraries.get(0).getPollution(),this);
 
         // display recap
         displayRecap(itineraries);
@@ -280,9 +351,21 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Marker endMarker = new Marker(map);
         endPosition = new GeoPoint(itineraries.get(0).getPoints().get(indexEnd)[0],itineraries.get(0).getPoints().get(indexEnd)[1]);
         endMarker.setPosition(endPosition);
-        endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
-        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+        endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
         map.getOverlays().add(endMarker);
+
+        // center the map on the itineraries
+        markers = new ArrayList<>();
+        markers.add(startPosition);
+        markers.add(endPosition);
+        final BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
+        map.post(new Runnable() {
+            @Override
+            public void run() {
+                map.zoomToBoundingBox(bounds,true,120);
+            }
+        });
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -312,15 +395,21 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     //DISPLAY ITINERARY
     private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){
         // polyline for itinerary
+        // first we create a list of geopoints for the geometry of the polyline
         List<GeoPoint> geoPoints = new ArrayList<>();
         for (int j = 0; j<itinerary.getPointSize();j++){
             geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0],itinerary.getPoints().get(j)[1]));
         }
 
+        // then we attribute it to the new polyline
         final Polyline line = new Polyline(map);
         line.setPoints(geoPoints);
-        line.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
-        line.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
+
+        // then we handle the color :
+        setColorForPolyline(itinerary);
+
+        line.getOutlinePaintLists().add(plBorder);
+        line.getOutlinePaintLists().add(plInside);
 
         // this is to be able to identify the line later on
         line.setId(String.valueOf(i));
@@ -392,6 +481,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // add line to map
         map.getOverlays().add(line);
+        map.invalidate(); // this is to refresh the display
 
         // on click behaviour of line (highlight it, show details, show infowindow)
         line.setOnClickListener(new Polyline.OnClickListener() {
@@ -494,7 +584,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // ADD DIFFERENT ITINERARIES
         LinearLayout recapList = findViewById(R.id.recap_list);
-        recapList.removeAllViews();
+        recapList.removeAllViews(); // remove the last views that were displayed
         for (int i=0;i<list.size()-1;i++){
 
             // get list item view and the views inside it
@@ -502,10 +592,16 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             ImageView transportationIcon = listItem.findViewById(R.id.transportation_icon);
             TextView time = listItem.findViewById(R.id.recap_time);
             TextView exposition = listItem.findViewById(R.id.exposition_value);
+            TextView distance = listItem.findViewById(R.id.distance);
+            ImageButton save = listItem.findViewById(R.id.save);
 
             // set time
             String timeStr = convertIntToHour((int)list.get(i).getTime());
             time.setText(timeStr);
+
+            // set distance
+            String distStr = String.format("%.1f"+" km",list.get(i).getDistance() / 1000);
+            distance.setText(distStr);
 
             // set exposition
             exposition.setText(String.format("%s",list.get(i).getPollution()));
@@ -535,6 +631,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // add the view to the layout
             recapList.addView(listItem,i);
+
+            // save pollution button
+            save.setTag((int)(100+i)); // we add 100 because otherwise we will override the tag for "listItem"
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i = (int) v.getTag() - 100; // this lets us find the corresponding itinerary for which we want to save the pollution data
+                    // we inform the user that he just saved this pollution data to his profile :
+                    Toast.makeText(ItineraryActivity.this, "L'exposition associée à ce trajet a bien été ajoutée à votre profil", Toast.LENGTH_SHORT).show();
+                    // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
+                    Preferences.setLastPollution((int)list.get(i).getPollution(),ItineraryActivity.this);
+                }
+            });
 
             // highlight itinerary when you click on an itinerary
             // this will used to find the corresponding itinerary
@@ -584,8 +693,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // highlight the polyline
         polyline.getOutlinePaintLists().clear(); // reset polyline appearance
-        polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorderSelected));
-        polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintInsideSelected));
+        setColorForPolyline(itinerary); // this will set the color for plInsideSelected
+        polyline.getOutlinePaintLists().add(plBorderSelected);
+        polyline.getOutlinePaintLists().add(plInsideSelected);
 
         // we remove it from the list of overlays and then add it again on top of all the other lines so it's in front
         mapView.getOverlays().remove(polyline);
@@ -622,9 +732,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private void resetPolylineAppearance(Polyline polyline){
         // clear all previous paints
         polyline.getOutlinePaintLists().clear();
+        // find the itinerary we are referring to, in order to then find the color it has to be
+        int i = Integer.valueOf(polyline.getId()); // this is the index of the itinerary inside itineraries
+        Itinerary itinerary = itineraries.get(i);
+        setColorForPolyline(itinerary);
         // add the default paint style
-        polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintBorder));
-        polyline.getOutlinePaintLists().add(new MonochromaticPaintList(paintInside));
+        polyline.getOutlinePaintLists().add(plBorder);
+        polyline.getOutlinePaintLists().add(plInside);
     }
 
     /**
@@ -715,7 +829,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         int i = (int) v.getTag();
         switch (i) {
             case 10: // recap button
-                // reset everything back to normal and display itinerary
+                // reset everything back to normal and display recap
                 InfoWindow.closeAllInfoWindowsOn(map);
                 for (int j = 1; j<itineraries.size(); j++){ // we go through all the polylines that are displayed
                     Polyline selectedLine = (Polyline) map.getOverlays().get(j);
@@ -724,8 +838,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 displayRecap(itineraries);
                 break;
             case 11: // center on lines
-                Polyline line = (Polyline) map.getOverlays().get(1);
-                map.zoomToBoundingBox(line.getBounds(),true,120);
+                BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
+                map.zoomToBoundingBox(bounds,true,120);
                 break;
             case 12: // zoom out
                 map.getController().zoomOut();
@@ -745,5 +859,24 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         p.setAnchorId(id);
         fab.setLayoutParams(p);
+    }
+
+    /**
+     * this method decides which color the itinerary line will be, according to the threshold
+     * @param itinerary
+     */
+    public void setColorForPolyline(Itinerary itinerary){
+        if (itinerary.getPollution()<=threshold){
+            plInside = new MonochromaticPaintList(paintInsideG);
+            plInsideSelected = new MonochromaticPaintList(paintInsideSelectedG);
+        }
+        else if (itinerary.getPollution()<=threshold+20){
+            plInside = new MonochromaticPaintList(paintInsideM);
+            plInsideSelected = new MonochromaticPaintList(paintInsideSelectedM);
+        }
+        else if (itinerary.getPollution()>threshold+20){
+            plInside = new MonochromaticPaintList(paintInsideB);
+            plInsideSelected = new MonochromaticPaintList(paintInsideSelectedB);
+        }
     }
 }

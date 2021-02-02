@@ -51,7 +51,6 @@
 
     <Button
         android:id="@+id/plus_sain"
-        style="@style/Button"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/choix_du_critere"
@@ -70,8 +69,8 @@
         android:paddingRight="10dp"
         android:paddingBottom="2dp"
         android:text="Plus sain"
-        android:textAppearance="@style/ButtonText"
-        android:textColor="@null" />
+        style="@style/Button"
+        android:textAppearance="@style/ButtonText" />
 
     <TextView
         android:id="@+id/option_transportation_prompt"

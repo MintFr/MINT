@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -62,9 +63,12 @@ public class MapActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.maps);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.maps);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -84,9 +88,11 @@ public class MapActivity extends AppCompatActivity {
                 return false;
             }
         });
+         */
 
 
 
     }
+    // TODO ON BACK PRESSED MAP
 
 }

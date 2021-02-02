@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -412,9 +413,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.profile);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.profile);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -434,8 +438,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
         });
+         */
 
     }
+
+    //TODO ON BACK PRESSED PROFILE
 
     @Override
     public void onClick(View v){

@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button dateBtn;
     private Button timeBtn;
     boolean GpsStatus = false; //true if the user's location is activated on the phone
+
+    private static final String TAG = "MainActivity";
 
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
@@ -181,9 +184,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.itinerary);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.itinerary);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -191,19 +197,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.itinerary:
                         return true;
                     case R.id.maps:
-                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                        Intent intent = new Intent(getApplicationContext(),MapActivity.class);
+                        //intent.putExtra("previousactivity",R.id.itinerary);
+                        startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        //bottomNav.setSelectedItemId(R.id.itinerary);
                         return true;
                     case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        intent = new Intent(getApplicationContext(),MapActivity.class);
+                        //intent.putExtra("previousactivity",R.id.itinerary);
+                        startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                        //bottomNav.setSelectedItemId(R.id.itinerary);
                         return true;
                     default:
                 }
                 return false;
             }
         });
+
+         */
+
+
     }
+
+    //TODO eventually put it into another class for minimal copy
+
+    //TODO ON BACK PRESSED MAIN : currently closes app when back is pressed
+    @Override
+    public void onBackPressed(){
+        //TAG for checking button was indeed pressed
+        Log.v(TAG, "back pressed");
+
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        String targetActivity = intent.getStringExtra("previousActivity");
+        //TODO Check information of previous activity is indeed gotten
+
+        // Creates a new intent to go back to that previous activity
+        Intent newIntent = new Intent(this, targetActivity.getClass());
+        intent.putExtra("previousActivity", this.getClass());
+        this.startActivity(newIntent);
+        //TODO check intent is created
+
+        //handles the bottom navigation view
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0); //this isn't the right item --> needs to be the id of targetActivity
+        menuItem.setChecked(true);
+        // TODO Check this selects the right item
+
+
+    }
+
 
     // function that creates the popup window on selection of editTexts
     private PopupWindow showFavoriteAddresses() {

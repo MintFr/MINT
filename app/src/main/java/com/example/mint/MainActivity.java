@@ -515,6 +515,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // the buttons for selecting if you want start time or end time.
+        // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
+        Button plusRapide = optionPopupView.findViewById(R.id.plus_rapide);
+        plusRapide.setActivated(true);
+        Button plusSain = optionPopupView.findViewById(R.id.plus_sain);
+        plusRapide.setTag(10);
+        plusSain.setTag(11);
+
+        // the buttons for selecting if you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
         final Button endTime = optionPopupView.findViewById(R.id.end_time);
         startTime.setTag(8);
@@ -546,8 +554,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
+        // actions when either "plus rapide" or "plus sain" is clicked (unclicks the other one)
+        View.OnClickListener onRapideSainCritereClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                Button button1 = optionPopupView.findViewWithTag(i);
+                Button button2 = optionPopupView.findViewWithTag(i==10?11:10);
+                button1.setActivated(true);
+                button2.setActivated(false);
+            }
+        };
+
         startTime.setOnClickListener(onStartEndTimeClick);
         endTime.setOnClickListener(onStartEndTimeClick);
+
+        plusRapide.setOnClickListener(onRapideSainCritereClick);
+        plusSain.setOnClickListener(onRapideSainCritereClick);
+
+
 
         return popupOptions;
     }

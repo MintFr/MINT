@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,8 @@ public class MapActivity extends AppCompatActivity {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
     IMapController mapController;
+
+    private static final String TAG = "MapActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +65,12 @@ public class MapActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.maps);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.maps);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -84,9 +90,48 @@ public class MapActivity extends AppCompatActivity {
                 return false;
             }
         });
+         */
 
 
 
+    }
+
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+        //TAG for checking button was indeed pressed
+        Log.v(TAG, "back pressed");
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        //Check we have the right target activity
+        Log.v(TAG, targetActivity);
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        /*
+        //handles the bottom navigation view
+        //TODO Doesn't seem like this is necessary
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);*/
     }
 
 }

@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -102,14 +103,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText endPoint;
     private EditText latitude;
     private EditText longitude;
+    private ImageButton inversionButton;
+    private Button search;
+    //private final int POSITION_PERMISSION_CODE = 1;
+
+    //boolean GpsStatus = false; //true if the user's location is activated on the phone
+
+    private static final String TAG = "MainActivity";
+
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
     ListView addressListView;
     String start;
     String end;
     EditText buttonClicked;
-    private ImageButton inversionButton;
-    private Button search;
+
 
 
     /**
@@ -247,9 +255,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.itinerary);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.itinerary);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -257,19 +268,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.itinerary:
                         return true;
                     case R.id.maps:
-                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                        Intent intent = new Intent(getApplicationContext(),MapActivity.class);
+                        //intent.putExtra("previousactivity",R.id.itinerary);
+                        startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        //bottomNav.setSelectedItemId(R.id.itinerary);
                         return true;
                     case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        intent = new Intent(getApplicationContext(),MapActivity.class);
+                        //intent.putExtra("previousactivity",R.id.itinerary);
+                        startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                        //bottomNav.setSelectedItemId(R.id.itinerary);
                         return true;
                     default:
                 }
                 return false;
             }
         });
+
+         */
+
+
     }
+
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+        //TAG for checking button was indeed pressed
+        Log.v(TAG, "back pressed");
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        //Check we have the right target activity
+        Log.v(TAG, targetActivity);
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        /*
+        //TODO Doesn't seem like this is necessary
+        //handles the bottom navigation view
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);*/
+    }
+
 
     /**
      * function that creates the popup window on selection of editTexts

@@ -81,7 +81,7 @@
     <string name="recap_title">Itinéraires</string>
     <string name="default_exposition">--</string>
     <string name="itinerary_exposition">Exposition :</string>
-    <string name="itinerary_default_time">time</string>
+    <string name="itinerary_default_time">duration</string>
     <string name="exposition_unit">µg/m³</string>
     <string name="settings_faq">F.A.Q.</string>
     <string name="settings_language">Langue</string>

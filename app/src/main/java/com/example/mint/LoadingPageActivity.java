@@ -17,6 +17,9 @@ public class LoadingPageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         //Get parameters corresponding to addresses from the main activity (by default we put centrale nantes and chu hotel dieu)
+        boolean start = intent.getBooleanExtra("starting", true);
+        String time = intent.getStringExtra("time");
+        System.out.println(time);
         double param1 = intent.getDoubleExtra("param1", 0.0);
         double param2 = intent.getDoubleExtra("param2", 0.0);
         double param3 = intent.getDoubleExtra("param3", 0.0);
@@ -71,10 +74,14 @@ public class LoadingPageActivity extends AppCompatActivity {
                 param3 = 47.212191574506164;
                 param4 = -1.5535549386503666;
             }
+            /*String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
+                            "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transportation=%s,%s,%s,%s",
+                    param1, param2, param3, param4, options[0], options[1], options[2], options[3]);*/
+
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
-                            "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transportation=%s,%s,%s,%s",
-                    param1, param2, param3, param4, options[0], options[1], options[2], options[3]);
+                            "itinerary5?start=%s,%s&end=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
+                    param1, param2, param3, param4, options[0], options[1], options[2], options[3], start, time);
 
             // activity launch
             System.out.println(url);

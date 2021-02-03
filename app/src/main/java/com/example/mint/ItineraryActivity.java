@@ -3,29 +3,18 @@ package com.example.mint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.location.Geocoder;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
@@ -35,32 +24,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
-import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.zip.Inflater;
 
 /**
  * Activity for the itinerary page, on which the user can see the various itineraries calculated for them
@@ -197,7 +174,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         itineraries = new ArrayList<>();
         itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
-
+        System.out.println("iti :" +itineraries.get(0).getTimeOption());
         //Paintlists for the effect on the polyline
         paintBorder = new Paint(); // for the white border
         paintBorder.setStrokeWidth(30);
@@ -227,7 +204,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         for (int j=0;j<itineraries.size()-1;j++){
             displayItinerary(itineraries.get(j), itineraries,j);
         }
-        Preferences.setLastPollution((int)itineraries.get(0).getPollution(),this);
+        //Preferences.setLastPollution((int)itineraries.get(0).getPollution(),this);
 
         // display recap
         displayRecap(itineraries);
@@ -336,7 +313,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // set values for time, transportation and pollution
 
         //time
-        int t = Double.valueOf(itinerary.getTime()).intValue();
+        int t = Double.valueOf(itinerary.getDuration()).intValue();
         String s = convertIntToHour(t);
         System.out.println(s);
         //String s = Integer.toString(t);
@@ -432,7 +409,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             viewPoint2.setText(end);
 
             // time
-            String timeStr = convertIntToHour( (int) itinerary.getTime());
+            String timeStr = convertIntToHour( (int) itinerary.getDuration());
             time.setText(timeStr);
 
             //pollution
@@ -504,11 +481,18 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             TextView exposition = listItem.findViewById(R.id.exposition_value);
 
             // set time
-            String timeStr = convertIntToHour((int)list.get(i).getTime());
+            String timeStr = convertIntToHour((int)list.get(i).getDuration());
             time.setText(timeStr);
 
             // set exposition
             exposition.setText(String.format("%s",list.get(i).getPollution()));
+            if (list.get(i).isHourStart()){
+
+            }
+            else{
+
+            }
+            //list.get(i).getTime
 
             // set transportation
             switch (list.get(i).getType()){

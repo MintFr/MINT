@@ -863,11 +863,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 switch (error){
                     case 0:
+                        System.out.println(starting);
+                        System.out.println(timeText);
                         Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                        intent.putExtra("starting", starting);
+                        //intent.putExtra("date", dateText);
+                        intent.putExtra("time", timeText);
                         intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
                         intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
                         intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
                         intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
+
                         startActivity(intent);
                         finish();
                         break;

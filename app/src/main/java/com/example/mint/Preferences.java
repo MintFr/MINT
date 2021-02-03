@@ -140,16 +140,16 @@ public class Preferences {
     public static ArrayList<Integer> getPollutionYear(int year,Context context){
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
         ArrayList<Integer> pollutionYear = new ArrayList<>();
-        int[] date = {1,1,year};
+        int[] date = {0,1,year};
         boolean sameMonth = true;
         for (int i=1;i<=12;i++){
             while (sameMonth){
-                pollutionYear.add(prefs.getInt(date[0]+"_"+i+"_"+date[2],0));
                 date[0]++;
+                pollutionYear.add(prefs.getInt(date[0]+"_"+i+"_"+date[2],0));
                 sameMonth=checkIfSameMonth(date);
             }
             sameMonth=true;
-            date[0]=1;
+            date[0]=0;
         }
         return pollutionYear;
     }

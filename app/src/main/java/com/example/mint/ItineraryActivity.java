@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,9 +55,11 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -105,6 +106,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * STYLE
      */
     private Paint paintBorder;
+    private Paint paintInside;
     private Paint paintBorderSelected;
 
     private Paint paintInsideG; // color when the pollution is good
@@ -425,7 +427,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // set values for time, transportation and pollution
 
         //time
-        int t = Double.valueOf(itinerary.getTime()).intValue();
+        int t = Double.valueOf(itinerary.getDuration()).intValue();
         String s = convertIntToHour(t);
         System.out.println(s);
         //String s = Integer.toString(t);
@@ -522,7 +524,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             viewPoint2.setText(end);
 
             // time
-            String timeStr = convertIntToHour( (int) itinerary.getTime());
+            String timeStr = convertIntToHour( (int) itinerary.getDuration());
             time.setText(timeStr);
 
             //pollution
@@ -594,9 +596,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             TextView exposition = listItem.findViewById(R.id.exposition_value);
             TextView distance = listItem.findViewById(R.id.distance);
             ImageButton save = listItem.findViewById(R.id.save);
+            TextView timeStart = listItem.findViewById(R.id.timeStart);
+            TextView timeEnd = listItem.findViewById(R.id.timeEnd);
+
 
             // set time
-            String timeStr = convertIntToHour((int)list.get(i).getTime());
+            String timeStr = convertIntToHour((int)list.get(i).getDuration());
             time.setText(timeStr);
 
             // set distance
@@ -605,6 +610,58 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // set exposition
             exposition.setText(String.format("%s",list.get(i).getPollution()));
+            if (list.get(i).isHourStart()){
+                //set time Start
+                timeStart.setText(list.get(i).getTimeOption());
+                int duration = (int) list.get(i).getDuration();
+                int minutes = duration / (int) 60;
+                int hours = minutes /(int) 60 ;
+                System.out.println("duration" + duration);
+                System.out.println("hours" + hours);
+                minutes = minutes - hours*60;
+                System.out.println("minutes" +minutes);
+
+                int hourStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int resHour = hourStart + hours;
+                System.out.println("HourStart" +list.get(i).getTimeOption());
+
+                System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
+
+                int resMin = minutesStart+minutes;
+                if (resMin>=60){
+                    resHour+=1;
+                    resMin-=60;
+                }
+                timeEnd.setText((String.format("%s:%s",resHour,resMin)));
+            }
+            else{
+                timeEnd.setText(list.get(i).getTimeOption());
+                int duration = (int) list.get(i).getDuration();
+                int minutes = duration / (int) 60;
+                int hours = minutes /(int) 60 ;
+                System.out.println("duration" + duration);
+                System.out.println("hours" + hours);
+                minutes = minutes - hours*60;
+                System.out.println("minutes" +minutes);
+
+                int hourEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int resHour = hourEnd - hours;
+                System.out.println("HourStart" +list.get(i).getTimeOption());
+
+                System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
+
+                int resMin = minutesEnd-minutes;
+                if (resMin<0){
+                    resHour-=1;
+                    resMin=60-(minutesEnd-minutes);
+                }
+                timeStart.setText((String.format("%s:%s",resHour,resMin)));
+
+
+            }
+            //list.get(i).getTime
 
             // set transportation
             switch (list.get(i).getType()){
@@ -623,7 +680,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             }
 
             // set the height and width of the list item
-            int height = getResources().getDimensionPixelSize(R.dimen.list_item_height);
+            int height = getResources().getDimensionPixelSize(R.dimen.list_recap_height);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     height);

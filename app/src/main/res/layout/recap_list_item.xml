@@ -1,94 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
+    android:layout_height="@dimen/list_recap_height"
     android:background="@color/cardview_light_background"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
+
     <ImageView
         android:id="@+id/transportation_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
-        android:src="@drawable/ic_car_activated"/>
+        android:src="@drawable/ic_car_activated" />
+
     <View
         android:id="@+id/line_seperator"
         android:layout_width="2dp"
-        android:layout_height="40dp"
+        android:layout_height="100dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/transportation_icon"
         android:layout_marginLeft="20dp"
-        android:background="#EDEDED"/>
-    <ImageView
+        android:layout_toRightOf="@id/transportation_icon"
+        android:background="#EDEDED" />
+
+    <!--<ImageView
         android:id="@+id/recap_time_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/line_seperator"
-        android:layout_marginLeft="20dp"
-        android:src="@drawable/ic_time"/>
+        android:src="@drawable/ic_time" />-->
+
+    <!--        android:layout_toRightOf="@id/recap_time_icon"-->
+
     <TextView
         android:id="@+id/recap_time"
+        style="@style/bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/recap_time_icon"
-        android:layout_marginLeft="20dp"
-        android:text="0h 08min"
-        style="@style/bold" />
-    <TextView
-        android:id="@+id/seperator_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/recap_time"
-        android:layout_marginLeft="10dp"
-        android:text="|"/>
+        android:layout_below="@+id/timeStart"
+        android:layout_alignStart="@+id/timeStart"
+        android:layout_alignLeft="@+id/timeStart"
+        android:layout_alignEnd="@+id/timeEnd"
+        android:layout_alignRight="@+id/timeEnd"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:text="@string/_0h_08min" />
+
     <TextView
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/seperator_2"
-        android:layout_marginLeft="10dp"
-        android:text="340 m"/>
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:layout_toStartOf="@+id/exposition_value"
+        android:layout_toLeftOf="@+id/exposition_value"
+        android:text="340 m" />
+
     <TextView
         android:id="@+id/exposition_value"
+        style="@style/bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="2dp"
+        android:layout_toLeftOf="@id/save"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:layout_marginTop="15dp"
-        android:layout_toLeftOf="@id/save"
-        android:layout_marginRight="30dp"
         android:text="60"
-        style="@style/bold"
-        android:textColor="@color/colorAccent"/>
+        android:textColor="@color/colorAccent" />
+
     <TextView
         android:id="@+id/exposition_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_below="@id/exposition_value"
         android:layout_alignLeft="@id/exposition_value"
         android:layout_alignRight="@id/exposition_value"
-        android:layout_below="@id/exposition_value"
+        android:layout_marginLeft="-2dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="2dp"
+        android:gravity="center"
+        android:text="@string/exposition_unit"
         android:textSize="8dp"
-        android:text="@string/exposition_unit"/>
+        android:layout_alignStart="@id/exposition_value" />
+
     <ImageButton
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_save"
-        android:layout_centerVertical="true"
-        android:background="@drawable/round_button_shadow_background"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"/>
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/round_button_shadow_background"
+        android:src="@drawable/ic_save" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="#EDEDED" />
+
+    <TextView
+        android:id="@+id/timeStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="107dp"
+        android:layout_marginLeft="107dp"
+        android:layout_marginTop="13dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/timeEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/timeStart"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="1dp"
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_toRightOf="@+id/textView3"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/timeStart"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="1dp"
+        android:layout_toEndOf="@+id/timeStart"
+        android:layout_toRightOf="@+id/timeStart"
+        android:text="-" />
+
 </RelativeLayout>

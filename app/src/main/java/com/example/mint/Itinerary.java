@@ -6,14 +6,15 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Itinerary implements Serializable {
+    private String timeOption;
+    private boolean hourStart;
     private String type; // type of transportation
     private double pollution; // total exposition to pollution
-    private double time; // total itinerary time
+    private double duration; // total itinerary duration
+    private ArrayList<Integer> stepTime; // duration between steps in sec
     private double distance; // total itinerary distance
-    private ArrayList<Integer> stepTime; // time between steps in sec
     private ArrayList<Integer> stepDistance; // distance between steps in metres
     private ArrayList<double[]> points; // coordinates of each point
 
@@ -24,7 +25,7 @@ public class Itinerary implements Serializable {
     public Itinerary(){
         this.type = "n/a";
         this.pollution = 0.;
-        this.time = 0.;
+        this.duration = 0.;
         this.distance = 0.;
         this.stepDistance = new ArrayList<>() ;
         this.stepTime = new ArrayList<>();
@@ -36,16 +37,16 @@ public class Itinerary implements Serializable {
      * Constructor with parameter
      * @param type
      * @param pollution
-     * @param time
+     * @param duration
      * @param distance
      * @param stepTime
      * @param stepDistance
      * @param points
      */
-    public Itinerary(String type,double pollution, double time, double distance, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points) {
+    public Itinerary(String type, double pollution, double duration, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points, double distance) {
         this.type=type;
         this.pollution=pollution;
-        this.time=time;
+        this.duration = duration;
         this.distance=distance;
         this.stepTime=stepTime;
         this.stepDistance=stepDistance;
@@ -60,8 +61,12 @@ public class Itinerary implements Serializable {
         //Reading JSON
         try{
             this.type = json.getString("transport");
+            this.distance = json.getDouble("distance");
+            //this.pollution = json.getDouble("exposition");
+            this.timeOption = json.getString("time");
+            this.hourStart = json.getBoolean("hofStart");
+            this.duration = json.getDouble("duration");
             this.pollution = (int) json.getDouble("exposition");
-            this.time = json.getDouble("duration");
             this.distance = json.getDouble("distance");
             this.points = new ArrayList<>();
             JSONArray steps = json.getJSONArray("pointsItinerary");
@@ -94,9 +99,11 @@ public class Itinerary implements Serializable {
      * @param itinerary
      */
     public Itinerary(Itinerary itinerary){
+        this.timeOption = itinerary.getTimeOption();
+        this.hourStart = itinerary.isHourStart();
         this.type = itinerary.getType();
         this.pollution = itinerary.getPollution();
-        this.time = itinerary.getTime();
+        this.duration = itinerary.getDuration();
         this.distance = itinerary.getDistance();
         this.stepTime = itinerary.getStepTime();
         this.stepDistance = itinerary.getStepDistance();
@@ -119,12 +126,12 @@ public class Itinerary implements Serializable {
         this.pollution = pollution;
     }
 
-    public double getTime() {
-        return time;
+    public double getDuration() {
+        return duration;
     }
 
-    public void setTime(Float time) {
-        this.time = time;
+    public void setDuration(Float duration) {
+        this.duration = duration;
     }
 
     public void setDistance(double distance){
@@ -161,5 +168,29 @@ public class Itinerary implements Serializable {
 
     public int getPointSize() {
         return points.size();
+    }
+
+    public String getTimeOption() {
+        return timeOption;
+    }
+
+    public void setTimeOption(String timeOption) {
+        this.timeOption = timeOption;
+    }
+
+    public boolean isHourStart() {
+        return hourStart;
+    }
+
+    public void setHourStart(boolean hourStart) {
+        this.hourStart = hourStart;
+    }
+
+    public void setPollution(double pollution) {
+        this.pollution = pollution;
+    }
+
+    public void setTime(double time) {
+        this.duration = time;
     }
 }

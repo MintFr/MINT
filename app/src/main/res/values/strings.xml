@@ -87,5 +87,7 @@
     <string name="settings_language">Langue</string>
     <string name="settings_legal">Mentions légales</string>
     <string name="settings_dark_mode">Mode nuit</string>
+    <string name="mon_exposition">Mon exposition</string>
+    <string name="_0h_08min">0h 08min</string>
 
 </resources>

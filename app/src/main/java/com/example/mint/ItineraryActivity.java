@@ -276,7 +276,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // inside the white border MEDIUM
         paintInsideM = new Paint(paintInsideG);
-        paintInsideM.setColor(getResources().getColor(R.color.colorLightGreen)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A MEDIUM ITINERARY
+        paintInsideM.setColor(getResources().getColor(R.color.colorYellow)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A MEDIUM ITINERARY
 
         // inside the white border when the line is selected MEDIUM
         paintInsideSelectedM = new Paint(paintInsideM);
@@ -284,7 +284,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // inside the white border BAD
         paintInsideB = new Paint(paintInsideG);
-        paintInsideB.setColor(getResources().getColor(R.color.colorLightGrey)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A BAD ITINERARY
+        paintInsideB.setColor(getResources().getColor(R.color.colorOrange)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A BAD ITINERARY
 
         // inside the white border when the line is selected BAD
         paintInsideSelectedB = new Paint(paintInsideB);
@@ -633,7 +633,15 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     resHour+=1;
                     resMin-=60;
                 }
-                timeEnd.setText((String.format("%s:%s",resHour,resMin)));
+                if (resHour<10&&resMin<10) {
+                    timeEnd.setText((String.format("0%s:0%s",resHour,resMin)));
+                }
+                else if (resHour<10) {
+                    timeEnd.setText((String.format("0%s:%s",resHour,resMin)));
+                }
+                else if (resMin<10) {
+                    timeEnd.setText((String.format("%s:0%s",resHour,resMin)));
+                }
             }
             else{
                 timeEnd.setText(list.get(i).getTimeOption());
@@ -650,14 +658,22 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 int resHour = hourEnd - hours;
                 System.out.println("HourStart" +list.get(i).getTimeOption());
 
-                System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
+                //System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
 
                 int resMin = minutesEnd-minutes;
                 if (resMin<0){
                     resHour-=1;
-                    resMin=60-(minutesEnd-minutes);
+                    resMin=60+(minutesEnd-minutes);
                 }
-                timeStart.setText((String.format("%s:%s",resHour,resMin)));
+                if (resHour<10&&resMin<10) {
+                    timeStart.setText((String.format("0%s:0%s",resHour,resMin)));
+                }
+                else if (resHour<10) {
+                    timeStart.setText((String.format("0%s:%s",resHour,resMin)));
+                }
+                else if (resMin<10) {
+                    timeStart.setText((String.format("%s:0%s",resHour,resMin)));
+                }
 
 
             }
@@ -923,6 +939,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * @param itinerary
      */
     public void setColorForPolyline(Itinerary itinerary){
+        System.out.println("pollution" + itinerary.getPollution());
+
         if (itinerary.getPollution()<=threshold){
             plInside = new MonochromaticPaintList(paintInsideG);
             plInsideSelected = new MonochromaticPaintList(paintInsideSelectedG);

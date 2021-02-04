@@ -70,10 +70,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addStepPoint"
         android:visibility="gone" />
+<!--        app:layout_constraintTop_toBottomOf="@+id/addStepPoint"-->
 
-    <ImageButton
+
+    <!--<ImageButton
         android:id="@+id/addStepPoint"
         android:layout_width="35dp"
         android:layout_height="35dp"
@@ -83,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".01"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/startPoint" />
+        app:layout_constraintTop_toTopOf="@+id/startPoint" />-->
 
     <ImageButton
         android:id="@+id/inversion"

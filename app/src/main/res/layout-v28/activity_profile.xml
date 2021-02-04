@@ -216,19 +216,19 @@
 
                     <TextView
                         android:id="@+id/exposition_today"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical|end"
-                        android:paddingLeft="10dp"
                         android:layout_weight="2"
                         android:gravity="start"
-                        android:maxWidth="180dp"
+                        android:maxWidth="90dp"
+                        android:paddingLeft="10dp"
                         android:text="@string/exposure_last_travel_text"
                         android:textColor="#999999"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/graph"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -239,7 +239,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/graph_pie"
-                        android:src="@drawable/graph_pie" />
+                        android:src="@drawable/graph_pie" />-->
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -347,8 +347,8 @@
                         android:id="@+id/chart"
                         android:layout_width="300dp"
                         android:layout_height="250dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/graph_buttons_layout"/>
+                        android:layout_below="@id/graph_buttons_layout"
+                        android:layout_centerHorizontal="true" />
 
                 </RelativeLayout>
 

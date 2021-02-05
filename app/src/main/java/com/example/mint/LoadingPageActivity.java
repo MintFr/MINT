@@ -79,7 +79,7 @@ public class LoadingPageActivity extends AppCompatActivity {
                     param1, param2, param3, param4, options[0], options[1], options[2], options[3]);*/
 
 
-            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
+            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itineraryBIS/" +
                             "itinerary5?start=%s,%s&end=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     param1, param2, param3, param4, options[0], options[1], options[2], options[3], start, time);
 

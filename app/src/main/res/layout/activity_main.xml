@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    tools:context=".MainActivity"
-    android:background="@drawable/background_map">
+    tools:context=".MainActivity">
 
     <org.osmdroid.views.MapView
         android:id="@+id/mapView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MissingConstraints" >
     </org.osmdroid.views.MapView>

@@ -698,27 +698,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v){
         int i = (int) v.getTag(); //if 2 : search, if 3 : option
+        System.out.println(i);
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
         step = stepPoint.getText().toString();
 
         // things to do when user clicks search
         if(i==2){
-            if (start.length() == 0 || end.length() == 0){
-                // if nothing has been typed in, nothing happens and you get a message
-                Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
-            } // stepPoint management: we check whether there is a stepPoint
-            else if (step.length() > 0) {
-                stepBool = true;
-                // if at least two addresses are the same, do nothing
-                if (step.equals(start) || step.equals(end) || start.equals(end)) {
-                    Toast.makeText(MainActivity.this, "Veuillez rentrer des adresses différentes",Toast.LENGTH_SHORT).show();
-                }
-            } else if (start.equals(end)) {
-                // if both addresses are the same, do nothing
-                Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes",Toast.LENGTH_SHORT).show();
-            }
-            else {
+
+                System.out.println("entrée dans le else");
 
                 ////////////////////////////////////////////////////////////////////////////////////
                 // History's management
@@ -837,6 +825,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 ////////////////////////////////////////////////////////////////////////////////////
                 //start itinerary calculation activity if the device has an internet connection
+            if (start.length() == 0 || end.length() == 0){
+                // if nothing has been typed in, nothing happens and you get a message
+                Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
+            } // stepPoint management: we check whether there is a stepPoint
+
+
+            else if (start.equals(end)) {
+                // if both addresses are the same, do nothing
+                Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if (step.length() > 0) {
+                stepBool = true;
+                // if at least two addresses are the same, do nothing
+                if (step.equals(start) || step.equals(end) || start.equals(end)) {
+                    Toast.makeText(MainActivity.this, "Veuillez rentrer des adresses différentes",Toast.LENGTH_SHORT).show();
+                }}
                 int error = 0;
                 if (!CheckInternet()){ //no internet connection
                     error = 2;
@@ -864,7 +869,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     error = 5;
                 }
 
-
+                System.out.println("error"+error);
                 switch (error){
                     case 0:
                         Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
@@ -879,7 +884,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("param6", stepAddress.getCoordinates().getLatitude());
                             intent.putExtra("param7", stepAddress.getCoordinates().getLongitude());
                         }
-
+                        System.out.println("recherche");
                         startActivity(intent);
                         finish();
                         break;
@@ -916,7 +921,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
 
 
-                }
+                }}
 
 
 
@@ -944,7 +949,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Preferences.addAddress("stepAddress",step,MainActivity.this);
 
             }
-        }
+
         // things to do when user clicks options
         else if (i==3){
                     popUp = showOptions();

@@ -70,7 +70,7 @@
     <string name="itinerary_end_message">Calcul terminé</string>
     <string name="itinerary_step">Etapes itinéraire</string>
     <string name="error404">Erreur 404 : page non trouvée</string>
-    <string name="connection_success">connexion success</string>
+    <string name="connection_success">CONNEXION SUCCESS</string>
     <string name="error_url_format">erreur : URL incorrecte</string>
     <string name="connection_failed">erreur de connexion</string>
     <string name="itinerary_point1">"Point de départ </string>

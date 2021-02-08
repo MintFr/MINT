@@ -74,12 +74,14 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
+    private GeoPoint stepPoint;
 
     /**
      * GEOPOINT POSITIONS
      */
     GeoPoint startPosition;
     GeoPoint endPosition;
+    GeoPoint stepPosition;
 
     /**
      * LAYOUT AND MENU
@@ -282,6 +284,20 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(endMarker);
+
+        // step marker if there is one (we only need to draw it once)
+        boolean param5 = intent.getBooleanExtra("param5", false);
+        if (param5) {
+            double param6 = intent.getDoubleExtra("param6", 0.0);
+            double param7 = intent.getDoubleExtra("param7", 0.0);
+            Marker stepMarker = new Marker(map);
+            stepPosition = new GeoPoint(param6, param7);
+            stepMarker.setPosition(stepPosition);
+            stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+            stepMarker.setFlat(true);
+            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+            map.getOverlays().add(stepMarker);
+        }
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

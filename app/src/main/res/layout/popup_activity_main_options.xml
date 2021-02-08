@@ -190,11 +190,12 @@
         android:layout_below="@id/option_separation"
         android:textStyle="bold"
         android:text="@string/option_departure_prompt" />
-    <ImageView
+    <ImageButton
         android:id="@+id/option_calendar_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_calendar"
+        android:background="#00ffffff"
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:padding="5dp"
@@ -221,11 +222,12 @@
         android:layout_below="@id/departure_date_prompt"
         android:layout_toRightOf="@id/option_calendar_icon"
         android:layout_toEndOf="@id/option_calendar_icon"/>
-    <ImageView
+    <ImageButton
         android:id="@+id/option_clock_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_time"
+        android:background="#00ffffff"
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:padding="5dp"

@@ -75,6 +75,7 @@ public class Itinerary implements Serializable {
                 String address = step.getString("addressStep");
                 int length = step.getInt("lengthStep");
                 detail.add(new Step(address, length));
+                //System.out.println(address);
             }
             this.setDetail(detail);
 

@@ -546,7 +546,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     stepsLayout.removeViews(2, index - 2);
                 }
                 System.out.println(STEPS.size());
-                for (int k=1;k<STEPS.size();k++){
+                for (int k=1;k<=STEPS.size();k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view

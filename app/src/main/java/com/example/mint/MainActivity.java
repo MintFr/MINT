@@ -705,223 +705,228 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // things to do when user clicks search
         if(i==2){
-
-                System.out.println("entrée dans le else");
-
-                ////////////////////////////////////////////////////////////////////////////////////
-                // History's management
-                ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
-
-                // get the number of addresses in the history
-                int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this);
-
-                // returns which of the start or end address already exists in the list and its index in the list
-                int[] sameAddresses = getSameAddresses(start,end);
-
-                // if none of the addresses already exist, add them
-                if (sameAddresses[0]==-1&&sameAddresses[1]==-1) {
-                    Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                    Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                    nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
-                }
-
-                // if the startpoint already exists, move it to first position and add endpoint
-                else if (sameAddresses[0]!=-1&&sameAddresses[1]==-1){
-                    Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                    Preferences.moveAddressFirst(sameAddresses[0]+1,MainActivity.this);
-                    nbLastAdd++; // the number of addresses has increased by 1
-                }
-
-                // if the endpoint already exists, move it to first position and add startpoint
-                else if (sameAddresses[0]==-1&&sameAddresses[1]!=-1) {
-                    Preferences.moveAddressFirst(sameAddresses[1],MainActivity.this);
-                    Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                    nbLastAdd++; // the number of addresses has increased by 1
-                }
-
-                // if both addresses already exist, we move both addresses to first position
-                else {
-                    Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                    // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
-                    Preferences.moveAddressFirst(sameAddresses[1]<sameAddresses[0]?sameAddresses[0]:sameAddresses[0]+1, MainActivity.this);
-                }
-
-                // check if number of addresses has gone over 3 and remove the ones over 3
-                if (nbLastAdd == 5) {
-                    Preferences.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
-                    Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-                } else if (nbLastAdd == 4) {
-                    Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-                }
-
-                ////////////////////////////////////////////////////////////////////////////////////
-                //Conversion addresses to spatial coordinates
-                //For the start point
-                Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
-                try {
-                    if(!start.equals(R.string.position_text)){  //check if location is not chosen
-                        List addressListStart = geocoderStart.getFromLocationName(start, 1);
-                        if (addressListStart != null && addressListStart.size() > 0){
-                            Address addressStart = (Address) addressListStart.get(0);
-                            Coordinates coordinates = new Coordinates(addressStart.getLatitude(),addressStart.getLongitude());
-                            startAddress.setCoordinates(coordinates);
-                        }
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //For the end point
-                Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
-                try {
-                    if(!end.equals(R.string.position_text)) {       //check if location is not chosen
-                        List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
-                        if (addressListEnd != null && addressListEnd.size() > 0) {
-                            Address addressEnd = (Address) addressListEnd.get(0);
-                            endAddress.setLocationName(end);
-                            Coordinates coordinates = new Coordinates(addressEnd.getLatitude(),addressEnd.getLongitude());
-                            endAddress.setCoordinates(coordinates);
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //For the step point
-                Geocoder geocoderStep = new Geocoder(MainActivity.this, Locale.getDefault());
-                try {
-                    if(!step.equals(R.string.position_text)) {       //check if location is not chosen
-                        List addressListStep = geocoderStep.getFromLocationName(step, 1);
-                        if (addressListStep != null && addressListStep.size() > 0) {
-                            Address addressStep = (Address) addressListStep.get(0);
-                            stepAddress.setLocationName(step);
-                            Coordinates coordinates = new Coordinates(addressStep.getLatitude(),addressStep.getLongitude());
-                            stepAddress.setCoordinates(coordinates);
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                //Tests
-                /*
-                pdaLat = 47.23592051820992;
-                pdaLong = -1.638742699120431;
-                pddLat = 47.24811;
-                pddLong = -1.54978;
-                int[] options = {0,1,0,1};      // rien = {0,0,0,0} et tout = {1,1,1,1}
-                //voiture, transport en commun, vélo, piétons
-
-
-                int[] transport = new int[4];
-                for(int k=0;k<4;k++){
-                    if (options.length > 0){
-                        transport[k] = options[k];
-                    }else{
-                        transport[k] = k+1;
-                    }
-                }
-                */
-
-                ////////////////////////////////////////////////////////////////////////////////////
-                //start itinerary calculation activity if the device has an internet connection
             if (start.length() == 0 || end.length() == 0){
                 // if nothing has been typed in, nothing happens and you get a message
                 Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
-            } // stepPoint management: we check whether there is a stepPoint
-
-
-            else if (start.equals(end)) {
+            } else if (start.equals(end)) {
                 // if both addresses are the same, do nothing
-                Toast.makeText(MainActivity.this, "Veuillez rentrer deux adresses différentes",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Veuillez entrer deux adresses différentes",Toast.LENGTH_SHORT).show();
             }
             else {
+
+                // stepPoint management: we check whether there is a stepPoint
+                boolean stepEqualStartOrEnd = false;
                 if (step.length() > 0) {
-                stepBool = true;
-                // if at least two addresses are the same, do nothing
-                if (step.equals(start) || step.equals(end) || start.equals(end)) {
-                    Toast.makeText(MainActivity.this, "Veuillez rentrer des adresses différentes",Toast.LENGTH_SHORT).show();
-                }}
-                int error = 0;
-                if (!CheckInternet()){ //no internet connection
-                    error = 2;
-                }
-                else if (endAddress.getCoordinates().isZero() || startAddress.getCoordinates().isZero()){ //conversion impossible
-                    error = 1;
-                }
-                else if (startAddress.getCoordinates().getLatitude()<47.0 |
-                        startAddress.getCoordinates().getLatitude()>47.4|
-                        startAddress.getCoordinates().getLongitude()<-1.8|
-                        startAddress.getCoordinates().getLongitude()>-1.3){
-                    //System.out.pri
-                    error = 3;
-                }
-                else if (endAddress.getCoordinates().getLatitude()<47.0 |
-                        endAddress.getCoordinates().getLatitude()>47.4|
-                        endAddress.getCoordinates().getLongitude()<-1.8|
-                        endAddress.getCoordinates().getLongitude()>-1.3) {
-                    error = 4;
-                }
-                else if (stepAddress.getCoordinates().getLatitude()<47.0 |
-                        stepAddress.getCoordinates().getLatitude()>47.4|
-                        stepAddress.getCoordinates().getLongitude()<-1.8|
-                        stepAddress.getCoordinates().getLongitude()>-1.3) {
-                    error = 5;
+                    stepBool = true;
+                    // if at least two addresses are the same, do nothing
+                    if (step.equals(start) || step.equals(end) || start.equals(end)) {
+                        Toast.makeText(MainActivity.this, "Veuillez entrer des adresses différentes",Toast.LENGTH_SHORT).show();
+                        stepEqualStartOrEnd = true;
+                    }
                 }
 
-                System.out.println("error"+error);
-                switch (error){
-                    case 0:
-                        Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                        intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
-                        intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
-                        intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
-                        intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
-                        intent.putExtra("param5", stepBool); // to know if there is a stepPoint or not
+                // Checking if there is a stepPoint:
+                //      if yes : stepPoint must be different than startPoint and endPoint
+                //      if not : go
+                if ( !stepBool || (stepBool && !stepEqualStartOrEnd) ) {
 
-                        // Add stepPoint parameters if needed
-                        if (stepBool){
-                            intent.putExtra("param6", stepAddress.getCoordinates().getLatitude());
-                            intent.putExtra("param7", stepAddress.getCoordinates().getLongitude());
+                    ////////////////////////////////////////////////////////////////////////////////////
+                    // History's management
+                    ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
+
+                    // get the number of addresses in the history
+                    int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress", MainActivity.this);
+
+                    // returns which of the start or end address already exists in the list and its index in the list
+                    int[] sameAddresses = getSameAddresses(start, end);
+
+                    // if none of the addresses already exist, add them
+                    if (sameAddresses[0] == -1 && sameAddresses[1] == -1) {
+                        Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                        Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                        nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
+                    }
+
+                    // if the startpoint already exists, move it to first position and add endpoint
+                    else if (sameAddresses[0] != -1 && sameAddresses[1] == -1) {
+                        Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                        Preferences.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
+                        nbLastAdd++; // the number of addresses has increased by 1
+                    }
+
+                    // if the endpoint already exists, move it to first position and add startpoint
+                    else if (sameAddresses[0] == -1 && sameAddresses[1] != -1) {
+                        Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
+                        Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                        nbLastAdd++; // the number of addresses has increased by 1
+                    }
+
+                    // if both addresses already exist, we move both addresses to first position
+                    else {
+                        Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
+                        // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
+                        Preferences.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
+                    }
+
+                    // check if number of addresses has gone over 3 and remove the ones over 3
+                    if (nbLastAdd == 5) {
+                        Preferences.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
+                        Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+                    } else if (nbLastAdd == 4) {
+                        Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+                    }
+
+
+                    ////////////////////////////////////////////////////////////////////////////////////
+                    //Conversion addresses to spatial coordinates
+                    //For the start point
+                    Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
+                    try {
+                        if (!start.equals(R.string.position_text)) {  //check if location is not chosen
+                            List addressListStart = geocoderStart.getFromLocationName(start, 1);
+                            if (addressListStart != null && addressListStart.size() > 0) {
+                                Address addressStart = (Address) addressListStart.get(0);
+                                Coordinates coordinates = new Coordinates(addressStart.getLatitude(), addressStart.getLongitude());
+                                startAddress.setCoordinates(coordinates);
+                            }
                         }
-                        System.out.println("recherche");
-                        startActivity(intent);
-                        finish();
-                        break;
 
-                    case 1:
-                        Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
-                        Intent intent1 = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                        intent1.putExtra("param1", 47.2484039066116);
-                        intent1.putExtra("param2", -1.549636963829987);
-                        intent1.putExtra("param3", 47.212191574506164);
-                        intent1.putExtra("param4", -1.5535549386503666);
-                        intent1.putExtra("param5", stepBool); // to know if there is a stepPoint or not
-
-                        // Add stepPoint parameters if needed
-                        if (stepBool){
-                            intent1.putExtra("param6", 47.212191574506164);
-                            intent1.putExtra("param7", -1.5535549386503666);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //For the end point
+                    Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
+                    try {
+                        if (!end.equals(R.string.position_text)) {       //check if location is not chosen
+                            List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
+                            if (addressListEnd != null && addressListEnd.size() > 0) {
+                                Address addressEnd = (Address) addressListEnd.get(0);
+                                endAddress.setLocationName(end);
+                                Coordinates coordinates = new Coordinates(addressEnd.getLatitude(), addressEnd.getLongitude());
+                                endAddress.setCoordinates(coordinates);
+                            }
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //For the step point
+                    if (stepBool) {
+                        Geocoder geocoderStep = new Geocoder(MainActivity.this, Locale.getDefault());
+                        try {
+                            if (!step.equals(R.string.position_text)) {       //check if location is not chosen
+                                List addressListStep = geocoderStep.getFromLocationName(step, 1);
+                                if (addressListStep != null && addressListStep.size() > 0) {
+                                    Address addressStep = (Address) addressListStep.get(0);
+                                    stepAddress.setLocationName(step);
+                                    Coordinates coordinates = new Coordinates(addressStep.getLatitude(), addressStep.getLongitude());
+                                    stepAddress.setCoordinates(coordinates);
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                        startActivity(intent1);
-                        finish();
-                        break;
-                    case 2:
-                        Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(this, "Point de départ hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 4:
-                        Toast.makeText(this, "Point d'arrivée hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 5:
-                        Toast.makeText(this, "L'étape du trajet est hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
-                        break;
+
+                    //Tests
+                    /*
+                    pdaLat = 47.23592051820992;
+                    pdaLong = -1.638742699120431;
+                    pddLat = 47.24811;
+                    pddLong = -1.54978;
+                    int[] options = {0,1,0,1};      // rien = {0,0,0,0} et tout = {1,1,1,1}
+                    //voiture, transport en commun, vélo, piétons
 
 
-                }}
+                    int[] transport = new int[4];
+                    for(int k=0;k<4;k++){
+                        if (options.length > 0){
+                            transport[k] = options[k];
+                        }else{
+                            transport[k] = k+1;
+                        }
+                    }
+                    */
+
+                    ////////////////////////////////////////////////////////////////////////////////////
+                    //start itinerary calculation activity if the device has an internet connection
+                    int error = 0;
+                    if (!CheckInternet()) { //no internet connection
+                        error = 2;
+                    } else if (endAddress.getCoordinates().isZero() || startAddress.getCoordinates().isZero()) { //conversion impossible
+                        error = 1;
+                    } else if (startAddress.getCoordinates().getLatitude() < 47.0 |
+                            startAddress.getCoordinates().getLatitude() > 47.4 |
+                            startAddress.getCoordinates().getLongitude() < -1.8 |
+                            startAddress.getCoordinates().getLongitude() > -1.3) {
+                        //System.out.pri
+                        error = 3;
+                    } else if (endAddress.getCoordinates().getLatitude() < 47.0 |
+                            endAddress.getCoordinates().getLatitude() > 47.4 |
+                            endAddress.getCoordinates().getLongitude() < -1.8 |
+                            endAddress.getCoordinates().getLongitude() > -1.3) {
+                        error = 4;
+                    } else if (stepAddress.getCoordinates().getLatitude() < 47.0 |
+                            stepAddress.getCoordinates().getLatitude() > 47.4 |
+                            stepAddress.getCoordinates().getLongitude() < -1.8 |
+                            stepAddress.getCoordinates().getLongitude() > -1.3) {
+                        error = 5;
+                    }
+
+                    System.out.println("error" + error);
+                    switch (error) {
+                        case 0:
+                            Intent intent = new Intent(getApplicationContext(), LoadingPageActivity.class);
+                            intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
+                            intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
+                            intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
+                            intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
+                            intent.putExtra("param5", stepBool); // to know if there is a stepPoint or not
+
+                            // Add stepPoint parameters if needed
+                            if (stepBool) {
+                                intent.putExtra("param6", stepAddress.getCoordinates().getLatitude());
+                                intent.putExtra("param7", stepAddress.getCoordinates().getLongitude());
+                            }
+                            System.out.println("recherche");
+                            startActivity(intent);
+                            finish();
+                            break;
+
+                        case 1:
+                            Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
+                            Intent intent1 = new Intent(getApplicationContext(), LoadingPageActivity.class);
+                            intent1.putExtra("param1", 47.2484039066116);
+                            intent1.putExtra("param2", -1.549636963829987);
+                            intent1.putExtra("param3", 47.212191574506164);
+                            intent1.putExtra("param4", -1.5535549386503666);
+                            intent1.putExtra("param5", stepBool); // to know if there is a stepPoint or not
+
+                            // Add stepPoint parameters if needed
+                            if (stepBool) {
+                                intent1.putExtra("param6", 47.212191574506164);
+                                intent1.putExtra("param7", -1.5535549386503666);
+                            }
+
+                            startActivity(intent1);
+                            finish();
+                            break;
+                        case 2:
+                            Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Toast.makeText(this, "Point de départ hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 4:
+                            Toast.makeText(this, "Point d'arrivée hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 5:
+                            Toast.makeText(this, "L'étape du trajet est hors de Nantes Métropole. Précisez la localité ou entrez une nouvelle adresse", Toast.LENGTH_SHORT).show();
+                            break;
+
+                    }
+                }
+            }
 
 
 

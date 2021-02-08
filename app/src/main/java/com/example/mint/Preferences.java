@@ -1,6 +1,7 @@
 package com.example.mint;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -139,16 +140,16 @@ public class Preferences {
     public static ArrayList<Integer> getPollutionYear(int year,Context context){
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
         ArrayList<Integer> pollutionYear = new ArrayList<>();
-        int[] date = {1,1,year};
+        int[] date = {0,1,year};
         boolean sameMonth = true;
         for (int i=1;i<=12;i++){
             while (sameMonth){
-                pollutionYear.add(prefs.getInt(date[0]+"_"+i+"_"+date[2],0));
                 date[0]++;
+                pollutionYear.add(prefs.getInt(date[0]+"_"+i+"_"+date[2],0));
                 sameMonth=checkIfSameMonth(date);
             }
             sameMonth=true;
-            date[0]=1;
+            date[0]=0;
         }
         return pollutionYear;
     }
@@ -178,8 +179,8 @@ public class Preferences {
     public static void setOptionTransportation(int[] value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        for (int i=1;i<=4;i++){
-            editor.putInt("option_"+i, value[i]);
+        for (int i=0;i<4;i++){
+            editor.putInt("option_"+(i+1), value[i]);
         }
         editor.apply();
     }

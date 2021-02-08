@@ -53,6 +53,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startPoint" />
 
+    <EditText
+        android:id="@+id/stepPoint"
+        android:layout_width="@dimen/start_point_width"
+        android:layout_height="50dp"
+        android:background="@drawable/button_text_color"
+        android:focusable="true"
+        android:fontFamily="@font/quicksand_regular"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="@string/step_point"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#999999"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone" />
+<!--        app:layout_constraintTop_toBottomOf="@+id/addStepPoint"-->
+
+
+    <!--<ImageButton
+        android:id="@+id/addStepPoint"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_baseline_add_circle_outline_24"
+        app:layout_constraintBottom_toBottomOf="@+id/endPoint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/startPoint" />-->
+
     <ImageButton
         android:id="@+id/inversion"
         android:layout_width="35dp"

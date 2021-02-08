@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -101,14 +103,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText endPoint;
     private EditText latitude;
     private EditText longitude;
+    private ImageButton inversionButton;
+    private Button search;
+    //private final int POSITION_PERMISSION_CODE = 1;
+
+    //boolean GpsStatus = false; //true if the user's location is activated on the phone
+
+    //private static final String TAG = "MainActivity"; //--> for debugging
+
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
     ListView addressListView;
     String start;
     String end;
     EditText buttonClicked;
-    private ImageButton inversionButton;
-    private Button search;
+
 
 
     /**
@@ -120,6 +129,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     PopupWindow popUp;
     PopupWindow popUpCalendar;
     TimePicker timePicker;
+    // get current date and time
+    final Calendar cldr = Calendar.getInstance();
+    int year;
+    int month;
+    int day;
+    int hour;
+    int minutes;
+    String dateText;
+    String timeText;
+    boolean starting;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
@@ -130,10 +149,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Preferences.clearLastAddresses(this);
-        // Clear last options we entered
-        Preferences.clearOptionTransportation(MainActivity.this);
+        // First step to highlight already selected favorite means of transportation
+        // (next and last step in "showOptions()"
+        ArrayList<String> favoriteTrans = Preferences.getPrefTransportation("Transportation",MainActivity.this);
+        int[] fav = {0,0,0,0};
+        for (int j = 0;j<4;j++) {
+            if (favoriteTrans.get(j).equals("car_button")) {
+                fav[j] = 1;
+            }
+            if (favoriteTrans.get(j).equals("tram_button")) {
+                fav[j] = 2;
+            }
+            if (favoriteTrans.get(j).equals("bike_button")) {
+                fav[j] =3;
+            }
+            if (favoriteTrans.get(j).equals("walk_button")) {
+                fav[j] = 4;
+            }
+        }
+        System.out.println("{"+fav[0]+","+fav[1]+","+fav[2]+","+fav[3]+"}");
+        Preferences.setOptionTransportation(fav,this);
 
+        // get current date and time
+        year = cldr.get(Calendar.YEAR);
+        month = cldr.get(Calendar.MONTH);
+        day = cldr.get(Calendar.DAY_OF_MONTH);
+        hour = cldr.get(Calendar.HOUR_OF_DAY);
+        minutes = cldr.get(Calendar.MINUTE);
+
+        // First step to set default date and time to current date and time
+        // (next and last step in "showOptions()"
+        dateText = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
+        timeText = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
+
+        // First step to select if you want start time or end time. Start time is automatically selected
+        // (next and last step in "showOptions()")
+        starting = true;
+
+        // Initialisation
         startPoint = findViewById(R.id.startPoint);
         endPoint = findViewById(R.id.endPoint);
         search = findViewById(R.id.search);
@@ -146,9 +199,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.endAddress = new com.example.mint.Address();
         this.startAddress = new com.example.mint.Address();
-
-
-
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -202,29 +252,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.itinerary);
-
-        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itinerary:
-                        return true;
-                    case R.id.maps:
-                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        return true;
-                    case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                        return true;
-                    default:
-                }
-                return false;
-            }
-        });
     }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        //---------TRANSITIONS-----------
+        //For Left-To-Right transitions
+        if(targetActivity.equals("com.example.mint.MapsActivity") || targetActivity.equals("com.example.mint.ProfileActivity")){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            this.finish();
+        }
+    }
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
+
 
     /**
      * function that creates the popup window on selection of editTexts
@@ -320,6 +388,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bikeButton.setTag(6);
         walkButton.setTag(7);
 
+        // Highlight already selected favorite means of transportation
+        int[] favoriteTransportation = Preferences.getOptionTransportation(MainActivity.this);
+        for (int i = 4;i<8;i++){
+            ImageButton button = optionPopupView.findViewWithTag(i);
+            if (favoriteTransportation[i-4]!=0){
+                button.setActivated(true);
+            }
+        }
+
         // create the new onClick callback
         View.OnClickListener onTransportationClick = new View.OnClickListener() {
             @Override
@@ -349,22 +426,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bikeButton.setOnClickListener(onTransportationClick);
         walkButton.setOnClickListener(onTransportationClick);
 
-        // get current date and time
-        final Calendar cldr = Calendar.getInstance();
-        int year = cldr.get(Calendar.YEAR);
-        int month = cldr.get(Calendar.MONTH);
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int hour = cldr.get(Calendar.HOUR_OF_DAY);
-        int minutes = cldr.get(Calendar.MINUTE);
-
         // set default date and time to current date and time
         dateBtn = optionPopupView.findViewById(R.id.date_calendar);
-        String defaultDate = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
-        dateBtn.setText(defaultDate);
-
+        dateBtn.setText(dateText);
         timeBtn = optionPopupView.findViewById(R.id.time_text);
-        String defaultTime = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
-        timeBtn.setText(defaultTime);
+        timeBtn.setText(timeText);
 
         // set date
         dateBtn.setOnClickListener(new View.OnClickListener() {
@@ -381,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                        String dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
+                        dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
                         dateBtn.setText(dateText);
                     }
                 });
@@ -401,8 +467,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                     @Override
                     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                        String time = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
-                        timeBtn.setText(time);
+                        timeText = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
+                        timeBtn.setText(timeText);
                     }
                 });
                 timeDialog.show();
@@ -411,12 +477,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // the buttons for selecting if you want start time or end time.
+        // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
+        Button plusRapide = optionPopupView.findViewById(R.id.plus_rapide);
+        plusRapide.setActivated(true);
+        Button plusSain = optionPopupView.findViewById(R.id.plus_sain);
+        plusRapide.setTag(10);
+        plusSain.setTag(11);
+
         // the buttons for selecting if you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
-        startTime.setActivated(true);
-        Button endTime = optionPopupView.findViewById(R.id.end_time);
+        final Button endTime = optionPopupView.findViewById(R.id.end_time);
         startTime.setTag(8);
         endTime.setTag(9);
+
+        // the button "start time" is selected by default
+        if (starting) {
+            startTime.setActivated(true);
+        } else {
+            endTime.setActivated(true);
+        }
 
         // actions when either start or end time is clicked (unclicks the other one)
         View.OnClickListener onStartEndTimeClick = new View.OnClickListener() {
@@ -427,11 +507,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Button button2 = optionPopupView.findViewWithTag(i==8?9:8);
                 button1.setActivated(true);
                 button2.setActivated(false);
+
+                // memorization of the selection of start or end time
+                if (i == 8){
+                    starting = true;
+                } else {
+                    starting = false;
+                }
+            }
+        };
+
+        // actions when either "plus rapide" or "plus sain" is clicked (unclicks the other one)
+        View.OnClickListener onRapideSainCritereClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                Button button1 = optionPopupView.findViewWithTag(i);
+                Button button2 = optionPopupView.findViewWithTag(i==10?11:10);
+                button1.setActivated(true);
+                button2.setActivated(false);
             }
         };
 
         startTime.setOnClickListener(onStartEndTimeClick);
         endTime.setOnClickListener(onStartEndTimeClick);
+
+        plusRapide.setOnClickListener(onRapideSainCritereClick);
+        plusSain.setOnClickListener(onRapideSainCritereClick);
+
+
 
         return popupOptions;
     }
@@ -747,11 +851,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 switch (error){
                     case 0:
+                        System.out.println(starting);
+                        System.out.println(timeText);
                         Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
+                        intent.putExtra("starting", starting);
+                        //intent.putExtra("date", dateText);
+                        intent.putExtra("time", timeText);
                         intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
                         intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
                         intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
                         intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
+
                         startActivity(intent);
                         finish();
                         break;

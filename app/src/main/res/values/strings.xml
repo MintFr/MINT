@@ -12,6 +12,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="start_point">Point de départ</string>
     <string name="end_point">Point d\'arrivée</string>
+    <string name="step_point">Etape du trajet</string>
 
 
     <!--    Spinner activity_map-->
@@ -80,11 +81,13 @@
     <string name="recap_title">Itinéraires</string>
     <string name="default_exposition">--</string>
     <string name="itinerary_exposition">Exposition :</string>
-    <string name="itinerary_default_time">time</string>
+    <string name="itinerary_default_time">duration</string>
     <string name="exposition_unit">µg/m³</string>
     <string name="settings_faq">F.A.Q.</string>
     <string name="settings_language">Langue</string>
     <string name="settings_legal">Mentions légales</string>
     <string name="settings_dark_mode">Mode nuit</string>
+    <string name="mon_exposition">Mon exposition</string>
+    <string name="_0h_08min">0h 08min</string>
 
 </resources>

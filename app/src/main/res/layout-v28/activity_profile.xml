@@ -139,13 +139,14 @@
 
                     <Button
                         android:id="@+id/favorite_transportation"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_addresses"
                         android:layout_alignStart="@id/user_image"
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
+                        android:gravity="left"
                         android:background="#00FFFFFF"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
@@ -155,15 +156,11 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_transportation"
                         android:layout_alignStart="@id/favorite_transportation"
-                        android:layout_alignLeft="@id/favorite_transportation"
-                        android:layout_alignEnd="@id/favorite_transportation"
-                        android:layout_alignRight="@id/favorite_transportation"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp">
+                        >
 
                         <ImageView
                             android:id="@+id/car_icon"
@@ -171,9 +168,11 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="#00ffffff"
-                            android:paddingTop="5dp"
-                            android:src="@drawable/car_simple"
-                            android:visibility="gone" />
+                            android:paddingTop="3dp"
+                            android:src="@drawable/button_car"
+                            android:visibility="gone"
+                            android:layout_marginStart="30dp"
+                            />
 
                         <ImageView
                             android:id="@+id/tram_icon"
@@ -182,8 +181,10 @@
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:paddingTop="3dp"
-                            android:src="@drawable/tram_simple"
-                            android:visibility="gone" />
+                            android:src="@drawable/button_tram"
+                            android:visibility="gone"
+                            android:layout_marginStart="40dp"
+                            />
 
                         <ImageView
                             android:id="@+id/bike_icon"
@@ -192,8 +193,10 @@
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:paddingTop="3dp"
-                            android:src="@drawable/bike_simple"
-                            android:visibility="gone" />
+                            android:src="@drawable/button_bike"
+                            android:visibility="gone"
+                            android:layout_marginStart="40dp"
+                            />
 
                         <ImageView
                             android:id="@+id/walk_icon"
@@ -202,8 +205,11 @@
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:paddingTop="3dp"
-                            android:src="@drawable/walk_simple"
-                            android:visibility="gone" />
+                            android:src="@drawable/button_walk"
+                            android:visibility="gone"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="30dp"
+                            />
 
                     </LinearLayout>
                 </RelativeLayout>

@@ -19,7 +19,7 @@
     <string-array name="map_array">
         <item>Routes</item>
         <item>Trafic en direct</item>
-        <item>Transport en commun</item>
+        <item>Transports en commun</item>
         <item>Pollution en direct</item>
         <item>Pollens en direct</item>
     </string-array>

@@ -10,7 +10,8 @@
     <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/shadow_profile">
 
         <ImageView
             android:id="@+id/logo"
@@ -38,9 +39,9 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
-                    android:elevation="40dp"
-                    android:outlineAmbientShadowColor="@color/colorAccent"
                     android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
                     android:padding="20dp">
 
                     <ImageView
@@ -57,14 +58,14 @@
 
                     <TextView
                         android:id="@+id/name"
+                        style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/user_image"
-                        android:layout_toRightOf="@id/user_image"
                         android:layout_toEndOf="@id/user_image"
-                        style="@style/bold"
-                        android:text="@string/user_name"
+                        android:layout_toRightOf="@id/user_image"
                         android:gravity="start"
+                        android:text="@string/user_name"
                         android:textColor="#999999"
                         android:textSize="20sp" />
 
@@ -75,14 +76,14 @@
                         android:layout_alignStart="@id/name"
                         android:layout_alignLeft="@id/name"
                         android:layout_alignBottom="@id/user_image"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:fontFamily="@font/quicksand_light"
                         android:gravity="start"
                         android:paddingBottom="15dp"
                         android:text="@string/param_button"
                         android:textColor="#999999"
-                        android:textSize="16sp"
-                        android:clickable="true"
-                        android:focusable="true"/>
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/sensibility"
@@ -107,17 +108,17 @@
                         android:id="@+id/set_sensibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/sensibility"
-                        android:layout_toEndOf="@id/sensibility"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginStart="30dp"
                         android:layout_below="@id/user_image"
-                        android:text="@string/set_sensibility"
-                        android:textColor="@color/colorAccent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toEndOf="@id/sensibility"
+                        android:layout_toRightOf="@id/sensibility"
                         android:gravity="end"
                         android:paddingTop="10dp"
                         android:paddingBottom="5dp"
-                        android:textSize="14sp"/>
+                        android:text="@string/set_sensibility"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/favorite_addresses"
@@ -152,52 +153,57 @@
                         android:textAllCaps="false"
                         android:textColor="#999999"
                         android:textSize="16sp" />
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_transportation"
+                        android:layout_alignStart="@id/favorite_transportation"
+                        android:layout_alignLeft="@id/favorite_transportation"
                         android:layout_alignEnd="@id/favorite_transportation"
                         android:layout_alignRight="@id/favorite_transportation"
-                        android:layout_alignLeft="@id/favorite_transportation"
-                        android:layout_alignStart="@id/favorite_transportation"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp">
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp">
+
                         <ImageView
                             android:id="@+id/car_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/car_simple"
                             android:background="#00ffffff"
                             android:paddingTop="5dp"
-                            android:visibility="gone"/>
+                            android:src="@drawable/car_simple"
+                            android:visibility="gone" />
+
                         <ImageView
                             android:id="@+id/tram_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/tram_simple"
                             android:background="#00ffffff"
                             android:paddingTop="3dp"
-                            android:visibility="gone"/>
+                            android:src="@drawable/tram_simple"
+                            android:visibility="gone" />
+
                         <ImageView
                             android:id="@+id/bike_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/bike_simple"
                             android:background="#00ffffff"
                             android:paddingTop="3dp"
-                            android:visibility="gone"/>
+                            android:src="@drawable/bike_simple"
+                            android:visibility="gone" />
+
                         <ImageView
                             android:id="@+id/walk_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/walk_simple"
                             android:background="#00ffffff"
                             android:paddingTop="3dp"
-                            android:visibility="gone"/>
+                            android:src="@drawable/walk_simple"
+                            android:visibility="gone" />
 
                     </LinearLayout>
                 </RelativeLayout>
@@ -209,7 +215,7 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
-                    android:elevation="30dp"
+                    android:elevation="2dp"
                     android:outlineAmbientShadowColor="@color/colorAccent"
                     android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
@@ -275,7 +281,7 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
-                    android:elevation="20dp"
+                    android:elevation="2dp"
                     android:outlineAmbientShadowColor="@color/colorAccent"
                     android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">

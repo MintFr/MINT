@@ -279,17 +279,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // things to do when user clicks on the addStepPoint button
+        // hide/show stepPoint when the user clicks on the addStepPoint button
         addStepPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // make the stepPoint visible when it is not
                 if (!stepVisibility){
-                    stepPoint.setVisibility(View.VISIBLE);
+                    stepPoint.setVisibility(View.GONE);
                     stepVisibility = true;
                 } // make the stepPoint INvisible when it is
                 else {
-                    stepPoint.setVisibility(View.INVISIBLE);
+                    stepPoint.setVisibility(View.VISIBLE);
                     stepVisibility = false;
                 }
             }

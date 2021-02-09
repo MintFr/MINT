@@ -917,7 +917,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             endAddress.getCoordinates().getLongitude() < -1.8 |
                             endAddress.getCoordinates().getLongitude() > -1.3) {
                         error = 4;
-                    } else if (stepAddress.getCoordinates().getLatitude() < 47.0 |
+                    } else if (stepBool && stepAddress.getCoordinates().getLatitude() < 47.0 |
                             stepAddress.getCoordinates().getLatitude() > 47.4 |
                             stepAddress.getCoordinates().getLongitude() < -1.8 |
                             stepAddress.getCoordinates().getLongitude() > -1.3) {

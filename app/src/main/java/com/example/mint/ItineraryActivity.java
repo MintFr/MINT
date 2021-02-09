@@ -643,7 +643,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 int resHour = hourStart + hours;
                 System.out.println("HourStart" +list.get(i).getTimeOption());
 
-                System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
+                System.out.println("HourStart" + 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1))));
 
                 int resMin = minutesStart+minutes;
                 if (resMin>=60){
@@ -651,13 +651,20 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     resMin-=60;
                 }
                 if (resHour<10&&resMin<10) {
+                    System.out.println("cas1");
                     timeEnd.setText((String.format("0%s:0%s",resHour,resMin)));
                 }
                 else if (resHour<10) {
+                    System.out.println("cas2");
                     timeEnd.setText((String.format("0%s:%s",resHour,resMin)));
                 }
                 else if (resMin<10) {
+                    System.out.println("cas3");
                     timeEnd.setText((String.format("%s:0%s",resHour,resMin)));
+                }
+                else{
+                    System.out.println("cas4");
+                    timeEnd.setText((String.format("%s:%s",resHour,resMin)));
                 }
             }
             else{
@@ -690,6 +697,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 }
                 else if (resMin<10) {
                     timeStart.setText((String.format("%s:0%s",resHour,resMin)));
+                }
+                else{
+                    timeStart.setText((String.format("%s:%s",resHour,resMin)));
+
                 }
 
 

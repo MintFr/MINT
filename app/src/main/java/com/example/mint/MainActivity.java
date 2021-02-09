@@ -270,10 +270,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // make the stepPoint visible when it is not
                 if (!stepVisibility){
                     stepPoint.setVisibility(View.VISIBLE);
+                    addStepPoint.setActivated(true);
                     stepVisibility = true;
                 } // make the stepPoint INvisible when it is
                 else {
                     stepPoint.setVisibility(View.GONE);
+                    addStepPoint.setActivated(false);
                     stepVisibility = false;
                 }
             }

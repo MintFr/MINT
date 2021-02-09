@@ -98,7 +98,7 @@
         android:layout_alignBottom="@id/endPoint"
         android:layout_toLeftOf="@id/startPoint"
         android:background="#00FFFFFF"
-        android:src="@drawable/ic_baseline_add_circle_outline_24"
+        android:src="@drawable/button_addstep"
         app:layout_constraintBottom_toBottomOf="@+id/endPoint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".01"

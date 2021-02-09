@@ -28,7 +28,7 @@ import java.util.Arrays;
 /**
  * TODO Explain aim and use of class here
  */
-public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> {
+public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> implements java.io.Serializable {
 
     private AppCompatActivity myActivity;
 
@@ -154,6 +154,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
             for (int i = 0; i<c.length()-1; i++)            //to delete error message
             {
                 Itinerary itinerary = new Itinerary(c.getJSONObject(i));
+                System.out.println(itinerary.getDetail().get(0).getAddress() +itinerary.getDetail().get(0).getDistance());
                 itineraries.add(itinerary);
             }
         } catch (JSONException e) {

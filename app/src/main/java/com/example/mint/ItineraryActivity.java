@@ -300,7 +300,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         plBorderSelected = new MonochromaticPaintList(paintBorderSelected);
 
         // display each itinerary we just got from the Async task
-        for (int j=0;j<itineraries.size()-1;j++){
+        for (int j=0;j<itineraries.size();j++){
             displayItinerary(itineraries.get(j), itineraries,j);
         }
 
@@ -520,7 +520,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 //        // show details layout
 //        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
 //        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
-        ArrayList<Steps> STEPS = detailItinerary(itinerary);
+        ArrayList<Step> STEPS = itinerary.getDetail();
         //System.out.println(STEPS);
         //start and end
         TextView viewPoint1 = findViewById(R.id.start_point);
@@ -561,7 +561,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 if (index>2) { // <=> if there is already something displayed in the stepsLayout
                     stepsLayout.removeViews(2, index - 2);
                 }
-                for (int k=1;k<STEPS.size();k++){
+                System.out.println(STEPS.size());
+                for (int k=1;k<=STEPS.size();k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
@@ -858,8 +859,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         mapController.setCenter(endPosition);
     }
 
-    public ArrayList<Steps> detailItinerary(Itinerary itinerary){
-        List<Steps> steps = new ArrayList<>();
+/*    public ArrayList<Step> detailItinerary(Itinerary itinerary){
+        List<Step> steps = new ArrayList<>();
         //System.out.println(itinerary.getPointSize());
         //System.out.println(itinerary.getStepDistance().size());
 
@@ -882,17 +883,17 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 address.setCoordinates(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]);
                 address.setLocationName(a);
                 System.out.println(itinerary.getStepDistance().size());
-                Steps tempStep = new Steps(address.getLocationName(), itinerary.getStepDistance().get(j));
+                Step tempStep = new Step(address.getLocationName(), itinerary.getStepDistance().get(j));
                 steps.add(tempStep);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        ArrayList<Steps> newSteps = new ArrayList<>();
+        ArrayList<Step> newSteps = new ArrayList<>();
         String address = steps.get(0).getAddress();
         System.out.println(address);
         int distance = steps.get(0).getDistance();
-        for (Steps step:steps){
+        for (Step step:steps){
             System.out.println(step.getAddress());
             if (step.getAddress().equals(address)){
                 distance += step.getDistance();
@@ -905,7 +906,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         }
         //System.out.println(newSteps);
         return newSteps;
-    }
+    }*/
 
     ////////////////////////////////
 

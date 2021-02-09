@@ -359,18 +359,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
         map.getOverlays().add(endMarker);
 
-        // center the map on the itineraries
-        markers = new ArrayList<>();
-        markers.add(startPosition);
-        markers.add(endPosition);
-        final BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
-        map.post(new Runnable() {
-            @Override
-            public void run() {
-                map.zoomToBoundingBox(bounds,true,120);
-            }
-        });
-
         // step marker if there is one (we only need to draw it once)
         boolean param5 = intent.getBooleanExtra("param5", false);
         if (param5) {
@@ -380,10 +368,24 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             stepPosition = new GeoPoint(param6, param7);
             stepMarker.setPosition(stepPosition);
             stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
-            stepMarker.setFlat(true);
             stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
             map.getOverlays().add(stepMarker);
         }
+
+        // center the map on the itineraries
+        markers = new ArrayList<>();
+        markers.add(startPosition);
+        markers.add(endPosition);
+        if (param5){
+            markers.add(stepPosition);
+        }
+        final BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
+        map.post(new Runnable() {
+            @Override
+            public void run() {
+                map.zoomToBoundingBox(bounds,true,120);
+            }
+        });
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

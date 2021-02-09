@@ -52,19 +52,16 @@ public class LoadingPageActivity extends AppCompatActivity {
             }
 
             // build the two URLs
-            String url1 = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
-                            "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transportation=%s,%s,%s,%s",
-                    param1, param2, param6, param7, options[0], options[1], options[2], options[3]);
-            String url2 = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
-                            "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transportation=%s,%s,%s,%s",
-                    param6, param7, param3, param4, options[0], options[1], options[2], options[3]);
 
-            // activity launch
-            System.out.println(url1);
-            System.out.println(url2);
+            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
+                            "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
+                    param1, param2, param3, param4, param5, param6, param7, options[0], options[1], options[2], options[3], start, time);
+
+            System.out.println(url);
+            //System.out.println(url2);
             AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
-            task.execute(url1);
-            task.execute(url2);
+            task.execute(url);
+            //task.execute(url2);
 
         } else {
             // No, there is no stepPoint
@@ -80,8 +77,8 @@ public class LoadingPageActivity extends AppCompatActivity {
 
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
-                            "itinerary5?start=%s,%s&end=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
-                    param1, param2, param3, param4, options[0], options[1], options[2], options[3], start, time);
+                            "itinerary6?start=%s,%s&end=%s,%s&hasStep=param5&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
+                    param1, param2, param3, param4, param5, options[0], options[1], options[2], options[3], start, time);
 
             // activity launch
             System.out.println(url);

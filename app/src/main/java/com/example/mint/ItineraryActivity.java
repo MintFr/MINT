@@ -78,6 +78,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private IMapController mapController = null;
     private GeoPoint startPoint;
     private GeoPoint endPoint;
+    private GeoPoint stepPoint;
 
     /**
      * GEOPOINT POSITIONS
@@ -85,6 +86,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     GeoPoint startPosition;
     GeoPoint endPosition;
     List<GeoPoint> markers;
+    GeoPoint stepPosition;
 
     /**
      * LAYOUT AND MENU
@@ -369,6 +371,20 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        // step marker if there is one (we only need to draw it once)
+        boolean param5 = intent.getBooleanExtra("param5", false);
+        if (param5) {
+            double param6 = intent.getDoubleExtra("param6", 0.0);
+            double param7 = intent.getDoubleExtra("param7", 0.0);
+            Marker stepMarker = new Marker(map);
+            stepPosition = new GeoPoint(param6, param7);
+            stepMarker.setPosition(stepPosition);
+            stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+            stepMarker.setFlat(true);
+            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+            map.getOverlays().add(stepMarker);
+        }
+
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
@@ -587,7 +603,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // ADD DIFFERENT ITINERARIES
         LinearLayout recapList = findViewById(R.id.recap_list);
         recapList.removeAllViews(); // remove the last views that were displayed
-        for (int i=0;i<list.size()-1;i++){
+        for (int i=0;i<list.size();i++){
 
             // get list item view and the views inside it
             View listItem = inflater.inflate(R.layout.recap_list_item,null);

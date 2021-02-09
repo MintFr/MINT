@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Mint</string>
     <!-- Bottom Menu -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -19,7 +19,7 @@
     <string-array name="map_array">
         <item>Routes</item>
         <item>Trafic en direct</item>
-        <item>Transport en commun</item>
+        <item>Transports en commun</item>
         <item>Pollution en direct</item>
         <item>Pollens en direct</item>
     </string-array>
@@ -38,17 +38,17 @@
     <string name="moderate_sensibility">Modérée</string>
     <string name="low_sensibility">Faible</string>
     <string name="no_sensibility">Pas de sensibilité</string>
-    <string name="message_sensibility">Sélectionnez votre niveau <br /> de sensibilité à la pollution</string>
+    <string name="message_sensibility">Sélectionnez votre niveau de sensibilité à la pollution</string>
     <string name="graph_week">graph_week</string>
     <string name="max_value_exposure">312</string>
     <string name="graph_pie">graph_pie</string>
-    <string name="exposure_last_travel_text">Mon exposition aujourd`hui</string>
+    <string name="exposure_last_travel_text">Mon exposition aujourd\'hui</string>
     <string name="param_button"><u>Paramètres</u></string>
     <string name="user_image">user_image</string>
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
-    <string name="user_name">"Gérard\nDupont"</string>
-    <string name="favorite_transportation_message">Sélectionnez vos modes de transport favoris</string>
+    <string name="user_name">"Mon\nProfil"</string>
+    <string name="favorite_transportation_message">Sélectionnez vos modes de transports favoris</string>
     <string name="walk_button">walk_button</string>
     <string name="bike_button">bike_button</string>
     <string name="tram_button">tram_button</string>

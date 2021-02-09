@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -872,6 +873,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // LineData allows for styling of the whole chart
         LineData lineData = new LineData(dataSet);
+
+        //Set description non visible
+        Description description = graph.getDescription();
+        description.setEnabled(false);
 
         // Apply our data to the chart
         graph.setData(lineData);

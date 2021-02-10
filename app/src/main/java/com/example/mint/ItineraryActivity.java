@@ -372,16 +372,15 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         });
 
         // step marker if there is one (we only need to draw it once)
-        boolean param5 = intent.getBooleanExtra("param5", false);
-        if (param5) {
-            double param6 = intent.getDoubleExtra("param6", 0.0);
-            double param7 = intent.getDoubleExtra("param7", 0.0);
+        boolean hasStep = itineraries.get(0).isHasStep();
+        if (hasStep) {
+            System.out.println("affichage step");
+            stepPosition = new GeoPoint(itineraries.get(0).getStep().getLatitude(),itineraries.get(0).getStep().getLongitude());
             Marker stepMarker = new Marker(map);
-            stepPosition = new GeoPoint(param6, param7);
             stepMarker.setPosition(stepPosition);
             stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
             stepMarker.setFlat(true);
-            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
             map.getOverlays().add(stepMarker);
         }
 

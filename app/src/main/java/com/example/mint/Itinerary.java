@@ -13,11 +13,14 @@ public class Itinerary implements Serializable {
     private String type; // type of transportation
     private double pollution; // total exposition to pollution
     private double duration; // total itinerary duration
-    private ArrayList<Integer> stepTime; // duration between steps in sec
+    //private ArrayList<Integer> stepTime; // duration between steps in sec
     private double distance; // total itinerary distance
-    private ArrayList<Integer> stepDistance; // distance between steps in metres
+    //private ArrayList<Integer> stepDistance; // distance between steps in metres
     private ArrayList<double[]> points; // coordinates of each point
     private ArrayList<Step> detail;
+    private boolean hasStep;
+    private Coordinates step;
+
 
 
     /**
@@ -28,8 +31,8 @@ public class Itinerary implements Serializable {
         this.pollution = 0.;
         this.duration = 0.;
         this.distance = 0.;
-        this.stepDistance = new ArrayList<>() ;
-        this.stepTime = new ArrayList<>();
+        //this.stepDistance = new ArrayList<>() ;
+        //this.stepTime = new ArrayList<>();
         this.points = new ArrayList<>();
     }
 
@@ -49,8 +52,8 @@ public class Itinerary implements Serializable {
         this.pollution=pollution;
         this.duration = duration;
         this.distance=distance;
-        this.stepTime=stepTime;
-        this.stepDistance=stepDistance;
+        //this.stepTime=stepTime;
+        //this.stepDistance=stepDistance;
         this.points=points;
     }
 
@@ -67,6 +70,7 @@ public class Itinerary implements Serializable {
             this.hourStart = json.getBoolean("hofStart");
             this.duration = json.getDouble("duration");
             this.pollution = (int) json.getDouble("exposition");
+            this.hasStep = json.getBoolean("hasStep");
             this.points = new ArrayList<>();
             JSONArray tempDetail = json.getJSONArray("details");
             ArrayList<Step> detail = new ArrayList<>();
@@ -78,8 +82,11 @@ public class Itinerary implements Serializable {
                 //System.out.println(address);
             }
             this.setDetail(detail);
-
-
+            if (hasStep){
+            JSONArray coordStep = json.getJSONArray("step");
+            System.out.println(coordStep);
+            this.step = new Coordinates(coordStep.getDouble(0), coordStep.getDouble(1));
+            }
 
             JSONArray steps = json.getJSONArray("pointsItinerary");
 
@@ -92,8 +99,8 @@ public class Itinerary implements Serializable {
                 this.points.add(p);
             }
             int s = this.points.size();
-            this.stepTime = new ArrayList<>();
-            this.stepDistance = new ArrayList<>();
+            //this.stepTime = new ArrayList<>();
+            //this.stepDistance = new ArrayList<>();
             //JSONArray stepsLength = json.getJSONArray("stepsLength");
             /*for (int j=0;j<stepsLength.length();j++){
                 this.stepTime.add(0);
@@ -117,8 +124,8 @@ public class Itinerary implements Serializable {
         this.pollution = itinerary.getPollution();
         this.duration = itinerary.getDuration();
         this.distance = itinerary.getDistance();
-        this.stepTime = itinerary.getStepTime();
-        this.stepDistance = itinerary.getStepDistance();
+        //this.stepTime = itinerary.getStepTime();
+        //this.stepDistance = itinerary.getStepDistance();
         this.points = itinerary.getPoints();
     }
 
@@ -154,7 +161,7 @@ public class Itinerary implements Serializable {
         return distance;
     }
 
-    public ArrayList<Integer> getStepTime() {
+    /*public ArrayList<Integer> getStepTime() {
         return stepTime;
     }
 
@@ -168,7 +175,7 @@ public class Itinerary implements Serializable {
 
     public void setStepDistance(ArrayList<Integer> stepDistance) {
         this.stepDistance = stepDistance;
-    }
+    }*/
 
     public ArrayList<double[]> getPoints() {
         return points;
@@ -212,5 +219,25 @@ public class Itinerary implements Serializable {
 
     public void setDetail(ArrayList<Step> detail) {
         this.detail = detail;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public boolean isHasStep() {
+        return hasStep;
+    }
+
+    public void setHasStep(boolean hasStep) {
+        this.hasStep = hasStep;
+    }
+
+    public Coordinates getStep() {
+        return step;
+    }
+
+    public void setStep(Coordinates step) {
+        this.step = step;
     }
 }

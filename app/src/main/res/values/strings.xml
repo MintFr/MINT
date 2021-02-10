@@ -47,7 +47,7 @@
     <string name="user_image">user_image</string>
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
-    <string name="user_name">"Mon\nProfil"</string>
+    <string name="user_name">"Mon Profil"</string>
     <string name="favorite_transportation_message">Sélectionnez vos modes de transports favoris</string>
     <string name="walk_button">walk_button</string>
     <string name="bike_button">bike_button</string>

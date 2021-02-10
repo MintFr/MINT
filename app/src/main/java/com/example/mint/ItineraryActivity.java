@@ -380,7 +380,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             stepMarker.setPosition(stepPosition);
             stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
             stepMarker.setFlat(true);
-            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
+            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_step_marker));
             map.getOverlays().add(stepMarker);
         }
 

@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private Button option;
     private Button dateBtn;
+    private ImageButton iconDateBtn;
+    private ImageButton iconTimeBtn;
     private Button timeBtn;
     PopupWindow popUp;
     PopupWindow popUpCalendar;
@@ -460,10 +462,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set default date and time to current date and time
         dateBtn = optionPopupView.findViewById(R.id.date_calendar);
         dateBtn.setText(dateText);
+        iconDateBtn = optionPopupView.findViewById(R.id.option_calendar_icon);
+
         timeBtn = optionPopupView.findViewById(R.id.time_text);
+        iconTimeBtn = optionPopupView.findViewById(R.id.option_clock_icon);
         timeBtn.setText(timeText);
 
-        // set date
+        // set date with both date buttons
         dateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -485,7 +490,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // set time
+
+        iconDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpCalendar = new PopupWindow(MainActivity.this);
+                popUpCalendar.setFocusable(true);
+                popUpCalendar.setBackgroundDrawable(null);
+                popUpCalendar.setContentView(calendarPopupView);
+                popUpCalendar.showAtLocation(getWindow().getDecorView(), Gravity.CENTER,0,0);
+
+                CalendarView calendarView = calendarPopupView.findViewById(R.id.calendar);
+
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                        dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
+                        dateBtn.setText(dateText);
+                    }
+                });
+            }
+        });
+
+        // set time with both buttons
         final Dialog timeDialog = new Dialog(this);
         timeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         timeDialog.setContentView(R.layout.popup_options_timepicker);
@@ -507,6 +534,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             }
         });
+
+        iconTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // time picker dialog
+                timePicker = timeDialog.findViewById(R.id.time_picker);
+                timePicker.setIs24HourView(true);
+                timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                    @Override
+                    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                        timeText = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
+                        timeBtn.setText(timeText);
+                    }
+                });
+                timeDialog.show();
+                timeDialog.setTitle("Choisissez une heure de départ");
+                timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+        });
+
 
         // the buttons for selecting if you want start time or end time.
         // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected

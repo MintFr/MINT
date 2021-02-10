@@ -27,7 +27,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/plus_rapide"
+        android:id="@+id/fastest"
         style="@style/Button"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
@@ -47,10 +47,10 @@
         android:paddingBottom="2dp"
         android:text="Plus rapide"
         android:textAppearance="@style/ButtonText"
-        android:textColor="@null" />
+         />
 
     <Button
-        android:id="@+id/plus_sain"
+        android:id="@+id/healthier"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/choix_du_critere"
@@ -76,7 +76,7 @@
         android:id="@+id/option_transportation_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/plus_rapide"
+        android:layout_below="@+id/fastest"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:paddingLeft="60dp"

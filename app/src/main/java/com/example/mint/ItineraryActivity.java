@@ -618,6 +618,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // set time
             String timeStr = convertIntToHour((int)list.get(i).getDuration());
+            System.out.println(timeStr);
             time.setText(timeStr);
 
             // set distance

@@ -359,26 +359,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
         map.getOverlays().add(endMarker);
 
-        // step marker if there is one (we only need to draw it once)
-        boolean param5 = intent.getBooleanExtra("param5", false);
-        if (param5) {
-            double param6 = intent.getDoubleExtra("param6", 0.0);
-            double param7 = intent.getDoubleExtra("param7", 0.0);
-            Marker stepMarker = new Marker(map);
-            stepPosition = new GeoPoint(param6, param7);
-            stepMarker.setPosition(stepPosition);
-            stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
-            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-            map.getOverlays().add(stepMarker);
-        }
-
         // center the map on the itineraries
         markers = new ArrayList<>();
         markers.add(startPosition);
         markers.add(endPosition);
-        if (param5){
-            markers.add(stepPosition);
-        }
         final BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
         map.post(new Runnable() {
             @Override
@@ -386,6 +370,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 map.zoomToBoundingBox(bounds,true,120);
             }
         });
+
+        // step marker if there is one (we only need to draw it once)
+        boolean hasStep = itineraries.get(0).isHasStep();
+        if (hasStep) {
+            System.out.println("affichage step");
+            stepPosition = new GeoPoint(itineraries.get(0).getStep().getLatitude(),itineraries.get(0).getStep().getLongitude());
+            Marker stepMarker = new Marker(map);
+            stepMarker.setPosition(stepPosition);
+            stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+            stepMarker.setFlat(true);
+            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_step_marker));
+            map.getOverlays().add(stepMarker);
+        }
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

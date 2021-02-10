@@ -1,6 +1,8 @@
 package com.example.mint;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     private double latitude;
     private double longitude;
 

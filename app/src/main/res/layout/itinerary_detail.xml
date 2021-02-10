@@ -20,37 +20,46 @@
         android:layout_height="68dp"
         android:orientation="horizontal"
         android:background="@drawable/layout_bg_title">
+
         <TextView
             android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/itinerary_default_time"
-            android:layout_margin="20dp"
-            android:textSize="18sp"
             style="@style/bold"
-            android:layout_weight="1"/>
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/itinerary_default_time"
+            android:textSize="18sp" />
         <View
             android:id="@+id/vertical_separator"
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="#EDEDED"/>
+
         <TextView
             android:id="@+id/exposition_prompt"
-            android:layout_width="wrap_content"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
             android:text="@string/itinerary_exposition"
-            android:layout_margin="20dp"
-            android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/pollution"
+            style="@style/bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/default_exposition"
             android:layout_margin="20dp"
-            android:textSize="18sp"
-            style="@style/bold"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/default_exposition"
+            android:textSize="18sp" />
 
     </LinearLayout>
     <View

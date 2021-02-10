@@ -53,7 +53,7 @@ public class LoadingPageActivity extends AppCompatActivity {
 
             // build the two URLs
 
-            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
+            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itineraryBIS/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     param1, param2, param3, param4, param5, param6, param7, options[0], options[1], options[2], options[3], start, time);
 
@@ -76,7 +76,7 @@ public class LoadingPageActivity extends AppCompatActivity {
                     param1, param2, param3, param4, options[0], options[1], options[2], options[3]);*/
 
 
-            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
+            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itineraryBIS/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     param1, param2, param3, param4, param5, options[0], options[1], options[2], options[3], start, time);
 

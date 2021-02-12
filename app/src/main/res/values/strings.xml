@@ -18,7 +18,7 @@
     <!--    Spinner activity_map-->
     <string-array name="map_array">
         <item>Routes</item>
-        <item>Trafic en direct</item>
+        <item tools:ignore="Typos">Trafic en direct</item>
         <item>Transports en commun</item>
         <item>Pollution en direct</item>
         <item>Pollens en direct</item>

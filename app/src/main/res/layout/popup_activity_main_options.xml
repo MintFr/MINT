@@ -178,7 +178,11 @@
         android:layout_marginTop="22dp"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="-10dp"
-        android:background="#e0e0e0" />
+        android:background="#e0e0e0"
+        android:layout_alignStart="@id/option_calendar_icon"
+        android:layout_alignEnd="@id/end_time"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="0dp" />
 
     <TextView
         android:id="@+id/option_departure_prompt"

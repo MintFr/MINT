@@ -396,9 +396,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY ITINERARY
-     * @param itinerary
-     * @param list
-     * @param i
+     * @param itinerary Itinerary
+     * @param list ArrayList<Itinerary>
+     * @param i int
      */
 
 
@@ -589,7 +589,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY RECAP
-     * @param list
+     * @param list ArrayList<Itinerary>
      */
     private void displayRecap(final ArrayList<Itinerary> list){
 
@@ -808,7 +808,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Convert a time in seconds to hours
-     * @param seconds
+     * @param seconds int
      * @return String
      */
     private String convertIntToHour(int seconds) {
@@ -821,7 +821,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Reset the appearance of a polyline that was highlighted
-     * @param polyline
+     * @param polyline Polyline
      */
     private void resetPolylineAppearance(Polyline polyline){
         // clear all previous paints
@@ -837,7 +837,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this function is used to find a polyline from its id which was user-selected (in our case, the id is its rank in the itinerary list)
-     * @param id
+     * @param id String
      * @return
      */
     private Polyline findPolylineFromId(String id){
@@ -916,7 +916,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Method to control map
-     * @param v
+     * @param v View
      */
     @Override
     public void onClick(View v) {
@@ -957,7 +957,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this method decides which color the itinerary line will be, according to the threshold
-     * @param itinerary
+     * @param itinerary Itinerary
      */
     public void setColorForPolyline(Itinerary itinerary){
         System.out.println("pollution" + itinerary.getPollution());

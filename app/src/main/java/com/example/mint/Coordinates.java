@@ -33,11 +33,6 @@ public class Coordinates implements Serializable {
     }
 
     public boolean isZero(){
-        if (this.latitude==0 & this.longitude==0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return this.latitude == 0 && this.longitude == 0;
     }
 }

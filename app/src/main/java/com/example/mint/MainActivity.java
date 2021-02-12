@@ -575,7 +575,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // LOCATION //
     /////////////////////////////////////////////////////////
 
-    // Ask the permission to the user to use their location
+    /**
+     * This method ask he permission to the user to use their location.
+     */
     private void requestLocalisationPermission(){
         // If the permission WAS DENIED PREVIOUSLY,
         // we open a dialog to ask for the permission to access to the user's location
@@ -608,8 +610,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Return the answer of the location permission request in a "short toast window" at the bottom of the screen
-    // and print the user's position if we have the permission
+    /**
+     * This method return the answer of the location permission request in a "short toast window" at the bottom of the screen
+     * and print the user's position if we have the permission.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == POSITION_PERMISSION_CODE) {
@@ -629,7 +636,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Ask the user to turn on their location
+    /**
+     * This method ask the user to turn on their location
+     */
     private void showAlertMessageNoGps() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Echec de la localisation")
@@ -652,7 +661,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .create().show();
     }
 
-    // Return user's position in coordinates
+    /**
+     * This method return the user's position in coordinates
+     */
     @SuppressLint("MissingPermission")
     private void getLocation(){
         //Access user's location
@@ -671,7 +682,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Print user's position
+    /**
+     * This method Print the user's position.
+     * @param location
+     */
     // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
     public void onLocationChanged(Location location) {
         //String position = location.getLatitude() + "," + location.getLongitude();

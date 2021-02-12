@@ -410,9 +410,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * @param list
      * @param i
      */
-
-
-    //DISPLAY ITINERARY
     private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){
         // polyline for itinerary
         // first we create a list of geopoints for the geometry of the polyline

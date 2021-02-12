@@ -148,13 +148,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String dateText;
     String timeText;
     boolean starting;
-    boolean rapide;
-    boolean sain;
+    boolean fast;
+    boolean healthy;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
      * @param savedInstanceState
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -567,8 +566,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // the buttons for selecting if you want start time or end time.
         // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
-        Button plusRapide = optionPopupView.findViewById(R.id.plus_rapide);
-        Button plusSain = optionPopupView.findViewById(R.id.plus_sain);
+        Button plusRapide = optionPopupView.findViewById(R.id.fastest);
+        Button plusSain = optionPopupView.findViewById(R.id.healthier);
         plusRapide.setTag(10);
         plusSain.setTag(11);
 
@@ -604,10 +603,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-
+        // the buttons for selecting if you want the healthier path or the fastest one.
+        Button fastest = optionPopupView.findViewById(R.id.fastest);
+        Button healthier = optionPopupView.findViewById(R.id.healthier);
+        fastest.setTag(10);
+        healthier.setTag(11);
 
         // actions when either "plus rapide" or "plus sain" is clicked (unclicks the other one)
-        View.OnClickListener onRapideSainCritereClick = new View.OnClickListener() {
+        View.OnClickListener onFastOrHealthyClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int i = (int) v.getTag();
@@ -616,46 +619,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (button1.isActivated()) {
                     button1.setActivated(false);
                     button2.setActivated(false);
-                    rapide = false;
-                    sain = false;
+                    fast = false;
+                    healthy = false;
                 }
                 else if(!button1.isActivated()) {
                     button1.setActivated(true);
                     button2.setActivated(false);
+                    // this is used to give the right values to the booleans "fast & healthy
                     switch (i) {
                         case 10:
-                            rapide = true;
-                            sain = false;
+                            fast = true;
+                            healthy = false;
                          break;
                         case 11:
-                            rapide = false;
-                            sain = true;
+                            fast = false;
+                            healthy = true;
                         break;
                         default: break;
                     }
                 }
-
-
             }
         };
 
-        if (rapide) {
-            plusRapide.setActivated(true);
-            plusSain.setActivated(false);
-        } else if (sain) {
-            plusSain.setActivated(true);
-            plusRapide.setActivated(false);
+        // memorization of the selection of fastest or healthier route
+        if (fast) {
+            fastest.setActivated(true);
+            healthier.setActivated(false);
+        } else if (healthy) {
+            healthier.setActivated(true);
+            fastest.setActivated(false);
         }
         else {
-            plusRapide.setActivated(false);
-            plusSain.setActivated(false);
+            fastest.setActivated(false);
+            healthier.setActivated(false);
         }
 
+
+        //allocation of the OnClickListeners
         startTime.setOnClickListener(onStartEndTimeClick);
         endTime.setOnClickListener(onStartEndTimeClick);
 
-        plusRapide.setOnClickListener(onRapideSainCritereClick);
-        plusSain.setOnClickListener(onRapideSainCritereClick);
+        fastest.setOnClickListener(onFastOrHealthyClick);
+        healthier.setOnClickListener(onFastOrHealthyClick);
 
 
 

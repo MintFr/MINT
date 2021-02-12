@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * This activity handles the input of start and end points and the itinerary options
      * @param savedInstanceState
+     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +222,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
+            /**
+             * Set the search button enable if the length of the text written in the field s (start or end) is not zero
+             * @param s
+             * @param start
+             * @param before
+             * @param count
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 search.setEnabled(s.toString().length()!=0);
@@ -658,7 +666,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // LOCATION //
     /////////////////////////////////////////////////////////
 
-    // Ask the permission to the user to use their location
+    /** Ask the permission to the user to use their location
+     *
+     */
     private void requestLocalisationPermission(){
         // If the permission WAS DENIED PREVIOUSLY,
         // we open a dialog to ask for the permission to access to the user's location
@@ -691,8 +701,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Return the answer of the location permission request in a "short toast window" at the bottom of the screen
-    // and print the user's position if we have the permission
+    /**Return the answer of the location permission request in a "short toast window" at the bottom
+     * of the screen and print the user's position if we have the permission
+     * @param requestCode
+     * @param grantResults
+     * @param permissions
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == POSITION_PERMISSION_CODE) {
@@ -712,7 +726,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Ask the user to turn on their location
+    /** Ask the user to turn on their location
+     *
+     */
     private void showAlertMessageNoGps() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Echec de la localisation")
@@ -735,7 +751,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .create().show();
     }
 
-    // Return user's position in coordinates
+    /** Return user's position in coordinates
+     *
+     */
     @SuppressLint("MissingPermission")
     private void getLocation(){
         //Access user's location
@@ -754,8 +772,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // Print user's position
-    // If we need to convert the coordinates in an address, we need to do it here with a "geocoder"
+    /** Print user's position If we need to convert the
+     * coordinates in an address, we need to do it here with a "geocoder"
+     *
+     * @param location
+     */
     public void onLocationChanged(Location location) {
         //String position = location.getLatitude() + "," + location.getLongitude();
         Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());

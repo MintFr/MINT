@@ -628,6 +628,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             exposition.setText(String.format("%s",list.get(i).getPollution()));
             if (list.get(i).isHourStart()){
                 //set time Start
+                System.out.println(list.get(i).getTimeOption());
                 timeStart.setText(list.get(i).getTimeOption());
                 int duration = (int) list.get(i).getDuration();
                 int minutes = duration / (int) 60;

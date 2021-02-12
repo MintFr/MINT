@@ -107,7 +107,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_car"
-            android:contentDescription="1"
+            android:contentDescription="@string/car_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -120,7 +120,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_tram"
-            android:contentDescription="2"
+            android:contentDescription="@string/tram_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -133,7 +133,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_bike"
-            android:contentDescription="3"
+            android:contentDescription="@string/bike_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -146,7 +146,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_walk"
-            android:contentDescription="4"
+            android:contentDescription="@string/walk_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>

@@ -14,14 +14,14 @@ import java.util.ArrayList;
  * This class is a sub-class of BaseAdapter and lets us customise the appearance of the headers and regular items
  */
 public class CustomListAdapter extends BaseAdapter {
-    private Context context;
-    private ArrayList<String> items;
+    private final Context context;
+    private final ArrayList<String> items;
     private int nbLastAdd;
 
     /**
      * Constructor
-     * @param context
-     * @param items
+     * @param context Context
+     * @param items ArrayList<String>
      */
     public CustomListAdapter(Context context, ArrayList<String> items) {
         this.context = context;

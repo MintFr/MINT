@@ -27,19 +27,25 @@ import java.util.ArrayList;
 //import java.util.Arrays;
 
 /**
- * TODO Explain aim and use of class here
+ * Activity treating the response of the distant service
  */
 public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> implements java.io.Serializable {
 
     @SuppressLint("StaticFieldLeak")
     private final AppCompatActivity myActivity;
 
-    //Constructor
+    /**
+     * Constructor for the Async Activity
+     * @param LoadingPageActivity : linked activity
+     */
     public AsyncItineraryCompute (AppCompatActivity LoadingPageActivity) {
         myActivity = LoadingPageActivity;
     }
 
 
+    /**
+     *
+     */
     @Override
     protected void onPreExecute() {
         //Prepare task and show waiting view

@@ -22,7 +22,7 @@
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:paddingBottom="10dp"
-        android:text="Choix du critère"
+        android:text="@string/criteria_choice"
         android:textSize="16sp"
         android:textStyle="bold" />
 

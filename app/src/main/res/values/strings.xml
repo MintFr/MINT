@@ -89,5 +89,6 @@
     <string name="settings_dark_mode">Mode nuit</string>
     <string name="mon_exposition">Mon exposition</string>
     <string name="_0h_08min">0h 08min</string>
+    <string name="criteria_choice">Choix du critère</string>
 
 </resources>

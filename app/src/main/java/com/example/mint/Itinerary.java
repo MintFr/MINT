@@ -3,7 +3,6 @@ package com.example.mint;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -39,13 +38,13 @@ public class Itinerary implements Serializable {
 
     /**
      * Constructor with parameter
-     * @param type
-     * @param pollution
-     * @param duration
-     * @param distance
-     * @param stepTime
-     * @param stepDistance
-     * @param points
+     * @param type String
+     * @param pollution double
+     * @param duration double
+     * @param distance double
+     * @param stepTime ArrayList<Integer>
+     * @param stepDistance ArrayList<Integer>
+     * @param points ArrayList<double[]>
      */
     public Itinerary(String type, double pollution, double duration, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points, double distance) {
         this.type=type;
@@ -59,7 +58,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Constructor from a json object
-     * @param json
+     * @param json JSONObject
      */
     public Itinerary(JSONObject json){
         //Reading JSON
@@ -115,9 +114,12 @@ public class Itinerary implements Serializable {
 
     /**
      * Copy constructor
-     * @param itinerary
+     * @param itinerary Itinerary
      */
     public Itinerary(Itinerary itinerary){
+        this.detail = itinerary.getDetail();
+        this.hasStep = itinerary.isHasStep();
+        this.step = itinerary.getStep();
         this.timeOption = itinerary.getTimeOption();
         this.hourStart = itinerary.isHourStart();
         this.type = itinerary.getType();

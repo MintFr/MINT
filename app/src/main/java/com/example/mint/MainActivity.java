@@ -1042,10 +1042,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("starting", starting);
                             //intent.putExtra("date", dateText);
                             intent.putExtra("time", timeText);
-                            intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
-                            intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
-                            intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
-                            intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
+                            intent.putExtra("param1", startAddress.getCoordinates().getLatitude());
+                            intent.putExtra("param2", startAddress.getCoordinates().getLongitude());
+                            intent.putExtra("param3", endAddress.getCoordinates().getLatitude());
+                            intent.putExtra("param4", endAddress.getCoordinates().getLongitude());
                             intent.putExtra("param5", stepBool); // to know if there is a stepPoint or not
 
                             // Add stepPoint parameters if needed

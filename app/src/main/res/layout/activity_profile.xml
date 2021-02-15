@@ -55,14 +55,17 @@
 
                     <TextView
                         android:id="@+id/name"
+                        style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/user_image"
-                        android:layout_toRightOf="@id/user_image"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="60dp"
                         android:layout_toEndOf="@id/user_image"
-                        style="@style/bold"
-                        android:text="@string/user_name"
+                        android:layout_toRightOf="@id/user_image"
                         android:gravity="start"
+                        android:text="@string/user_name"
                         android:textColor="#999999"
                         android:textSize="20sp" />
 

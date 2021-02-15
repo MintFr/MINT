@@ -29,7 +29,8 @@
         app:backgroundTint="#ffffff"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer1"
-        app:layout_anchorGravity="top|end" />
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="" />
 
     <View
         android:id="@+id/spacer1"
@@ -47,7 +48,8 @@
         app:backgroundTint="#ffffff"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer2"
-        app:layout_anchorGravity="top|end" />
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="TODO" />
     <View
         android:id="@+id/spacer2"
         android:layout_width="wrap_content"
@@ -61,11 +63,12 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
         android:src="@drawable/ic_locate"
-        android:backgroundTint="#ffffff"
+         android:backgroundTint="#ffffff"
         app:borderWidth="0dp"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer3"
-        app:layout_anchorGravity="top|end" />
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="TODO" />
     <View
         android:id="@+id/spacer3"
         android:layout_width="wrap_content"
@@ -81,7 +84,8 @@
         android:layout_marginRight="20dp"
         android:src="@drawable/ic_recap"
         app:layout_anchor="@id/itinerary_recap_layout"
-        app:layout_anchorGravity="top|end" />
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="TODO" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"

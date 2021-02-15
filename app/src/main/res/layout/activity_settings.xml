@@ -26,7 +26,8 @@
         android:src="@drawable/ic_chevron_right"
         android:layout_below="@id/settings_separator_1"
         android:layout_above="@id/settings_separator_2"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:contentDescription="TODO" />
     <TextView
         android:id="@+id/faq"
         android:background="?android:attr/selectableItemBackground"
@@ -67,7 +68,8 @@
         android:src="@drawable/ic_chevron_right"
         android:layout_below="@id/settings_separator_3"
         android:layout_above="@id/settings_separator_4"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:contentDescription="TODO" />
     <TextView
         android:id="@+id/legal"
         android:background="?android:attr/selectableItemBackground"

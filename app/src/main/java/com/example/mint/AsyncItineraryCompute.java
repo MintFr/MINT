@@ -26,18 +26,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * TODO Explain aim and use of class here
+ * Asynchronous task to request server and read response.
  */
 public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> implements java.io.Serializable {
 
     private AppCompatActivity myActivity;
 
-    //Constructor
+    /**
+     * Constructor
+     */
     public AsyncItineraryCompute (AppCompatActivity LoadingPageActivity) {
-        myActivity = LoadingPageActivity;
+        myActivity = LoadingPageActivity; //activity launching this task
     }
 
 
+    /**
+     * Method executed in LoadingPageActivity.
+     * Displays view with loading progress bar.
+     */
     @Override
     protected void onPreExecute() {
         //Prepare task and show waiting view
@@ -48,31 +54,20 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     }
 
     /**
+     * Method executed in background. Sends url to server, read response and put it in JSONObjects
      * @param strings
-     * Background task to send a request to ECN server with parameters such as start point, end point,
-     * transport.
-     * And reception of a JSONArray like :
-     *         [{"type":route,
-     *            "exposition":0.60,
-     *             "time":444.1,
-     *             "points": [{"longitude":42.155,"latitude":55.244444},{...},{...},...]}
-     *         ,{..}]
-     *
-     * But now, response is only : [{"longitude":42.155,"latitude":55.244444},{...},{...},...]
-     *
-     * @return JSONArray
+     * @return
      */
-
     @Override
     protected JSONArray doInBackground(String... strings) {
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 
+        //to send url
         URL url;
         HttpURLConnection urlConnection = null;
         String result = null;
         int error = 0;
-
         try{
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection(); // Open
@@ -94,37 +89,38 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
                 urlConnection.disconnect();
             }
         }
-
         publishProgress(4);
 
 
-
+        //Creates JSON objects
         JSONArray json = new JSONArray();
         try{
             JSONObject message = new JSONObject(); // to debug, maybe to delete for real version of the app
             switch (error){
                 case 0 :
                     json = new JSONArray(result);
-                    message.put("message",myActivity.getString(R.string.connection_success));
                     break;
                 case 1 :
                     message.put("message",myActivity.getString(R.string.error_url_format));
+                    json.put(json.length(),message);
                     break;
                 case 2 :
                     message.put("message", String.format("%s\n%s", myActivity.getString(R.string.connection_failed), strings[0]));
+                    json.put(json.length(),message);
                     break;
                 default:
                     break;
             }
-            json.put(json.length(),message);
-
         }catch (JSONException e) {
             e.printStackTrace();
         }
         return json;
     }
 
-
+    /**
+     * To updates progress bar
+     * @param values
+     */
     @Override
     protected void onProgressUpdate(Integer... values) {
         ProgressBar pb = myActivity.findViewById(R.id.progress_bar);
@@ -132,11 +128,13 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     }
 
     /**
-     * Function to decode JSONArray and extract attributes
+     * Function to decode JSONArray and extract attributes.
+     * Is executed in LoadingPageActivity.
      * @param c
      */
     @Override
     protected void onPostExecute(final JSONArray c) {
+        //test to check response is not null
         if (c == null){
             Toast.makeText(myActivity, R.string.error404, Toast.LENGTH_SHORT).show();
         }else{

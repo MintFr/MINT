@@ -8,12 +8,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Itinerary implements Serializable {
+    private String timeOption;
+    private boolean hourStart;
     private String type; // type of transportation
     private double pollution; // total exposition to pollution
-    private double time; // total itinerary time
-    private ArrayList<int[]> stepTime; // time between steps in sec
-    private ArrayList<int[]> stepDistance; // distance between steps in metres
+    private double duration; // total itinerary duration
+    //private ArrayList<Integer> stepTime; // duration between steps in sec
+    private double distance; // total itinerary distance
+    //private ArrayList<Integer> stepDistance; // distance between steps in metres
     private ArrayList<double[]> points; // coordinates of each point
+    private ArrayList<Step> detail;
+    private boolean hasStep;
+    private Coordinates step;
+
 
 
     /**
@@ -22,9 +29,10 @@ public class Itinerary implements Serializable {
     public Itinerary(){
         this.type = "n/a";
         this.pollution = 0.;
-        this.time = 0.;
-        this.stepDistance = new ArrayList<>() ;
-        this.stepTime = new ArrayList<>();
+        this.duration = 0.;
+        this.distance = 0.;
+        //this.stepDistance = new ArrayList<>() ;
+        //this.stepTime = new ArrayList<>();
         this.points = new ArrayList<>();
     }
 
@@ -33,17 +41,19 @@ public class Itinerary implements Serializable {
      * Constructor with parameter
      * @param type
      * @param pollution
-     * @param time
+     * @param duration
+     * @param distance
      * @param stepTime
      * @param stepDistance
      * @param points
      */
-    public Itinerary(String type,double pollution, double time, ArrayList<int[]> stepTime, ArrayList<int[]> stepDistance, ArrayList<double[]> points) {
+    public Itinerary(String type, double pollution, double duration, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points, double distance) {
         this.type=type;
         this.pollution=pollution;
-        this.time=time;
-        this.stepTime=stepTime;
-        this.stepDistance=stepDistance;
+        this.duration = duration;
+        this.distance=distance;
+        //this.stepTime=stepTime;
+        //this.stepDistance=stepDistance;
         this.points=points;
     }
 
@@ -55,11 +65,29 @@ public class Itinerary implements Serializable {
         //Reading JSON
         try{
             this.type = json.getString("transport");
-            this.pollution = json.getDouble("exposition");
-            this.time = json.getDouble("duration");
-            this.points = new ArrayList<double[]>();
-            //this.stepTime = (ArrayList<int[]>) json.get("stepTime");
-            //this.stepDistance = (ArrayList<int[]>) json.get("stepDistance");
+            this.distance = json.getDouble("distance");
+            this.timeOption = json.getString("time");
+            this.hourStart = json.getBoolean("hofStart");
+            this.duration = json.getDouble("duration");
+            this.pollution = (int) json.getDouble("exposition");
+            this.hasStep = json.getBoolean("hasStep");
+            this.points = new ArrayList<>();
+            JSONArray tempDetail = json.getJSONArray("details");
+            ArrayList<Step> detail = new ArrayList<>();
+            for(int i = 0; i<tempDetail.length(); i++){
+                JSONObject step = tempDetail.getJSONObject(i);
+                String address = step.getString("addressStep");
+                int length = step.getInt("lengthStep");
+                detail.add(new Step(address, length));
+                //System.out.println(address);
+            }
+            this.setDetail(detail);
+            if (hasStep){
+            JSONArray coordStep = json.getJSONArray("step");
+            System.out.println(coordStep);
+            this.step = new Coordinates(coordStep.getDouble(0), coordStep.getDouble(1));
+            }
+
             JSONArray steps = json.getJSONArray("pointsItinerary");
 
             for (int i = 0; i<steps.length(); i++)
@@ -71,12 +99,13 @@ public class Itinerary implements Serializable {
                 this.points.add(p);
             }
             int s = this.points.size();
-            this.stepTime = new ArrayList<>();
-            this.stepDistance = new ArrayList<>();
-            for (int j=0;j<s-1;j++){
-                this.stepTime.add(new int[]{0});
-                this.stepDistance.add(new int[]{0});
-            }
+            //this.stepTime = new ArrayList<>();
+            //this.stepDistance = new ArrayList<>();
+            //JSONArray stepsLength = json.getJSONArray("stepsLength");
+            /*for (int j=0;j<stepsLength.length();j++){
+                this.stepTime.add(0);
+                this.stepDistance.add(stepsLength.getInt(j));
+            }*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -89,11 +118,14 @@ public class Itinerary implements Serializable {
      * @param itinerary
      */
     public Itinerary(Itinerary itinerary){
+        this.timeOption = itinerary.getTimeOption();
+        this.hourStart = itinerary.isHourStart();
         this.type = itinerary.getType();
         this.pollution = itinerary.getPollution();
-        this.time = itinerary.getTime();
-        this.stepTime = itinerary.getStepTime();
-        this.stepDistance = itinerary.getStepDistance();
+        this.duration = itinerary.getDuration();
+        this.distance = itinerary.getDistance();
+        //this.stepTime = itinerary.getStepTime();
+        //this.stepDistance = itinerary.getStepDistance();
         this.points = itinerary.getPoints();
     }
 
@@ -113,29 +145,37 @@ public class Itinerary implements Serializable {
         this.pollution = pollution;
     }
 
-    public double getTime() {
-        return time;
+    public double getDuration() {
+        return duration;
     }
 
-    public void setTime(Float time) {
-        this.time = time;
+    public void setDuration(Float duration) {
+        this.duration = duration;
     }
 
-    public ArrayList<int[]> getStepTime() {
+    public void setDistance(double distance){
+        this.distance = distance;
+    }
+
+    public double getDistance(){
+        return distance;
+    }
+
+    /*public ArrayList<Integer> getStepTime() {
         return stepTime;
     }
 
-    public void setStepTime(ArrayList<int[]> stepTime) {
+    public void setStepTime(ArrayList<Integer> stepTime) {
         this.stepTime = stepTime;
     }
 
-    public ArrayList<int[]> getStepDistance() {
+    public ArrayList<Integer> getStepDistance() {
         return stepDistance;
     }
 
-    public void setStepDistance(ArrayList<int[]> stepDistance) {
+    public void setStepDistance(ArrayList<Integer> stepDistance) {
         this.stepDistance = stepDistance;
-    }
+    }*/
 
     public ArrayList<double[]> getPoints() {
         return points;
@@ -147,5 +187,57 @@ public class Itinerary implements Serializable {
 
     public int getPointSize() {
         return points.size();
+    }
+
+    public String getTimeOption() {
+        return timeOption;
+    }
+
+    public void setTimeOption(String timeOption) {
+        this.timeOption = timeOption;
+    }
+
+    public boolean isHourStart() {
+        return hourStart;
+    }
+
+    public void setHourStart(boolean hourStart) {
+        this.hourStart = hourStart;
+    }
+
+    public void setPollution(double pollution) {
+        this.pollution = pollution;
+    }
+
+    public void setTime(double time) {
+        this.duration = time;
+    }
+
+    public ArrayList<Step> getDetail() {
+        return detail;
+    }
+
+    public void setDetail(ArrayList<Step> detail) {
+        this.detail = detail;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public boolean isHasStep() {
+        return hasStep;
+    }
+
+    public void setHasStep(boolean hasStep) {
+        this.hasStep = hasStep;
+    }
+
+    public Coordinates getStep() {
+        return step;
+    }
+
+    public void setStep(Coordinates step) {
+        this.step = step;
     }
 }

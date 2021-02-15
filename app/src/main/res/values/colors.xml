@@ -5,5 +5,12 @@
     <color name="colorAccent">#89BE89</color>
     <color name="colorLightGreen">#D3EBD3</color>
     <color name="colorPrimaryLight">#ffffff</color>
+    <color name="colorLightGrey">#EDEDED</color>
+    <color name="colorGrey">#DDDDDD</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorDarkGrey">#999999</color>
+<!--    <color name="colorYellow">#FFE45C</color>-->
+    <color name="colorYellow">#EBD884</color>
+    <color name="colorOrange">#F69F65</color>
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
 </resources>

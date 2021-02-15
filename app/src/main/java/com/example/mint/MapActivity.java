@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,8 @@ public class MapActivity extends AppCompatActivity {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map;
     IMapController mapController;
+
+    //private static final String TAG = "MapActivity"; //--> for debugging
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,9 @@ public class MapActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
 
-
-        //Bottom Menu
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU //
+        /////////////////////////////////////////////////////////
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
         bottomNav.setItemIconTintList(null);
@@ -62,31 +66,56 @@ public class MapActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
 
-        //Slide animation
-        bottomNav.setSelectedItemId(R.id.maps);
-
-        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itinerary:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                        return true;
-                    case R.id.maps:
-                        return true;
-                    case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        return true;
-                    default:
-                }
-                return false;
-            }
-        });
-
-
-
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU END //
+        /////////////////////////////////////////////////////////
     }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        //---------TRANSITIONS-----------
+        //For Left-To-Right transitions
+        if(targetActivity == "ProfileActivity"){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            //this.finish();
+        }
+
+        //For Right-To-Left transitions
+        if(targetActivity.equals("com.example.mint.MainActivity") ){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            this.finish();
+        }
+    }
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
 }

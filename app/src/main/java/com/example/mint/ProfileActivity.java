@@ -1,63 +1,118 @@
 package com.example.mint;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
  */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button sensibilityButton;
-    private Button favoriteAddressesButton;
-    private Button favoriteTransportationButton;
-
+    /**
+     * dim the screen behind the popup window
+     */
     private View dim_popup;
 
-    private int buttonView;
+    /**
+     * parameters textView
+     */
+    private TextView parameters;
+
+    /**
+     * pollution profile
+     */
+    private TextView pollutionToday;
+    private LineChart graph;
+
+    ImageButton slideLeft;
+    ImageButton slideRight;
+
+    /**
+     * favorite addresses
+     */
+    private Button addButton;
+    private Button favoriteAddressesButton;
+    private EditText enterAddress;
     private PopupWindow addressPopupWindow;
+
+    /**
+     * sensibility
+     */
+    private TextView setSensibility;
+    private Button sensibilityButton;
     private PopupWindow sensibilityPopupWindow;
+
+    /**
+     * transportation
+     */
+    private ImageView carIcon;
+    private ImageView tramIcon;
+    private ImageView bikeIcon;
+    private ImageView walkIcon;
+    private Button favoriteTransportationButton;
     private PopupWindow transportationPopupWindow;
 
-    // addresses //
-    private Button addButton;
-    private EditText enterAddress;
-    private String addedAddress;
 
-    // sensibility
-    private TextView setSensibility;
+    //private static final String TAG = "ProfileActivity"; //--> for debugging
 
-    // transportation
-    ImageView carIcon;
-    ImageView tramIcon;
-    ImageView bikeIcon;
-    ImageView walkIcon;
-
-    int activated =0;
-
+    /**
+     * This activity handles the input of various preferences and the display of the pollution exposure throughout time
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +123,81 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //Preferences.clearTransportation(this);
 
         //link layout elements to activity
+        parameters = findViewById(R.id.parameters);
         sensibilityButton = findViewById(R.id.sensibility);
         favoriteAddressesButton = findViewById(R.id.favorite_addresses);
         favoriteTransportationButton = findViewById(R.id.favorite_transportation);
 
         dim_popup = findViewById(R.id.dim_popup);
+
+        // handle the pollution
+        pollutionToday = findViewById(R.id.exposure_today);
+        // check whether a new day has started and if so reset pollution to 0 and store the last value
+        resetPollutionNewDay();
+        // Get the pollution from the last itineraries and change the pollution from today accordingly
+        setPollutionToday();
+
+        // UPDATE PREFERENCES
+        // update the pollution for this month
+        Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
+        // update the pollution for this year
+        Preferences.addMonthPollutionToYear(Preferences.getCurrentDate()[1],Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this),this);
+
+        // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
+//        ArrayList<Integer> valuesTest = new ArrayList<>();
+//        ArrayList<Integer> valuesTest2 = new ArrayList<>();
+//        for (int j=0;j<31;j++){
+//            valuesTest.add((int) (Math.random() * 100));
+//        }
+//        for (int j=0;j<31;j++){
+//            valuesTest2.add(0);
+//        }
+//        Preferences.setPollutionMonth(1,valuesTest2,this);
+//        Preferences.setPollutionMonth(2,valuesTest2,this);
+
+        // handle the graph
+        graph = findViewById(R.id.chart);
+        setUpGraph(0); // by default we display the week
+
+        // handle the buttons
+        Button weekBtn = findViewById(R.id.week);
+        Button monthBtn = findViewById(R.id.month);
+        Button yearBtn = findViewById(R.id.year);
+
+        weekBtn.setTag(100);
+        monthBtn.setTag(101);
+        yearBtn.setTag(102);
+
+        ArrayList<View> buttons = new ArrayList<>();
+        buttons.add(weekBtn);
+        buttons.add(monthBtn);
+        buttons.add(yearBtn);
+
+        weekBtn.setActivated(true); // by default we start with weekly graph
+
+        final LinearLayout btnView = findViewById(R.id.graph_buttons_layout);
+
+
+        View.OnClickListener onClickGraphButton = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                v.setActivated(true);
+                setUpGraph(i-100);
+                for (int j=0;j<3;j++){
+                    Button b = btnView.findViewWithTag(j+100);
+                    if (!b.equals(v)){
+                        b.setActivated(false);
+                    }
+                }
+
+            }
+        };
+
+        weekBtn.setOnClickListener(onClickGraphButton);
+        monthBtn.setOnClickListener(onClickGraphButton);
+        yearBtn.setOnClickListener(onClickGraphButton);
+
 
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
@@ -83,6 +208,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sensibilityButton.setOnClickListener(this);
         favoriteAddressesButton.setOnClickListener(this);
         favoriteTransportationButton.setOnClickListener(this);
+
+        // on click callback for parameters : open new activity
+        parameters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+            }
+        });
 
         // used to call the layout which is going to be in the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -97,13 +230,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // create the popup window
         int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
         int height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup dismiss it
+        boolean focusable = true; // lets user tap outside the popup dismiss it
         addressPopupWindow = new PopupWindow(this);
         addressPopupWindow.setBackgroundDrawable(null);
         addressPopupWindow.setContentView(addressPopupView);
         addressPopupWindow.setWidth(width);
         addressPopupWindow.setHeight(height);
         addressPopupWindow.setFocusable(focusable);
+        addressPopupWindow.setInputMethodMode(addressPopupWindow.INPUT_METHOD_NEEDED); // To avoid that the popup hide the keyboard
+        addressPopupWindow.setOutsideTouchable(false); // To avoid that the popup hide the keyboard
 
         //remove background dimness when popup is dismissed
         addressPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -402,7 +537,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // TRANSPORTATION POPUP END //
         /////////////////////////////////////////////////////////
 
-        //Bottom Menu
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU //
+        /////////////////////////////////////////////////////////
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
         bottomNav.setItemIconTintList(null);
@@ -410,9 +548,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
-        //Slide animation
+        /////////////////////////////////////////////////////////
+        // BOTTOM MENU END //
+        /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        // SLIDE ANIMATION //
+        /////////////////////////////////////////////////////////
+
         bottomNav.setSelectedItemId(R.id.profile);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.profile);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -432,9 +581,54 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
         });
+         */
 
     }
 
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        //---------TRANSITIONS-----------
+        //For Right-To-Left transitions
+        if(targetActivity.equals("com.example.mint.MainActivity") || targetActivity.equals("com.example.mint.MapActivity")){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            this.finish();
+        }
+    }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
+
+    /**
+     * Displays the various popup windows when you click on each button
+     * @param v : the view which has been clicked. We identify each one with a tag
+     */
     @Override
     public void onClick(View v){
         int buttonClicked = (int) v.getTag();
@@ -442,19 +636,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         dim_popup.setVisibility(View.VISIBLE);
         switch (buttonClicked) {
             case 0:
-                // show the popup window
+                // show the sensibility popup window
                 sensibilityPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
             case 1:
-                // show the popup window
+                // show the addresses popup window
                 addressPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
             case 2:
+                // show the transportation popup window
                 transportationPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
         }
     }
 
+    /**
+     * Get icon from int
+     * @param i : index which corresponds to the icon
+     * @return : the ImageView of the corresponding icon
+     */
     public ImageView findIconFromInt(int i){
         ImageView icon = new ImageView(ProfileActivity.this);
         switch (i){
@@ -474,17 +674,404 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return icon;
     }
 
+    /**
+     * This method displays the already selected favorite means of transportation on the main profile page
+     */
     public void displayFavoriteTransportation(){
+        // we go through all the means of transportation
         for(int i = 0;i<4;i++){
-            ImageView selectedIcon = findIconFromInt(i); // gets the right icon from the index
+            // gets the right icon from the index
+            ImageView selectedIcon = findIconFromInt(i);
             if (Preferences.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
+                // if this means of transporation is not in the preferences list, we do not display it
                 selectedIcon.setVisibility(View.GONE);
             }
             else {
+                // if it is, we display it
                 selectedIcon.setVisibility(View.VISIBLE);
             }
         }
     }
+
+    /**
+     * This adds the pollution from the last itinerary to today's pollution
+     */
+    private void setPollutionToday(){
+        // get the pollution from today
+        int pollution = Preferences.getPollutionToday(this);
+        // get the pollution from the last itinerary
+        int lastPol = Preferences.getLastPollution(this);
+        // add it to the pollution from today
+        pollution+=lastPol;
+        // save it in the preferences
+        Preferences.setPollutionToday(pollution,this);
+        // display new pollution
+        pollutionToday.setText(Integer.toString(pollution));
+        // reset the last pollution now that it has been saved (so that it doesn't keep adding it as soon as we reopen the profile)
+        Preferences.setLastPollution(0,this);
+    }
+
+    /**
+     * This method checks whether we have started a new day or not every time we open the profile activity
+     * If so, we save the new date value in the preferences, to be used as a comparison for the next time this function is called
+     * Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
+     */
+    private void resetPollutionNewDay(){
+        // first we check whether today is a new day or not
+        // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
+        int[] lastDate = Preferences.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
+        int[] currentDate = Preferences.getCurrentDate(); // this is the current date
+
+        if (currentDate[0]!=lastDate[0]){
+            Preferences.setDate(ProfileActivity.this); // we replace the last saved date with today's date
+            // then we add the pollution from the last day to the array of this month's pollution
+            Preferences.addDayPollutionToMonth(lastDate,Preferences.getPollutionToday(ProfileActivity.this),ProfileActivity.this);
+            Preferences.setPollutionToday(0,ProfileActivity.this); // we start over with a value of 0
+        }
+    }
+
+    /**
+     * This handles all the graph values and appearance settings
+     * @param range : whether we want to display a week, a month or a year (0 for week, 1 for month, 2 for year)
+     */
+    private void setUpGraph(final int range){
+        // we get the pollution data from preferences
+        ArrayList<Integer> values = Preferences.getPollutionYear(Preferences.getCurrentDate()[2],this);
+
+        // we convert it to a list of "entries" which is a class from the MPAndroidChart library
+        List<Entry> entries = new ArrayList<>();
+        // we use the java date format to calculate how many days have gone by since the beginning of the year
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+        String inputString1 = Preferences.getCurrentDate()[0]+" "+Preferences.getCurrentDate()[1]+" "+Preferences.getCurrentDate()[2];
+        String inputString2 = "00 01 "+Preferences.getCurrentDate()[2];
+        int diffDays=0;
+        try {
+            Date date1 = myFormat.parse(inputString1);
+            Date date2 = myFormat.parse(inputString2);
+            long diff = date1.getTime() - date2.getTime(); // number of days that have gone by in milliseconds
+            diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            System.out.println ("Days: " + diffDays);
+            for (int i=1;i<=diffDays;i++){
+                entries.add(new Entry(i,values.get(i-1)));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // LineDataSet allows for individual styling of this data (for if we have several data sets)
+        LineDataSet dataSet = new LineDataSet(entries,null);
+        dataSet.setColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setLineWidth(3);
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setCircleRadius(5);
+        dataSet.setCircleHoleRadius(3);
+        dataSet.setDrawValues(false);
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+
+        // Axis styling
+        // Y axis
+        YAxis yAxisRight = graph.getAxisRight();
+        final YAxis yAxisLeft = graph.getAxisLeft();
+        yAxisRight.setEnabled(false);
+        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setGridLineWidth(0.5f);
+        yAxisLeft.setGridColor(getResources().getColor(R.color.colorLightGrey));
+        yAxisLeft.setTypeface(Typeface.DEFAULT);
+        yAxisLeft.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // X axis
+        final XAxis xAxis = graph.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setTypeface(Typeface.DEFAULT);
+        xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // according to which button was clicked (week, month or year), we change the range of the x axis :
+        switch (range){
+            case 0 :
+                // in the case that we want to show the week :
+                // first we change the range of the x axis
+                int currentDayOfWeek = (Preferences.getCurrentDate()[3])-1; // day of week starts with 1 for sunday, so we do -1 to start with monday
+                int xAxisMin = (diffDays-currentDayOfWeek)+1; // we have to add one because if we dont we will have a one day difference
+                xAxis.setAxisMinimum(xAxisMin);
+                xAxis.setAxisMaximum(diffDays+(7-currentDayOfWeek));
+                // then we change the labels of the x axis
+                final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
+                xAxisLabelWeek.add("Lun");
+                xAxisLabelWeek.add("Mar");
+                xAxisLabelWeek.add("Mer");
+                xAxisLabelWeek.add("Jeu");
+                xAxisLabelWeek.add("Ven");
+                xAxisLabelWeek.add("Sam");
+                xAxisLabelWeek.add("Dim");
+                // this formats the values to be the new ones we just created :
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return xAxisLabelWeek.get((int) (value - xAxis.getAxisMinimum()));
+                    }
+                });
+                dataSet.setDrawCircles(true);
+                graph.invalidate();
+                break;
+            case 1 :
+                // in the case that we want to show the month :
+                // first we change the range of the x axis
+                int dayOfMonth = Preferences.getCurrentDate()[0]; // same principle as the day of week
+                int lengthOfMonth = Preferences.getCurrentDate()[4]; // this is the number of days in the current month
+                final int xAxisMinMonth = diffDays-dayOfMonth+1;
+                xAxis.setAxisMinimum(xAxisMinMonth);
+                xAxis.setAxisMaximum((diffDays-dayOfMonth)+lengthOfMonth);
+                // then we change the labels of the x axis
+                // this way we can set the array for the month we are about to draw
+                final ArrayList<String> xAxisLabelMonth = daysInYear(Preferences.getCurrentDate()[2]);
+                // this formats the values to be the new ones we just created :
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        System.out.println("value : "+value);
+                        return xAxisLabelMonth.get((int) value);
+                    }
+                });
+                dataSet.setDrawCircles(true);
+                graph.invalidate();
+                break;
+            case 2 :
+                // in the case that we want to show the month :
+                // first we change the range of the x axis
+                xAxis.setAxisMinimum(1);
+                xAxis.setAxisMaximum(values.size());
+                // then we change the labels of the x axis
+                final ArrayList<String> xAxisLabelYear = new ArrayList<>();
+                xAxisLabelYear.add("Jan");
+                xAxisLabelYear.add("Fev");
+                xAxisLabelYear.add("Mar");
+                xAxisLabelYear.add("Avr");
+                xAxisLabelYear.add("Mai");
+                xAxisLabelYear.add("Jui");
+                xAxisLabelYear.add("Jui");
+                xAxisLabelYear.add("Aou");
+                xAxisLabelYear.add("Sep");
+                xAxisLabelYear.add("Oct");
+                xAxisLabelYear.add("Nov");
+                xAxisLabelYear.add("Dec");
+                // this formats the values to be the new ones we just created :
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        int month = getMonthFromDay((int)value);
+                        return xAxisLabelYear.get(month);
+                    }
+                });
+                // the circles make the graph illegible in the case of the yearly graph so we disable them
+                dataSet.setDrawCircles(false);
+                graph.invalidate();
+                break;
+        }
+
+        // LineData allows for styling of the whole chart
+        LineData lineData = new LineData(dataSet);
+
+        //Set description non visible
+        Description description = graph.getDescription();
+        description.setEnabled(false);
+
+        // Apply our data to the chart
+        graph.setData(lineData);
+
+        // refresh
+        graph.invalidate();
+
+        slideLeft = findViewById(R.id.slide_left);
+        slideRight = findViewById(R.id.slide_right);
+
+        slideLeft.setTag(110);
+        slideRight.setTag(111);
+
+        View.OnClickListener onSlideClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) v.getTag();
+                // first we check whether they are enabled or not
+                if(xAxis.getAxisMinimum()<=1){
+                    slideLeft.setEnabled(false);
+                    switch (range) {
+                        case 0 :
+                            if (i==111) {
+                                xAxis.setAxisMinimum(xAxis.getAxisMinimum() + 7);
+                                xAxis.setAxisMaximum(xAxis.getAxisMaximum() + 7);
+                                graph.fitScreen();
+                                graph.setVisibleXRangeMaximum(6);
+                                graph.moveViewToX(xAxis.getAxisMinimum());
+                            }
+                            break;
+                        case 1 :
+                            if(i==111) {
+                                // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
+                                int min = (int) xAxis.getAxisMinimum();
+                                int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
+                                int[] monthDrawn = {1, month + 1, Preferences.getCurrentDate()[2]};
+                                int[] monthNext = new int[]{monthDrawn[0], monthDrawn[1] + 1, monthDrawn[2]}; // same but with the next month
+                                // then we get the length of each month
+                                int lengthDrawn = nbOfDaysInMonth(monthDrawn);
+                                int lengthNext = nbOfDaysInMonth(monthNext);
+                                // then we move the minimum and maximum
+                                xAxis.setAxisMinimum(xAxis.getAxisMinimum() + lengthDrawn);
+                                xAxis.setAxisMaximum(xAxis.getAxisMaximum() + lengthNext);
+                                graph.fitScreen();
+                                graph.setVisibleXRangeMaximum(lengthNext); // setting the range according to whether we went back or forward
+                                graph.moveViewToX(xAxis.getAxisMinimum());
+                            }
+                            break;
+                        case 2 :
+                            break;
+                    }
+                }
+                else if(xAxis.getAxisMaximum()>=365){
+                    slideRight.setEnabled(false);
+                    switch (range) {
+                        case 0 :
+                            if (i==110) {
+                                xAxis.setAxisMinimum(xAxis.getAxisMinimum() - 7);
+                                xAxis.setAxisMaximum(xAxis.getAxisMaximum() - 7);
+                                graph.fitScreen();
+                                graph.setVisibleXRangeMaximum(6);
+                                graph.moveViewToX(xAxis.getAxisMinimum());
+                            }
+                            break;
+                        case 1 :
+                            if(i==110) {
+                                // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
+                                int min = (int) xAxis.getAxisMinimum();
+                                int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
+                                int[] monthDrawn = {1, month + 1, Preferences.getCurrentDate()[2]};
+                                int[] monthLast = new int[]{monthDrawn[0], monthDrawn[1] - 1, monthDrawn[2]}; // same but with the next month
+                                // then we get the length of each month
+                                int lengthDrawn = nbOfDaysInMonth(monthDrawn);
+                                int lengthLast = nbOfDaysInMonth(monthLast);
+                                // then we move the minimum and maximum
+                                xAxis.setAxisMinimum(xAxis.getAxisMinimum() - lengthDrawn);
+                                xAxis.setAxisMaximum(xAxis.getAxisMaximum() - lengthLast);
+                                graph.fitScreen();
+                                graph.setVisibleXRangeMaximum(lengthLast); // setting the range according to whether we went back or forward
+                                graph.moveViewToX(xAxis.getAxisMinimum());
+                            }
+                            break;
+                        case 2 :
+                            break;
+                    }
+                }
+                else {
+                    slideLeft.setEnabled(true);
+                    slideRight.setEnabled(true);
+                    // then we move the maximums and minimums
+                    switch (range) {
+                        case 0 :
+                            xAxis.setAxisMinimum(i==110?xAxis.getAxisMinimum()-7:xAxis.getAxisMinimum()+7);
+                            xAxis.setAxisMaximum(i==110?xAxis.getAxisMaximum()-7:xAxis.getAxisMaximum()+7);
+                            graph.fitScreen();
+                            graph.setVisibleXRangeMaximum(6);
+                            graph.moveViewToX(xAxis.getAxisMinimum());
+                            break;
+                        case 1 :
+                            System.out.println(slideLeft.isEnabled());
+                            // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
+                            int min = (int) xAxis.getAxisMinimum();
+                            int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
+                            int[] monthDrawn = {1,month+1,Preferences.getCurrentDate()[2]};
+                            int[] monthLast = new int[]{monthDrawn[0],monthDrawn[1]-1,monthDrawn[2]}; // we go back one month, that way we know how many days are in the previous month
+                            int[] monthNext = new int[]{monthDrawn[0],monthDrawn[1]+1,monthDrawn[2]}; // same but with the next month
+                            // then we get the length of each month
+                            int lengthDrawn = nbOfDaysInMonth(monthDrawn);
+                            int lengthLast = nbOfDaysInMonth(monthLast);
+                            int lengthNext = nbOfDaysInMonth(monthNext);
+                            // then we move the minimum and maximum
+                            xAxis.setAxisMinimum(i==110?xAxis.getAxisMinimum()-lengthLast:xAxis.getAxisMinimum()+lengthDrawn);
+                            xAxis.setAxisMaximum(i==110?xAxis.getAxisMaximum()-lengthDrawn:xAxis.getAxisMaximum()+lengthNext);
+                            graph.fitScreen();
+                            graph.setVisibleXRangeMaximum(i==110?lengthLast:lengthNext); // setting the range according to whether we went back or forward
+                            graph.moveViewToX(xAxis.getAxisMinimum());
+                            break;
+                        case 2 :
+                            break;
+                    }
+                }
+            }
+        };
+
+        slideLeft.setOnClickListener(onSlideClick);
+        slideRight.setOnClickListener(onSlideClick);
+
+    }
+
+    /**
+     * Returns number of days in the month of the required date
+     * @param date
+     * @return
+     */
+    public int nbOfDaysInMonth(int[] date){
+        Calendar cal = new GregorianCalendar(date[2],date[1]-1,date[0]);
+        return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * Returns an array of all the dates in the year
+     * Used for the labels on the "month" graph
+     * @param year
+     * @return
+     */
+    public ArrayList<String> daysInYear(int year){
+        Calendar cal = new GregorianCalendar(year,0,0);
+        ArrayList<String> days = new ArrayList<>();
+        for (int i =0;i<365;i++){
+            days.add(String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
+            cal.add(Calendar.DATE,1);
+            System.out.println(days.get(i));
+        }
+        return days;
+    }
+
+    public int getMonthFromDay(int day){
+        if (day<=31){
+            return 0;
+        }
+        else if (day<=59){
+            return 1;
+        }
+        else if (day<=90){
+            return 2;
+        }
+        else if (day<=120){
+            return 3;
+        }
+        else if (day<=151){
+            return 4;
+        }
+        else if (day<=181){
+            return 5;
+        }
+        else if (day<=212){
+            return 6;
+        }
+        else if (day<=243){
+            return 7;
+        }
+        else if (day<=273){
+            return 8;
+        }
+        else if (day<=304){
+            return 9;
+        }
+        else if (day<=335){
+            return 10;
+        }
+        else {
+            return 11;
+        }
+    }
+
 
 
 

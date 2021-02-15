@@ -46,6 +46,7 @@
             android:contentDescription="@string/car_button"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            android:scaleType="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -58,6 +59,7 @@
             android:contentDescription="@string/tram_button"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            android:scaleType="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -70,6 +72,7 @@
             android:contentDescription="@string/bike_button"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            android:scaleType="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -82,6 +85,7 @@
             android:contentDescription="@string/walk_button"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            android:scaleType="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>

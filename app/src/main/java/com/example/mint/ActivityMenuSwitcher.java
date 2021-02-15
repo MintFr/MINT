@@ -2,6 +2,7 @@ package com.example.mint;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.Menu;
 import android.view.MenuItem;
 
 
@@ -31,34 +32,61 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Get target class
-        int itemId = item.getItemId();
+    public boolean onNavigationItemSelected(MenuItem targetItem) {
+
+        //------- GET TARGET ACTIVITY -------
+
+        // targetItem lets us know which activity will be our target activity
+        // Get the id of the targetItem
+        int targetItemId = targetItem.getItemId();
+        // The target Activity is null at first
         Class<? extends Activity> target = null;
 
-        if (itemId == R.id.itinerary) {
+        // Based on the id, attribute the right class to target
+        if (targetItemId == R.id.itinerary) {
             target = MainActivity.class;
-        } else if (itemId == R.id.maps) {
+        } else if (targetItemId == R.id.maps) {
             target = MapActivity.class;
-        } else if (itemId == R.id.profile) {
+        } else if (targetItemId == R.id.profile) {
             target = ProfileActivity.class;
         }
 
+        //-------TRANSITION TO NEXT ACTIVITY-------
+
+        // This does the transition from the current activity to the next with the right transitions
         if (target != null && target != activity.getClass()) {
-            // Replace current activity
+
+            // Create intent and start next activity
             Intent intent = new Intent(activity, target);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-            activity.startActivity(intent); //pb iciiiiiiiii
-            activity.finish();
-        }
+            intent.putExtra("previousActivity", activity.getClass().getName());
+            activity.startActivity(intent);
 
-        switch (item.getItemId()){
-            case R.id.itinerary:
+
+            //---------TRANSITIONS-----------
+            // For Left-To-Right transitions
+            if(activity.getClass() == MainActivity.class && targetItemId == R.id.maps
+                    || activity.getClass() == MainActivity.class && targetItemId == R.id.profile
+                    || activity.getClass() == MapActivity.class && targetItemId == R.id.profile){
+
+                // Override the transition and finish the current activity
+                activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                activity.finish();
+
                 return true;
-            case R.id.maps:
+            }
+
+            // For Right-To-Left transitions
+            if(activity.getClass() == MapActivity.class && targetItemId == R.id.itinerary
+                    || activity.getClass() == ProfileActivity.class && targetItemId == R.id.itinerary
+                    || activity.getClass() == ProfileActivity.class && targetItemId == R.id.maps){
+
+                // Override the transition and finish the current activity
+                activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                activity.finish();
+
                 return true;
-            case R.id.profile:
-                return true;
+            }
         }
 
         return false;

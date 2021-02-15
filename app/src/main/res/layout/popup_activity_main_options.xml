@@ -10,17 +10,83 @@
     android:paddingRight="30dp"
     android:paddingLeft="30dp"
     tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/choix_du_critere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingBottom="10dp"
+        android:text="@string/criteria_choice"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/fastest"
+        style="@style/Button"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choix_du_critere"
+        android:layout_alignStart="@+id/option_separation_2"
+        android:layout_alignLeft="@+id/option_separation_2"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="-60dp"
+        android:layout_marginRight="-60dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="2dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="2dp"
+        android:text="Plus rapide"
+        android:textAppearance="@style/ButtonText"
+        android:textColor="@null" />
+
+    <Button
+        android:id="@+id/healthier"
+        style="@style/Button"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choix_du_critere"
+        android:layout_alignEnd="@+id/option_separation_2"
+        android:layout_alignRight="@+id/option_separation_2"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="4dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="2dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="2dp"
+        android:text="Plus sain"
+        android:textAppearance="@style/ButtonText"
+        android:textColor="@null"/>
+
     <TextView
         android:id="@+id/option_transportation_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/fastest"
         android:layout_centerHorizontal="true"
-        android:textSize="16sp"
+        android:layout_marginTop="15dp"
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:paddingBottom="10dp"
-        android:textStyle="bold"
-        android:text="@string/option_transportation_prompt" />
+        android:text="@string/option_transportation_prompt"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:id="@+id/transportation_icons"
         android:layout_width="0dp"
@@ -39,6 +105,7 @@
             android:layout_weight="1"
             android:scaleY="1.5"
             android:scaleX="1.5"
+            android:scaleType="center"
             android:src="@drawable/button_car"
             android:contentDescription="1"
             android:paddingBottom="8dp"
@@ -51,6 +118,7 @@
             android:layout_weight="1"
             android:scaleY="1.5"
             android:scaleX="1.5"
+            android:scaleType="center"
             android:src="@drawable/button_tram"
             android:contentDescription="2"
             android:paddingBottom="8dp"
@@ -63,6 +131,7 @@
             android:layout_weight="1"
             android:scaleY="1.5"
             android:scaleX="1.5"
+            android:scaleType="center"
             android:src="@drawable/button_bike"
             android:contentDescription="3"
             android:paddingBottom="8dp"
@@ -75,6 +144,7 @@
             android:layout_weight="1"
             android:scaleY="1.5"
             android:scaleX="1.5"
+            android:scaleType="center"
             android:src="@drawable/button_walk"
             android:contentDescription="4"
             android:paddingBottom="8dp"
@@ -92,6 +162,22 @@
         android:layout_alignRight="@id/end_time"
         android:background="#e0e0e0"
         android:layout_below="@id/transportation_icons"/>
+
+
+    <View
+        android:id="@+id/option_separation_2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_above="@+id/option_transportation_prompt"
+        android:layout_alignLeft="@id/option_calendar_icon"
+        android:layout_alignRight="@id/end_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="-10dp"
+        android:background="#e0e0e0" />
+
     <TextView
         android:id="@+id/option_departure_prompt"
         android:layout_width="wrap_content"
@@ -105,11 +191,12 @@
         android:layout_below="@id/option_separation"
         android:textStyle="bold"
         android:text="@string/option_departure_prompt" />
-    <ImageView
+    <ImageButton
         android:id="@+id/option_calendar_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_calendar"
+        android:background="#00ffffff"
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:padding="5dp"
@@ -136,11 +223,12 @@
         android:layout_below="@id/departure_date_prompt"
         android:layout_toRightOf="@id/option_calendar_icon"
         android:layout_toEndOf="@id/option_calendar_icon"/>
-    <ImageView
+    <ImageButton
         android:id="@+id/option_clock_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_time"
+        android:background="#00ffffff"
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:padding="5dp"

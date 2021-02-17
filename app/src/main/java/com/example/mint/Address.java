@@ -6,6 +6,9 @@ package com.example.mint;
 
 //import static java.util.Locale.getDefault;
 
+/**
+ * Describe an address with a name and two coordinates (latitude and longitude)
+ */
 public class Address {
     private String locationName;
     private Coordinates coordinates;

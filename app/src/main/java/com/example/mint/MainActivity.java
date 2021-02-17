@@ -74,6 +74,7 @@ import org.osmdroid.views.MapView;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
+
     private View dimPopup;
 
     /**
@@ -87,16 +88,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LocationManager locationManager;
 
     /**
-     * MAP
+     * Map
      */
     private MapView map;
     IMapController mapController;
 
     /**
-     * START AND END POINTS
+     * Start Address
      */
     private com.example.mint.Address startAddress;
+    /**
+     * End Address
+     */
     private com.example.mint.Address endAddress;
+    /**
+     * Step Address
+     */
     private com.example.mint.Address stepAddress;
 
 

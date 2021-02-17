@@ -30,22 +30,43 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     //returns total number of items in the list
+
+    /**
+     * Access total number of items in the list
+     * @return int
+     */
     @Override
     public int getCount() {
         return items.size();
     }
 
     //returns list item at the specified position
+
+    /**
+     * Access item at a given position in the list
+     * @param position : int - position in the list
+     * @return Object
+     */
     @Override
     public Object getItem(int position) {
         return items.get(position);
     }
 
+    /**
+     *
+     * @param position
+     * @return
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     *
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position){
         if(position ==1 || position == nbLastAdd+2) {

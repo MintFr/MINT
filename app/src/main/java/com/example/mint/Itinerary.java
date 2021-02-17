@@ -131,34 +131,66 @@ public class Itinerary implements Serializable {
         this.points = itinerary.getPoints();
     }
 
+    /**
+     * Access itinerary's type of transportation
+     * @return
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Set itinerary's type of transportation
+     * @param type
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Access itinerary's score of pollution
+     * @return
+     */
     public double getPollution() {
         return pollution;
     }
 
+    /**
+     * Set itinerary's score of pollution
+     * @param pollution
+     */
     public void setPollution(Float pollution) {
         this.pollution = pollution;
     }
 
+    /**
+     * Access total duration
+     * @return
+     */
     public double getDuration() {
         return duration;
     }
 
+    /**
+     * Set total duration
+     * @param duration
+     */
     public void setDuration(Float duration) {
         this.duration = duration;
     }
 
+    /**
+     * Set total distance
+     * @param distance
+     */
     public void setDistance(double distance){
         this.distance = distance;
     }
 
+    /**
+     * Access total distance
+     * @return
+     */
     public double getDistance(){
         return distance;
     }
@@ -179,26 +211,50 @@ public class Itinerary implements Serializable {
         this.stepDistance = stepDistance;
     }*/
 
+    /**
+     * Access all the successive points of the itinerary
+     * @return ArrayList<double[]>
+     */
     public ArrayList<double[]> getPoints() {
         return points;
     }
 
+    /**
+     * Set the list of successive points
+     * @param points
+     */
     public void setPoints(ArrayList<double[]> points) {
         this.points = points;
     }
 
+    /**
+     * Access the total number of Points in the itinerary
+     * @return
+     */
     public int getPointSize() {
         return points.size();
     }
 
+    /**
+     * Access the time Option
+     * @return
+     */
     public String getTimeOption() {
         return timeOption;
     }
 
+    /**
+     * Set the time Option
+     * @param timeOption
+     */
     public void setTimeOption(String timeOption) {
         this.timeOption = timeOption;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isHourStart() {
         return hourStart;
     }
@@ -207,14 +263,26 @@ public class Itinerary implements Serializable {
         this.hourStart = hourStart;
     }
 
+    /**
+     * Set pollution of the itinerary
+     * @param pollution
+     */
     public void setPollution(double pollution) {
         this.pollution = pollution;
     }
 
+    /**
+     * Set total duration
+     * @param time
+     */
     public void setTime(double time) {
         this.duration = time;
     }
 
+    /**
+     * Access detail of the itinerary : all the successive streets to follow
+     * @return
+     */
     public ArrayList<Step> getDetail() {
         return detail;
     }
@@ -227,6 +295,10 @@ public class Itinerary implements Serializable {
         this.duration = duration;
     }
 
+    /**
+     * Access the information regarding the existence of a step in the itinerary
+     * @return
+     */
     public boolean isHasStep() {
         return hasStep;
     }

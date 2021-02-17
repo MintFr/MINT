@@ -74,6 +74,7 @@ import org.osmdroid.views.MapView;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
+
     private View dimPopup;
 
     /**
@@ -87,16 +88,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LocationManager locationManager;
 
     /**
-     * MAP
+     * Map
      */
     private MapView map;
     IMapController mapController;
 
     /**
-     * START AND END POINTS
+     * Start Address
      */
     private com.example.mint.Address startAddress;
+    /**
+     * End Address
+     */
     private com.example.mint.Address endAddress;
+    /**
+     * Step Address
+     */
     private com.example.mint.Address stepAddress;
 
 
@@ -1042,10 +1049,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("starting", starting);
                             //intent.putExtra("date", dateText);
                             intent.putExtra("time", timeText);
-                            intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
-                            intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
-                            intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
-                            intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
+                            intent.putExtra("param1", startAddress.getCoordinates().getLatitude());
+                            intent.putExtra("param2", startAddress.getCoordinates().getLongitude());
+                            intent.putExtra("param3", endAddress.getCoordinates().getLatitude());
+                            intent.putExtra("param4", endAddress.getCoordinates().getLongitude());
                             intent.putExtra("param5", stepBool); // to know if there is a stepPoint or not
 
                             // Add stepPoint parameters if needed

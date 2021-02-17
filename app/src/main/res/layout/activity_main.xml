@@ -103,7 +103,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".01"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/startPoint" />
+        app:layout_constraintTop_toTopOf="@+id/startPoint"
+        android:contentDescription="TODO" />
 
     <ImageButton
         android:id="@+id/inversion"
@@ -118,7 +119,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".99"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/startPoint" />
+        app:layout_constraintTop_toTopOf="@+id/startPoint"
+        android:contentDescription="TODO" />
 
     <Button
         android:id="@+id/options"

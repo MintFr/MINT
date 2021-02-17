@@ -1,5 +1,6 @@
 package com.example.mint;
 
+//import android.annotation.SuppressLint;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,21 +24,28 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 /**
- * TODO Explain aim and use of class here
+ * Activity treating the response of the distant service
  */
 public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> implements java.io.Serializable {
 
-    private AppCompatActivity myActivity;
+    @SuppressLint("StaticFieldLeak")
+    private final AppCompatActivity myActivity;
 
-    //Constructor
+    /**
+     * Constructor for the Async Activity
+     * @param LoadingPageActivity : linked activity
+     */
     public AsyncItineraryCompute (AppCompatActivity LoadingPageActivity) {
         myActivity = LoadingPageActivity;
     }
 
 
+    /**
+     *
+     */
     @Override
     protected void onPreExecute() {
         //Prepare task and show waiting view
@@ -133,7 +141,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
     /**
      * Function to decode JSONArray and extract attributes
-     * @param c
+     * @param c JSONArray
      */
     @Override
     protected void onPostExecute(final JSONArray c) {
@@ -151,11 +159,13 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         //Reading JSON
         final ArrayList<Itinerary> itineraries = new ArrayList<>();
         try{
-            for (int i = 0; i<c.length()-1; i++)            //to delete error message
-            {
-                Itinerary itinerary = new Itinerary(c.getJSONObject(i));
-                System.out.println(itinerary.getDetail().get(0).getAddress() +itinerary.getDetail().get(0).getDistance());
-                itineraries.add(itinerary);
+            if (c != null) {
+                for (int i = 0; i<c.length()-1; i++)            //to delete error message
+                {
+                    Itinerary itinerary = new Itinerary(c.getJSONObject(i));
+                    System.out.println(itinerary.getDetail().get(0).getAddress() +itinerary.getDetail().get(0).getDistance());
+                    itineraries.add(itinerary);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -185,7 +195,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
     /**
     * Method to read server response, which is as text file, and put it in a String object.
-     * @param is
+     * @param is InputStream
      * @return String
     */
     private String readStream(InputStream is) throws IOException {

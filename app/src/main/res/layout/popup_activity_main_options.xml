@@ -45,7 +45,7 @@
         android:paddingTop="2dp"
         android:paddingRight="10dp"
         android:paddingBottom="2dp"
-        android:text="Plus rapide"
+        android:text="@string/fastest"
         android:textAppearance="@style/ButtonText"
         android:textColor="@null" />
 
@@ -69,7 +69,7 @@
         android:paddingTop="2dp"
         android:paddingRight="10dp"
         android:paddingBottom="2dp"
-        android:text="Plus sain"
+        android:text="@string/healthier"
         android:textAppearance="@style/ButtonText"
         android:textColor="@null"/>
 
@@ -107,7 +107,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_car"
-            android:contentDescription="1"
+            android:contentDescription="@string/car_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -120,7 +120,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_tram"
-            android:contentDescription="2"
+            android:contentDescription="@string/tram_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -133,7 +133,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_bike"
-            android:contentDescription="3"
+            android:contentDescription="@string/bike_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -146,7 +146,7 @@
             android:scaleX="1.5"
             android:scaleType="center"
             android:src="@drawable/button_walk"
-            android:contentDescription="4"
+            android:contentDescription="@string/walk_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:background="#00ffffff"/>
@@ -161,7 +161,9 @@
         android:layout_alignLeft="@id/option_calendar_icon"
         android:layout_alignRight="@id/end_time"
         android:background="#e0e0e0"
-        android:layout_below="@id/transportation_icons"/>
+        android:layout_below="@id/transportation_icons"
+        android:layout_alignStart="@id/option_calendar_icon"
+        android:layout_alignEnd="@id/end_time" />
 
 
     <View
@@ -176,7 +178,11 @@
         android:layout_marginTop="22dp"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="-10dp"
-        android:background="#e0e0e0" />
+        android:background="#e0e0e0"
+        android:layout_alignStart="@id/option_calendar_icon"
+        android:layout_alignEnd="@id/end_time"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="0dp" />
 
     <TextView
         android:id="@+id/option_departure_prompt"
@@ -201,7 +207,9 @@
         android:scaleY="1.5"
         android:padding="5dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@id/option_departure_prompt"/>
+        android:layout_below="@id/option_departure_prompt"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/calendar" />
     <TextView
         android:id="@+id/departure_date_prompt"
         android:layout_width="wrap_content"
@@ -234,7 +242,9 @@
         android:padding="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
-        android:layout_below="@id/option_calendar_icon"/>
+        android:layout_below="@id/option_calendar_icon"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/time_prompt" />
     <TextView
         android:id="@+id/departure_time_prompt"
         android:layout_width="wrap_content"
@@ -274,7 +284,9 @@
         android:layout_marginLeft="15dp"
         android:layout_below="@id/date_calendar"
         android:layout_marginTop="15dp"
-        android:text="@string/button_options_start"/>
+        android:text="@string/button_options_start"
+        android:layout_toEndOf="@id/time_text"
+        android:layout_marginStart="15dp" />
     <Button
         android:id="@+id/end_time"
         android:layout_width="wrap_content"
@@ -290,6 +302,8 @@
         android:layout_marginLeft="15dp"
         android:layout_below="@id/date_calendar"
         android:layout_marginTop="15dp"
-        android:text="@string/button_options_end"/>
+        android:text="@string/button_options_end"
+        android:layout_toEndOf="@id/start_time"
+        android:layout_marginStart="15dp" />
 
 </RelativeLayout>

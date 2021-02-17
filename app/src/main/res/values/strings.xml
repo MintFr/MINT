@@ -18,7 +18,7 @@
     <!--    Spinner activity_map-->
     <string-array name="map_array">
         <item>Routes</item>
-        <item>Trafic en direct</item>
+        <item tools:ignore="Typos">Trafic en direct</item>
         <item>Transports en commun</item>
         <item>Pollution en direct</item>
         <item>Pollens en direct</item>
@@ -90,5 +90,13 @@
     <string name="mon_exposition">Mon exposition</string>
     <string name="_0h_08min">0h 08min</string>
     <string name="criteria_choice">Choix du critère</string>
+    <string name="fastest">Plus rapide</string>
+    <string name="healthier">Plus sain</string>
+    <string name="car_choice">1</string>
+    <string name="tram_choice">2</string>
+    <string name="bike_choice">3</string>
+    <string name="walk_choice">4</string>
+    <string name="calendar">Calendrier</string>
+    <string name="mint_logo">Mint_logo</string>
 
 </resources>

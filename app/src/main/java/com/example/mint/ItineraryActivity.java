@@ -3,16 +3,16 @@ package com.example.mint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.location.Geocoder;
-import android.os.Build;
+//import android.graphics.Typeface;
+//import android.location.Geocoder;
+//import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+//import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+//import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,11 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+//import androidx.annotation.NonNull;
+//import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
+//import androidx.constraintlayout.widget.ConstraintLayout;
+//import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
@@ -34,36 +34,36 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
-import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
+//import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
+//import org.osmdroid.tileprovider.tilesource.ITileSource;
+//import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+//import org.osmdroid.views.overlay.ItemizedIconOverlay;
+//import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
+//import org.osmdroid.views.overlay.Overlay;
+//import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PaintList;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
-import org.w3c.dom.Text;
+//import org.w3c.dom.Text;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+//import java.io.IOException;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+//import java.util.Arrays;
+//import java.util.Calendar;
+//import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.zip.Inflater;
+//import java.util.Locale;
+//import java.util.zip.Inflater;
 
 /**
  * Activity for the itinerary page, on which the user can see the various itineraries calculated for them
@@ -74,11 +74,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * MAP
      */
     private MapView map = null;
-    private ArrayList<double[]> response = new ArrayList<>();
+    //private final ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;
-    private GeoPoint startPoint;
-    private GeoPoint endPoint;
-    private GeoPoint stepPoint;
+    //private GeoPoint startPoint;
+    //private GeoPoint endPoint;
+    //private GeoPoint stepPoint;
 
     /**
      * GEOPOINT POSITIONS
@@ -93,23 +93,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     private BottomSheetBehavior sheetBehaviorDetail;
     private BottomSheetBehavior sheetBehaviorRecap;
-    private LinearLayout detailLayout;
     private RelativeLayout recapLayout;
 
-    /**
-     * BUTTONS
-     */
-    private FloatingActionButton zoomInButton;
-    private FloatingActionButton zoomOutButton;
-    private FloatingActionButton locateButton;
     private FloatingActionButton recapButton;
 
-    /**
-     * STYLE
-     */
-    private Paint paintBorder;
-    private Paint paintInside;
-    private Paint paintBorderSelected;
+    //private Paint paintInside;
 
     private Paint paintInsideG; // color when the pollution is good
     private Paint paintInsideM; // color when the pollution is medium
@@ -131,10 +119,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     ArrayList<Itinerary> itineraries;
 
-    /**
-     * POLLUTION DATA
-     */
-    private String sensibility;
     private int threshold;
 
     /**
@@ -144,7 +128,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * On create of this activity, display itineraries and the recap of all the itineraries
-     * @param savedInstanceState
+     * @param savedInstanceState Bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +139,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // get the sensibility from preferences
-        sensibility = Preferences.getSensibility("Sensibility",this);
+        /*
+         * POLLUTION DATA
+         */
+        String sensibility = Preferences.getSensibility("Sensibility", this);
         //set the threshold for the display color of the itineraries
         // TODO change values for threshold once you have the data from captation
         switch (sensibility){
@@ -193,7 +180,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // LAYOUTS
 
         // get the bottom sheets and their behaviors
-        detailLayout = findViewById(R.id.itinerary_detail_layout);
+        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout);
         recapLayout = findViewById(R.id.itinerary_recap_layout);
         sheetBehaviorDetail = BottomSheetBehavior.from(detailLayout);
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
@@ -207,9 +194,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         // get the buttons for map control
-        zoomInButton = findViewById(R.id.zoom_in);
-        zoomOutButton = findViewById(R.id.zoom_out);
-        locateButton = findViewById(R.id.locate);
+        /**
+         * BUTTONS
+         */
+        FloatingActionButton zoomInButton = findViewById(R.id.zoom_in);
+        FloatingActionButton zoomOutButton = findViewById(R.id.zoom_out);
+        FloatingActionButton locateButton = findViewById(R.id.locate);
 
         // attribute the onClickListener and set Tags
         zoomInButton.setOnClickListener(this);
@@ -250,7 +240,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // Paintlists for the effects on the polylines //
 
         // for the white border
-        paintBorder = new Paint();
+        /*
+         * STYLE
+         */
+        Paint paintBorder = new Paint();
         paintBorder.setStrokeWidth(30);
         paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBorder.setColor(Color.WHITE);
@@ -260,7 +253,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         paintBorder.setAntiAlias(true);
 
         // white border when line is selected
-        paintBorderSelected = new Paint(paintBorder);
+        Paint paintBorderSelected = new Paint(paintBorder);
         paintBorderSelected.setStrokeWidth(50);
 
         // inside the white border GOOD
@@ -403,9 +396,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY ITINERARY
-     * @param itinerary
-     * @param list
-     * @param i
+     * @param itinerary Itinerary
+     * @param list ArrayList<Itinerary>
+     * @param i int
      */
 
 
@@ -596,7 +589,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY RECAP
-     * @param list
+     * @param list ArrayList<Itinerary>
      */
     private void displayRecap(final ArrayList<Itinerary> list){
 
@@ -815,7 +808,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Convert a time in seconds to hours
-     * @param seconds
+     * @param seconds int
      * @return String
      */
     private String convertIntToHour(int seconds) {
@@ -828,7 +821,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Reset the appearance of a polyline that was highlighted
-     * @param polyline
+     * @param polyline Polyline
      */
     private void resetPolylineAppearance(Polyline polyline){
         // clear all previous paints
@@ -844,7 +837,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this function is used to find a polyline from its id which was user-selected (in our case, the id is its rank in the itinerary list)
-     * @param id
+     * @param id String
      * @return
      */
     private Polyline findPolylineFromId(String id){
@@ -923,7 +916,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Method to control map
-     * @param v
+     * @param v View
      */
     @Override
     public void onClick(View v) {
@@ -964,7 +957,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this method decides which color the itinerary line will be, according to the threshold
-     * @param itinerary
+     * @param itinerary Itinerary
      */
     public void setColorForPolyline(Itinerary itinerary){
         System.out.println("pollution" + itinerary.getPollution());

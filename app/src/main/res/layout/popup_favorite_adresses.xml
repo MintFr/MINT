@@ -54,7 +54,8 @@
         android:layout_marginTop="10dp"
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/address2"
@@ -86,7 +87,8 @@
         android:layout_marginTop="10dp"
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="TODO" />
     <TextView
         android:id="@+id/address3"
         android:layout_width="wrap_content"
@@ -117,7 +119,8 @@
         android:layout_marginTop="10dp"
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="TODO" />
     <TextView
         android:id="@+id/address4"
         android:layout_width="wrap_content"
@@ -148,7 +151,8 @@
         android:layout_marginTop="10dp"
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="TODO" />
     <TextView
         android:id="@+id/address5"
         android:layout_width="wrap_content"
@@ -179,7 +183,8 @@
         android:layout_marginTop="10dp"
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
 </RelativeLayout>
 <Button

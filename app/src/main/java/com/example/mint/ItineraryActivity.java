@@ -169,7 +169,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         final CoordinatorLayout coordinator = findViewById(R.id.coordinator);
-        // i dont really know what this does but it fixed some bugs so dont touch
+        // i don't really know what this does but it fixed some bugs so don't touch
         ViewCompat.postOnAnimation(coordinator, new Runnable() {
             @Override
             public void run() {

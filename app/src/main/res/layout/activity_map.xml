@@ -11,9 +11,7 @@
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
-
-    </org.osmdroid.views.MapView>
+        android:visibility="visible" />
 
     <Spinner
         android:id="@+id/map_spinner"

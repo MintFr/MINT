@@ -197,9 +197,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         // get the buttons for map control
-        /**
-         * BUTTONS
-         */
+
         FloatingActionButton zoomInButton = findViewById(R.id.zoom_in);
         FloatingActionButton zoomOutButton = findViewById(R.id.zoom_out);
         FloatingActionButton locateButton = findViewById(R.id.locate);

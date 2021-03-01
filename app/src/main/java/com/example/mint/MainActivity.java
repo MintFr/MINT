@@ -72,6 +72,7 @@ import org.osmdroid.views.MapView;
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
  * among other things
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
 
@@ -87,10 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int POSITION_PERMISSION_CODE = 1;
     LocationManager locationManager;
 
-    /**
-     * Map
-     */
-    private MapView map;
     IMapController mapController;
 
     /**
@@ -267,7 +264,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
         //Map
-        map = findViewById(R.id.mapView);
+        /**
+         * Map
+         */
+        MapView map = findViewById(R.id.mapView);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint startPoint = new GeoPoint(47.21, -1.55);
@@ -602,11 +602,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button2.setActivated(false);
 
                 // memorization of the selection of start or end time
-                if (i == 8){
-                    starting = true;
-                } else {
-                    starting = false;
-                }
+                starting = i == 8;
             }
         };
 
@@ -1202,12 +1198,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public boolean CheckInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            //we are connected to a network
-            return true;
-        }
-        return false;
+        //we are connected to a network
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }//end of check int
 
 

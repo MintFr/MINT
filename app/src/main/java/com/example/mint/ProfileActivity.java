@@ -68,11 +68,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private View dim_popup;
 
     /**
-     * parameters textView
-     */
-    private TextView parameters;
-
-    /**
      * pollution profile
      */
     private TextView pollutionToday;
@@ -85,7 +80,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * favorite addresses
      */
     private Button addButton;
-    private Button favoriteAddressesButton;
     private EditText enterAddress;
     private PopupWindow addressPopupWindow;
 
@@ -93,7 +87,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * sensibility
      */
     private TextView setSensibility;
-    private Button sensibilityButton;
     private PopupWindow sensibilityPopupWindow;
 
     /**
@@ -103,7 +96,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView tramIcon;
     private ImageView bikeIcon;
     private ImageView walkIcon;
-    private Button favoriteTransportationButton;
     private PopupWindow transportationPopupWindow;
 
 
@@ -123,10 +115,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //Preferences.clearTransportation(this);
 
         //link layout elements to activity
-        parameters = findViewById(R.id.parameters);
-        sensibilityButton = findViewById(R.id.sensibility);
-        favoriteAddressesButton = findViewById(R.id.favorite_addresses);
-        favoriteTransportationButton = findViewById(R.id.favorite_transportation);
+        /**
+         * parameters textView
+         */
+        TextView parameters = findViewById(R.id.parameters);
+        Button sensibilityButton = findViewById(R.id.sensibility);
+        Button favoriteAddressesButton = findViewById(R.id.favorite_addresses);
+        Button favoriteTransportationButton = findViewById(R.id.favorite_transportation);
 
         dim_popup = findViewById(R.id.dim_popup);
 

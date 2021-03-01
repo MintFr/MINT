@@ -26,7 +26,6 @@ import org.osmdroid.views.MapView;
  */
 public class MapActivity extends AppCompatActivity {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private MapView map;
     IMapController mapController;
 
     //private static final String TAG = "MapActivity"; //--> for debugging
@@ -37,7 +36,7 @@ public class MapActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         setContentView(R.layout.activity_map);
-        map = findViewById(R.id.map);
+        MapView map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint startPoint = new GeoPoint(47.21, -1.55);

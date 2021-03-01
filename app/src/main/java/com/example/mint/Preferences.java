@@ -15,8 +15,8 @@ public class Preferences {
     // this will be used to handle the storage of pollution over different days and months, to check when a new day/month/year starts
 
     /**
-     * TODO comment
-     * @param context
+     * Set the date for a save pollution
+     * @param context Contexte
      */
     public static void setDate(Context context){
         SharedPreferences prefs = context.getSharedPreferences("date",Context.MODE_PRIVATE);
@@ -33,8 +33,8 @@ public class Preferences {
 
     /**
      * this returns the last date we stored
-     * @param context
-     * @return
+     * @param context Context
+     * @return list of int
      */
     public static int[] getLastDate(Context context){
         // this is going to be used to check whether we have started a new day or month or year since the date was last saved
@@ -49,8 +49,8 @@ public class Preferences {
     }
 
     /**
-     * TODO comment
-     * @return
+     * Retrieve current date from the Calendar
+     * @return list of int representing day, month, year, day od week and number of days in month
      */
     public static int[] getCurrentDate(){
         // this doesn't use sharedPreferences but we put it here anyway to have all the time handling methods in the same place
@@ -68,9 +68,9 @@ public class Preferences {
     // POLLUTION
 
     /**
-     * TODO comment
-     * @param value
-     * @param context
+     * Store the pollution for the last taken itinerary
+     * @param value int : value of pollution
+     * @param context Context
      */
     public static void setLastPollution(int value, Context context){
         // Stores the pollution from the last itinerary
@@ -166,12 +166,7 @@ public class Preferences {
         else if ((date[0]==30&&(date[1]==4||date[1]==6||date[1]==9||date[1]==11))){
             return false;
         }
-        else if (date[0]==28&&date[1]==2){
-            return false;
-        }
-        else {
-            return true;
-        }
+        else return date[0] != 28 || date[1] != 2;
     }
 
     /////////////////////

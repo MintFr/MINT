@@ -130,6 +130,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * On create of this activity, display itineraries and the recap of all the itineraries
      * @param savedInstanceState Bundle
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

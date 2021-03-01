@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 /**
- * TODO Explain aim and use of class here
+ * Activity visible when the app is launched. Loading Screen.
  */
 public class SplashScreenActivity extends AppCompatActivity {
 

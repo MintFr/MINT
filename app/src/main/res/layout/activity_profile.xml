@@ -223,6 +223,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical|end"
                         android:paddingLeft="10dp"
+                        android:paddingRight="0dp"
                         android:layout_weight="2"
                         android:gravity="start"
                         android:maxWidth="180dp"
@@ -289,7 +290,9 @@
                         android:textStyle="bold"
                         android:textColor="#999999"
                         android:layout_marginBottom="5dp"
-                        android:paddingLeft="10dp"/>
+                        android:paddingLeft="10dp"
+                        android:paddingRight="0dp"
+                        />
                     <LinearLayout
                         android:id="@+id/graph_buttons_layout"
                         android:layout_width="match_parent"

@@ -348,6 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * function that creates the popup window on selection of editTexts
      * @return
      */
+    @SuppressLint("UseCompatLoadingForDrawables")
     private PopupWindow showFavoriteAddresses() {
 
         // initialize a pop up window type
@@ -409,8 +410,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PopupWindow showOptions() {
         // create the views for both popUpWindows
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View optionPopupView = inflater.inflate(R.layout.popup_activity_main_options,null);
-        final View calendarPopupView = inflater.inflate(R.layout.popup_options_calendar,null);
+        @SuppressLint("InflateParams") final View optionPopupView = inflater.inflate(R.layout.popup_activity_main_options,null);
+        @SuppressLint("InflateParams") final View calendarPopupView = inflater.inflate(R.layout.popup_options_calendar,null);
 
         // create popUpWindows
         PopupWindow popupOptions = new PopupWindow(this);
@@ -498,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CalendarView calendarView = calendarPopupView.findViewById(R.id.calendar);
 
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                         dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
@@ -520,6 +522,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CalendarView calendarView = calendarPopupView.findViewById(R.id.calendar);
 
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                         dateText =  String.format("%02d",dayOfMonth) + "/" +  String.format("%02d",(month+1)) + "/" + year;
@@ -540,6 +543,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 timePicker = timeDialog.findViewById(R.id.time_picker);
                 timePicker.setIs24HourView(true);
                 timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                         timeText = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
@@ -559,6 +563,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 timePicker = timeDialog.findViewById(R.id.time_picker);
                 timePicker.setIs24HourView(true);
                 timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                         timeText = String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute);
@@ -574,10 +579,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // the buttons for selecting if you want start time or end time.
         // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
-        @SuppressLint("CutPasteId") Button plusRapide = optionPopupView.findViewById(R.id.fastest);
-        @SuppressLint("CutPasteId") Button plusSain = optionPopupView.findViewById(R.id.healthier);
+        /*Button plusRapide = optionPopupView.findViewById(R.id.fastest);
+        Button plusSain = optionPopupView.findViewById(R.id.healthier);
         plusRapide.setTag(10);
-        plusSain.setTag(11);
+        plusSain.setTag(11);*/
 
         // the buttons for selecting if you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);

@@ -164,7 +164,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         monthBtn.setTag(101);
         yearBtn.setTag(102);
 
-        ArrayList<View> buttons = new ArrayList<>();
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") ArrayList<View> buttons = new ArrayList<>();
         buttons.add(weekBtn);
         buttons.add(monthBtn);
         buttons.add(yearBtn);

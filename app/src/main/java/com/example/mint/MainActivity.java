@@ -72,7 +72,7 @@ import org.osmdroid.views.MapView;
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
  * among other things
  */
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "EqualsBetweenInconvertibleTypes"})
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
 

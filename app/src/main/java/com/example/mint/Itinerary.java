@@ -134,7 +134,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access itinerary's type of transportation
-     * @return
+     * @return String Type
      */
     public String getType() {
         return type;
@@ -142,7 +142,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Set itinerary's type of transportation
-     * @param type
+     * @param type type
      */
     public void setType(String type) {
         this.type = type;
@@ -150,7 +150,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access itinerary's score of pollution
-     * @return
+     * @return double pollution
      */
     public double getPollution() {
         return pollution;
@@ -158,7 +158,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Set itinerary's score of pollution
-     * @param pollution
+     * @param pollution double
      */
     public void setPollution(Float pollution) {
         this.pollution = pollution;
@@ -166,7 +166,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access total duration
-     * @return
+     * @return double : total duration of the itinerary
      */
     public double getDuration() {
         return duration;

@@ -54,8 +54,8 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      *
-     * @param position
-     * @return
+     * @param position int : position of the needed item
+     * @return long in position
      */
     @Override
     public long getItemId(int position) {
@@ -64,8 +64,8 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      *
-     * @param position
-     * @return
+     * @param position int : position of the item
+     * @return int
      */
     @Override
     public int getItemViewType(int position){

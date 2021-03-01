@@ -25,6 +25,7 @@ public class Itinerary implements Serializable {
     /**
      * Default constructor
      */
+    @SuppressWarnings("unused")
     public Itinerary(){
         this.type = "n/a";
         this.pollution = 0.;
@@ -97,7 +98,7 @@ public class Itinerary implements Serializable {
                 double[] p = {latitude,longitude};
                 this.points.add(p);
             }
-            int s = this.points.size();
+            //int s = this.points.size();
             //this.stepTime = new ArrayList<>();
             //this.stepDistance = new ArrayList<>();
             //JSONArray stepsLength = json.getJSONArray("stepsLength");

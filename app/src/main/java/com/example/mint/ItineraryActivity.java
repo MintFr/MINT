@@ -816,8 +816,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         int minutes = seconds / (int) 60;
         int hours = minutes /(int) 60 ;
         minutes = minutes - hours*60;
-        String res = String.format("%s h %s min",hours, minutes);
-        return res;
+        return String.format("%s h %s min",hours, minutes);
     }
 
     /**

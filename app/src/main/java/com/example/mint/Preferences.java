@@ -60,8 +60,7 @@ public class Preferences {
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         int dayOfWeek = cldr.get(Calendar.DAY_OF_WEEK);
         int daysInMonth = cldr.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int[] date = {day,(month+1),year,dayOfWeek,daysInMonth};
-        return date;
+        return new int[]{day,(month+1),year,dayOfWeek,daysInMonth};
     }
 
     //////////////////////////////
@@ -82,8 +81,7 @@ public class Preferences {
     public static int getLastPollution(Context context){
         // Returns the pollution from the last itinerary
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
-        int lastPollution = prefs.getInt("lastPollution",0);
-        return lastPollution;
+        return prefs.getInt("lastPollution",0);
     }
     public static void setPollutionToday(int value, Context context){
         // Stores the pollution from today
@@ -95,8 +93,7 @@ public class Preferences {
     public static int getPollutionToday(Context context){
         // Returns the pollution from today
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
-        int pollutionToday = prefs.getInt("pollutionToday",0);
-        return pollutionToday;
+        return prefs.getInt("pollutionToday",0);
     }
     public static void setPollutionMonth(int month, ArrayList<Integer> values, Context context){
         // Stores the pollution from this month
@@ -275,8 +272,7 @@ public class Preferences {
 
     public static int getNumberOfAddresses(String arrayName, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
-        int numberOfAddresses = prefs.getInt(arrayName + "_size", 0);
-        return numberOfAddresses;
+        return prefs.getInt(arrayName + "_size", 0);
     }
 
     public static void removeAddress(String arrayName, int ind, Context context){
@@ -340,8 +336,7 @@ public class Preferences {
     }
     public static int getNumberOfLastAddresses(String arrayName, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
-        int numberOfAddresses = prefs.getInt(arrayName + "_size", 0);
-        return numberOfAddresses;
+        return prefs.getInt(arrayName + "_size", 0);
     }
 
     public static void moveAddressFirst(int key, Context context){

@@ -9,6 +9,7 @@ package com.example.mint;
 /**
  * Describe an address with a name and two coordinates (latitude and longitude)
  */
+@SuppressWarnings("unused")
 public class Address {
     private String locationName;
     private Coordinates coordinates;

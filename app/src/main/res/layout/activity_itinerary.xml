@@ -30,7 +30,7 @@
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer1"
         app:layout_anchorGravity="top|end"
-        android:contentDescription="" />
+        android:contentDescription="zoom button" />
 
     <View
         android:id="@+id/spacer1"
@@ -49,7 +49,7 @@
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer2"
         app:layout_anchorGravity="top|end"
-        android:contentDescription="TODO" />
+        android:contentDescription="dezoom button" />
     <View
         android:id="@+id/spacer2"
         android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer3"
         app:layout_anchorGravity="top|end"
-        android:contentDescription="TODO" />
+        android:contentDescription="recenter map" />
     <View
         android:id="@+id/spacer3"
         android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
         android:src="@drawable/ic_recap"
         app:layout_anchor="@id/itinerary_recap_layout"
         app:layout_anchorGravity="top|end"
-        android:contentDescription="TODO" />
+        android:contentDescription="recap button" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"

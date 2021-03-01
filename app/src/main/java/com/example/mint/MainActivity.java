@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View dimPopup;
 
     /**
-     * GEOLOC
+     * GEOLOCATION
      */
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stepPoint.setVisibility(View.VISIBLE);
                     addStepPoint.setActivated(true);
                     stepVisibility = true;
-                } // make the stepPoint INvisible when it is
+                } // make the stepPoint invisible when it is
                 else {
                     stepPoint.setVisibility(View.GONE);
                     addStepPoint.setActivated(false);
@@ -355,12 +355,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PopupWindow popupWindow = new PopupWindow(this);
         lastAddressList = Preferences.getLastAddresses("lastAddress",this);
         addressList = Preferences.getPrefAddresses("Address", this);
-        lastAddressList.add(0,"Mes dernières adresses :");
-        addressList.add(0,"Mes adresses favorites :");
+        lastAddressList.add(0,getString(R.string.My_last_addresses));
+        addressList.add(0,getString(R.string.My_prefered_addresses));
 
         addressList.addAll(0,lastAddressList);
 
-        addressList.add(0,"Ma position");
+        addressList.add(0,getString(R.string.My_position));
 
         // Adapter adapts the list of addresses for style
         CustomListAdapter adapter = new CustomListAdapter(this, addressList);
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         popupWindow.setOutsideTouchable(false); // To avoid that the popup hide the keyboard
 
 
-        // set the listview as popup content
+        // set the list view as popup content
         popupWindow.setContentView(addressListView);
 
         // startPoint/endPoint inversion
@@ -551,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 timeDialog.show();
-                timeDialog.setTitle("Choisissez une heure de départ");
+                timeDialog.setTitle(R.string.Select_start_hour);
                 timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             }
         });
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 timeDialog.show();
-                timeDialog.setTitle("Choisissez une heure de départ");
+                timeDialog.setTitle(R.string.Select_start_hour);
                 timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             }
         });
@@ -597,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             endTime.setActivated(true);
         }
 
-        // actions when either start or end time is clicked (unclicks the other one)
+        // actions when either start or end time is clicked (un-clicks the other one)
         View.OnClickListener onStartEndTimeClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -689,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-            new AlertDialog.Builder(this) //create a dialog window to autorise access to location only if the user previously refused to grant location
+            new AlertDialog.Builder(this) //create a dialog window to authorize access to location only if the user previously refused to grant location
                     .setTitle("Autorisation nécessaire")
                     .setMessage("Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.")
                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener(){

@@ -101,5 +101,10 @@
     <string name="week">semaine</string>
     <string name="month">Mois</string>
     <string name="year">Année</string>
+    <string name="zoom_out">zoom out button</string>
+    <string name="My_last_addresses">Mes dernières adresses :</string>
+    <string name="My_prefered_addresses">Mes adresses favorites :</string>
+    <string name="My_position">Ma position</string>
+    <string name="Select_start_hour">Choisissez une heure de départ</string>
 
 </resources>

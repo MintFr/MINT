@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:src="@drawable/ic_car_activated"
-        android:contentDescription="TODO" />
+        android:contentDescription="transportation icon" />
 
     <View
         android:id="@+id/line_seperator"
@@ -105,7 +105,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/round_button_shadow_background"
         android:src="@drawable/ic_save"
-        android:contentDescription="TODO" />
+        android:contentDescription="save pollution button" />
 
     <View
         android:layout_width="match_parent"

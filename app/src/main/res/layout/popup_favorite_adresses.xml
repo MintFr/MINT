@@ -55,7 +55,7 @@
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
         android:visibility="gone"
-        android:contentDescription="TODO" />
+        android:contentDescription="remove button" />
 
     <TextView
         android:id="@+id/address2"
@@ -88,7 +88,7 @@
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
         android:visibility="gone"
-        android:contentDescription="TODO" />
+        android:contentDescription="remove button" />
     <TextView
         android:id="@+id/address3"
         android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
         android:visibility="gone"
-        android:contentDescription="TODO" />
+        android:contentDescription="remove button" />
     <TextView
         android:id="@+id/address4"
         android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
         android:visibility="gone"
-        android:contentDescription="TODO" />
+        android:contentDescription="remove button" />
     <TextView
         android:id="@+id/address5"
         android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
         android:layout_alignRight="@id/enter_address"
         android:layout_alignEnd="@id/enter_address"
         android:visibility="gone"
-        android:contentDescription="TODO" />
+        android:contentDescription="remove button" />
 
 </RelativeLayout>
 <Button

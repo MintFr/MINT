@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * This activity handles the input of start and end points and the itinerary options
      * @param savedInstanceState
      */
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -573,8 +574,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // the buttons for selecting if you want start time or end time.
         // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
-        Button plusRapide = optionPopupView.findViewById(R.id.fastest);
-        Button plusSain = optionPopupView.findViewById(R.id.healthier);
+        @SuppressLint("CutPasteId") Button plusRapide = optionPopupView.findViewById(R.id.fastest);
+        @SuppressLint("CutPasteId") Button plusSain = optionPopupView.findViewById(R.id.healthier);
         plusRapide.setTag(10);
         plusSain.setTag(11);
 

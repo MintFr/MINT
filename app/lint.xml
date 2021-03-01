@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="IconXmlAndPng">
+        <ignore path="src/main/res/drawable-hdpi/directions.png" />
+        <ignore path="src/main/res/drawable-hdpi/maps.png" />
+        <ignore path="src/main/res/drawable-mdpi/directions.png" />
+        <ignore path="src/main/res/drawable-mdpi/maps.png" />
+        <ignore path="src/main/res/drawable-xhdpi/directions.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/directions.png" />
+    </issue>
+</lint>

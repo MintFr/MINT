@@ -131,6 +131,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * On create of this activity, display itineraries and the recap of all the itineraries
      * @param savedInstanceState Bundle
      */
+    @SuppressLint("UseCompatLoadingForDrawables")
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,7 +428,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         line.setId(String.valueOf(i));
 
         // SETUP INFO WINDOW
-        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
+        @SuppressLint("InflateParams") final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
 
         // find all the corresponding views in the infowindow
         TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
@@ -559,7 +560,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 System.out.println(STEPS.size());
                 for (int k=1;k<=STEPS.size();k++){
                     // k is going to be the index at which we add the stepView
-                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
+                    @SuppressLint("InflateParams") final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
                     //TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
                     //TextView street = stepView.findViewById(R.id.street);
@@ -602,7 +603,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         for (int i=0;i<list.size();i++){
 
             // get list item view and the views inside it
-            View listItem = inflater.inflate(R.layout.recap_list_item,null);
+            @SuppressLint("InflateParams") View listItem = inflater.inflate(R.layout.recap_list_item,null);
             ImageView transportationIcon = listItem.findViewById(R.id.transportation_icon);
             TextView time = listItem.findViewById(R.id.recap_time);
             TextView exposition = listItem.findViewById(R.id.exposition_value);

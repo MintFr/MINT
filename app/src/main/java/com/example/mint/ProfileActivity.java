@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -736,7 +737,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we use the java date format to calculate how many days have gone by since the beginning of the year
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
         String inputString1 = Preferences.getCurrentDate()[0]+" "+Preferences.getCurrentDate()[1]+" "+Preferences.getCurrentDate()[2];
         String inputString2 = "00 01 "+Preferences.getCurrentDate()[2];
         int diffDays=0;

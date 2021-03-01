@@ -1,5 +1,6 @@
 package com.example.mint;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -507,6 +508,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     /**
      * DISPLAY DETAILS UNDER MAP
      */
+    @SuppressLint("DefaultLocale")
     private void displayDetails(Itinerary itinerary){
 //        // hide recap
 //        recapView.setVisibility(View.GONE);
@@ -615,7 +617,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             time.setText(timeStr);
 
             // set distance
-            String distStr = String.format("%.1f"+" km",list.get(i).getDistance() / 1000);
+            @SuppressLint("DefaultLocale") String distStr = String.format("%.1f"+" km",list.get(i).getDistance() / 1000);
             distance.setText(distStr);
 
             // set exposition

@@ -68,7 +68,8 @@
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer3"
         app:layout_anchorGravity="top|end"
-        android:contentDescription="recenter map" />
+        android:contentDescription="recenter map"
+        tools:targetApi="lollipop" />
     <View
         android:id="@+id/spacer3"
         android:layout_width="wrap_content"

@@ -98,5 +98,8 @@
     <string name="walk_choice">4</string>
     <string name="calendar">Calendrier</string>
     <string name="mint_logo">Mint_logo</string>
+    <string name="week">semaine</string>
+    <string name="month">Mois</string>
+    <string name="year">Année</string>
 
 </resources>

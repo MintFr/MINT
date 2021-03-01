@@ -19,7 +19,8 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name="com.example.mint.SettingsActivity" />
         <activity android:name="com.example.mint.ItineraryActivity" />
         <activity android:name="com.example.mint.LoadingPageActivity" />

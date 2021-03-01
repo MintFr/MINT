@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- TODO Remove the following "exclude" elements to make them a part of the auto backup -->
+    <!-- Exclude the shared preferences file that contains the GCM registrationId -->
+    <exclude
+        domain="sharedpref"
+        path="sensibility.xml" />
+    <exclude
+        domain="sharedpref"
+        path="Transportation.xml" />
+    <exclude
+        domain="sharedpref"
+        path="listOfAddresses.xml" />
+    <exclude
+        domain="sharedpref"
+        path="optionTransport.xml" />
+    <exclude
+        domain="sharedpref"
+        path="lastAddress.xml" />
+    <exclude
+        domain="sharedpref"
+        path="pollution.xml" />
+    <exclude
+        domain="sharedpref"
+        path="startEndAddress.xml" />
+    <exclude
+        domain="sharedpref"
+        path="date.xml" />
+</full-backup-content>

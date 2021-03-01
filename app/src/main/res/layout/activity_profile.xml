@@ -301,28 +301,31 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="semaine"
+                            android:text="@string/week"
                             android:background="@drawable/graph_button_states"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey"
+                            tools:ignore="ButtonStyle" />
                         <Button
                             android:id="@+id/month"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="mois"
+                            android:text="@string/month"
                             android:background="@drawable/graph_button_states"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey"
+                            tools:ignore="ButtonStyle" />
                         <Button
                             android:id="@+id/year"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="année"
+                            android:text="@string/year"
                             android:background="@drawable/graph_button_states"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey"
+                            tools:ignore="ButtonStyle" />
                     </LinearLayout>
                     <ImageButton
                         android:id="@+id/slide_left"

@@ -2,10 +2,13 @@ package com.example.mint;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorLong;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -31,7 +37,10 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.io.BufferedInputStream;
@@ -44,6 +53,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import static android.graphics.Color.argb;
+import static android.graphics.Color.rgb;
 
 /**
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
@@ -66,6 +79,13 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private FloatingActionButton zoomInButton;
     private FloatingActionButton zoomOutButton;
     private FloatingActionButton locateButton;
+    private MonochromaticPaintList plBorder;
+    private MonochromaticPaintList plInside;
+    private Paint paintBorder;
+    private Paint paintInside;
+    private CompassOverlay mCompassOverlay;
+    private ScaleBarOverlay mScaleBarOverlay;
+
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -81,27 +101,30 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         ////////////////////////
 
 
-        try{
+        try {
             /*
             URL url = new URL("http://ser-info-03.ec-nantes.fr:8080/itineraryBIS/map");
             HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();//open
             InputStream in = new BufferedInputStream(urlCon.getInputStream());
             String response = readStream(in);
              */
-            String response = "[{\"fullName\":\"Jonelière - Hotel de Région\",\"type\":\"Bus\",\"coordinates\":[[[-1.5407641,47.251644],[-1.5453092,47.2523],[-1.5453092,47.2523],[-1.5499276,47.252144],[-1.5499276,47.252144],[-1.5529888,47.252403],[-1.5529888,47.252403],[-1.5582004,47.253128],[-1.5582004,47.253128],[-1.5612289,47.252934],[-1.5612289,47.252934],[-1.5674773,47.251553],[-1.5674773,47.251553],[-1.5684878,47.249084],[-1.5684878,47.249084],[-1.5672812,47.247055],[-1.5672812,47.247055],[-1.5611475,47.24456],[-1.5611475,47.24456],[-1.5573748,47.243607],[-1.5573748,47.243607],[-1.557317,47.240997],[-1.557317,47.240997],[-1.5610446,47.23952],[-1.5610446,47.23952],[-1.5634209,47.235836],[-1.5634209,47.235836],[-1.5660075,47.233227],[-1.5660075,47.233227],[-1.5682966,47.23198],[-1.5682966,47.23198],[-1.5695375,47.229057],[-1.5695375,47.229057],[-1.5699732,47.22778],[-1.5699732,47.22778],[-1.5715309,47.223763],[-1.5715309,47.223763],[-1.5729296,47.221195],[-1.5729296,47.221195],[-1.5712224,47.21954],[-1.5712224,47.21954],[-1.5688429,47.21773],[-1.5688429,47.21773],[-1.5669311,47.216896],[-1.5669311,47.216896],[-1.564044,47.21537],[-1.564044,47.21537],[-1.5591782,47.215717],[-1.5591782,47.215717],[-1.5556451,47.214394],[-1.5556451,47.214394],[-1.5556016,47.210163],[-1.5556016,47.210163],[-1.554741,47.205597],[-1.554741,47.205597],[-1.551954,47.20362],[-1.551954,47.20362],[-1.5537878,47.201576],[-1.5537878,47.201576],[-1.5455362,47.200775],[-1.5455362,47.200775],[-1.5436108,47.20156],[-1.5436108,47.20156],[-1.5414934,47.203342],[-1.5414934,47.203342],[-1.5396347,47.203224],[-1.5396347,47.203224],[-1.5372032,47.202496],[-1.5372032,47.202496],[-1.5341172,47.203682],[-1.5341172,47.203682],[-1.5318415,47.20511],[-1.5318415,47.20511],[-1.5327755,47.207058],[-1.5327755,47.207058],[-1.5298145,47.20815],[-1.5298145,47.20815],[-1.5275255,47.209396],[-1.5275255,47.209396],[-1.5260082,47.210346]],[[-1.5261401,47.210342],[-1.5283037,47.20919],[-1.5283037,47.20919],[-1.5299463,47.208145],[-1.5299463,47.208145],[-1.5330392,47.20705],[-1.5330392,47.20705],[-1.5316902,47.20484],[-1.5316902,47.20484],[-1.5347633,47.20348],[-1.5347633,47.20348],[-1.5370779,47.20259],[-1.5370779,47.20259],[-1.5399114,47.203396],[-1.5399114,47.203396],[-1.5418824,47.20324],[-1.5418824,47.20324],[-1.5436239,47.20174],[-1.5436239,47.20174],[-1.5459512,47.20103],[-1.5459512,47.20103],[-1.5537944,47.201668],[-1.5537944,47.201668],[-1.5519867,47.20407],[-1.5519867,47.20407],[-1.5546092,47.205605],[-1.5546092,47.205605],[-1.555727,47.210068],[-1.555727,47.210068],[-1.5556713,47.214752],[-1.5556713,47.214752],[-1.5603584,47.215588],[-1.5603584,47.215588],[-1.5645977,47.215714],[-1.5645977,47.215714],[-1.5669311,47.216896],[-1.5669311,47.216896],[-1.5687242,47.217915],[-1.5687242,47.217915],[-1.5701077,47.22057],[-1.5701077,47.22057],[-1.5712671,47.223774],[-1.5712671,47.223774],[-1.5701911,47.227142],[-1.5701911,47.227142],[-1.5693132,47.229603],[-1.5693132,47.229603],[-1.5686398,47.231247],[-1.5686398,47.231247],[-1.5662582,47.23304],[-1.5662582,47.23304],[-1.5633218,47.23629],[-1.5633218,47.23629],[-1.5596328,47.24011],[-1.5596328,47.24011],[-1.5563008,47.241573],[-1.5563008,47.241573],[-1.5572494,47.243702],[-1.5572494,47.243702],[-1.5619718,47.244984],[-1.5619718,47.244984],[-1.567723,47.24767],[-1.567723,47.24767],[-1.5688173,47.249977],[-1.5688173,47.249977],[-1.5660324,47.25169],[-1.5660324,47.25169],[-1.5609715,47.253033],[-1.5609715,47.253033],[-1.5568612,47.252903],[-1.5568612,47.252903],[-1.5528502,47.252316],[-1.5528502,47.252316],[-1.5483638,47.25247],[-1.5483638,47.25247],[-1.5451707,47.252216],[-1.5451707,47.252216],[-1.5407641,47.251644]]],\"color\":\"009534\",\"shortName\":\"26\"}]";
-            lines = readJSON(response);
-            System.out.println(lines.length);
+            InputStream inputStream = this.getResources().openRawResource(R.raw.maptan);
+            String jsonString = readStream(inputStream);
+            lines = readJSON(jsonString);
+
+
 
         }
         /*
         catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+*/
         catch (IOException e) {
             e.printStackTrace();
         }
-        */catch (JSONException e) {
-
+        catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -139,7 +162,36 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
-        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
+        // map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
+
+
+        mCompassOverlay = new CompassOverlay(this, new InternalCompassOrientationProvider(this), map);
+        this.mCompassOverlay.enableCompass();
+        map.getOverlays().add(this.mCompassOverlay);
+
+        final DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        mScaleBarOverlay = new ScaleBarOverlay(map);
+        mScaleBarOverlay.setCentred(true);
+//play around with these values to get the location on screen in the right place for your application
+        mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
+        map.getOverlays().add(this.mScaleBarOverlay);
+
+
+        /*
+        paintBorder = new Paint();
+        paintBorder.setStrokeWidth(30);
+        paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintBorder.setColor(Color.WHITE);
+        paintBorder.setStrokeCap(Paint.Cap.ROUND);
+        paintBorder.setStrokeJoin(Paint.Join.ROUND);
+        paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
+        paintBorder.setAntiAlias(true);
+
+
+        // paintlists are useful for having several colors inside the polyline,
+        // we will store the paints we created in them, that way we can change their appearance according to the pollution
+        plInside = new MonochromaticPaintList(paintBorder);
+        plBorder = new MonochromaticPaintList(paintBorder);*/
 
 
         /////////////////////////////////////////////////////////
@@ -176,10 +228,31 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-
     /////////////////////////////////////////////////////////
     // BACK BUTTON //
     /////////////////////////////////////////////////////////
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().save(this, prefs);
+        map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+    }
+
 
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
@@ -225,17 +298,21 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     // BACK BUTTON END //
     /////////////////////////////////////////////////////////
 
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = (String) parent.getItemAtPosition(position);
         map.getOverlays().clear();
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        System.out.println("SELECTED");
+
 
 
         switch (item) {
             case "Routes":
                 System.out.println("Routes");
+                mCompassOverlay = new CompassOverlay(this, new InternalCompassOrientationProvider(this), map);
+                this.mCompassOverlay.enableCompass();
+                map.getOverlays().add(this.mCompassOverlay);
                 break;
             case "Transports en commun":
                 try {
@@ -271,7 +348,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-    private String readStream (InputStream is) throws IOException {
+    private String readStream(InputStream is) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader r = new BufferedReader(new InputStreamReader(is), 1000);
         for (String line = r.readLine(); line != null; line = r.readLine()) {
@@ -283,77 +360,90 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     private TanMap[] readJSON(String response) throws JSONException {
         JSONArray json = new JSONArray(response);
+
         System.out.println(json.getJSONObject(0));
-        System.out.println(json.length());
+        System.out.println("json length : "+json.length());
         TanMap[] lines = new TanMap[json.length()];
-        for (int i=0;i<json.length();i++){
-            lines[i]= new TanMap(json.getJSONObject(i));
+        for (int i = 0; i < json.length(); i++) {
+            lines[i] = new TanMap(json.getJSONObject(i));
         }
         return lines;
     }
 
     /**
      * Display the map
+     *
      * @param lines
      * @throws IOException
      */
     private void displayTanMap(TanMap[] lines) throws IOException {
-        for( TanMap busLine : lines){
+        for (TanMap busLine : lines) {
             displayBusLine(busLine);
         }
     }
 
     /**
      * Display a busline
+     *
      * @param busline
      * @throws IOException
      */
     private void displayBusLine(TanMap busline) throws IOException {
         int n = busline.getCoordinates().size();
-        for (int i = 0; i<n; i++){
-            displayRoute(busline.getCoordinates().get(i));
+        int color = busline.getColor();
+        System.out.println("colors : "+color); //debug
+        for (int i = 0; i < n; i++) {
+            displayRoute(busline.getCoordinates().get(i), i, color);
         }
 
     }
 
     /**
      * Display a single route
+     *
      * @param route
      * @throws IOException
      */
-    private void displayRoute(final ArrayList<double[]> route) throws IOException {
+    private void displayRoute(final ArrayList<double[]> route, int i, int color) throws IOException {
         // polyline for itinerary
         // first we create a list of geopoints for the geometry of the polyline
         List<GeoPoint> geoPoints = new ArrayList<>();
-        for (int j = 0; j<route.size(); j++){
-            geoPoints.add(new GeoPoint(route.get(j)[0],route.get(j)[1]));
+        for (int j = 0; j < route.size(); j++) {
+            geoPoints.add(new GeoPoint(route.get(j)[1], route.get(j)[0]));
         }
-        System.out.println(geoPoints.size());
-        System.out.println(geoPoints.get(0));
         // then we attribute it to the new polyline
         final Polyline line = new Polyline(map);
         line.setPoints(geoPoints);
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        System.out.println(line.getDistance());
-        System.out.println(line.getActualPoints().size());
-
-        map.getOverlays().add(line);
-        map.invalidate(); // this is to refresh the display
-        System.out.println("///////////////////////////////////////////////////////////////////");
 
 
 
-        /*
+
+        int A =  0xff;
+        int R = (color >> 16) & 0xff;
+        int G = (color >>  8) & 0xff;
+        int B = (color      ) & 0xff;
+
         // then we handle the color :
-        setColorForPolyline(route);
+        //setColorForPolyline(route);
 
+        line.getOutlinePaint().setColor(argb(A,R,G,B));
+
+
+        //line.getOutlinePaint().setStrokeWidth(10);
+/*
         line.getOutlinePaintLists().add(plBorder);
         line.getOutlinePaintLists().add(plInside);
+
+
+ */
 
         // this is to be able to identify the line later on
         line.setId(String.valueOf(i));
 
 
+
+
+/*
         // SETUP INFO WINDOW
         final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow, null);
 
@@ -361,49 +451,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
         ImageView transportationInfo = infoWindowView.findViewById(R.id.transportation);
         final ImageView pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
-
-        // set values for time, transportation and pollution
-
-        //time
-        int t = Double.valueOf(route.getDuration()).intValue();
-        String s = convertIntToHour(t);
-        System.out.println(s);
-        //String s = Integer.toString(t);
-        timeInfo.setText(s);
-
-        //transportation
-        switch (route.getType()) {
-            case "Piéton":
-                transportationInfo.setImageResource(R.drawable.ic_walk_activated);
-                break;
-            case "Voiture":
-                transportationInfo.setImageResource(R.drawable.ic_car_activated);
-                break;
-            case "Transport en commun":
-                transportationInfo.setImageResource(R.drawable.ic_tram_activated);
-                break;
-            case "Vélo":
-                transportationInfo.setImageResource(R.drawable.ic_bike_activated);
-                break;
-        }
-
-        //pollution
-        if ((route.getPollution() >= 0) && (route.getPollution() < 33)) {
-            pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
-        } else if ((route.getPollution() >= 33) && (route.getPollution() < 66)) {
-            pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
-        } else if ((route.getPollution() >= 66) && (route.getPollution() <= 100)) {
-            pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
-        }
-        final InfoWindow infoWindow = new InfoWindow(infoWindowView, map) {
-            @Override
-            public void onOpen(Object item) {
-            }
-
-            @Override
-            public void onClose() {
-            }
-        };
 
         // add infowindow to the polyline
         line.setInfoWindow(infoWindow);
@@ -419,11 +466,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
 
 
+*/
 
         // add line to map
         map.getOverlays().add(line);
         map.invalidate(); // this is to refresh the display
-  */
+
         // on click behaviour of line (highlight it, show details, show infowindow)
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
@@ -432,10 +480,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 return true;
             }
         });
+
+        System.out.println("///////////////////////////////////////////////////////////////////");
     }
         /*
-        public void setColorForPolyline(float[][] route){
-            System.out.println("pollution" + route.getPollution());
+        public void setColorForPolyline(ArrayList<double[]> route){
 
             if (route.getPollution()<=threshold){
                 plInside = new MonochromaticPaintList(paintInsideG);
@@ -452,6 +501,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
 
          */
+
+
+
+
 
 
 

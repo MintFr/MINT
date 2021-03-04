@@ -13,6 +13,36 @@
         android:layout_height="match_parent"
         android:visibility="visible" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:src="@drawable/ic_zoom_in"
+        app:backgroundTint="#ffffff"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/zoom_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_zoom_out"
+        app:backgroundTint="#ffffff"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/map_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.9"/>
+
+
     <Spinner
         android:id="@+id/map_spinner"
         android:layout_width="wrap_content"

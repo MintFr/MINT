@@ -132,7 +132,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         ///// MAP CONTROL //////
         ////////////////////////
 
-/*        // get the buttons for map control
+       // get the buttons for map control
         zoomInButton = findViewById(R.id.zoom_in);
         zoomOutButton = findViewById(R.id.zoom_out);
         locateButton = findViewById(R.id.locate);
@@ -141,7 +141,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         zoomInButton.setOnClickListener(this);
         zoomOutButton.setOnClickListener(this);
         locateButton.setOnClickListener(this);
-
+/*
         zoomInButton.setTag(13);
         zoomOutButton.setTag(12);
         locateButton.setTag(11);*/
@@ -162,7 +162,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
-        // map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
+        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
 
 
         mCompassOverlay = new CompassOverlay(this, new InternalCompassOrientationProvider(this), map);
@@ -391,7 +391,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private void displayBusLine(TanMap busline) throws IOException {
         int n = busline.getCoordinates().size();
         int color = busline.getColor();
-        System.out.println("colors : "+color); //debug
         for (int i = 0; i < n; i++) {
             displayRoute(busline.getCoordinates().get(i), i, color);
         }
@@ -417,30 +416,16 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
 
 
-
+        // then we handle the color :
         int A =  0xff;
         int R = (color >> 16) & 0xff;
         int G = (color >>  8) & 0xff;
         int B = (color      ) & 0xff;
 
-        // then we handle the color :
-        //setColorForPolyline(route);
-
         line.getOutlinePaint().setColor(argb(A,R,G,B));
-
-
-        //line.getOutlinePaint().setStrokeWidth(10);
-/*
-        line.getOutlinePaintLists().add(plBorder);
-        line.getOutlinePaintLists().add(plInside);
-
-
- */
 
         // this is to be able to identify the line later on
         line.setId(String.valueOf(i));
-
-
 
 
 /*
@@ -480,8 +465,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 return true;
             }
         });
-
-        System.out.println("///////////////////////////////////////////////////////////////////");
     }
         /*
         public void setColorForPolyline(ArrayList<double[]> route){

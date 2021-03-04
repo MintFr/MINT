@@ -1,5 +1,8 @@
 package com.example.mint;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorLong;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,14 +14,15 @@ public class TanMap  implements Serializable {
     private String fullName;
     private String type;
     private ArrayList<ArrayList<double[]>> coordinates;
-    private String color;
+    @ColorInt
+    private int color;
     private String shortName;
 
     public TanMap(){
 
     }
 
-    public TanMap(String fullName, String type, ArrayList<ArrayList<double[]>>  coordinates, String color, String shortName) {
+    public TanMap(String fullName, String type, ArrayList<ArrayList<double[]>>  coordinates, int color, String shortName) {
         this.fullName = fullName;
         this.type = type;
         this.coordinates = coordinates;
@@ -42,7 +46,8 @@ public class TanMap  implements Serializable {
             }
             this.coordinates.add(tempo2);
         }
-        this.color = json.getString("color");
+
+        this.color = Integer.decode(String.format("0x%s", json.getString("color")));
         this.shortName = json.getString("shortName");
     }
 
@@ -58,7 +63,7 @@ public class TanMap  implements Serializable {
         this.coordinates = coordinates;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
@@ -78,7 +83,7 @@ public class TanMap  implements Serializable {
         return coordinates;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 

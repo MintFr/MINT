@@ -434,6 +434,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // SETUP INFO WINDOW
         final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
 
+
         // find all the corresponding views in the infowindow
         TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
         ImageView transportationInfo = infoWindowView.findViewById(R.id.transportation);
@@ -496,7 +497,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        // add line to map
+        // add line
         map.getOverlays().add(line);
         map.invalidate(); // this is to refresh the display
 

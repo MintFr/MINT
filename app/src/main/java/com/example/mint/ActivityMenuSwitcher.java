@@ -2,7 +2,7 @@ package com.example.mint;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
+//import android.view.Menu;
 import android.view.MenuItem;
 
 
@@ -26,11 +26,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelectedListener {
     private final Activity activity;
 
+    /**
+     * Constructor for ActivityMenuSwitcher
+     * @param currentActivity Activity : current activity for each activity of the app
+     */
     ActivityMenuSwitcher(Activity currentActivity) {
         super();
         activity = currentActivity;
     }
 
+    /**
+     * Start a new activity depending on what is clicked on the Menu
+     * Configuration for the transition
+     * @param targetItem Menu Item
+     * @return boolean
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem targetItem) {
 
@@ -65,9 +75,7 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
 
             //---------TRANSITIONS-----------
             // For Left-To-Right transitions
-            if(activity.getClass() == MainActivity.class && targetItemId == R.id.maps
-                    || activity.getClass() == MainActivity.class && targetItemId == R.id.profile
-                    || activity.getClass() == MapActivity.class && targetItemId == R.id.profile){
+            if(activity.getClass() == MainActivity.class && targetItemId == R.id.maps || activity.getClass() == MainActivity.class || activity.getClass() == MapActivity.class && targetItemId == R.id.profile){
 
                 // Override the transition and finish the current activity
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -77,9 +85,7 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
             }
 
             // For Right-To-Left transitions
-            if(activity.getClass() == MapActivity.class && targetItemId == R.id.itinerary
-                    || activity.getClass() == ProfileActivity.class && targetItemId == R.id.itinerary
-                    || activity.getClass() == ProfileActivity.class && targetItemId == R.id.maps){
+            if(activity.getClass() == MapActivity.class || activity.getClass() == ProfileActivity.class && targetItemId == R.id.itinerary || activity.getClass() == ProfileActivity.class){
 
                 // Override the transition and finish the current activity
                 activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

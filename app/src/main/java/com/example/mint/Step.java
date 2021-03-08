@@ -1,13 +1,15 @@
 package com.example.mint;
 
-public class Steps {
+import java.io.Serializable;
+
+public class Step implements Serializable{
     private String address;
     private int distance;
 
-    public Steps() {
+    public Step() {
     }
 
-    public Steps(String address, int distance) {
+    public Step(String address, int distance){
         this.address = address;
         this.distance = distance;
     }

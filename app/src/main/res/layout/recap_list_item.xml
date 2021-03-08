@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
-        android:src="@drawable/ic_car_activated" />
+        android:src="@drawable/ic_car_activated"
+        android:contentDescription="TODO" />
 
     <View
         android:id="@+id/line_seperator"
@@ -82,15 +83,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/exposition_value"
+        android:layout_alignStart="@id/exposition_value"
         android:layout_alignLeft="@id/exposition_value"
+        android:layout_alignEnd="@id/exposition_value"
         android:layout_alignRight="@id/exposition_value"
-        android:layout_marginLeft="-2dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="2dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
         android:gravity="center"
         android:text="@string/exposition_unit"
-        android:textSize="8dp"
-        android:layout_alignStart="@id/exposition_value" />
+        android:textSize="8sp" />
 
     <ImageButton
         android:id="@+id/save"
@@ -100,7 +104,8 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
         android:background="@drawable/round_button_shadow_background"
-        android:src="@drawable/ic_save" />
+        android:src="@drawable/ic_save"
+        android:contentDescription="TODO" />
 
     <View
         android:layout_width="match_parent"

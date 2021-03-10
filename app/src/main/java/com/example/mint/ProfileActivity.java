@@ -381,26 +381,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //link elements from popup window
         // sensibility //
-        Button veryHighBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
-        Button highBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
-        Button moderateBtn = sensibilityPopupView.findViewById(R.id.moderate_sensibility_btn);
-        Button lowBtn = sensibilityPopupView.findViewById(R.id.low_sensibility_btn);
-        Button noSensibilityBtn = sensibilityPopupView.findViewById(R.id.no_sensibility_btn);
+        Button highBtn = sensibilityPopupView.findViewById(R.id.very_high_sensibility_btn);
+        Button lowBtn = sensibilityPopupView.findViewById(R.id.high_sensibility_btn);
         setSensibility = findViewById(R.id.set_sensibility);
 
         // set Tags to use in "onClickSelect"
-        veryHighBtn.setTag(10);
-        highBtn.setTag(11);
-        moderateBtn.setTag(12);
-        lowBtn.setTag(13);
-        noSensibilityBtn.setTag(14);
+        highBtn.setTag(10);
+        lowBtn.setTag(11);
 
         // this is the sensibility that is displayed directly in the profile page
         setSensibility.setText(Preferences.getSensibility("Sensibility",this));
 
         // Highlight the sensibility if it has already been selected
         Button selectedButton = new Button(this);
-        for (int i=10; i<=14; i++){
+        //for (int i=10; i<=14; i++){
+        for (int i=10; i<=11; i++){
             selectedButton=sensibilityPopupView.findViewWithTag(i);
             if (selectedButton.getText().toString().equals(Preferences.getSensibility("Sensibility", this))){
                 selectedButton.setActivated(true);
@@ -417,7 +412,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 String sensibility = selectedButton.getText().toString();
                 if(selectedButton.isActivated()) {
                     Preferences.setSensibility("Sensibility", sensibility, ProfileActivity.this);
-                    for (int j = 10; j<=14; j++){
+                    for (int j = 10; j<=11; j++){
                         if(j!=i) {
                             // uncheck all other buttons once a button is clicked
                             sensibilityPopupView.findViewWithTag(j).setActivated(false);
@@ -434,11 +429,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         };
 
-        veryHighBtn.setOnClickListener(onClickSelect);
         highBtn.setOnClickListener(onClickSelect);
-        moderateBtn.setOnClickListener(onClickSelect);
         lowBtn.setOnClickListener(onClickSelect);
-        noSensibilityBtn.setOnClickListener(onClickSelect);
 
         //callback when the popup is dismissed
         sensibilityPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

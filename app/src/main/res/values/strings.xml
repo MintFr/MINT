@@ -33,11 +33,8 @@
     <string name="address3">troisième adresse favorite</string>
     <string name="address4">quatrième adresse favorite</string>
     <string name="address5">cinquième adresse favorite</string>
-    <string name="very_high_sensibility">Très élevée</string>
     <string name="high_sensibility">Élevée</string>
-    <string name="moderate_sensibility">Modérée</string>
     <string name="low_sensibility">Faible</string>
-    <string name="no_sensibility">Pas de sensibilité</string>
     <string name="message_sensibility">Sélectionnez votre niveau de sensibilité à la pollution</string>
     <string name="graph_week">graph_week</string>
     <string name="max_value_exposure">312</string>

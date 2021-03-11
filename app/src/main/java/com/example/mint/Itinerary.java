@@ -68,7 +68,7 @@ public class Itinerary implements Serializable {
             this.timeOption = json.getString("time");
             this.hourStart = json.getBoolean("hofStart");
             this.duration = json.getDouble("duration");
-            this.pollution = (int) json.getDouble("exposition");
+            this.pollution = (int) json.getDouble("exposition")/10;
             this.hasStep = json.getBoolean("hasStep");
             this.points = new ArrayList<>();
             JSONArray tempDetail = json.getJSONArray("details");

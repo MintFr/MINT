@@ -64,6 +64,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static android.graphics.Color.argb;
+import static android.graphics.Color.green;
 import static android.graphics.Color.rgb;
 
 /**
@@ -80,6 +81,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private IMapController mapController = null;
     private GeoPoint defaultPoint;
     private TanMap[] lines;
+    private Pollution[] pol_streets;
 
     /**
      * BUTTONS
@@ -123,9 +125,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             String response = readStream(in);
              */
             InputStream inputStream = this.getResources().openRawResource(R.raw.maptan);
+            InputStream inputStream1 = this.getResources().openRawResource(R.raw.data_top);
             String jsonString = readStream(inputStream);
+            String jsonString1 = readStream(inputStream1);
             lines = readJSON(jsonString);
-
+            pol_streets = readJSONPol(jsonString1);
 
 
 
@@ -321,10 +325,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                     e.printStackTrace();
                 }
                 break;
-                /*
+
             case "Pollution en direct":
+                displayPollution(pol_streets);
                 break;
-            case "Pollens en direct":
+
+                /*case "Pollens en direct":
                 break;
 
                  */
@@ -388,6 +394,19 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         return lines;
     }
 
+    private Pollution[] readJSONPol(String response) throws JSONException {
+        JSONArray json = new JSONArray(response);
+
+        //System.out.println(json.getJSONObject(0));
+        //System.out.println("json length : "+json.length());
+        Pollution[] streets = new Pollution[json.length()];
+        for (int i = 0; i < json.length(); i++) {
+            streets[i] = new Pollution(json.getJSONObject(i));
+            System.out.println(streets[i]);
+        }
+        return streets;
+    }
+
     /**
      * Display the tan network
      *
@@ -397,6 +416,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private void displayTanMap(TanMap[] lines) throws IOException {
         for (TanMap busLine : lines) {
             displayBusLine(busLine);
+        }
+    }
+
+    private void displayPollution(Pollution[] streets){
+        for (Pollution street : streets){
+            displayStreet(street);
         }
     }
 
@@ -414,6 +439,28 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         for (int i = 0; i < n; i++) {
             displayRoute(busline.getCoordinates().get(i), i, color, name, direction);
         }
+
+    }
+
+    private void displayStreet(Pollution street){
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        geoPoints.add(new GeoPoint(street.getStart().getLatitude(), street.getStart().getLongitude()));
+        geoPoints.add(new GeoPoint(street.getEnd().getLatitude(), street.getEnd().getLongitude()));
+        // then we attribute it to the new polyline
+        final Polyline line = new Polyline(map);
+        line.setPoints(geoPoints);
+        if (street.getPol()<5.2){
+            line.getOutlinePaint().setColor(rgb(0,255,0));
+        }
+        else if(street.getPol()>5.2 && street.getPol()<5.6){
+            line.getOutlinePaint().setColor(rgb(0,0,255));
+        }
+        else{
+            line.getOutlinePaint().setColor(rgb(255,0,0));
+        }
+        map.getOverlays().add(line);
+
+        map.invalidate();
 
     }
 

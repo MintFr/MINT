@@ -27,7 +27,7 @@ import java.util.ArrayList;
 //import java.util.Arrays;
 
 /**
- * Activity treating the response of the distant service
+ * Asynchronous task to request server and read response.
  */
 public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> implements java.io.Serializable {
 
@@ -39,12 +39,13 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
      * @param LoadingPageActivity : linked activity
      */
     public AsyncItineraryCompute (AppCompatActivity LoadingPageActivity) {
-        myActivity = LoadingPageActivity;
+        myActivity = LoadingPageActivity; //activity launching this task
     }
 
 
     /**
-     *
+     * Method executed in LoadingPageActivity.
+     * Displays view with loading progress bar.
      */
     @Override
     protected void onPreExecute() {
@@ -56,6 +57,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     }
 
     /**
+     * Method executed in background. Sends url to server, read response and put it in JSONObjects
      * @param strings
      * Background task to send a request to ECN server with parameters such as start point, end point,
      * transport.
@@ -76,6 +78,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 
+        //to send url
         URL url;
         HttpURLConnection urlConnection = null;
         String result = null;
@@ -106,33 +109,35 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         publishProgress(4);
 
 
-
+        //Creates JSON objects
         JSONArray json = new JSONArray();
         try{
             JSONObject message = new JSONObject(); // to debug, maybe to delete for real version of the app
             switch (error){
                 case 0 :
                     json = new JSONArray(result);
-                    message.put("message",myActivity.getString(R.string.connection_success));
                     break;
                 case 1 :
                     message.put("message",myActivity.getString(R.string.error_url_format));
+                    json.put(json.length(),message);
                     break;
                 case 2 :
                     message.put("message", String.format("%s\n%s", myActivity.getString(R.string.connection_failed), strings[0]));
+                    json.put(json.length(),message);
                     break;
                 default:
                     break;
             }
-            json.put(json.length(),message);
-
         }catch (JSONException e) {
             e.printStackTrace();
         }
         return json;
     }
 
-
+    /**
+     * To updates progress bar
+     * @param values
+     */
     @Override
     protected void onProgressUpdate(Integer... values) {
         ProgressBar pb = myActivity.findViewById(R.id.progress_bar);
@@ -140,16 +145,18 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     }
 
     /**
-     * Function to decode JSONArray and extract attributes
-     * @param c JSONArray
+     * Function to decode JSONArray and extract attributes.
+     * Is executed in LoadingPageActivity.
+     * @param c
      */
     @Override
     protected void onPostExecute(final JSONArray c) {
+        //test to check response is not null
         if (c == null){
             Toast.makeText(myActivity, R.string.error404, Toast.LENGTH_SHORT).show();
         }else{
             try {
-                Toast.makeText(myActivity, c.getJSONObject(c.length()-1).getString("message"), Toast.LENGTH_LONG).show();
+                Toast.makeText(myActivity, c.getJSONObject(c.length()).getString("message"), Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -160,7 +167,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         final ArrayList<Itinerary> itineraries = new ArrayList<>();
         try{
             if (c != null) {
-                for (int i = 0; i<c.length()-1; i++)            //to delete error message
+                for (int i = 0; i<c.length(); i++)            //to delete error message
                 {
                     Itinerary itinerary = new Itinerary(c.getJSONObject(i));
                     System.out.println(itinerary.getDetail().get(0).getAddress() +itinerary.getDetail().get(0).getDistance());

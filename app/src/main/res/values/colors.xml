@@ -13,4 +13,5 @@
     <color name="colorYellow">#EBD884</color>
     <color name="colorOrange">#F69F65</color>
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
+    <color name="colorTransparentWhite">#11ffffff</color>
 </resources>

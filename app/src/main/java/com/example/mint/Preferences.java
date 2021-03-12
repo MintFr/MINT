@@ -124,6 +124,7 @@ public class Preferences {
         // for example, for the 22 of october 2021, the key is "22_10_2021"
         SharedPreferences prefs = context.getSharedPreferences("pollution",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
+        System.out.println("date"+date[0]+","+date[1]+","+date[2]);
         editor.putInt(date[0]+"_"+date[1]+"_"+date[2],value);
         editor.apply();
     }

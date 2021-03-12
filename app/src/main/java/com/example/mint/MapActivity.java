@@ -326,7 +326,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 }
                 break;
 
-            case "Pollution en direct":
+            case "Pollution":
                 displayPollution(pol_streets);
                 break;
 

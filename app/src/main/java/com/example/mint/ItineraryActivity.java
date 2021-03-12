@@ -159,6 +159,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 threshold = 55;
                 break;
             case "Pas de sensibilité" :
+                threshold = 75;
+                break;
             case "--" :
                 threshold = 75;
                 break;

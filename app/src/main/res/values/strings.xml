@@ -18,10 +18,10 @@
     <!--    Spinner activity_map-->
     <string-array name="map_array">
         <item>Routes</item>
-        <item tools:ignore="Typos">Trafic en direct</item>
+        <item tools:ignore="Typos">Trafic</item>
         <item>Transports en commun</item>
-        <item>Pollution en direct</item>
-        <item>Pollens en direct</item>
+        <item>Pollution</item>
+        <item>Pollens</item>
     </string-array>
     <string name="enter_address">Entrer une nouvelle adresse</string>
     <string name="favorite_addresses_button"><u>Mes adresses favorites</u></string>

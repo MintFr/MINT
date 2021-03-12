@@ -139,9 +139,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // UPDATE PREFERENCES
         // update the pollution for this month
+        System.out.println("pollution today"+Preferences.getPollutionToday(this));
         Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
+        System.out.println(Preferences.getPollutionMonth(3,this));
         // update the pollution for this year
         Preferences.addMonthPollutionToYear(Preferences.getCurrentDate()[1],Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this),this);
+        System.out.println(Preferences.getPollutionYear(2021,this));
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
 //        ArrayList<Integer> valuesTest = new ArrayList<>();
@@ -736,7 +739,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void setUpGraph(final int range){
         // we get the pollution data from preferences
-        ArrayList<Integer> values = Preferences.getPollutionYear(Preferences.getCurrentDate()[2],this);
+        System.out.println("values"+Preferences.getPollutionYear(2021, this));
+        ArrayList<Integer> values = Preferences.getPollutionYear(2021,this);
+
 
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
@@ -752,7 +757,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
             System.out.println ("Days: " + diffDays);
             for (int i=1;i<=diffDays;i++){
-                entries.add(new Entry(i,values.get(i-1)));
+                System.out.println("i "+i);
+                System.out.println("value "+values.get(i+4));
+                entries.add(new Entry(i,values.get(i+2)));
             }
         } catch (ParseException e) {
             e.printStackTrace();

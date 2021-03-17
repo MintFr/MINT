@@ -3,16 +3,16 @@ package com.example.mint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.location.Geocoder;
-import android.os.Build;
+//import android.graphics.Typeface;
+//import android.location.Geocoder;
+//import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+//import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+//import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,11 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+//import androidx.annotation.NonNull;
+//import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
+//import androidx.constraintlayout.widget.ConstraintLayout;
+//import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
@@ -34,34 +34,36 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
-import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
+//import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
+//import org.osmdroid.tileprovider.tilesource.ITileSource;
+//import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+//import org.osmdroid.views.overlay.ItemizedIconOverlay;
+//import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
+//import org.osmdroid.views.overlay.Overlay;
+//import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PaintList;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
-import org.w3c.dom.Text;
+//import org.w3c.dom.Text;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+//import java.io.IOException;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+//import java.util.Arrays;
+//import java.util.Calendar;
+//import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.zip.Inflater;
+//import java.util.Locale;
+//import java.util.zip.Inflater;
 
 /**
  * Activity for the itinerary page, on which the user can see the various itineraries calculated for them
@@ -72,10 +74,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * MAP
      */
     private MapView map = null;
-    private ArrayList<double[]> response = new ArrayList<>();
+    //private final ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;
-    private GeoPoint startPoint;
-    private GeoPoint endPoint;
+    //private GeoPoint startPoint;
+    //private GeoPoint endPoint;
+    //private GeoPoint stepPoint;
 
     /**
      * GEOPOINT POSITIONS
@@ -83,28 +86,18 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     GeoPoint startPosition;
     GeoPoint endPosition;
     List<GeoPoint> markers;
+    GeoPoint stepPosition;
 
     /**
      * LAYOUT AND MENU
      */
     private BottomSheetBehavior sheetBehaviorDetail;
     private BottomSheetBehavior sheetBehaviorRecap;
-    private LinearLayout detailLayout;
     private RelativeLayout recapLayout;
 
-    /**
-     * BUTTONS
-     */
-    private FloatingActionButton zoomInButton;
-    private FloatingActionButton zoomOutButton;
-    private FloatingActionButton locateButton;
     private FloatingActionButton recapButton;
 
-    /**
-     * STYLE
-     */
-    private Paint paintBorder;
-    private Paint paintBorderSelected;
+    //private Paint paintInside;
 
     private Paint paintInsideG; // color when the pollution is good
     private Paint paintInsideM; // color when the pollution is medium
@@ -126,10 +119,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     ArrayList<Itinerary> itineraries;
 
-    /**
-     * POLLUTION DATA
-     */
-    private String sensibility;
     private int threshold;
 
     /**
@@ -139,7 +128,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * On create of this activity, display itineraries and the recap of all the itineraries
-     * @param savedInstanceState
+     * @param savedInstanceState Bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +139,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // get the sensibility from preferences
-        sensibility = Preferences.getSensibility("Sensibility",this);
+        /*
+         * POLLUTION DATA
+         */
+        String sensibility = Preferences.getSensibility("Sensibility", this);
         //set the threshold for the display color of the itineraries
         // TODO change values for threshold once you have the data from captation
         switch (sensibility){
@@ -167,8 +159,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 threshold = 55;
                 break;
             case "Pas de sensibilité" :
+                threshold = 80;
+                break;
             case "--" :
-                threshold = 75;
+                threshold = 80;
                 break;
         }
 
@@ -177,7 +171,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         final CoordinatorLayout coordinator = findViewById(R.id.coordinator);
-        // i dont really know what this does but it fixed some bugs so dont touch
+        // i don't really know what this does but it fixed some bugs so don't touch
         ViewCompat.postOnAnimation(coordinator, new Runnable() {
             @Override
             public void run() {
@@ -188,7 +182,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // LAYOUTS
 
         // get the bottom sheets and their behaviors
-        detailLayout = findViewById(R.id.itinerary_detail_layout);
+        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout);
         recapLayout = findViewById(R.id.itinerary_recap_layout);
         sheetBehaviorDetail = BottomSheetBehavior.from(detailLayout);
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
@@ -202,9 +196,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         // get the buttons for map control
-        zoomInButton = findViewById(R.id.zoom_in);
-        zoomOutButton = findViewById(R.id.zoom_out);
-        locateButton = findViewById(R.id.locate);
+        /**
+         * BUTTONS
+         */
+        FloatingActionButton zoomInButton = findViewById(R.id.zoom_in);
+        FloatingActionButton zoomOutButton = findViewById(R.id.zoom_out);
+        FloatingActionButton locateButton = findViewById(R.id.locate);
 
         // attribute the onClickListener and set Tags
         zoomInButton.setOnClickListener(this);
@@ -245,7 +242,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // Paintlists for the effects on the polylines //
 
         // for the white border
-        paintBorder = new Paint();
+        /*
+         * STYLE
+         */
+        Paint paintBorder = new Paint();
         paintBorder.setStrokeWidth(30);
         paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBorder.setColor(Color.WHITE);
@@ -255,7 +255,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         paintBorder.setAntiAlias(true);
 
         // white border when line is selected
-        paintBorderSelected = new Paint(paintBorder);
+        Paint paintBorderSelected = new Paint(paintBorder);
         paintBorderSelected.setStrokeWidth(50);
 
         // inside the white border GOOD
@@ -273,7 +273,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // inside the white border MEDIUM
         paintInsideM = new Paint(paintInsideG);
-        paintInsideM.setColor(getResources().getColor(R.color.colorLightGreen)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A MEDIUM ITINERARY
+        paintInsideM.setColor(getResources().getColor(R.color.colorYellow)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A MEDIUM ITINERARY
 
         // inside the white border when the line is selected MEDIUM
         paintInsideSelectedM = new Paint(paintInsideM);
@@ -281,7 +281,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // inside the white border BAD
         paintInsideB = new Paint(paintInsideG);
-        paintInsideB.setColor(getResources().getColor(R.color.colorLightGrey)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A BAD ITINERARY
+        paintInsideB.setColor(getResources().getColor(R.color.colorOrange)); // <-- THIS IS WHERE YOU SET THE COLOR FOR A BAD ITINERARY
 
         // inside the white border when the line is selected BAD
         paintInsideSelectedB = new Paint(paintInsideB);
@@ -295,7 +295,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         plBorderSelected = new MonochromaticPaintList(paintBorderSelected);
 
         // display each itinerary we just got from the Async task
-        for (int j=0;j<itineraries.size()-1;j++){
+        for (int j=0;j<itineraries.size();j++){
             displayItinerary(itineraries.get(j), itineraries,j);
         }
 
@@ -366,6 +366,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        // step marker if there is one (we only need to draw it once)
+        boolean hasStep = itineraries.get(0).isHasStep();
+        if (hasStep) {
+            System.out.println("affichage step");
+            stepPosition = new GeoPoint(itineraries.get(0).getStep().getLatitude(),itineraries.get(0).getStep().getLongitude());
+            Marker stepMarker = new Marker(map);
+            stepMarker.setPosition(stepPosition);
+            stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+            stepMarker.setFlat(true);
+            stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_step_marker));
+            map.getOverlays().add(stepMarker);
+        }
+
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
@@ -374,13 +387,24 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }
+    /**
+     * Overrides method (when the activity has detected the user's press of the back key) to return to MainActivity
+     */
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     /**
      * DISPLAY ITINERARY
-     * @param itinerary
-     * @param list
-     * @param i
+     * @param itinerary Itinerary
+     * @param list ArrayList<Itinerary>
+     * @param i int
      */
+
+
+    //DISPLAY ITINERARY
     private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){
         // polyline for itinerary
         // first we create a list of geopoints for the geometry of the polyline
@@ -405,6 +429,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // SETUP INFO WINDOW
         final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
 
+
         // find all the corresponding views in the infowindow
         TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
         ImageView transportationInfo = infoWindowView.findViewById(R.id.transportation);
@@ -413,7 +438,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // set values for time, transportation and pollution
 
         //time
-        int t = Double.valueOf(itinerary.getTime()).intValue();
+        int t = Double.valueOf(itinerary.getDuration()).intValue();
         String s = convertIntToHour(t);
         System.out.println(s);
         //String s = Integer.toString(t);
@@ -467,7 +492,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        // add line to map
+        // add line
         map.getOverlays().add(line);
         map.invalidate(); // this is to refresh the display
 
@@ -490,7 +515,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 //        // show details layout
 //        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
 //        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
-        ArrayList<Steps> STEPS = detailItinerary(itinerary);
+        ArrayList<Step> STEPS = itinerary.getDetail();
         //System.out.println(STEPS);
         //start and end
         TextView viewPoint1 = findViewById(R.id.start_point);
@@ -510,7 +535,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             viewPoint2.setText(end);
 
             // time
-            String timeStr = convertIntToHour( (int) itinerary.getTime());
+            String timeStr = convertIntToHour( (int) itinerary.getDuration());
             time.setText(timeStr);
 
             //pollution
@@ -531,7 +556,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 if (index>2) { // <=> if there is already something displayed in the stepsLayout
                     stepsLayout.removeViews(2, index - 2);
                 }
-                for (int k=1;k<STEPS.size();k++){
+                System.out.println(STEPS.size());
+                for (int k=1;k<=STEPS.size();k++){
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
@@ -566,14 +592,14 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY RECAP
-     * @param list
+     * @param list ArrayList<Itinerary>
      */
     private void displayRecap(final ArrayList<Itinerary> list){
 
         // ADD DIFFERENT ITINERARIES
         LinearLayout recapList = findViewById(R.id.recap_list);
         recapList.removeAllViews(); // remove the last views that were displayed
-        for (int i=0;i<list.size()-1;i++){
+        for (int i=0;i<list.size();i++){
 
             // get list item view and the views inside it
             View listItem = inflater.inflate(R.layout.recap_list_item,null);
@@ -582,9 +608,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             TextView exposition = listItem.findViewById(R.id.exposition_value);
             TextView distance = listItem.findViewById(R.id.distance);
             ImageButton save = listItem.findViewById(R.id.save);
+            TextView timeStart = listItem.findViewById(R.id.timeStart);
+            TextView timeEnd = listItem.findViewById(R.id.timeEnd);
+
 
             // set time
-            String timeStr = convertIntToHour((int)list.get(i).getTime());
+            String timeStr = convertIntToHour((int)list.get(i).getDuration());
             time.setText(timeStr);
 
             // set distance
@@ -593,6 +622,86 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // set exposition
             exposition.setText(String.format("%s",list.get(i).getPollution()));
+            if (list.get(i).isHourStart()){
+                //set time Start
+                System.out.println(list.get(i).getTimeOption());
+                timeStart.setText(list.get(i).getTimeOption());
+                int duration = (int) list.get(i).getDuration();
+                int minutes = duration / (int) 60;
+                int hours = minutes /(int) 60 ;
+                System.out.println("duration" + duration);
+                System.out.println("hours" + hours);
+                minutes = minutes - hours*60;
+                System.out.println("minutes" +minutes);
+
+                int hourStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int resHour = hourStart + hours;
+                System.out.println("HourStart" +list.get(i).getTimeOption());
+
+                System.out.println("HourStart" + 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1))));
+
+                int resMin = minutesStart+minutes;
+                if (resMin>=60){
+                    resHour+=1;
+                    resMin-=60;
+                }
+                if (resHour<10&&resMin<10) {
+                    System.out.println("cas1");
+                    timeEnd.setText((String.format("0%s:0%s",resHour,resMin)));
+                }
+                else if (resHour<10) {
+                    System.out.println("cas2");
+                    timeEnd.setText((String.format("0%s:%s",resHour,resMin)));
+                }
+                else if (resMin<10) {
+                    System.out.println("cas3");
+                    timeEnd.setText((String.format("%s:0%s",resHour,resMin)));
+                }
+                else{
+                    System.out.println("cas4");
+                    timeEnd.setText((String.format("%s:%s",resHour,resMin)));
+                }
+            }
+            else{
+                timeEnd.setText(list.get(i).getTimeOption());
+                int duration = (int) list.get(i).getDuration();
+                int minutes = duration / (int) 60;
+                int hours = minutes /(int) 60 ;
+                System.out.println("duration" + duration);
+                System.out.println("hours" + hours);
+                minutes = minutes - hours*60;
+                System.out.println("minutes" +minutes);
+
+                int hourEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int resHour = hourEnd - hours;
+                System.out.println("HourStart" +list.get(i).getTimeOption());
+
+                //System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
+
+                int resMin = minutesEnd-minutes;
+                if (resMin<0){
+                    resHour-=1;
+                    resMin=60+(minutesEnd-minutes);
+                }
+                if (resHour<10&&resMin<10) {
+                    timeStart.setText((String.format("0%s:0%s",resHour,resMin)));
+                }
+                else if (resHour<10) {
+                    timeStart.setText((String.format("0%s:%s",resHour,resMin)));
+                }
+                else if (resMin<10) {
+                    timeStart.setText((String.format("%s:0%s",resHour,resMin)));
+                }
+                else{
+                    timeStart.setText((String.format("%s:%s",resHour,resMin)));
+
+                }
+
+
+            }
+            //list.get(i).getTime
 
             // set transportation
             switch (list.get(i).getType()){
@@ -611,7 +720,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             }
 
             // set the height and width of the list item
-            int height = getResources().getDimensionPixelSize(R.dimen.list_item_height);
+            int height = getResources().getDimensionPixelSize(R.dimen.list_recap_height);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     height);
@@ -702,7 +811,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Convert a time in seconds to hours
-     * @param seconds
+     * @param seconds int
      * @return String
      */
     private String convertIntToHour(int seconds) {
@@ -715,7 +824,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Reset the appearance of a polyline that was highlighted
-     * @param polyline
+     * @param polyline Polyline
      */
     private void resetPolylineAppearance(Polyline polyline){
         // clear all previous paints
@@ -731,7 +840,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this function is used to find a polyline from its id which was user-selected (in our case, the id is its rank in the itinerary list)
-     * @param id
+     * @param id String
      * @return
      */
     private Polyline findPolylineFromId(String id){
@@ -757,8 +866,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         mapController.setCenter(endPosition);
     }
 
-    public ArrayList<Steps> detailItinerary(Itinerary itinerary){
-        List<Steps> steps = new ArrayList<>();
+/*    public ArrayList<Step> detailItinerary(Itinerary itinerary){
+        List<Step> steps = new ArrayList<>();
         //System.out.println(itinerary.getPointSize());
         //System.out.println(itinerary.getStepDistance().size());
 
@@ -781,17 +890,17 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 address.setCoordinates(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]);
                 address.setLocationName(a);
                 System.out.println(itinerary.getStepDistance().size());
-                Steps tempStep = new Steps(address.getLocationName(), itinerary.getStepDistance().get(j));
+                Step tempStep = new Step(address.getLocationName(), itinerary.getStepDistance().get(j));
                 steps.add(tempStep);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        ArrayList<Steps> newSteps = new ArrayList<>();
+        ArrayList<Step> newSteps = new ArrayList<>();
         String address = steps.get(0).getAddress();
         System.out.println(address);
         int distance = steps.get(0).getDistance();
-        for (Steps step:steps){
+        for (Step step:steps){
             System.out.println(step.getAddress());
             if (step.getAddress().equals(address)){
                 distance += step.getDistance();
@@ -804,13 +913,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         }
         //System.out.println(newSteps);
         return newSteps;
-    }
+    }*/
 
     ////////////////////////////////
 
     /**
      * Method to control map
-     * @param v
+     * @param v View
      */
     @Override
     public void onClick(View v) {
@@ -851,9 +960,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this method decides which color the itinerary line will be, according to the threshold
-     * @param itinerary
+     * @param itinerary Itinerary
      */
     public void setColorForPolyline(Itinerary itinerary){
+        System.out.println("pollution" + itinerary.getPollution());
+
         if (itinerary.getPollution()<=threshold){
             plInside = new MonochromaticPaintList(paintInsideG);
             plInsideSelected = new MonochromaticPaintList(paintInsideSelectedG);

@@ -1,19 +1,23 @@
 package com.example.mint;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -103,6 +107,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private PopupWindow transportationPopupWindow;
 
 
+    //private static final String TAG = "ProfileActivity"; //--> for debugging
+
     /**
      * This activity handles the input of various preferences and the display of the pollution exposure throughout time
      * @param savedInstanceState
@@ -133,9 +139,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // UPDATE PREFERENCES
         // update the pollution for this month
+        System.out.println("pollution today"+Preferences.getPollutionToday(this));
         Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
+        System.out.println(Preferences.getPollutionMonth(3,this));
         // update the pollution for this year
         Preferences.addMonthPollutionToYear(Preferences.getCurrentDate()[1],Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this),this);
+        System.out.println(Preferences.getPollutionYear(2021,this));
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
 //        ArrayList<Integer> valuesTest = new ArrayList<>();
@@ -543,11 +552,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         menuItem.setChecked(true);
 
         /////////////////////////////////////////////////////////
+        // BOTTOM MENU END //
+        /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
         // SLIDE ANIMATION //
         /////////////////////////////////////////////////////////
 
         bottomNav.setSelectedItemId(R.id.profile);
 
+        //TODO This is redundant with ActivityMenuSwitcher
+        //Slide animation
+        //bottomNav.setSelectedItemId(R.id.profile);
+
+        /*
         bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -567,8 +584,49 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
         });
+         */
 
     }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON //
+    /////////////////////////////////////////////////////////
+    /**
+     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     */
+    @Override
+    public void onBackPressed(){
+
+        String targetActivity = "No target activity yet";
+        // Get previous intent with information of previous activity
+        Intent intent = getIntent();
+        targetActivity = intent.getStringExtra("previousActivity");
+
+        // Creates a new intent to go back to that previous activity
+        // Tries to get the class from the name that was passed through the previous intent
+        Intent newIntent = null;
+        try {
+            newIntent = new Intent(this, Class.forName(targetActivity));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("previousActivity", this.getClass());
+
+        this.startActivity(newIntent);
+
+        //---------TRANSITIONS-----------
+        //For Right-To-Left transitions
+        if(targetActivity.equals("com.example.mint.MainActivity") || targetActivity.equals("com.example.mint.MapActivity")){
+
+            //override the transition and finish the current activity
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            this.finish();
+        }
+    }
+
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
     /**
      * Displays the various popup windows when you click on each button
@@ -681,7 +739,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void setUpGraph(final int range){
         // we get the pollution data from preferences
-        ArrayList<Integer> values = Preferences.getPollutionYear(Preferences.getCurrentDate()[2],this);
+        System.out.println("values"+Preferences.getPollutionYear(2021, this));
+        ArrayList<Integer> values = Preferences.getPollutionYear(2021,this);
+
 
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
@@ -697,7 +757,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
             System.out.println ("Days: " + diffDays);
             for (int i=1;i<=diffDays;i++){
-                entries.add(new Entry(i,values.get(i-1)));
+                System.out.println("i "+i);
+                System.out.println("value "+values.get(i+4));
+                entries.add(new Entry(i,values.get(i+2)));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -818,6 +880,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // LineData allows for styling of the whole chart
         LineData lineData = new LineData(dataSet);
+
+        //Set description non visible
+        Description description = graph.getDescription();
+        description.setEnabled(false);
 
         // Apply our data to the chart
         graph.setData(lineData);

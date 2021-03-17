@@ -9,11 +9,43 @@
 
     <org.osmdroid.views.MapView
         android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </org.osmdroid.views.MapView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:src="@drawable/ic_zoom_in"
+        app:backgroundTint="#ffffff"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/zoom_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_zoom_out"
+        app:backgroundTint="#ffffff"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/map_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.9"/>
+
 
     <Spinner
         android:id="@+id/map_spinner"
@@ -26,12 +58,13 @@
         android:entries="@array/map_array"
         android:popupBackground="@drawable/ic_rectangle_13"
         android:spinnerMode="dropdown"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,9 +73,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="#999999"
-        android:fontFamily="@font/quicksand_regular"
         android:background="#f8f8f8"
+        android:fontFamily="@font/quicksand_regular"
+        app:itemTextColor="#999999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

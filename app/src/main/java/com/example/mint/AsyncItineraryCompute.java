@@ -1,5 +1,6 @@
 package com.example.mint;
 
+//import android.annotation.SuppressLint;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,21 +24,29 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 /**
- * TODO Explain aim and use of class here
+ * Asynchronous task to request server and read response.
  */
-public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> {
+public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray> implements java.io.Serializable {
 
-    private AppCompatActivity myActivity;
+    @SuppressLint("StaticFieldLeak")
+    private final AppCompatActivity myActivity;
 
-    //Constructor
+    /**
+     * Constructor for the Async Activity
+     * @param LoadingPageActivity : linked activity
+     */
     public AsyncItineraryCompute (AppCompatActivity LoadingPageActivity) {
-        myActivity = LoadingPageActivity;
+        myActivity = LoadingPageActivity; //activity launching this task
     }
 
 
+    /**
+     * Method executed in LoadingPageActivity.
+     * Displays view with loading progress bar.
+     */
     @Override
     protected void onPreExecute() {
         //Prepare task and show waiting view
@@ -48,6 +57,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     }
 
     /**
+     * Method executed in background. Sends url to server, read response and put it in JSONObjects
      * @param strings
      * Background task to send a request to ECN server with parameters such as start point, end point,
      * transport.
@@ -68,6 +78,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         publishProgress(1);
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 
+        //to send url
         URL url;
         HttpURLConnection urlConnection = null;
         String result = null;
@@ -98,33 +109,35 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         publishProgress(4);
 
 
-
+        //Creates JSON objects
         JSONArray json = new JSONArray();
         try{
             JSONObject message = new JSONObject(); // to debug, maybe to delete for real version of the app
             switch (error){
                 case 0 :
                     json = new JSONArray(result);
-                    message.put("message",myActivity.getString(R.string.connection_success));
                     break;
                 case 1 :
                     message.put("message",myActivity.getString(R.string.error_url_format));
+                    json.put(json.length(),message);
                     break;
                 case 2 :
                     message.put("message", String.format("%s\n%s", myActivity.getString(R.string.connection_failed), strings[0]));
+                    json.put(json.length(),message);
                     break;
                 default:
                     break;
             }
-            json.put(json.length(),message);
-
         }catch (JSONException e) {
             e.printStackTrace();
         }
         return json;
     }
 
-
+    /**
+     * To updates progress bar
+     * @param values
+     */
     @Override
     protected void onProgressUpdate(Integer... values) {
         ProgressBar pb = myActivity.findViewById(R.id.progress_bar);
@@ -132,16 +145,18 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     }
 
     /**
-     * Function to decode JSONArray and extract attributes
+     * Function to decode JSONArray and extract attributes.
+     * Is executed in LoadingPageActivity.
      * @param c
      */
     @Override
     protected void onPostExecute(final JSONArray c) {
+        //test to check response is not null
         if (c == null){
             Toast.makeText(myActivity, R.string.error404, Toast.LENGTH_SHORT).show();
         }else{
             try {
-                Toast.makeText(myActivity, c.getJSONObject(c.length()-1).getString("message"), Toast.LENGTH_LONG).show();
+                Toast.makeText(myActivity, c.getJSONObject(c.length()).getString("message"), Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -151,10 +166,13 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         //Reading JSON
         final ArrayList<Itinerary> itineraries = new ArrayList<>();
         try{
-            for (int i = 0; i<c.length(); i++)            //to delete error message
-            {
-                Itinerary itinerary = new Itinerary(c.getJSONObject(i));
-                itineraries.add(itinerary);
+            if (c != null) {
+                for (int i = 0; i<c.length(); i++)            //to delete error message
+                {
+                    Itinerary itinerary = new Itinerary(c.getJSONObject(i));
+                    System.out.println(itinerary.getDetail().get(0).getAddress() +itinerary.getDetail().get(0).getDistance());
+                    itineraries.add(itinerary);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -184,7 +202,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
 
     /**
     * Method to read server response, which is as text file, and put it in a String object.
-     * @param is
+     * @param is InputStream
      * @return String
     */
     private String readStream(InputStream is) throws IOException {

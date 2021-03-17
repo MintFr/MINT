@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 /**
- * TODO Explain aim and use of class here
+ * Activity for the splash screen at the launch of the app. Duration of this activity is arbitrary,
+ * and is 1 second (1.000 ms)
  */
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -19,7 +20,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         //redirect to MainActivity after 1 seconds
 
         //handler post delayed
-        int SPLASH_SCREEN_TIMEOUT = 1000;
+        int SPLASH_SCREEN_TIMEOUT = 1000; //duration = 1s
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -94,6 +94,7 @@
         android:layout_marginRight="0dp"
         android:gravity="center"
         android:text="@string/exposition_unit"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="8sp" />
 
     <ImageButton

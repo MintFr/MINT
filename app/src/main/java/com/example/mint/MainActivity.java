@@ -799,17 +799,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startAddress.setLocationName(String.valueOf(R.string.position_text));
             startAddress.setCoordinates(coordinates);
             startPoint.setText("Ma position");
-            startPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+            //startPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
         } if (idInt == 1) {
             endAddress.setLocationName(String.valueOf(R.string.position_text));
             endAddress.setCoordinates(coordinates);
             endPoint.setText("Ma position");
-            endPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+            //endPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
         } if (idInt == 2) {
             stepAddress.setLocationName(String.valueOf(R.string.position_text));
             stepAddress.setCoordinates(coordinates);
             stepPoint.setText("Ma position");
-            stepPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+            //stepPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
         }
     }
 

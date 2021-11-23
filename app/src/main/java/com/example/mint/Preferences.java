@@ -322,13 +322,12 @@ public class Preferences {
     }
 
     /**
-     *
+     * Remove the last address from the ListOfAddresses
      *
      * @param arrayName :
      * @param ind :
      * @param context :
      */
-
     public static void removeAddress(String arrayName, int ind, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -342,12 +341,12 @@ public class Preferences {
     }
 
     /**
+     * Add an address at the start of the ListOfAddresses
      *
-     *
-     * @param arrayName
-     * @param key
-     * @param value
-     * @param context
+     * @param arrayName :
+     * @param key :
+     * @param value :
+     * @param context :
      */
     public static void addAddress(String arrayName, int key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
@@ -389,7 +388,7 @@ public class Preferences {
     }
 
     /**
-     *
+     * Add an address at the end of the LastAddress
      *
      * @param arrayName
      * @param key
@@ -407,6 +406,14 @@ public class Preferences {
         editor.putString(arrayName+"_"+key,value);
         editor.apply();
     }
+
+    /**
+     * Remove the first address from LastAddress
+     *
+     * @param arrayName
+     * @param key
+     * @param context
+     */
     public static void removeLastAddress(String arrayName, int key, Context context){
         SharedPreferences prefs = context.getSharedPreferences("lastAddress",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -433,6 +440,7 @@ public class Preferences {
     }
 
     /**
+     * Place the last address from LastAddress at the beginning
      *
      * @param key
      * @param context
@@ -454,6 +462,14 @@ public class Preferences {
 
     // TRANSPORTATION //
 
+    /**
+     *
+     *
+     * @param arrayName
+     * @param key
+     * @param value
+     * @param context
+     */
     public static void addTransportation(String arrayName, int key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("Transportation",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -461,6 +477,13 @@ public class Preferences {
         editor.apply();
     }
 
+    /**
+     *
+     *
+     * @param arrayName
+     * @param key
+     * @param context
+     */
     public static void removeTransportation(String arrayName, int key, Context context){
         SharedPreferences prefs = context.getSharedPreferences("Transportation",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -468,6 +491,11 @@ public class Preferences {
         editor.apply();
     }
 
+    /**
+     *
+     *
+     * @param context
+     */
     public static void clearTransportation(Context context){
         SharedPreferences prefs = context.getSharedPreferences("Transportation",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -475,6 +503,13 @@ public class Preferences {
         editor.apply();
     }
 
+    /**
+     *
+     *
+     * @param arrayName
+     * @param context
+     * @return
+     */
     public static ArrayList<String> getPrefTransportation(String arrayName, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("Transportation", Context.MODE_PRIVATE);
         ArrayList<String> array = new ArrayList<>(4);
@@ -483,6 +518,13 @@ public class Preferences {
         return array;
     }
 
+    /**
+     *
+     *
+     * @param arrayName
+     * @param context
+     * @return
+     */
     public static int getNumberOfTransportation(String arrayName, Context context){
         SharedPreferences prefs = context.getSharedPreferences("Transportation", Context.MODE_PRIVATE);
         return prefs.getInt(arrayName + "_size", 0);

@@ -282,7 +282,6 @@ public class Preferences {
      * @param array : the list of addresses to add
      * @param context :
      */
-
     public static void setPrefAddresses(String arrayName, ArrayList<String> array, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -322,10 +321,10 @@ public class Preferences {
     }
 
     /**
-     * Remove the last address from the ListOfAddresses
+     * Remove an address from the field ListOfAddresses
      *
      * @param arrayName :
-     * @param ind :
+     * @param ind : The key associated to the address which will be removed
      * @param context :
      */
     public static void removeAddress(String arrayName, int ind, Context context){
@@ -341,11 +340,11 @@ public class Preferences {
     }
 
     /**
-     * Add an address at the start of the ListOfAddresses
+     * Add an address to the field ListOfAddresses
      *
      * @param arrayName :
-     * @param key :
-     * @param value :
+     * @param key : The key to which the new address will be associated
+     * @param value : The address which will be added
      * @param context :
      */
     public static void addAddress(String arrayName, int key, String value, Context context){
@@ -388,11 +387,11 @@ public class Preferences {
     }
 
     /**
-     * Add an address at the end of the LastAddress
+     * Add an address to the field LastAddress
      *
      * @param arrayName
-     * @param key
-     * @param value
+     * @param key : The key to which the new address will be associated
+     * @param value : The address which will be added
      * @param context
      */
     public static void addLastAddress(String arrayName, int key, String value, Context context){
@@ -408,10 +407,10 @@ public class Preferences {
     }
 
     /**
-     * Remove the first address from LastAddress
+     * Remove an address from LastAddress
      *
      * @param arrayName
-     * @param key
+     * @param key : The key associated to the address which will be removed
      * @param context
      */
     public static void removeLastAddress(String arrayName, int key, Context context){
@@ -451,6 +450,12 @@ public class Preferences {
         addLastAddress("lastAddress",0,movedAddress,context);
     }
 
+    /**
+     * Return the all the transports stored in the field LastAddress
+     *
+     * @param context
+     * @return
+     */
     public static void clearLastAddresses(Context context){
         SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -463,11 +468,11 @@ public class Preferences {
     // TRANSPORTATION //
 
     /**
-     *
+     * Add a transport in the field Transportation
      *
      * @param arrayName
-     * @param key
-     * @param value
+     * @param key : The key to which the new transport will be associated
+     * @param value : The transport to add
      * @param context
      */
     public static void addTransportation(String arrayName, int key, String value, Context context){
@@ -478,10 +483,10 @@ public class Preferences {
     }
 
     /**
-     *
+     * Remove a transport from the field Transportation
      *
      * @param arrayName
-     * @param key
+     * @param key : The key associated to the transports which will be removed
      * @param context
      */
     public static void removeTransportation(String arrayName, int key, Context context){
@@ -492,7 +497,7 @@ public class Preferences {
     }
 
     /**
-     *
+     * Remove all the transport from the field Transportation
      *
      * @param context
      */
@@ -504,7 +509,7 @@ public class Preferences {
     }
 
     /**
-     *
+     * Return the all the transports stored in the field Transportation
      *
      * @param arrayName
      * @param context
@@ -519,7 +524,7 @@ public class Preferences {
     }
 
     /**
-     *
+     * Return the number of transports stored in the field Transportation
      *
      * @param arrayName
      * @param context

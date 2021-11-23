@@ -209,6 +209,7 @@ public class Preferences {
         }
         return number;
     }
+
     public static void clearOptionTransportation(Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -216,19 +217,6 @@ public class Preferences {
         editor.apply();
     }
     //  OPTION END //
-
-    // for the itinerary
-    public static void addAddress(String key, String value, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-    // for the itinerary
-    public static String getAddress(String key, Context context){
-        SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
-        return prefs.getString(key, null);
-    }
 
     // SENSIBILITY //
     public static void setSensibility(String key, String value, Context context){
@@ -261,6 +249,40 @@ public class Preferences {
 
     // ADDRESSES //
 
+    /**
+     *This method add an address to the list addresses attached to the key in the context
+     *
+     * @param key : key referring to the new value
+     * @param value : value of the address to add
+     * @param context
+     */
+    public static void addAddress(String key, String value, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    /**
+     * This method give the address corresponding to a key given in the parameters
+     *
+     * @param key : a key present in the context
+     * @param context :
+     * @return The address corresponding to the key
+     */
+    public static String getAddress(String key, Context context){
+        SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
+        return prefs.getString(key, null);
+    }
+
+    /**
+     * Setters for a list of addresses
+     *
+     * @param arrayName : the key to which the list will be associated
+     * @param array : the list of addresses to add
+     * @param context :
+     */
+
     public static void setPrefAddresses(String arrayName, ArrayList<String> array, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -270,6 +292,13 @@ public class Preferences {
         editor.apply();
     }
 
+    /**
+     * Return the list of the n first preferred addresses where n is the number of elements attached to the arrayName
+     *
+     * @param arrayName : key which size determine the number of addresses returned by the method
+     * @param  context :
+     * @return
+     */
     public static ArrayList<String> getPrefAddresses(String arrayName, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         int size = prefs.getInt(arrayName + "_size", 0);
@@ -279,11 +308,26 @@ public class Preferences {
         return array;
     }
 
+    /**
+     * Return the number of addresses attached to the arrayName
+     *
+     * @param arrayName : Array which length will be determine
+     * @param context :
+     * @return
+     */
     public static int getNumberOfAddresses(String arrayName, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         int numberOfAddresses = prefs.getInt(arrayName + "_size", 0);
         return numberOfAddresses;
     }
+
+    /**
+     *
+     *
+     * @param arrayName :
+     * @param ind :
+     * @param context :
+     */
 
     public static void removeAddress(String arrayName, int ind, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
@@ -297,6 +341,14 @@ public class Preferences {
         editor.apply();
     }
 
+    /**
+     *
+     *
+     * @param arrayName
+     * @param key
+     * @param value
+     * @param context
+     */
     public static void addAddress(String arrayName, int key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -305,6 +357,12 @@ public class Preferences {
         editor.putInt(arrayName+"_size",newSize);
         editor.apply();
     }
+
+    /**
+     * Remove all the addresses in the context
+     *
+     * @param context
+     */
     public static void clearAddresses(Context context){
         SharedPreferences prefs = context.getSharedPreferences("listOfAddresses", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -314,6 +372,13 @@ public class Preferences {
 
     // History
 
+    /**
+     * Return the list of the n last entered addresses where n is the number of elements attached to the arrayName
+     *
+     * @param arrayName : key which size determine the number of addresses returned by the method
+     * @param  context :
+     * @return
+     */
     public static ArrayList<String> getLastAddresses(String arrayName, Context context){
         SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
         int size = prefs.getInt(arrayName + "_size", 0);
@@ -322,6 +387,15 @@ public class Preferences {
             array.add(prefs.getString(arrayName + "_" + i, null));
         return array;
     }
+
+    /**
+     *
+     *
+     * @param arrayName
+     * @param key
+     * @param value
+     * @param context
+     */
     public static void addLastAddress(String arrayName, int key, String value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("lastAddress",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -344,12 +418,25 @@ public class Preferences {
         editor.putInt(arrayName+"_size",newSize);
         editor.apply();
     }
+
+    /**
+     * Return the number of addresses attached to the arrayName
+     *
+     * @param arrayName : Array which length will be determine
+     * @param context :
+     * @return
+     */
     public static int getNumberOfLastAddresses(String arrayName, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("lastAddress", Context.MODE_PRIVATE);
         int numberOfAddresses = prefs.getInt(arrayName + "_size", 0);
         return numberOfAddresses;
     }
 
+    /**
+     *
+     * @param key
+     * @param context
+     */
     public static void moveAddressFirst(int key, Context context){
         String movedAddress = getLastAddresses("lastAddress",context).get(key);
         removeLastAddress("lastAddress",key,context);

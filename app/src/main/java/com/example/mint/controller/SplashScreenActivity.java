@@ -1,10 +1,12 @@
-package com.example.mint;
+package com.example.mint.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.mint.R;
 
 /**
  * Activity for the splash screen at the launch of the app. Duration of this activity is arbitrary,

@@ -1,4 +1,4 @@
-package com.example.mint;
+package com.example.mint.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,7 +8,7 @@ public class Pollution {
     private Coordinates end;
     private double pol;
 
-    Pollution(JSONObject json) throws JSONException {
+    public Pollution(JSONObject json) throws JSONException {
         this.start = new Coordinates(json.getDouble("y1"), json.getDouble("x1"));
         this.end = new Coordinates(json.getDouble("y2"), json.getDouble("x2"));
         this.pol = json.getDouble("conc_no2");

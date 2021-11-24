@@ -1,4 +1,4 @@
-package com.example.mint;
+package com.example.mint.controller;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,6 +28,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
+import com.example.mint.model.Itinerary;
+import com.example.mint.model.Preferences;
+import com.example.mint.R;
+import com.example.mint.model.Step;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

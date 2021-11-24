@@ -1,4 +1,4 @@
-package com.example.mint;
+package com.example.mint.model;
 
 import android.content.Context;
 import android.content.Intent;

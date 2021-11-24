@@ -1,4 +1,43 @@
-package com.example.mint;
+package com.example.mint.controller;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -6,67 +45,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.graphics.Rect;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.util.Pair;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
-
+import com.example.mint.R;
+import com.example.mint.model.Coordinates;
+import com.example.mint.model.CustomListAdapter;
+import com.example.mint.model.Preferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
@@ -96,15 +91,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Start Address
      */
-    private com.example.mint.Address startAddress;
+    private com.example.mint.model.Address startAddress;
     /**
      * End Address
      */
-    private com.example.mint.Address endAddress;
+    private com.example.mint.model.Address endAddress;
     /**
      * Step Address
      */
-    private com.example.mint.Address stepAddress;
+    private com.example.mint.model.Address stepAddress;
 
 
     private EditText startPoint;
@@ -217,9 +212,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
 
-        this.endAddress = new com.example.mint.Address();
-        this.startAddress = new com.example.mint.Address();
-        this.stepAddress = new com.example.mint.Address();
+        this.endAddress = new com.example.mint.model.Address();
+        this.startAddress = new com.example.mint.model.Address();
+        this.stepAddress = new com.example.mint.model.Address();
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -330,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //---------TRANSITIONS-----------
         //For Left-To-Right transitions
-        if(targetActivity.equals("com.example.mint.MapsActivity") || targetActivity.equals("com.example.mint.ProfileActivity")){
+        if(targetActivity.equals("com.example.mint.MapsActivity") || targetActivity.equals("com.example.mint.controller.ProfileActivity")){
 
         // hide/show stepPoint when the user clicks on the addStepPoint button
 

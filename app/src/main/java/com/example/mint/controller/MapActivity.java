@@ -64,6 +64,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     ////////////////////////
     ////////  MAP  /////////
     ////////////////////////
+
     private MapView map = null;
     private ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;

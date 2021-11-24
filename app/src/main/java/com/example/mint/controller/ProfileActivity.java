@@ -1,22 +1,17 @@
-package com.example.mint;
+package com.example.mint.controller;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.mint.controller.ActivityMenuSwitcher;
+import com.example.mint.model.Preferences;
+import com.example.mint.R;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -24,17 +19,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,8 +38,6 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -139,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // UPDATE PREFERENCES
         // update the pollution for this month
-        System.out.println("pollution today"+Preferences.getPollutionToday(this));
+        System.out.println("pollution today"+ Preferences.getPollutionToday(this));
         Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
         System.out.println(Preferences.getPollutionMonth(3,this));
         // update the pollution for this year
@@ -616,7 +604,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //---------TRANSITIONS-----------
         //For Right-To-Left transitions
-        if(targetActivity.equals("com.example.mint.MainActivity") || targetActivity.equals("com.example.mint.MapActivity")){
+        if(targetActivity.equals("com.example.mint.controller.MainActivity") || targetActivity.equals("com.example.mint.controller.MapActivity")){
 
             //override the transition and finish the current activity
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

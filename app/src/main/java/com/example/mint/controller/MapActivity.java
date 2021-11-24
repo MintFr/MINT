@@ -1,18 +1,11 @@
-package com.example.mint;
+package com.example.mint.controller;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.shapes.Shape;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,26 +13,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorLong;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mint.controller.ActivityMenuSwitcher;
+import com.example.mint.model.Pollution;
+import com.example.mint.R;
+import com.example.mint.model.TanMap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
@@ -51,17 +43,12 @@ import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static android.graphics.Color.argb;
 import static android.graphics.Color.green;
@@ -285,7 +272,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
 
         //For Right-To-Left transitions
-        if (targetActivity.equals("com.example.mint.MainActivity")) {
+        if (targetActivity.equals("com.example.mint.controller.MainActivity")) {
 
             //override the transition and finish the current activity
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

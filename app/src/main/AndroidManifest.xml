@@ -19,20 +19,20 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.mint.SettingsActivity" />
-        <activity android:name="com.example.mint.ItineraryActivity" />
-        <activity android:name="com.example.mint.LoadingPageActivity" />
-        <activity android:name="com.example.mint.SplashScreenActivity">
+        <activity android:name="com.example.mint.controller.SettingsActivity" />
+        <activity android:name="com.example.mint.controller.ItineraryActivity" />
+        <activity android:name="com.example.mint.controller.LoadingPageActivity" />
+        <activity android:name="com.example.mint.controller.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.mint.MapActivity" />
-        <activity android:name="com.example.mint.ProfileActivity"
+        <activity android:name="com.example.mint.controller.MapActivity" />
+        <activity android:name="com.example.mint.controller.ProfileActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.example.mint.MainActivity" />
+        <activity android:name="com.example.mint.controller.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

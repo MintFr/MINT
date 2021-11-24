@@ -1,4 +1,4 @@
-package com.example.mint;
+package com.example.mint.model;
 
 //import android.annotation.SuppressLint;
 import android.annotation.SuppressLint;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mint.R;
+import com.example.mint.controller.ItineraryActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -20,6 +20,7 @@ public class LoadingPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading_page);
 
         Intent intent = getIntent();
+
         //Get parameters corresponding to addresses from the main activity (by default we put centrale nantes and chu hotel dieu)
         boolean start = intent.getBooleanExtra("starting", true);
         String time = intent.getStringExtra("time");

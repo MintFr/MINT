@@ -1,4 +1,4 @@
-package com.example.mint;
+package com.example.mint.controller;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -6,6 +6,8 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mint.controller.ActivityMenuSwitcher;
+import com.example.mint.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsActivity extends AppCompatActivity {

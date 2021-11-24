@@ -1,4 +1,4 @@
-package com.example.mint;
+package com.example.mint.model;
 
 import org.json.JSONArray;
 import org.json.JSONException;

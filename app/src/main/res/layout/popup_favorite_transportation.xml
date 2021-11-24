@@ -8,7 +8,7 @@
     android:paddingBottom="20dp"
     android:paddingRight="20dp"
     android:paddingLeft="20dp"
-    tools:context=".ProfileActivity">
+    tools:context=".controller.ProfileActivity">
 
     <TextView
         android:id="@+id/transportation_message"

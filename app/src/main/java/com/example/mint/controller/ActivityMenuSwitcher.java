@@ -1,11 +1,14 @@
-package com.example.mint;
+package com.example.mint.controller;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.example.mint.R;
+import com.example.mint.controller.MainActivity;
+import com.example.mint.controller.MapActivity;
+import com.example.mint.controller.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**

@@ -1,9 +1,13 @@
-package com.example.mint;
+package com.example.mint.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.mint.model.AsyncItineraryCompute;
+import com.example.mint.model.Preferences;
+import com.example.mint.R;
 
 /**
  * Activity for the loading page, used when calculating an itinerary

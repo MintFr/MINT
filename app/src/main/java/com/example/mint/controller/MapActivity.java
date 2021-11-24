@@ -56,6 +56,7 @@ import static android.graphics.Color.rgb;
 
 /**
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
+ * MapActivity is a inherited class from AppCompatActivity which is a base class of Andorid Studio
  */
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -300,7 +301,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 final DisplayMetrics dm = this.getResources().getDisplayMetrics();
                 mScaleBarOverlay = new ScaleBarOverlay(map);
                 mScaleBarOverlay.setCentred(true);
-//play around with these values to get the location on screen in the right place for your application
+                //play around with these values to get the location on screen in the right place for your application
                 mScaleBarOverlay.setScaleBarOffset((int) (dm.widthPixels * 0.76), (int) (dm.heightPixels*0.72));
                 map.getOverlays().add(this.mScaleBarOverlay);
 

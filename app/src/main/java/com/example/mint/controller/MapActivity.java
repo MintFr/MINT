@@ -61,9 +61,9 @@ import static android.graphics.Color.rgb;
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
-    /**
-     * MAP
-     */
+    ////////////////////////
+    ////////  MAP  /////////
+    ////////////////////////
     private MapView map = null;
     private ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;
@@ -71,9 +71,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private TanMap[] lines;
     private Pollution[] pol_streets;
 
-    /**
-     * BUTTONS
-     */
+    ////////////////////////
+    /////// BUTTONS  ///////
+    ////////////////////////
+
     private FloatingActionButton zoomInButton;
     private FloatingActionButton zoomOutButton;
     private FloatingActionButton locateButton;

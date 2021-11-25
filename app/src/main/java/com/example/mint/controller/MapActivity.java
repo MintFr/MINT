@@ -20,7 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.mint.controller.ActivityMenuSwitcher;
+import com.example.mint.controller.MenuSwitcherActivity;
 import com.example.mint.model.Pollution;
 import com.example.mint.R;
 import com.example.mint.model.TanMap;
@@ -202,7 +202,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         // BOTTOM MENU //
         /////////////////////////////////////////////////////////
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(1);

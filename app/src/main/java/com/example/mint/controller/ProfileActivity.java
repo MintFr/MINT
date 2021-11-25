@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.mint.controller.ActivityMenuSwitcher;
+import com.example.mint.controller.MenuSwitcherActivity;
 import com.example.mint.model.Preferences;
 import com.example.mint.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -533,7 +533,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         /////////////////////////////////////////////////////////
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);
@@ -548,7 +548,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         bottomNav.setSelectedItemId(R.id.profile);
 
-        //TODO This is redundant with ActivityMenuSwitcher
+        //TODO This is redundant with MenuSwitcherActivity
         //Slide animation
         //bottomNav.setSelectedItemId(R.id.profile);
 

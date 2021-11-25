@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
 
-
 import com.example.mint.R;
-import com.example.mint.controller.MainActivity;
-import com.example.mint.controller.MapActivity;
-import com.example.mint.controller.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -20,20 +16,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * public class MyActivity extends Activity {
  *     ... someFunction(...) {
  *         BottomNavigationView bottomNav = new BottomNavigationView(self);
- *         bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+ *         bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
  *     }
  * }
  * }</pre>
  * </p>
  */
-class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelectedListener {
+class MenuSwitcherActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private final Activity activity;
 
     /**
-     * Constructor for ActivityMenuSwitcher
+     * Constructor for MenuSwitcherActivity
      * @param currentActivity Activity : current activity for each activity of the app
      */
-    ActivityMenuSwitcher(Activity currentActivity) {
+    MenuSwitcherActivity(Activity currentActivity) {
         super();
         activity = currentActivity;
     }

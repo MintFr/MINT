@@ -6,7 +6,6 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.mint.controller.ActivityMenuSwitcher;
 import com.example.mint.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);

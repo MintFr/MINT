@@ -34,7 +34,7 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
      * @param currentActivity Activity : current activity for each activity of the app
      */
     ActivityMenuSwitcher(Activity currentActivity) {
-        super();
+        super(); // I believe it can be erased
         activity = currentActivity;
     }
 
@@ -56,7 +56,7 @@ class ActivityMenuSwitcher implements BottomNavigationView.OnNavigationItemSelec
         Class<? extends Activity> target = null;
 
         // Based on the id, attribute the right class to target
-        if (targetItemId == R.id.itinerary) {
+        if (targetItemId == R.id.itinerary) { // don't understand le R.id
             target = MainActivity.class;
         } else if (targetItemId == R.id.maps) {
             target = MapActivity.class;

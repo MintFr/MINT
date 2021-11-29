@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
@@ -1051,6 +1051,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         case 1:
                             Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
                             Intent intent1 = new Intent(getApplicationContext(), LoadingPageActivity.class);
+                            intent1.putExtra("starting", starting);
+                            intent1.putExtra("time", timeText);
                             intent1.putExtra("param1", 47.2484039066116);
                             intent1.putExtra("param2", -1.549636963829987);
                             intent1.putExtra("param3", 47.212191574506164);

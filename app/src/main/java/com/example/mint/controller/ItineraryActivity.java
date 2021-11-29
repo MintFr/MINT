@@ -385,7 +385,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new ActivityMenuSwitcher(this));
+        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);

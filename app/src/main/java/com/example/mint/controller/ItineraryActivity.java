@@ -30,7 +30,10 @@ import androidx.core.view.ViewCompat;
 
 import com.example.mint.model.Itinerary;
 import com.example.mint.model.Preferences;
+import com.example.mint.model.PreferencesPollution;
+import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.R;
+import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.Step;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -146,7 +149,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         /*
          * POLLUTION DATA
          */
-        String sensibility = Preferences.getSensibility("Sensibility", this);
+        String sensibility = PreferencesSensibility.getSensibility("Sensibility", this);
         //set the threshold for the display color of the itineraries
         // TODO change values for threshold once you have the data from captation
         switch (sensibility){
@@ -530,8 +533,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         TextView pollution = findViewById(R.id.pollution);
 
         // get start and end addresses
-        String start = getString(R.string.itinerary_point1)+" : "+(Preferences.getAddress("startAddress",ItineraryActivity.this));
-        String end = getString(R.string.itinerary_point2)+" : "+(Preferences.getAddress("endAddress",ItineraryActivity.this));
+        String start = getString(R.string.itinerary_point1)+" : "+(PreferencesAddresses.getAddress("startAddress",ItineraryActivity.this));
+        String end = getString(R.string.itinerary_point2)+" : "+(PreferencesAddresses.getAddress("endAddress",ItineraryActivity.this));
 
         if (itinerary.getPointSize() > 0){
             // start and end
@@ -742,7 +745,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     // we inform the user that he just saved this pollution data to his profile :
                     Toast.makeText(ItineraryActivity.this, "L'exposition associée à ce trajet a bien été ajoutée à votre profil", Toast.LENGTH_SHORT).show();
                     // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
-                    Preferences.setLastPollution((int)list.get(i).getPollution(),ItineraryActivity.this);
+                    PreferencesPollution.setLastPollution((int)list.get(i).getPollution(),ItineraryActivity.this);
                 }
             });
 

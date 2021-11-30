@@ -371,6 +371,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         });
 
         // step marker if there is one (we only need to draw it once)
+        // It's if there's a step specified in the itinerary call not the steps that constitutes the itinerary
         boolean hasStep = itineraries.get(0).isHasStep();
         if (hasStep) {
             System.out.println("affichage step");
@@ -551,7 +552,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             //between start and end
             if (itinerary.getPointSize()>2){
 
-                // first we want to clear all previous steps that might already be displayed
+                // first we want to clear all previous steps that might already be displayed in itinerary detail
+                //it's a container for the views for each step that will be created with itinerary_step_layout
                 LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
 
                 // this is the number of steps from the previously displayed itinerary

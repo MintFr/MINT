@@ -161,7 +161,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
-        defaultPoint = new GeoPoint(47.21, -1.55);
+        defaultPoint = new GeoPoint(47.21, -1.55); //CHU Nantes
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
@@ -182,7 +182,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
 
         /////////////////////////////////////////////////////////
-        // SPINNER                                             //
+        //                   SPINNER                           //
         /////////////////////////////////////////////////////////
         Spinner spinner = (Spinner) findViewById(R.id.map_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -195,12 +195,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         //Change map when an item is selected
         spinner.setOnItemSelectedListener(this);
         /////////////////////////////////////////////////////////
-        //SPINNER END                                          //
+        //                   SPINNER END                        //
         /////////////////////////////////////////////////////////
 
 
         /////////////////////////////////////////////////////////
-        // BOTTOM MENU //
+        //                   BOTTOM MENU                       //
         /////////////////////////////////////////////////////////
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
@@ -210,14 +210,14 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         menuItem.setChecked(true);
 
         /////////////////////////////////////////////////////////
-        // BOTTOM MENU END //
+        //                   BOTTOM MENU END                   //
         /////////////////////////////////////////////////////////
     }
 
 
-    /////////////////////////////////////////////////////////
-    // BACK BUTTON //
-    /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        //                   BACK BUTTON                       //
+        /////////////////////////////////////////////////////////
 
 
     @Override
@@ -281,9 +281,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             this.finish();
         }
     }
-    /////////////////////////////////////////////////////////
-    // BACK BUTTON END //
-    /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        //                   BACK BUTTON END                   //
+        /////////////////////////////////////////////////////////
 
 
 
@@ -368,7 +368,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
     /**
-     *
+     * Function to read a JSON file
      * @param response String in JSON array format.
      * @return return a TanMap array, which contains all bus lines.
      * @throws JSONException
@@ -385,6 +385,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         return lines;
     }
 
+    /**
+     * Function to read a JSON file which store pollution data
+     * @param response
+     * @return
+     * @throws JSONException
+     */
     private Pollution[] readJSONPol(String response) throws JSONException {
         JSONArray json = new JSONArray(response);
 
@@ -400,7 +406,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display the tan network
-     *
      * @param lines
      * @throws IOException
      */
@@ -410,6 +415,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    /**
+     * Display the pollution
+     * @param streets
+     */
     private void displayPollution(Pollution[] streets){
         for (Pollution street : streets){
             displayStreet(street);
@@ -418,7 +427,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display a busline
-     *
      * @param busline
      * @throws IOException
      */
@@ -433,6 +441,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
+    /**
+     * Display a street
+     * @param street
+     */
     private void displayStreet(Pollution street){
         List<GeoPoint> geoPoints = new ArrayList<>();
         geoPoints.add(new GeoPoint(street.getStart().getLatitude(), street.getStart().getLongitude()));
@@ -457,7 +469,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display a single route
-     *
      * @param route
      * @param name
      * @param direction
@@ -542,7 +553,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-
+    /**
+     * Function to highlight the chosen itinerary
+     * @param polyline
+     * @param mapView
+     * @param eventPos
+     */
     private void highlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos) {
         // show infowindow and details
         polyline.showInfoWindow();

@@ -452,12 +452,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         /////////////////////////////////////////////////////////
 
         // Create the Popup Window
-        transportationPopupWindow = new PopupWindow(this);
+        /**transportationPopupWindow = new PopupWindow(this);
         transportationPopupWindow.setBackgroundDrawable(null);
         transportationPopupWindow.setContentView(transportationPopupView);
         transportationPopupWindow.setWidth(width);
         transportationPopupWindow.setHeight(height);
-        transportationPopupWindow.setFocusable(focusable);
+        transportationPopupWindow.setFocusable(focusable);*/
 
         // Link elements from the popup
         ImageButton carButton = transportationPopupView.findViewById(R.id.car_button);

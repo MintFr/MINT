@@ -450,7 +450,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         /////////////////////////////////////////////////////////
         // TRANSPORTATION POPUP //
         /////////////////////////////////////////////////////////
-
+        /**
+         * Todo : Change the way the buttons are displayed
+         */
         // Create the Popup Window
         /**transportationPopupWindow = new PopupWindow(this);
         transportationPopupWindow.setBackgroundDrawable(null);
@@ -514,7 +516,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tramButton.setOnClickListener(onTransportationClick);
         bikeButton.setOnClickListener(onTransportationClick);
         walkButton.setOnClickListener(onTransportationClick);
-
+        /**
         //callback when popup is dismissed
         transportationPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -522,7 +524,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
                 displayFavoriteTransportation(); // check again which means of transportation have been selected
             }
-        });
+        });*/
 
         /////////////////////////////////////////////////////////
         // TRANSPORTATION POPUP END //
@@ -666,6 +668,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
+     * Todo : change this function when a new popup is not needed
      * This method displays the already selected favorite means of transportation on the main profile page
      */
     public void displayFavoriteTransportation(){

@@ -69,7 +69,7 @@
                         android:layout_toRightOf="@id/user_image"
                         android:gravity="start"
                         android:text="@string/user_name"
-                        android:textColor="#999999"
+                        android:textColor="#373737"
                         android:textSize="20sp" />
 
                     <TextView
@@ -149,13 +149,13 @@
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
-                        android:gravity="left"
                         android:background="#00FFFFFF"
+                        android:gravity="left"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
                         android:text="@string/favorite_transportation_button"
                         android:textAllCaps="false"
-                        android:textColor="#999999"
+                        android:textColor="#454545"
                         android:textSize="16sp" />
 
                     <LinearLayout

@@ -185,6 +185,13 @@ public class Preferences {
         }
         editor.apply();
     }
+
+    /**
+     * TODO : Change the pop up buttons to regular buttons
+     * @param key
+     * @param value
+     * @param context
+     */
     public static void addOptionTransportation(String key, int value, Context context){
         SharedPreferences prefs = context.getSharedPreferences("optionTransport",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

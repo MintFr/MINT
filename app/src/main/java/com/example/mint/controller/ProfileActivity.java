@@ -454,12 +454,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
          * Todo : Change the way the buttons are displayed
          */
         // Create the Popup Window
-        /**transportationPopupWindow = new PopupWindow(this);
+        transportationPopupWindow = new PopupWindow(this);
         transportationPopupWindow.setBackgroundDrawable(null);
         transportationPopupWindow.setContentView(transportationPopupView);
         transportationPopupWindow.setWidth(width);
         transportationPopupWindow.setHeight(height);
-        transportationPopupWindow.setFocusable(focusable);*/
+        transportationPopupWindow.setFocusable(focusable);
 
         // Link elements from the popup
         ImageButton carButton = transportationPopupView.findViewById(R.id.car_button);
@@ -485,6 +485,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         for (int i = 15;i<19;i++){
             ImageButton button = transportationPopupView.findViewWithTag(i);
             String transportation = button.getContentDescription().toString();
+            System.out.println("Button content description" + button.getContentDescription().toString());
             for (int j = 0;j<4;j++){
                 if (transportation.equals(favoriteTransportation.get(j))){
                     button.setActivated(true);
@@ -516,7 +517,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tramButton.setOnClickListener(onTransportationClick);
         bikeButton.setOnClickListener(onTransportationClick);
         walkButton.setOnClickListener(onTransportationClick);
-        /**
+
         //callback when popup is dismissed
         transportationPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -524,7 +525,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
                 displayFavoriteTransportation(); // check again which means of transportation have been selected
             }
-        });*/
+        });
 
         /////////////////////////////////////////////////////////
         // TRANSPORTATION POPUP END //
@@ -676,14 +677,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         for(int i = 0;i<4;i++){
             // gets the right icon from the index
             ImageView selectedIcon = findIconFromInt(i);
-            if (Preferences.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
+            //if (Preferences.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
                 // if this means of transporation is not in the preferences list, we do not display it
-                selectedIcon.setVisibility(View.GONE);
-            }
-            else {
+                //selectedIcon.setVisibility(View.GONE);
+            //}
+            //else {
                 // if it is, we display it
                 selectedIcon.setVisibility(View.VISIBLE);
-            }
+            //}
         }
     }
 

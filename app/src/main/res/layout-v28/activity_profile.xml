@@ -29,13 +29,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="84dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="84dp">
 
                 <RelativeLayout
                     android:id="@+id/profile_main_box"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="337dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
@@ -149,8 +149,8 @@
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
-                        android:gravity="left"
                         android:background="#00FFFFFF"
+                        android:gravity="left"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
                         android:text="@string/favorite_transportation_button"
@@ -164,8 +164,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_transportation"
                         android:layout_alignLeft="@id/favorite_transportation"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="-0dp"
-                        app:srcCompat="@drawable/button_car" />
+                        android:background="#FFFFFF"
+                        android:scaleX="1.3"
+                        android:scaleY="1.3"
+                        app:srcCompat="@drawable/button_car"
+                        tools:layout_marginTop="10dp" />
 
                     <ImageButton
                         android:id="@+id/tram_button"
@@ -176,6 +182,9 @@
                         android:layout_marginEnd="-80dp"
                         android:layout_marginRight="-80dp"
                         android:layout_marginBottom="0dp"
+                        android:background="#FFFFFF"
+                        android:scaleX="1.3"
+                        android:scaleY="1.3"
                         app:srcCompat="@drawable/button_tram" />
 
                     <ImageButton
@@ -187,6 +196,9 @@
                         android:layout_marginEnd="-80dp"
                         android:layout_marginRight="-80dp"
                         android:layout_marginBottom="0dp"
+                        android:background="#FFFFFF"
+                        android:scaleX="1.3"
+                        android:scaleY="1.3"
                         app:srcCompat="@drawable/button_bike" />
 
                     <ImageButton
@@ -197,6 +209,9 @@
                         android:layout_alignBottom="@id/car_button"
                         android:layout_marginEnd="-80dp"
                         android:layout_marginRight="-80dp"
+                        android:background="#FFFFFF"
+                        android:scaleX="1.3"
+                        android:scaleY="1.3"
                         app:srcCompat="@drawable/button_walk" />
 
                 </RelativeLayout>
@@ -208,9 +223,9 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
+                    android:background="@drawable/layout_bg_profile_main"
                     android:elevation="2dp"
                     android:outlineAmbientShadowColor="@color/colorAccent"
-                    android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
 
                     <TextView
@@ -242,27 +257,29 @@
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
                         <TextView
                             android:id="@+id/exposure_today"
+                            style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_bold"
                             android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/quicksand_bold"
                             android:text="@string/max_value_exposure"
                             android:textColor="@color/colorAccent"
-                            android:textSize="32sp"
-                            style="@style/bold"/>
+                            android:textSize="32sp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/exposure_today"
+                            android:layout_centerHorizontal="true"
                             android:layout_marginTop="-8dp"
                             android:text="@string/exposition_unit"
-                            android:textSize="12sp"
                             android:textColor="@color/colorPrimaryLight"
-                            android:layout_centerHorizontal="true"
-                            android:layout_below="@id/exposure_today"/>
+                            android:textSize="12sp" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -270,79 +287,86 @@
                     android:id="@+id/profile_third_box"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_bg_profile_main"
                     android:elevation="2dp"
                     android:outlineAmbientShadowColor="@color/colorAccent"
-                    android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
+
                     <TextView
                         android:id="@+id/exposition_graph_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/mon_exposition"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="#999999"
                         android:layout_marginBottom="5dp"
-                        android:paddingLeft="10dp"/>
+                        android:paddingLeft="10dp"
+                        android:text="@string/mon_exposition"
+                        android:textColor="#999999"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <LinearLayout
                         android:id="@+id/graph_buttons_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_below="@id/exposition_graph_title">
+                        android:layout_below="@id/exposition_graph_title"
+                        android:orientation="horizontal">
+
                         <Button
                             android:id="@+id/week"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Semaine"
                             android:background="@drawable/graph_button_states"
+                            android:text="Semaine"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey" />
+
                         <Button
                             android:id="@+id/month"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Mois"
                             android:background="@drawable/graph_button_states"
+                            android:text="Mois"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey" />
+
                         <Button
                             android:id="@+id/year"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Année"
                             android:background="@drawable/graph_button_states"
+                            android:text="Année"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey" />
                     </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/slide_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/chart"
                         android:layout_alignTop="@id/chart"
-                        android:src="@drawable/ic_chevron_right"
-                        android:rotation="180"
-                        android:background="#00000000"
+                        android:layout_alignBottom="@id/chart"
                         android:layout_toLeftOf="@id/chart"
-                        android:contentDescription="TODO" />
+                        android:background="#00000000"
+                        android:contentDescription="TODO"
+                        android:rotation="180"
+                        android:src="@drawable/ic_chevron_right" />
+
                     <ImageButton
                         android:id="@+id/slide_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/chart"
                         android:layout_alignTop="@id/chart"
-                        android:src="@drawable/ic_chevron_right"
-                        android:background="#00000000"
+                        android:layout_alignBottom="@id/chart"
                         android:layout_toRightOf="@id/chart"
-                        android:contentDescription="TODO" />
+                        android:background="#00000000"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_chevron_right" />
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart"

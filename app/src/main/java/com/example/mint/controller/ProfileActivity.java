@@ -466,13 +466,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ImageButton tramButton = transportationPopupView.findViewById(R.id.tram_button);
         ImageButton bikeButton = transportationPopupView.findViewById(R.id.bike_button);
         ImageButton walkButton = transportationPopupView.findViewById(R.id.walk_button);
-        carIcon = findViewById(R.id.car_icon);
-        tramIcon = findViewById(R.id.tram_icon);
-        bikeIcon = findViewById(R.id.bike_icon);
-        walkIcon = findViewById(R.id.walk_icon);
+        //carIcon = findViewById(R.id.car_icon);
+        //tramIcon = findViewById(R.id.tram_icon);
+        //bikeIcon = findViewById(R.id.bike_icon);
+        //walkIcon = findViewById(R.id.walk_icon);
 
         // on opening of profile page, display favorite means of transportation
-        displayFavoriteTransportation();
+        //displayFavoriteTransportation();
 
         // Tags to determine which button is clicked in "onTransportationClick"
         carButton.setTag(15);
@@ -517,7 +517,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tramButton.setOnClickListener(onTransportationClick);
         bikeButton.setOnClickListener(onTransportationClick);
         walkButton.setOnClickListener(onTransportationClick);
-
+/**
         //callback when popup is dismissed
         transportationPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -525,7 +525,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
                 displayFavoriteTransportation(); // check again which means of transportation have been selected
             }
-        });
+        });*/
 
         /////////////////////////////////////////////////////////
         // TRANSPORTATION POPUP END //
@@ -672,7 +672,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * Todo : change this function when a new popup is not needed
      * This method displays the already selected favorite means of transportation on the main profile page
      */
-    public void displayFavoriteTransportation(){
+    /**public void displayFavoriteTransportation(){
         // we go through all the means of transportation
         for(int i = 0;i<4;i++){
             // gets the right icon from the index
@@ -686,7 +686,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 selectedIcon.setVisibility(View.VISIBLE);
             //}
         }
-    }
+    }*/
 
     /**
      * This adds the pollution from the last itinerary to today's pollution

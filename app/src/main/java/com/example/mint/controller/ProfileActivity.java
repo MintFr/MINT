@@ -84,9 +84,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button sensibilityButton;
     private PopupWindow sensibilityPopupWindow;
 
+
+//////////////////////////////////////////////////////////////////////////
     /**
      * transportation
      */
+
+    //ancienne méthode
     private ImageView carIcon;
     private ImageView tramIcon;
     private ImageView bikeIcon;
@@ -94,6 +98,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button favoriteTransportationButton;
     private PopupWindow transportationPopupWindow;
 
+    //nouvelle méthode
+    private ImageButton car_button;
+    private ImageButton tram_button;
+    private ImageButton bike_button;
+    private ImageButton walk_button;
+/////////////////////////////////////////////////////////////////
 
     //private static final String TAG = "ProfileActivity"; //--> for debugging
 
@@ -193,12 +203,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
         favoriteAddressesButton.setTag(1);
-        //favoriteTransportationButton.setTag(2);
+        /////////favoriteTransportationButton.setTag(2);
 
         //launches "onClick" when one button is clicked
         sensibilityButton.setOnClickListener(this);
         favoriteAddressesButton.setOnClickListener(this);
-        //favoriteTransportationButton.setOnClickListener(this);
+        /////////favoriteTransportationButton.setOnClickListener(this);
+
+
+
+
 
         // on click callback for parameters : open new activity
         parameters.setOnClickListener(new View.OnClickListener() {
@@ -450,6 +464,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         /////////////////////////////////////////////////////////
         // TRANSPORTATION POPUP //
         /////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /** test des méthodes de clikage pour transp fav
+         *
+         */
+        car_button.setTag(15);
+        tram_button.setTag(16);
+        bike_button.setTag(17);
+        walk_button.setTag(18);
+
+        car_button.setOnClickListener(this);
+        tram_button.setOnClickListener(this);
+        bike_button.setOnClickListener(this);
+        walk_button.setOnClickListener(this);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         /**
          * Todo : Change the way the buttons are displayed
          */

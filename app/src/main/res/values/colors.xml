@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- General colors -->
     <color name="colorPrimary">#084528</color>
     <color name="colorPrimaryDark">#DDDDDD</color>
     <color name="colorAccent">#89BE89</color>
@@ -9,9 +11,31 @@
     <color name="colorGrey">#DDDDDD</color>
     <color name="colorBlack">#000000</color>
     <color name="colorDarkGrey">#999999</color>
-<!--    <color name="colorYellow">#FFE45C</color>-->
     <color name="colorYellow">#EBD884</color>
     <color name="colorOrange">#F69F65</color>
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
     <color name="colorTransparentWhite">#11ffffff</color>
+
+    <!-- Colors for  layout activity_itinerary -->
+    <color name="PrimaryWhite_Itinerary">#ffffff</color>
+    <color name="White_Itinerary">#F8F8F8</color>
+    <color name="DarkGrey_Itinerary">#999999</color>
+
+    <!-- Colors for  layout activity_loading_page -->
+    <color name="Blue_Loading_Page">#208afa</color>
+
+    <!-- Colors for  activity_map -->
+    <color name="PrimaryWhite_Map">#ffffff</color>
+    <color name="PrimaryGreen_Map">#084528</color>
+    <color name="White_Map">#F8F8F8</color>
+    <color name="DarkGrey_Map">#999999</color>
+
+    <!-- Colors for  activity_profile -->
+    <color name="GreenKaki_Profile">#1a89be89</color>
+    <color name="DarkGrey_Profile">#999999</color>
+    <color name="Transparent_Profile">#00FFFFFF</color>
+    <color name="Black_Profile">#000000</color>
+    <color name="White_Profile">#F8F8F8</color>
+    <color name="LightGrey_Profile">#73000000</color>#
+
 </resources>

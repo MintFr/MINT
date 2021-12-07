@@ -114,7 +114,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         parameters = findViewById(R.id.parameters);
         sensibilityButton = findViewById(R.id.sensibility);
         favoriteAddressesButton = findViewById(R.id.favorite_addresses);
-        favoriteTransportationButton = findViewById(R.id.favorite_transportation);
+        //favoriteTransportationButton = findViewById(R.id.favorite_transportation);
 
         dim_popup = findViewById(R.id.dim_popup);
 
@@ -193,12 +193,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
         favoriteAddressesButton.setTag(1);
-        favoriteTransportationButton.setTag(2);
+        //favoriteTransportationButton.setTag(2);
 
         //launches "onClick" when one button is clicked
         sensibilityButton.setOnClickListener(this);
         favoriteAddressesButton.setOnClickListener(this);
-        favoriteTransportationButton.setOnClickListener(this);
+        //favoriteTransportationButton.setOnClickListener(this);
 
         // on click callback for parameters : open new activity
         parameters.setOnClickListener(new View.OnClickListener() {

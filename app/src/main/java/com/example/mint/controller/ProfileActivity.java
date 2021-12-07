@@ -526,6 +526,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
 
+        for (int i = 15;i<19;i++){
+            ImageButton button =
+        }
+
 
         // Change state of button once it is clicked
         View.OnClickListener onTransportationClick = new View.OnClickListener() {

@@ -487,7 +487,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         /**
          * Todo : Change the way the buttons are displayed
          */
-        // Create the Popup Window
+        /*// Create the Popup Window
         transportationPopupWindow = new PopupWindow(this);
         transportationPopupWindow.setBackgroundDrawable(null);
         transportationPopupWindow.setContentView(transportationPopupView);
@@ -513,7 +513,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tramButton.setTag(16);
         bikeButton.setTag(17);
         walkButton.setTag(18);
-
+        /*
         // Highlight already selected favorite means of transportation
         ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation("Transportation",this);
         for (int i = 15;i<19;i++){
@@ -709,8 +709,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * This method displays the already selected favorite means of transportation on the main profile page
      */
 
-    public void highlight(View view) {
-        view.setActivated(!view.isActivated());
+    public void highlight(View transportationButton) {
+        transportationButton.setActivated(!transportationButton.isActivated());
+        if(transportationButton.isActivated()){
+            int i = Integer.parseInt(transportationButton.getTag().toString());
+            Preferences.addTransportation("Transportation",i, transportationButton.getContentDescription().toString(),ProfileActivity.this); }
+
+        //Preferences.addTransportation("Transportation",Integer.parseInt((transportationButton.getTag().toString())), transportationButton.getContentDescription().toString(),ProfileActivity.this); }
+        else if(!transportationButton.isActivated()) {
+            Preferences.removeTransportation("Transportation",Integer.parseInt(transportationButton.getTag().toString()),ProfileActivity.this);}
 
     }
 

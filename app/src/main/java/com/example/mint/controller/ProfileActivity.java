@@ -471,6 +471,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         /** test des méthodes de clikage pour transp fav
          *
          */
+        /*
         car_button.setTag(15);
         tram_button.setTag(16);
         bike_button.setTag(17);
@@ -480,7 +481,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tram_button.setOnClickListener(this);
         bike_button.setOnClickListener(this);
         walk_button.setOnClickListener(this);
-
+*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /**
@@ -518,7 +519,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         for (int i = 15;i<19;i++){
             ImageButton button = transportationPopupView.findViewWithTag(i);
             String transportation = button.getContentDescription().toString();
-            System.out.println("Button content description" + button.getContentDescription().toString());
+            //System.out.println("Button content description" + button.getContentDescription().toString());
             for (int j = 0;j<4;j++){
                 if (transportation.equals(favoriteTransportation.get(j))){
                     button.setActivated(true);
@@ -526,9 +527,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-        for (int i = 15;i<19;i++){
-            ImageButton button =
-        }
+
 
 
         // Change state of button once it is clicked
@@ -709,6 +708,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * Todo : change this function when a new popup is not needed
      * This method displays the already selected favorite means of transportation on the main profile page
      */
+
+    public void highlight(View view) {
+        view.setActivated(!view.isActivated());
+
+    }
+
     /**public void displayFavoriteTransportation(){
         // we go through all the means of transportation
         for(int i = 0;i<4;i++){
@@ -1107,8 +1112,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             return 11;
         }
     }
-
-
 
 
 

@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
         <activity android:name="com.example.mint.controller.SettingsActivity" />
         <activity android:name="com.example.mint.controller.ItineraryActivity" />
         <activity android:name="com.example.mint.controller.LoadingPageActivity" />

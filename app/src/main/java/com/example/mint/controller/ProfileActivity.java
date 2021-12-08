@@ -10,7 +10,12 @@ import android.view.MenuItem;
 
 import com.example.mint.controller.MenuSwitcherActivity;
 import com.example.mint.model.Preferences;
+import com.example.mint.model.PreferencesDate;
+import com.example.mint.model.PreferencesPollution;
+import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.R;
+import com.example.mint.model.PreferencesSensibility;
+import com.example.mint.model.PreferencesTransport;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -137,12 +142,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // UPDATE PREFERENCES
         // update the pollution for this month
-        System.out.println("pollution today"+ Preferences.getPollutionToday(this));
-        Preferences.addDayPollutionToMonth(Preferences.getCurrentDate(),Preferences.getPollutionToday(this),this);
-        System.out.println(Preferences.getPollutionMonth(3,this));
+        System.out.println("pollution today"+ PreferencesPollution.getPollutionToday(this));
+        PreferencesPollution.addDayPollutionToMonth(PreferencesDate.getCurrentDate(),PreferencesPollution.getPollutionToday(this),this);
+        System.out.println(PreferencesPollution.getPollutionMonth(3,this));
         // update the pollution for this year
-        Preferences.addMonthPollutionToYear(Preferences.getCurrentDate()[1],Preferences.getPollutionMonth(Preferences.getCurrentDate()[1],this),this);
-        System.out.println(Preferences.getPollutionYear(2021,this));
+        PreferencesPollution.addMonthPollutionToYear(PreferencesDate.getCurrentDate()[1],PreferencesPollution.getPollutionMonth(PreferencesDate.getCurrentDate()[1],this),this);
+        System.out.println(PreferencesPollution.getPollutionYear(2021,this));
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
 //        ArrayList<Integer> valuesTest = new ArrayList<>();
@@ -284,8 +289,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 int i = (int) v.getTag() - 5; // to know which address has to be removed
-                int numberOfAddresses = Preferences.getNumberOfAddresses("Address", ProfileActivity.this);
-                Preferences.removeAddress("Address",i,ProfileActivity.this);
+                int numberOfAddresses = PreferencesAddresses.getNumberOfAddresses("Address", ProfileActivity.this);
+                PreferencesAddresses.removeAddress("Address",i,ProfileActivity.this);
                 for (int j=i;j<numberOfAddresses-1;j++){
                     TextView selectedText=addressPopupView.findViewWithTag(j);
                     TextView selectedTextAfter=addressPopupView.findViewWithTag(j+1);
@@ -309,12 +314,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // when the favorite addresses popup is opened, display all the addresses stored in preferences
         TextView address = new TextView(this);
         ImageButton remove = new ImageButton(this);
-        if (Preferences.getNumberOfAddresses("Address",this)!=0) {
-            for (int i = 0; i < Preferences.getNumberOfAddresses("Address", this); i++) {
+        if (PreferencesAddresses.getNumberOfAddresses("Address",this)!=0) {
+            for (int i = 0; i < PreferencesAddresses.getNumberOfAddresses("Address", this); i++) {
                 address = addressPopupView.findViewWithTag(i);
                 remove = addressPopupView.findViewWithTag(i+5);
                 address.setVisibility(View.VISIBLE);
-                address.setText(Preferences.getPrefAddresses("Address", this).get(i));
+                address.setText(PreferencesAddresses.getPrefAddresses("Address", this).get(i));
                 remove.setVisibility(View.VISIBLE);
             }
         }
@@ -346,14 +351,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(ProfileActivity.this, "Veuillez rentrer une adresse", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    if (Preferences.getNumberOfAddresses("Address",ProfileActivity.this)>=5){
+                    if (PreferencesAddresses.getNumberOfAddresses("Address",ProfileActivity.this)>=5){
                         // if you already have 5 addresses, tells you you cannot add anymore
                         Toast.makeText(ProfileActivity.this,"Vous ne pouvez pas ajouter plus de 5 adresses",Toast.LENGTH_SHORT).show();
                     }
                     else {
                         // add typed in address to the Preferences
-                        int addressIndex = Preferences.getNumberOfAddresses("Address", ProfileActivity.this);
-                        Preferences.addAddress("Address",addressIndex,enterAddress.getText().toString(),ProfileActivity.this);
+                        int addressIndex = PreferencesAddresses.getNumberOfAddresses("Address", ProfileActivity.this);
+                        PreferencesAddresses.addAddress("Address",addressIndex,enterAddress.getText().toString(),ProfileActivity.this);
                         // add the new address at the end of the list by making a new textview and remove button visible
                         TextView newAddress = addressPopupView.findViewWithTag(addressIndex);
                         ImageButton newButton = addressPopupView.findViewWithTag(addressIndex + 5);
@@ -401,13 +406,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         noSensibilityBtn.setTag(14);
 
         // this is the sensibility that is displayed directly in the profile page
-        setSensibility.setText(Preferences.getSensibility("Sensibility",this));
+        setSensibility.setText(PreferencesSensibility.getSensibility("Sensibility",this));
 
         // Highlight the sensibility if it has already been selected
         Button selectedButton = new Button(this);
         for (int i=10; i<=14; i++){
             selectedButton=sensibilityPopupView.findViewWithTag(i);
-            if (selectedButton.getText().toString().equals(Preferences.getSensibility("Sensibility", this))){
+            if (selectedButton.getText().toString().equals(PreferencesSensibility.getSensibility("Sensibility", this))){
                 selectedButton.setActivated(true);
             }
         }
@@ -421,7 +426,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 selectedButton.setActivated(!selectedButton.isActivated());
                 String sensibility = selectedButton.getText().toString();
                 if(selectedButton.isActivated()) {
-                    Preferences.setSensibility("Sensibility", sensibility, ProfileActivity.this);
+                    PreferencesSensibility.setSensibility("Sensibility", sensibility, ProfileActivity.this);
                     for (int j = 10; j<=14; j++){
                         if(j!=i) {
                             // uncheck all other buttons once a button is clicked
@@ -433,7 +438,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 else {
                     // if clicking the button deactivates it, remove the sensibility from preferences
-                    Preferences.removeSensibility("Sensibility", ProfileActivity.this);
+                    PreferencesSensibility.removeSensibility("Sensibility", ProfileActivity.this);
                 }
             }
 
@@ -451,8 +456,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onDismiss() {
                 dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
                 // display chosen sensibility on main profile page
-                if(!setSensibility.getText().toString().equals(Preferences.getSensibility("Sensibility", ProfileActivity.this))){
-                    setSensibility.setText(Preferences.getSensibility("Sensibility",ProfileActivity.this));
+                if(!setSensibility.getText().toString().equals(PreferencesSensibility.getSensibility("Sensibility", ProfileActivity.this))){
+                    setSensibility.setText(PreferencesSensibility.getSensibility("Sensibility",ProfileActivity.this));
                 }
             }
         });
@@ -515,7 +520,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         walkButton.setTag(18);
         /*
         // Highlight already selected favorite means of transportation
-        ArrayList<String> favoriteTransportation = Preferences.getPrefTransportation("Transportation",this);
+        ArrayList<String> favoriteTransportation = PreferencesTransport.getPrefTransportation("Transportation",this);
         for (int i = 15;i<19;i++){
             ImageButton button = transportationPopupView.findViewWithTag(i);
             String transportation = button.getContentDescription().toString();
@@ -540,12 +545,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 int key = i-15;
                 String value = buttonClicked.getContentDescription().toString();
                 if (buttonClicked.isActivated()){
-                    Preferences.addTransportation("Transportation",key,value,ProfileActivity.this);
+                    PreferencesTransport.addTransportation("Transportation",key,value,ProfileActivity.this);
                 }
                 else if (!buttonClicked.isActivated()){
-                    Preferences.removeTransportation("Transportation",key,ProfileActivity.this);
+                    PreferencesTransport.removeTransportation("Transportation",key,ProfileActivity.this);
                 }
-                System.out.println(Preferences.getPrefTransportation("Transportation",ProfileActivity.this));
+                System.out.println(PreferencesTransport.getPrefTransportation("Transportation",ProfileActivity.this));
             }
         };
 
@@ -723,6 +728,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // gets the right icon from the index
             ImageView selectedIcon = findIconFromInt(i);
             //if (Preferences.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
+            if (PreferencesTransport.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
                 // if this means of transporation is not in the preferences list, we do not display it
                 //selectedIcon.setVisibility(View.GONE);
             //}
@@ -738,17 +744,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void setPollutionToday(){
         // get the pollution from today
-        int pollution = Preferences.getPollutionToday(this);
+        int pollution = PreferencesPollution.getPollutionToday(this);
         // get the pollution from the last itinerary
-        int lastPol = Preferences.getLastPollution(this);
+        int lastPol = PreferencesPollution.getLastPollution(this);
         // add it to the pollution from today
         pollution+=lastPol;
         // save it in the preferences
-        Preferences.setPollutionToday(pollution,this);
+        PreferencesPollution.setPollutionToday(pollution,this);
         // display new pollution
         pollutionToday.setText(Integer.toString(pollution));
         // reset the last pollution now that it has been saved (so that it doesn't keep adding it as soon as we reopen the profile)
-        Preferences.setLastPollution(0,this);
+        PreferencesPollution.setLastPollution(0,this);
     }
 
     /**
@@ -759,14 +765,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void resetPollutionNewDay(){
         // first we check whether today is a new day or not
         // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
-        int[] lastDate = Preferences.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
-        int[] currentDate = Preferences.getCurrentDate(); // this is the current date
+        int[] lastDate = PreferencesDate.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
+        int[] currentDate = PreferencesDate.getCurrentDate(); // this is the current date
 
         if (currentDate[0]!=lastDate[0]){
-            Preferences.setDate(ProfileActivity.this); // we replace the last saved date with today's date
+            PreferencesDate.setDate(ProfileActivity.this); // we replace the last saved date with today's date
             // then we add the pollution from the last day to the array of this month's pollution
-            Preferences.addDayPollutionToMonth(lastDate,Preferences.getPollutionToday(ProfileActivity.this),ProfileActivity.this);
-            Preferences.setPollutionToday(0,ProfileActivity.this); // we start over with a value of 0
+            PreferencesPollution.addDayPollutionToMonth(lastDate,PreferencesPollution.getPollutionToday(ProfileActivity.this),ProfileActivity.this);
+            PreferencesPollution.setPollutionToday(0,ProfileActivity.this); // we start over with a value of 0
         }
     }
 
@@ -776,16 +782,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void setUpGraph(final int range){
         // we get the pollution data from preferences
-        System.out.println("values"+Preferences.getPollutionYear(2021, this));
-        ArrayList<Integer> values = Preferences.getPollutionYear(2021,this);
+        System.out.println("values"+PreferencesPollution.getPollutionYear(2021, this));
+        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2021,this);
 
 
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we use the java date format to calculate how many days have gone by since the beginning of the year
         SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-        String inputString1 = Preferences.getCurrentDate()[0]+" "+Preferences.getCurrentDate()[1]+" "+Preferences.getCurrentDate()[2];
-        String inputString2 = "00 01 "+Preferences.getCurrentDate()[2];
+        String inputString1 = PreferencesDate.getCurrentDate()[0]+" "+PreferencesDate.getCurrentDate()[1]+" "+PreferencesDate.getCurrentDate()[2];
+        String inputString2 = "00 01 "+PreferencesDate.getCurrentDate()[2];
         int diffDays=0;
         try {
             Date date1 = myFormat.parse(inputString1);
@@ -837,7 +843,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 0 :
                 // in the case that we want to show the week :
                 // first we change the range of the x axis
-                int currentDayOfWeek = (Preferences.getCurrentDate()[3])-1; // day of week starts with 1 for sunday, so we do -1 to start with monday
+                int currentDayOfWeek = (PreferencesDate.getCurrentDate()[3])-1; // day of week starts with 1 for sunday, so we do -1 to start with monday
                 int xAxisMin = (diffDays-currentDayOfWeek)+1; // we have to add one because if we dont we will have a one day difference
                 xAxis.setAxisMinimum(xAxisMin);
                 xAxis.setAxisMaximum(diffDays+(7-currentDayOfWeek));
@@ -863,14 +869,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 1 :
                 // in the case that we want to show the month :
                 // first we change the range of the x axis
-                int dayOfMonth = Preferences.getCurrentDate()[0]; // same principle as the day of week
-                int lengthOfMonth = Preferences.getCurrentDate()[4]; // this is the number of days in the current month
+                int dayOfMonth = PreferencesDate.getCurrentDate()[0]; // same principle as the day of week
+                int lengthOfMonth = PreferencesDate.getCurrentDate()[4]; // this is the number of days in the current month
                 final int xAxisMinMonth = diffDays-dayOfMonth+1;
                 xAxis.setAxisMinimum(xAxisMinMonth);
                 xAxis.setAxisMaximum((diffDays-dayOfMonth)+lengthOfMonth);
                 // then we change the labels of the x axis
                 // this way we can set the array for the month we are about to draw
-                final ArrayList<String> xAxisLabelMonth = daysInYear(Preferences.getCurrentDate()[2]);
+                final ArrayList<String> xAxisLabelMonth = daysInYear(PreferencesDate.getCurrentDate()[2]);
                 // this formats the values to be the new ones we just created :
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
@@ -956,7 +962,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                                 int min = (int) xAxis.getAxisMinimum();
                                 int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                                int[] monthDrawn = {1, month + 1, Preferences.getCurrentDate()[2]};
+                                int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
                                 int[] monthNext = new int[]{monthDrawn[0], monthDrawn[1] + 1, monthDrawn[2]}; // same but with the next month
                                 // then we get the length of each month
                                 int lengthDrawn = nbOfDaysInMonth(monthDrawn);
@@ -990,7 +996,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                                 int min = (int) xAxis.getAxisMinimum();
                                 int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                                int[] monthDrawn = {1, month + 1, Preferences.getCurrentDate()[2]};
+                                int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
                                 int[] monthLast = new int[]{monthDrawn[0], monthDrawn[1] - 1, monthDrawn[2]}; // same but with the next month
                                 // then we get the length of each month
                                 int lengthDrawn = nbOfDaysInMonth(monthDrawn);
@@ -1024,7 +1030,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                             int min = (int) xAxis.getAxisMinimum();
                             int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                            int[] monthDrawn = {1,month+1,Preferences.getCurrentDate()[2]};
+                            int[] monthDrawn = {1,month+1,PreferencesDate.getCurrentDate()[2]};
                             int[] monthLast = new int[]{monthDrawn[0],monthDrawn[1]-1,monthDrawn[2]}; // we go back one month, that way we know how many days are in the previous month
                             int[] monthNext = new int[]{monthDrawn[0],monthDrawn[1]+1,monthDrawn[2]}; // same but with the next month
                             // then we get the length of each month
@@ -1115,6 +1121,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             return 11;
         }
     }
+
+
 
 
 

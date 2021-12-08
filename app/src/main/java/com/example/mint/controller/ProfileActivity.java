@@ -705,17 +705,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Todo : change this function when a new popup is not needed
-     * This method displays the already selected favorite means of transportation on the main profile page
+     *
      */
 
     public void highlight(View transportationButton) {
         transportationButton.setActivated(!transportationButton.isActivated());
         if(transportationButton.isActivated()){
-            int i = Integer.parseInt(transportationButton.getTag().toString());
-            Preferences.addTransportation("Transportation",i, transportationButton.getContentDescription().toString(),ProfileActivity.this); }
-
-        //Preferences.addTransportation("Transportation",Integer.parseInt((transportationButton.getTag().toString())), transportationButton.getContentDescription().toString(),ProfileActivity.this); }
+        Preferences.addTransportation("Transportation",Integer.parseInt((transportationButton.getTag().toString())), transportationButton.getContentDescription().toString(),ProfileActivity.this); }
         else if(!transportationButton.isActivated()) {
             Preferences.removeTransportation("Transportation",Integer.parseInt(transportationButton.getTag().toString()),ProfileActivity.this);}
 

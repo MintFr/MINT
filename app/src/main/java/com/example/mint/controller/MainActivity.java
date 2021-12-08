@@ -56,6 +56,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,12 +82,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean GpsStatus = false; //true if the user's location is activated on the phone
     private final int POSITION_PERMISSION_CODE = 1;
     LocationManager locationManager;
-
+    Location locationUser;
     /**
      * Map
      */
     private MapView map;
     IMapController mapController;
+    private Marker positionMarker;
+
 
     /**
      * Start Address
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton iconDateBtn;
     private ImageButton iconTimeBtn;
     private Button timeBtn;
+    private Button myPosition;
     PopupWindow popUp;
     PopupWindow popUpCalendar;
     TimePicker timePicker;
@@ -152,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean starting;
     boolean fast;
     boolean healthy;
+    private GeoPoint pointTempo;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
@@ -205,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stepPoint = findViewById(R.id.stepPoint);
         search = findViewById(R.id.search);
         addStepPoint = findViewById(R.id.addStepPoint);
-
+        myPosition = findViewById(R.id.myPosition);
         option = findViewById(R.id.options);
         dimPopup = findViewById(R.id.dim_popup);
 
@@ -215,6 +220,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.endAddress = new com.example.mint.model.Address();
         this.startAddress = new com.example.mint.model.Address();
         this.stepAddress = new com.example.mint.model.Address();
+
+
+
+
+
+
+
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -250,12 +262,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stepPoint.addTextChangedListener(textChangedListener);
         search.setOnClickListener(this);
         option.setOnClickListener(this);
+        myPosition.setOnClickListener(this);
 
         // set the tags for when onClick is called
         startPoint.setTag(0);
         endPoint.setTag(1);
         search.setTag(2);
         option.setTag(3);
+        myPosition.setTag(4);
         stepPoint.setTag(10);
 
         Context context = getApplicationContext();
@@ -269,6 +283,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(startPoint);
+
+
+
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -285,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stepPoint.setVisibility(View.VISIBLE);
                     addStepPoint.setActivated(true);
                     stepVisibility = true;
-                } // make the stepPoint INvisible when it is
+                } // make the stepPoint Invisible when it is
                 else {
                     stepPoint.setVisibility(View.GONE);
                     addStepPoint.setActivated(false);
@@ -599,11 +616,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button2.setActivated(false);
 
                 // memorization of the selection of start or end time
-                if (i == 8){
-                    starting = true;
-                } else {
-                    starting = false;
-                }
+                starting = i == 8;
             }
         };
 
@@ -769,16 +782,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
 
-        // We now need to know where we have to write the location : in the startPoint, stepPoint or endPoint
-        if (idButton == startPoint.getId()){
-            idInt = 0;
-        }
-        if (idButton == endPoint.getId()) {
-            idInt = 1;
-        }
-        if (idButton == stepPoint.getId()) {
-            idInt = 2;
-        }
+        locationUser =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     /** Print user's position If we need to convert the
@@ -787,25 +791,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param location
      */
     public void onLocationChanged(Location location) {
-        //String position = location.getLatitude() + "," + location.getLongitude();
-        Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());
-        // We write the location in the good place : startPoint, stepPoint or endPoint
-        if (idInt == 0){
-            startAddress.setLocationName(String.valueOf(R.string.position_text));
-            startAddress.setCoordinates(coordinates);
-            startPoint.setText("Ma position");
-            //startPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
-        } if (idInt == 1) {
-            endAddress.setLocationName(String.valueOf(R.string.position_text));
-            endAddress.setCoordinates(coordinates);
-            endPoint.setText("Ma position");
-            //endPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
-        } if (idInt == 2) {
-            stepAddress.setLocationName(String.valueOf(R.string.position_text));
-            stepAddress.setCoordinates(coordinates);
-            stepPoint.setText("Ma position");
-            //stepPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
-        }
+        pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+        positionMarker.setPosition(pointTempo);
+        positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+        positionMarker.setFlat(true);
+        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+        map.getOverlays().add(positionMarker);
+        mapController.setCenter(pointTempo);
+
+
     }
 
     /////////////////////////////////////////////////////////
@@ -864,7 +858,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View v){
-        int i = (int) v.getTag(); //if 2 : search, if 3 : option
+        int i = (int) v.getTag(); //if 2 : search, if 3 : option , if 4 : ma position
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
         step = stepPoint.getText().toString();
@@ -1118,6 +1112,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     dimPopup.setVisibility(View.VISIBLE);
                     popUp.showAtLocation(v,Gravity.CENTER,0,0);
                 }
+        else if (i==4){
+            // We need this parameter to check if the phone's GPS is activated
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            assert locationManager != null; //check if there the app is allowed to access location
+            GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
+
+            // If the permission to access to the user's location is already given, we use it
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                // We also need the phone's GPS to be activated. We check this here.
+                if (GpsStatus){
+
+                    getLocation();
+                    Marker positionMarker = new Marker(map);
+                    pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+                    positionMarker.setPosition(pointTempo);
+                    positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+                    positionMarker.setFlat(true);
+                    positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                    map.getOverlays().add(positionMarker);
+                    mapController.setCenter(pointTempo);
+
+                }
+
+                // If the phone's GPS is NOT activated, we ask the user to activate it
+                else {
+                    showAlertMessageNoGps();
+                }
+            }
+
+            // If we don't have the permission, we ask the permission to use their location
+            else {
+                requestLocalisationPermission(); //line 447
+            }
+        }
+
     }
 
     /**
@@ -1187,13 +1218,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public boolean CheckInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            //we are connected to a network
-            return true;
-        }
-        return false;
+        //we are connected to a network
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }//end of check int
+
 
 
 }

@@ -98,5 +98,6 @@
     <string name="walk_choice">4</string>
     <string name="calendar">Calendrier</string>
     <string name="mint_logo">Mint_logo</string>
+    <string name="ma_position">ma position</string>
 
 </resources>

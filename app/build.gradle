@@ -36,6 +36,7 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 dependencies {
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -47,6 +48,9 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // Dexter runtime permissions
+    implementation 'com.karumi:dexter:4.2.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

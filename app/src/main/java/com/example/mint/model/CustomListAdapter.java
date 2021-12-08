@@ -28,7 +28,7 @@ public class CustomListAdapter extends BaseAdapter {
     public CustomListAdapter(Context context, ArrayList<String> items) {
         this.context = context;
         this.items = items;
-        nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress",context);
+        nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress",context);
     }
 
     //returns total number of items in the list
@@ -137,7 +137,7 @@ public class CustomListAdapter extends BaseAdapter {
                         finalConvertView.setVisibility(View.GONE);
                         items.remove(finalPosition);
                         notifyDataSetChanged();
-                        Preferences.removeLastAddress("lastAddress",finalPosition-1,context);
+                        PreferencesAddresses.removeLastAddress("lastAddress",finalPosition-1,context);
                         nbLastAdd--;
                     }
                 });

@@ -790,8 +790,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      * @param location
      */
-    public void onLocationChanged(Location location) {
-        pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+  /*  public void onLocationChanged(Location location) {
+        pointTempo = new GeoPoint(location.getLatitude(),location.getLongitude());
         positionMarker.setPosition(pointTempo);
         positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         positionMarker.setFlat(true);
@@ -800,7 +800,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapController.setCenter(pointTempo);
 
 
-    }
+    }*/
 
     /////////////////////////////////////////////////////////
     // LOCATION END //

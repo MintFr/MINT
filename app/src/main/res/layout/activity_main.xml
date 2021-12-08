@@ -231,7 +231,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#73000000"
-        android:onClick="printMyPosition"
+
         android:visibility="invisible" />
 
 </RelativeLayout>

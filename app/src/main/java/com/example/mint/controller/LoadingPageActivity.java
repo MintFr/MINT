@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.example.mint.model.AsyncItineraryCompute;
 import com.example.mint.model.Preferences;
 import com.example.mint.R;
+import com.example.mint.model.PreferencesTransport;
 
 /**
  * Activity for the loading page, used when calculating an itinerary
@@ -32,7 +33,7 @@ public class LoadingPageActivity extends AppCompatActivity {
         boolean param5 = intent.getBooleanExtra("param5", false);
 
         // options' management
-        int[] options = Preferences.getOptionTransportation(this);
+        int[] options = PreferencesTransport.getOptionTransportation(this);
         boolean noOptions = true;
         for (int i : options) {
             if (i != 0) noOptions = false;

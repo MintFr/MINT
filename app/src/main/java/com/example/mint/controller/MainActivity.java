@@ -45,6 +45,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
@@ -71,6 +78,8 @@ import java.util.Locale;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
+
+    private Boolean mRequestingLocationUpdates;
 
     private View dimPopup;
 
@@ -161,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestLocalisationPermission(); //line 447
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -767,21 +777,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @SuppressLint("MissingPermission")
     private void getLocation(){
-        //Access user's location
-        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
+        // Requesting ACCESS_FINE_LOCATION using Dexter library
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        //mRequestingLocationUpdates = true;
+                        //startLocationUpdates();
+                    }
 
-        // We now need to know where we have to write the location : in the startPoint, stepPoint or endPoint
-        if (idButton == startPoint.getId()){
-            idInt = 0;
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            // open device settings when the permission is
+                            // denied permanently
+                            //openSettings();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
         }
-        if (idButton == endPoint.getId()) {
-            idInt = 1;
-        }
-        if (idButton == stepPoint.getId()) {
-            idInt = 2;
-        }
-    }
+
 
     /** Print user's position If we need to convert the
      * coordinates in an address, we need to do it here with a "geocoder"

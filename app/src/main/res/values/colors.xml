@@ -38,4 +38,13 @@
     <color name="White_Profile">#F8F8F8</color>
     <color name="LightGrey_Profile">#73000000</color>#
 
+    <!-- Colors for list_header -->
+    <color name="LightGreen_listheader">#89BE89</color>
+
+    <!-- Colors for list_item -->
+    <color name="DarkGrey_listitem">#999999</color>
+    <color name="Transparent_listitem">#00ffffff</color>
+    <color name="WhiteGrey_listitem">#e0e0e0</color>
+
+
 </resources>

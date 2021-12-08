@@ -5,5 +5,5 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:textStyle="bold"
-    android:textColor="@color/colorAccent"
+    android:textColor="@color/LightGreen_listheader"
     android:padding="10dp"/>

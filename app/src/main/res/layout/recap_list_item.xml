@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/transportation_icon"
-        android:background="#EDEDED" />
+        android:background="@color/LightLightGrey_RecapList" />
 
     <!--<ImageView
         android:id="@+id/recap_time_icon"
@@ -128,7 +128,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_alignParentBottom="true"
-        android:background="#EDEDED" />
+        android:background="@color/LightLightGrey_RecapList" />
 
     <TextView
         android:id="@+id/timeStart"

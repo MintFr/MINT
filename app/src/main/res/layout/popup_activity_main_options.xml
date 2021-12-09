@@ -11,7 +11,6 @@
     android:paddingLeft="30dp"
     tools:context=".controller.MainActivity">
 
-
     <TextView
         android:id="@+id/choix_du_critere"
         android:layout_width="wrap_content"
@@ -110,7 +109,7 @@
             android:contentDescription="@string/car_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:background="#00ffffff"/>
+            android:background="@color/Transparent_Profile_PopupMain"/>
         <ImageButton
             android:id="@+id/tram_button"
             android:layout_width="0dp"
@@ -123,7 +122,7 @@
             android:contentDescription="@string/tram_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:background="#00ffffff"/>
+            android:background="@color/Transparent_Profile_PopupMain"/>
         <ImageButton
             android:id="@+id/bike_button"
             android:layout_width="0dp"
@@ -136,7 +135,7 @@
             android:contentDescription="@string/bike_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:background="#00ffffff"/>
+            android:background="@color/Transparent_Profile_PopupMain"/>
         <ImageButton
             android:id="@+id/walk_button"
             android:layout_width="0dp"
@@ -149,7 +148,7 @@
             android:contentDescription="@string/walk_choice"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:background="#00ffffff"/>
+            android:background="@color/Transparent_Profile_PopupMain"/>
 
     </LinearLayout>
     <View
@@ -160,7 +159,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignLeft="@id/option_calendar_icon"
         android:layout_alignRight="@id/end_time"
-        android:background="#e0e0e0"
+        android:background="@color/WhiteGrey_Profile_PopupMain"
         android:layout_below="@id/transportation_icons"
         android:layout_alignStart="@id/option_calendar_icon"
         android:layout_alignEnd="@id/end_time" />
@@ -178,7 +177,7 @@
         android:layout_marginTop="22dp"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="-10dp"
-        android:background="#e0e0e0"
+        android:background="@color/WhiteGrey_Profile_PopupMain"
         android:layout_alignStart="@id/option_calendar_icon"
         android:layout_alignEnd="@id/end_time"
         android:layout_marginStart="5dp"
@@ -202,7 +201,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_calendar"
-        android:background="#00ffffff"
+        android:background="@color/Transparent_Profile_PopupMain"
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:padding="5dp"
@@ -224,7 +223,7 @@
         android:layout_height="wrap_content"
         android:text="@string/calendar_date_hint"
         android:layout_alignBottom="@id/option_calendar_icon"
-        android:background="#00ffffff"
+        android:background="@color/Transparent_Profile_PopupMain"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:textColor="@color/colorAccent"
@@ -236,7 +235,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_time"
-        android:background="#00ffffff"
+        android:background="@color/Transparent_Profile_PopupMain"
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:padding="5dp"
@@ -260,7 +259,7 @@
         android:layout_height="wrap_content"
         android:text="@string/default_time"
         android:layout_alignBottom="@id/option_clock_icon"
-        android:background="#00ffffff"
+        android:background="@color/Transparent_Profile_PopupMain"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:textColor="@color/colorAccent"

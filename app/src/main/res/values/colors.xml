@@ -51,6 +51,23 @@
     <color name="PrimaryWhite_Detail">#FFFFFF</color>
     <color name="LightGreen_Detail">#89BE89</color>
 
+    <!-- Colors for popup_activity_main_options -->
+    <color name="Transparent_Profile_PopupMain">#00ffffff</color>
+    <color name="WhiteGrey_Profile_PopupMain">#e0e0e0</color>
+    <color name="VeryLightGrey_Profile_PopupMain">#e6e6e6</color>
 
+    <!-- Colors for itinerary_info -->
+    <color name="Grey_itinerary_info">#BEBDBD</color>
+
+    <!-- Colors activity_settings -->
+    <color name="LightLightGrey_Settings">#EDEDED</color>
+    <color name="DarkGrey_Settings">#999999</color>
+    <color name="White_Settings">#F8F8F8</color>
+
+    <!-- Colors recap_list_item -->
+    <color name="LightLightGrey_RecapList">#EDEDED</color>
+
+    <!-- Colors spinner_dropdown_item -->
+    <color name="PrimaryGreen_Spinner_Dropdown">#084528</color>
 
 </resources>

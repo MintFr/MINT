@@ -50,6 +50,8 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.Preferences;
+import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.osmdroid.api.IMapController;
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // First step to highlight already selected favorite means of transportation
         // (next and last step in "showOptions()"
-        ArrayList<String> favoriteTrans = Preferences.getPrefTransportation("Transportation",MainActivity.this);
+        ArrayList<String> favoriteTrans = PreferencesTransport.getPrefTransportation("Transportation",MainActivity.this);
         int[] fav = {0,0,0,0};
         for (int j = 0;j<4;j++) {
             if (favoriteTrans.get(j).equals("car_button")) {
@@ -187,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         System.out.println("{"+fav[0]+","+fav[1]+","+fav[2]+","+fav[3]+"}");
-        Preferences.setOptionTransportation(fav,this);
+        PreferencesTransport.setOptionTransportation(fav,this);
 
         // get current date and time
         year = cldr.get(Calendar.YEAR);
@@ -366,8 +368,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // initialize a pop up window type
         PopupWindow popupWindow = new PopupWindow(this);
-        lastAddressList = Preferences.getLastAddresses("lastAddress",this);
-        addressList = Preferences.getPrefAddresses("Address", this);
+        lastAddressList = PreferencesAddresses.getLastAddresses("lastAddress",this);
+        addressList = PreferencesAddresses.getPrefAddresses("Address", this);
         lastAddressList.add(0,"Mes dernières adresses :");
         addressList.add(0,"Mes adresses favorites :");
 
@@ -453,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         walkButton.setTag(7);
 
         // Highlight already selected favorite means of transportation
-        int[] favoriteTransportation = Preferences.getOptionTransportation(MainActivity.this);
+        int[] favoriteTransportation = PreferencesTransport.getOptionTransportation(MainActivity.this);
         for (int i = 4;i<8;i++){
             ImageButton button = optionPopupView.findViewWithTag(i);
             if (favoriteTransportation[i-4]!=0){
@@ -475,11 +477,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (buttonClicked.isActivated()){
                     String key = (String) buttonClicked.getContentDescription();
                     int value = Integer.parseInt(key);
-                    Preferences.addOptionTransportation(key,value,MainActivity.this);
+                    PreferencesTransport.addOptionTransportation(key,value,MainActivity.this);
                 }
                 else if (!buttonClicked.isActivated()){
                     String key = (String) buttonClicked.getContentDescription();
-                    Preferences.addOptionTransportation(key,0,MainActivity.this);
+                    PreferencesTransport.addOptionTransportation(key,0,MainActivity.this);
                 }
             }
         };
@@ -909,45 +911,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
 
                     // get the number of addresses in the history
-                    int nbLastAdd = Preferences.getNumberOfLastAddresses("lastAddress", MainActivity.this);
+                    int nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this);
 
                     // returns which of the start or end address already exists in the list and its index in the list
                     int[] sameAddresses = getSameAddresses(start, end);
 
                     // if none of the addresses already exist, add them
                     if (sameAddresses[0] == -1 && sameAddresses[1] == -1) {
-                        Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                        Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                        PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                        PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
                         nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
                     }
 
                     // if the startpoint already exists, move it to first position and add endpoint
                     else if (sameAddresses[0] != -1 && sameAddresses[1] == -1) {
-                        Preferences.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                        Preferences.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
+                        PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                        PreferencesAddresses.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
                         nbLastAdd++; // the number of addresses has increased by 1
                     }
 
                     // if the endpoint already exists, move it to first position and add startpoint
                     else if (sameAddresses[0] == -1 && sameAddresses[1] != -1) {
-                        Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                        Preferences.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                        PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+                        PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
                         nbLastAdd++; // the number of addresses has increased by 1
                     }
 
                     // if both addresses already exist, we move both addresses to first position
                     else {
-                        Preferences.moveAddressFirst(sameAddresses[1], MainActivity.this);
+                        PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
                         // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
-                        Preferences.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
+                        PreferencesAddresses.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
                     }
 
                     // check if number of addresses has gone over 3 and remove the ones over 3
                     if (nbLastAdd == 5) {
-                        Preferences.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
-                        Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+                        PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
+                        PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                     } else if (nbLastAdd == 4) {
-                        Preferences.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+                        PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
                     }
 
 
@@ -1107,9 +1109,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
                 }*/
 
-                Preferences.addAddress("startAddress",start,MainActivity.this);
-                Preferences.addAddress("endAddress",end,MainActivity.this);
-                Preferences.addAddress("stepAddress",step,MainActivity.this);
+                PreferencesAddresses.addAddress("startAddress",start,MainActivity.this);
+                PreferencesAddresses.addAddress("endAddress",end,MainActivity.this);
+                PreferencesAddresses.addAddress("stepAddress",step,MainActivity.this);
 
             }
 
@@ -1207,8 +1209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int[] arr = new int[2];
         arr[0]=-1; // startpoint
         arr[1]=-1; // endpoint
-        for (int j = 0; j < Preferences.getNumberOfLastAddresses("lastAddress",MainActivity.this); j++) {
-            String lastAddress = Preferences.getLastAddresses("lastAddress", MainActivity.this).get(j);
+        for (int j = 0; j < PreferencesAddresses.getNumberOfLastAddresses("lastAddress",MainActivity.this); j++) {
+            String lastAddress = PreferencesAddresses.getLastAddresses("lastAddress", MainActivity.this).get(j);
             if (start.equals(lastAddress)) {
                 arr[0]=j;
             }

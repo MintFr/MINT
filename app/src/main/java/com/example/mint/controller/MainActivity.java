@@ -1169,7 +1169,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // We also need the phone's GPS to be activated. We check this here.
                 if (GpsStatus){
-
+                    if (map.getOverlays().size() !=0){
+                        map.getOverlays().clear();
+                        map.postInvalidate();
+                    }
                     getLocation();
                     Marker positionMarker = new Marker(map);
                     pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());

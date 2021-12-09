@@ -39,12 +39,18 @@
     <color name="LightGrey_Profile">#73000000</color>#
 
     <!-- Colors for list_header -->
-    <color name="LightGreen_listheader">#89BE89</color>
+    <color name="LightGreen_Listheader">#89BE89</color>
 
     <!-- Colors for list_item -->
-    <color name="DarkGrey_listitem">#999999</color>
-    <color name="Transparent_listitem">#00ffffff</color>
-    <color name="WhiteGrey_listitem">#e0e0e0</color>
+    <color name="DarkGrey_Listitem">#999999</color>
+    <color name="Transparent_Listitem">#00ffffff</color>
+    <color name="WhiteGrey_Listitem">#e0e0e0</color>
+
+    <!-- Colors for itinerary_detail -->
+    <color name="WhiteTwo_Detail">#EDEDED</color>
+    <color name="PrimaryWhite_Detail">#FFFFFF</color>
+    <color name="LightGreen_Detail">#89BE89</color>
+
 
 
 </resources>

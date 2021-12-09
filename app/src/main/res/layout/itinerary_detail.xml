@@ -37,7 +37,7 @@
             android:id="@+id/vertical_separator"
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="#EDEDED"/>
+            android:background="@color/WhiteTwo_Detail"/>
 
         <TextView
             android:id="@+id/exposition_prompt"
@@ -66,7 +66,7 @@
         android:id="@+id/title_separator"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"/>
+        android:background="@color/WhiteTwo_Detail"/>
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -78,7 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:background="@android:color/background_light">
+            android:background="@color/PrimaryWhite_Detail">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/itinerary_line"
                 android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
                     android:id="@+id/line_border"
                     android:layout_width="6dp"
                     android:layout_height="0dp"
-                    android:background="@color/cardview_light_background"
+                    android:background="@color/PrimaryWhite_Detail"
                     app:layout_constraintTop_toTopOf="@id/start_icon"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -112,7 +113,7 @@
                     android:id="@+id/line"
                     android:layout_width="3dp"
                     android:layout_height="0dp"
-                    android:background="@color/colorAccent"
+                    android:background="@color/LightGreen_Detail"
                     app:layout_constraintTop_toTopOf="@id/start_icon"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -161,7 +162,7 @@
                     android:id="@+id/steps_separator"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="#EDEDED" />
+                    android:background="@color/WhiteTwo_Detail" />
 
                 <TextView
                     android:id="@+id/end_point"

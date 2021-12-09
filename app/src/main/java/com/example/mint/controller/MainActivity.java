@@ -287,8 +287,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapController.setZoom(15.0);
         mapController.setCenter(startPoint);
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////Centrers the map on lauch on the users position //////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        // We need this parameter to check if the phone's GPS is activated
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        assert locationManager != null; //check if there the app is allowed to access location
+        GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
 
+        // If the permission to access to the user's location is already given, we use it
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            // We also need the phone's GPS to be activated. We check this here.
+            if (GpsStatus){
+
+                getLocation();
+                Marker positionMarker = new Marker(map);
+                pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+                positionMarker.setPosition(pointTempo);
+                positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+                positionMarker.setFlat(true);
+                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                map.getOverlays().add(positionMarker);
+                mapController.setCenter(pointTempo);
+
+            }
+
+            // If the phone's GPS is NOT activated, we ask the user to activate it
+            else {
+                showAlertMessageNoGps();
+            }
+        }
+
+        // If we don't have the permission, we ask the permission to use their location
+        else {
+            requestLocalisationPermission(); //line 447
+        }
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -783,6 +784,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, MainActivity.this);
 
         locationUser =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        String msg = locationUser.toString();
+        Log.d("getlocation:",msg);
     }
 
     /** Print user's position If we need to convert the
@@ -790,17 +793,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      * @param location
      */
-  /*  public void onLocationChanged(Location location) {
-        pointTempo = new GeoPoint(location.getLatitude(),location.getLongitude());
+    public void onLocationChanged(Location location) {
+        /*pointTempo = new GeoPoint(location.getLatitude(),location.getLongitude());
         positionMarker.setPosition(pointTempo);
         positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         positionMarker.setFlat(true);
         positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(positionMarker);
-        mapController.setCenter(pointTempo);
+        mapController.setCenter(pointTempo);*/
+
+        String msg = location.toString();
+        Log.d("onLocationChanged :",msg);
 
 
-    }*/
+
+    }
 
     /////////////////////////////////////////////////////////
     // LOCATION END //

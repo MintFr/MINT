@@ -1169,6 +1169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // We also need the phone's GPS to be activated. We check this here.
                 if (GpsStatus){
+                    // if there's already a marker on the map it is deleted
                     if (map.getOverlays().size() !=0){
                         map.getOverlays().clear();
                         map.postInvalidate();

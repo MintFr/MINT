@@ -32,11 +32,14 @@
 
     <!-- Colors for  activity_profile -->
     <color name="GreenKaki_Profile">#1a89be89</color>
+    <color name="LightBlack_Profile">#373737</color>
+    <color name="Charcoal_Profile">#454545</color>
+    <color name="Transparent_Profile">#00FFFF</color>
+    <color name="LightGrey_Profile">#73000000</color>
     <color name="DarkGrey_Profile">#999999</color>
-    <color name="Transparent_Profile">#00FFFFFF</color>
-    <color name="Black_Profile">#000000</color>
+    <color name="PrimaryBlack_Profile">#000000</color>
     <color name="White_Profile">#F8F8F8</color>
-    <color name="LightGrey_Profile">#73000000</color>#
+    <color name="PrimaryLight_Profile">#ffffff</color>
 
     <!-- Colors for list_header -->
     <color name="LightGreen_Listheader">#89BE89</color>

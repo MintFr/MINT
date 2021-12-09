@@ -332,7 +332,7 @@
                         android:layout_alignTop="@id/chart"
                         android:src="@drawable/ic_chevron_right"
                         android:rotation="180"
-                        android:background="@color/Black_Profile"
+                        android:background="@color/PrimaryBlack_Profile"
                         android:layout_toLeftOf="@id/chart"
                         android:contentDescription="TODO" />
                     <ImageButton
@@ -342,7 +342,7 @@
                         android:layout_alignBottom="@id/chart"
                         android:layout_alignTop="@id/chart"
                         android:src="@drawable/ic_chevron_right"
-                        android:background="@color/Black_Profile"
+                        android:background="@color/PrimaryBlack_Profile"
                         android:layout_toRightOf="@id/chart"
                         android:contentDescription="TODO" />
 

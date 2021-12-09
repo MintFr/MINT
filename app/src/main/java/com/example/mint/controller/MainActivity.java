@@ -842,6 +842,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String msg = location.toString();
         Log.d("onLocationChanged :",msg);
+        if (map.getOverlays().size() !=0){
+            map.getOverlays().clear();
+            map.postInvalidate();
+        }
+        getLocation();
+        Marker positionMarker = new Marker(map);
+        pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+        positionMarker.setPosition(pointTempo);
+        positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+        positionMarker.setFlat(true);
+        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+        map.getOverlays().add(positionMarker);
 
 
 

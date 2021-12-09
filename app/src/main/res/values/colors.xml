@@ -30,7 +30,7 @@
     <color name="White_Map">#F8F8F8</color>
     <color name="DarkGrey_Map">#999999</color>
 
-    <!-- Colors for  activity_profile -->
+    <!-- Colors for  activity_Profile -->
     <color name="GreenKaki_Profile">#1a89be89</color>
     <color name="DarkGrey_Profile">#999999</color>
     <color name="Transparent_Profile">#00FFFFFF</color>
@@ -38,18 +38,27 @@
     <color name="White_Profile">#F8F8F8</color>
     <color name="LightGrey_Profile">#73000000</color>#
 
-    <!-- Colors for list_header -->
+    <!-- Colors for List_Header -->
     <color name="LightGreen_Listheader">#89BE89</color>
 
-    <!-- Colors for list_item -->
+    <!-- Colors for List_Item -->
     <color name="DarkGrey_Listitem">#999999</color>
     <color name="Transparent_Listitem">#00ffffff</color>
     <color name="WhiteGrey_Listitem">#e0e0e0</color>
 
-    <!-- Colors for itinerary_detail -->
+    <!-- Colors for Itinerary_Detail -->
     <color name="WhiteTwo_Detail">#EDEDED</color>
     <color name="PrimaryWhite_Detail">#FFFFFF</color>
     <color name="LightGreen_Detail">#89BE89</color>
+
+    <!-- Colors for Itinerary_Step -->
+    <color name="WhiteTwo_Step">#EDEDED</color>
+
+    <!-- Colors for Popup_Favorite_Adresses -->
+    <color name="WhiteGrey_FavAdresses">#e0e0e0</color>
+    <color name="Transparent_FavAdresses">#00ffffff</color>
+    <color name="PrimaryWhite_FavAdresses">#FFFFFF</color>
+
 
 
 

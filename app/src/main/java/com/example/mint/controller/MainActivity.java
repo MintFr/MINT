@@ -822,7 +822,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)); //access to phone's settings to activate GPS
                         ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                 Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                        popUp.dismiss();
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("non", new DialogInterface.OnClickListener(){ //refuse to activate GPS

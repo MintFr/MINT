@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- General colors -->
     <color name="colorPrimary">#084528</color>
     <color name="colorPrimaryDark">#DDDDDD</color>
     <color name="colorAccent">#89BE89</color>
@@ -9,9 +11,75 @@
     <color name="colorGrey">#DDDDDD</color>
     <color name="colorBlack">#000000</color>
     <color name="colorDarkGrey">#999999</color>
-<!--    <color name="colorYellow">#FFE45C</color>-->
     <color name="colorYellow">#EBD884</color>
     <color name="colorOrange">#F69F65</color>
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
     <color name="colorTransparentWhite">#11ffffff</color>
+
+    <!-- Colors for  layout activity_itinerary -->
+    <color name="PrimaryWhite_Itinerary">#ffffff</color>
+    <color name="White_Itinerary">#F8F8F8</color>
+    <color name="DarkGrey_Itinerary">#999999</color>
+
+    <!-- Colors for  layout activity_loading_page -->
+    <color name="Blue_Loading_Page">#208afa</color>
+
+    <!-- Colors for  activity_map -->
+    <color name="PrimaryWhite_Map">#ffffff</color>
+    <color name="PrimaryGreen_Map">#084528</color>
+    <color name="White_Map">#F8F8F8</color>
+    <color name="DarkGrey_Map">#999999</color>
+
+    <!-- Colors for  activity_profile -->
+    <color name="GreenKaki_Profile">#1a89be89</color>
+    <color name="LightBlack_Profile">#373737</color>
+    <color name="Charcoal_Profile">#454545</color>
+    <color name="Transparent_Profile">#00FFFF</color>
+    <color name="LightGrey_Profile">#73000000</color>
+    <color name="DarkGrey_Profile">#999999</color>
+    <color name="PrimaryBlack_Profile">#000000</color>
+    <color name="White_Profile">#F8F8F8</color>
+    <color name="PrimaryLight_Profile">#ffffff</color>
+
+    <!-- Colors for list_header -->
+    <color name="LightGreen_Listheader">#89BE89</color>
+
+    <!-- Colors for list_item -->
+    <color name="DarkGrey_Listitem">#999999</color>
+    <color name="Transparent_Listitem">#00ffffff</color>
+    <color name="WhiteGrey_Listitem">#e0e0e0</color>
+
+    <!-- Colors for itinerary_detail -->
+    <color name="WhiteTwo_Detail">#EDEDED</color>
+    <color name="PrimaryWhite_Detail">#FFFFFF</color>
+    <color name="LightGreen_Detail">#89BE89</color>
+
+    <!-- Colors for Itinerary_Step -->
+    <color name="WhiteTwo_Step">#EDEDED</color>
+
+    <!-- Colors for Popup_Favorite_Adresses -->
+    <color name="WhiteGrey_FavAdresses">#e0e0e0</color>
+    <color name="Transparent_FavAdresses">#00ffffff</color>
+    <color name="PrimaryWhite_FavAdresses">#FFFFFF</color>
+
+
+    <!-- Colors for popup_activity_main_options -->
+    <color name="Transparent_Profile_PopupMain">#00ffffff</color>
+    <color name="WhiteGrey_Profile_PopupMain">#e0e0e0</color>
+    <color name="VeryLightGrey_Profile_PopupMain">#e6e6e6</color>
+
+    <!-- Colors for itinerary_info -->
+    <color name="Grey_itinerary_info">#BEBDBD</color>
+
+    <!-- Colors activity_settings -->
+    <color name="LightLightGrey_Settings">#EDEDED</color>
+    <color name="DarkGrey_Settings">#999999</color>
+    <color name="White_Settings">#F8F8F8</color>
+
+    <!-- Colors recap_list_item -->
+    <color name="LightLightGrey_RecapList">#EDEDED</color>
+
+    <!-- Colors spinner_dropdown_item -->
+    <color name="PrimaryGreen_Spinner_Dropdown">#084528</color>
+
 </resources>

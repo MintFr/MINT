@@ -70,6 +70,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
+        android:background="@color/WhiteTwo_Step"
         android:layout_below="@id/address"/>
 </RelativeLayout>

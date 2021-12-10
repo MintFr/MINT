@@ -23,7 +23,7 @@
         android:id="@+id/line"
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:background="#BEBDBD"
+        android:background="@color/Grey_itinerary_info"
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/time_info"
         android:layout_alignTop="@id/time_info"

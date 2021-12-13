@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -49,11 +50,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TransferQueue;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
  */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
+
 
     /**
      * dim the screen behind the popup window
@@ -104,10 +109,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private PopupWindow transportationPopupWindow;
 
     //nouvelle méthode
-    private ImageButton car_button;
-    private ImageButton tram_button;
-    private ImageButton bike_button;
-    private ImageButton walk_button;
+    private ImageButton carButton;
+    private ImageButton tramButton;
+    private ImageButton bikeButton;
+    private ImageButton walkButton;
 /////////////////////////////////////////////////////////////////
 
     //private static final String TAG = "ProfileActivity"; //--> for debugging
@@ -119,6 +124,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //debbogage
+        Log.d(LOG_TAG,"------");
+        Log.d(LOG_TAG,"Save State Profile OnCreate");
+
         setContentView(R.layout.activity_profile);
 
         //Preferences.clearAddresses(this);
@@ -488,6 +498,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         walk_button.setOnClickListener(this);
 */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /** à écrire dans le onResume()
+        car_button = this.findViewById(R.id.car_button) ;
+        tram_button = this.findViewById(R.id.tram_button) ;
+        bike_button = this.findViewById(R.id.bike_button) ;
+        walk_button = this.findViewById(R.id.walk_button) ;
+
+
+        ArrayList<String> favoriteTransportation = PreferencesTransport.getPrefTransportation("Transportation",this);
+        if(!favoriteTransportation.isEmpty()) {
+            for (String i : favoriteTransportation) {
+                    car_button.setActivated(i.equals("car_button"));
+                    tram_button.setActivated(i.equals("tram_button"));
+                    bike_button.setActivated(i.equals("bike_button"));
+                    walk_button.setActivated(i.equals("walk_button"));
+            }
+        }*/
 
         /**
          * Todo : Change the way the buttons are displayed
@@ -716,9 +742,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void highlight(View transportationButton) {
         transportationButton.setActivated(!transportationButton.isActivated());
         if(transportationButton.isActivated()){
-        Preferences.addTransportation("Transportation",Integer.parseInt((transportationButton.getTag().toString())), transportationButton.getContentDescription().toString(),ProfileActivity.this); }
+            Log.d(LOG_TAG,"Boolean button isActivated "+ String.valueOf(transportationButton.isActivated()));
+            PreferencesTransport.addTransportation("Transportation",Integer.parseInt((transportationButton.getTag().toString())), transportationButton.getContentDescription().toString(),ProfileActivity.this); }
         else if(!transportationButton.isActivated()) {
-            Preferences.removeTransportation("Transportation",Integer.parseInt(transportationButton.getTag().toString()),ProfileActivity.this);}
+            PreferencesTransport.removeTransportation("Transportation",Integer.parseInt(transportationButton.getTag().toString()),ProfileActivity.this);}
+        //debbogage
+
+        ArrayList<String> favoriteTrans = PreferencesTransport.getPrefTransportation("Transportation",this);
+            Log.d(LOG_TAG,"Pref trans :"+ favoriteTrans.get(0));
+        Log.d(LOG_TAG,"Pref trans :"+ favoriteTrans.get(1));
+        Log.d(LOG_TAG,"Pref trans :"+ favoriteTrans.get(2));
+        Log.d(LOG_TAG,"Pref trans :"+ favoriteTrans.get(3));
 
     }
 
@@ -1122,7 +1156,64 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(LOG_TAG, "Save State Profile OnStart");
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.d(LOG_TAG, "Save State Profile OnPause");
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.d(LOG_TAG, "Save State Profile OnRestart");
+    }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "Save State Profile OnResume");
+        carButton = this.findViewById(R.id.car_button) ;
+        tramButton = this.findViewById(R.id.tram_button) ;
+        bikeButton = this.findViewById(R.id.bike_button) ;
+        walkButton = this.findViewById(R.id.walk_button) ;
+
+
+        ArrayList<String> favoriteTransportation = PreferencesTransport.getPrefTransportation("Transportation",this);
+        if(!favoriteTransportation.isEmpty()) {
+
+                carButton.setActivated(favoriteTransportation.get(0).equals("car_button"));
+                tramButton.setActivated(favoriteTransportation.get(1).equals("tram_button"));
+                bikeButton.setActivated(favoriteTransportation.get(2).equals("bike_button"));
+                walkButton.setActivated(favoriteTransportation.get(3).equals("walk_button"));
+
+
+                Log.d(LOG_TAG,"trans :  from Array " );
+                Log.d(LOG_TAG, "trans: Boolean car " + String.valueOf(favoriteTransportation.get(0).equals("car_button")));
+                Log.d(LOG_TAG, "trans: Boolean tram " + String.valueOf(favoriteTransportation.get(1).equals("tram_button")));
+                Log.d(LOG_TAG, "trans: Boolean bike " + String.valueOf(favoriteTransportation.get(2).equals("bike")));
+                Log.d(LOG_TAG, "trans: Boolean walk " + String.valueOf(favoriteTransportation.get(3).equals("walk_button")));
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(LOG_TAG, "Save State Profile OnStop");
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(LOG_TAG, "Save State Profile OnDestroy");
+    }
 
 
 

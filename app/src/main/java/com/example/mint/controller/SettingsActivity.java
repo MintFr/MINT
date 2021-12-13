@@ -31,6 +31,10 @@ public class SettingsActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
+    /**
+     * Method applying when user clicks on "Mentions légales". Launches the TermsofUse Activity.
+     * @param view
+     */
     public void onClickTermsOfUse(View view) {
         Intent intent = new Intent(this, TermsOfUseActivity.class);
         startActivity(intent);

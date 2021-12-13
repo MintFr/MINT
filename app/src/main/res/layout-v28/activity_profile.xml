@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#1a89be89"
+    android:background="@color/GreenKaki_Profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.ProfileActivity">
@@ -69,7 +69,7 @@
                         android:layout_toRightOf="@id/user_image"
                         android:gravity="start"
                         android:text="@string/user_name"
-                        android:textColor="#999999"
+                        android:textColor="@color/LightBlack_Profile"
                         android:textSize="20sp" />
 
                     <TextView
@@ -85,7 +85,7 @@
                         android:gravity="start"
                         android:paddingBottom="15dp"
                         android:text="@string/param_button"
-                        android:textColor="#999999"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
                     <Button
@@ -97,14 +97,14 @@
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
-                        android:background="#00FFFFFF"
+                        android:background="@color/Transparent_Profile"
                         android:gravity="start"
                         android:minHeight="0dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="5dp"
                         android:text="@string/sensibility_button"
                         android:textAllCaps="false"
-                        android:textColor="#999999"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
                     <TextView
@@ -132,12 +132,12 @@
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
-                        android:background="#00FFFFFF"
+                        android:background="@color/Transparent_Profile"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
                         android:text="@string/favorite_addresses_button"
                         android:textAllCaps="false"
-                        android:textColor="#999999"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
                     <Button
@@ -149,13 +149,13 @@
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
+                        android:background="@color/Transparent_Profile"
                         android:gravity="left"
-                        android:background="#00FFFFFF"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
                         android:text="@string/favorite_transportation_button"
                         android:textAllCaps="false"
-                        android:textColor="#999999"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -170,7 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="#00ffffff"
+                            android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
                             android:src="@drawable/button_car"
                             android:visibility="gone"
@@ -182,7 +182,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="#00ffffff"
+                            android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
                             android:src="@drawable/button_tram"
                             android:visibility="gone"
@@ -194,7 +194,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="#00ffffff"
+                            android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
                             android:src="@drawable/button_bike"
                             android:visibility="gone"
@@ -206,7 +206,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="#00ffffff"
+                            android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
                             android:src="@drawable/button_walk"
                             android:visibility="gone"
@@ -215,6 +215,13 @@
                             android:contentDescription="TODO" />
 
                     </LinearLayout>
+
+                    <View
+                        android:id="@+id/dim_popup"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/LightGrey_Profile"
+                        android:visibility="invisible" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -239,7 +246,7 @@
                         android:maxWidth="90dp"
                         android:paddingLeft="10dp"
                         android:text="@string/exposure_last_travel_text"
-                        android:textColor="#999999"
+                        android:textColor="@color/DarkGrey_Profile"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -276,7 +283,7 @@
                             android:layout_marginTop="-8dp"
                             android:text="@string/exposition_unit"
                             android:textSize="12sp"
-                            android:textColor="@color/colorPrimaryLight"
+                            android:textColor="@color/PrimaryLight_Profile"
                             android:layout_centerHorizontal="true"
                             android:layout_below="@id/exposure_today"/>
                     </RelativeLayout>
@@ -301,7 +308,7 @@
                         android:text="@string/mon_exposition"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="#999999"
+                        android:textColor="@color/DarkGrey_Profile"
                         android:layout_marginBottom="5dp"
                         android:paddingLeft="10dp"/>
                     <LinearLayout
@@ -346,7 +353,7 @@
                         android:layout_alignTop="@id/chart"
                         android:src="@drawable/ic_chevron_right"
                         android:rotation="180"
-                        android:background="#00000000"
+                        android:background="@color/PrimaryBlack_Profile"
                         android:layout_toLeftOf="@id/chart"
                         android:contentDescription="TODO" />
                     <ImageButton
@@ -356,7 +363,7 @@
                         android:layout_alignBottom="@id/chart"
                         android:layout_alignTop="@id/chart"
                         android:src="@drawable/ic_chevron_right"
-                        android:background="#00000000"
+                        android:background="@color/PrimaryBlack_Profile"
                         android:layout_toRightOf="@id/chart"
                         android:contentDescription="TODO" />
 
@@ -379,19 +386,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="#999999"
-        android:background="#f8f8f8"
+        app:itemTextColor="@color/DarkGrey_Profile"
+        android:background="@color/White_Profile"
         android:fontFamily="@font/quicksand_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
-
-    <View
-        android:id="@+id/dim_popup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#73000000"
-        android:visibility="invisible"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

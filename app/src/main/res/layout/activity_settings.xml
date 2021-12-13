@@ -16,7 +16,7 @@
         android:id="@+id/settings_separator_1"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
+        android:background="@color/LightLightGrey_Settings"
         android:layout_marginTop="20dp"
         android:layout_below="@id/logo"/>
     <ImageView
@@ -44,7 +44,7 @@
         android:id="@+id/settings_separator_2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
+        android:background="@color/LightLightGrey_Settings"
         android:layout_below="@id/faq"/>
     <TextView
         android:id="@+id/language"
@@ -59,7 +59,7 @@
         android:id="@+id/settings_separator_3"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
+        android:background="@color/LightLightGrey_Settings"
         android:layout_below="@id/language"/>
     <ImageView
         android:layout_width="wrap_content"
@@ -70,23 +70,26 @@
         android:layout_above="@id/settings_separator_4"
         android:layout_alignParentRight="true"
         android:contentDescription="TODO" />
+
     <TextView
         android:id="@+id/legal"
-        android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingLeft="30dp"
-        android:gravity="center_vertical"
-        android:text="@string/settings_legal"
-        android:textSize="20sp"
+        android:layout_below="@id/settings_separator_3"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:layout_below="@id/settings_separator_3"/>
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp"
+        android:text="@string/settings_legal"
+        android:textSize="20sp"
+        android:onClick="onClickTermsOfUse"
+        />
     <View
         android:id="@+id/settings_separator_4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
+        android:background="@color/LightLightGrey_Settings"
         android:layout_below="@id/legal"/>
     <androidx.appcompat.widget.SwitchCompat
         android:layout_width="wrap_content"
@@ -108,7 +111,7 @@
         android:id="@+id/settings_separator_5"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#EDEDED"
+        android:background="@color/LightLightGrey_Settings"
         android:layout_below="@id/dark_mode"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -116,9 +119,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="#999999"
+        app:itemTextColor="@color/DarkGrey_Settings"
         android:fontFamily="@font/quicksand_regular"
-        android:background="#f8f8f8"
+        android:background="@color/White_Settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

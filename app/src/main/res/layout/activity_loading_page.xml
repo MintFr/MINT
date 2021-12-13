@@ -26,7 +26,7 @@
         android:indeterminate="false"
         android:indeterminateTint="@color/colorPrimary"
         android:max="5"
-        android:progressBackgroundTint="#208afa"
+        android:progressBackgroundTint="@color/Blue_Loading_Page"
         android:progressBackgroundTintMode="multiply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

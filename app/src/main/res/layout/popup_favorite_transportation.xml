@@ -14,8 +14,9 @@
         android:id="@+id/transportation_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:text="@string/favorite_transportation_message"
-        android:layout_marginBottom="10dp"/>
+        android:textColor="#454545" />
     <View
         android:id="@+id/line_transportation"
         android:layout_width="0dp"

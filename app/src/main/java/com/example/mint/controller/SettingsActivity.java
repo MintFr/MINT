@@ -1,8 +1,10 @@
 package com.example.mint.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,5 +29,14 @@ public class SettingsActivity extends AppCompatActivity {
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
+    }
+
+    /**
+     * Method applying when user clicks on "Mentions légales". Launches the TermsofUse Activity.
+     * @param view
+     */
+    public void onClickTermsOfUse(View view) {
+        Intent intent = new Intent(this, TermsOfUseActivity.class);
+        startActivity(intent);
     }
 }

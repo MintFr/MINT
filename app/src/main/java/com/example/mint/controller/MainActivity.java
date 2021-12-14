@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -78,6 +79,8 @@ import java.util.Locale;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
 
     private Boolean mRequestingLocationUpdates;
 
@@ -111,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Step Address
      */
     private com.example.mint.model.Address stepAddress;
-
-
     private EditText startPoint;
     private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
@@ -170,6 +171,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //debbogage
+        Log.d(LOG_TAG,"------");
+        Log.d(LOG_TAG,"Save State Main OnCreate");
+
         requestLocalisationPermission(); //line 447
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -179,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<String> favoriteTrans = PreferencesTransport.getPrefTransportation("Transportation",MainActivity.this);
         int[] fav = {0,0,0,0};
         for (int j = 0;j<4;j++) {
+
             if (favoriteTrans.get(j).equals("car_button")) {
                 fav[j] = 1;
             }
@@ -1217,6 +1223,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return false;
     }//end of check int
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(LOG_TAG, "Save State Main OnStart");
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.d(LOG_TAG, "Save State Main OnPause");
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.d(LOG_TAG, "Save State Main OnRestart");
+        for (int i = 0;i<4;i++){
+
+        }
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.d(LOG_TAG, "Save State Main OnResume");
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(LOG_TAG, "Save State Main OnStop");
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(LOG_TAG, "Save State Main OnDestroy");
+    }
 
 
 }

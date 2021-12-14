@@ -57,17 +57,15 @@ public class LoadingPageActivity extends AppCompatActivity {
                 param7 = -1.5535549386503666;
             }
 
-            // build the two URLs
+            // build the URL for the request to the server
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     param1, param2, param3, param4, param5, param6, param7, options[0], options[1], options[2], options[3], start, time);
 
             System.out.println(url);
-            //System.out.println(url2);
             AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
             task.execute(url);
-            //task.execute(url2);
 
         } else {
             // No, there is no stepPoint
@@ -77,10 +75,6 @@ public class LoadingPageActivity extends AppCompatActivity {
                 param3 = 47.212191574506164;
                 param4 = -1.5535549386503666;
             }
-            /*String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary/" +
-                            "itinerary4?pdaLat=%s&pdaLong=%s&pddLat=%s&pddLong=%s&transportation=%s,%s,%s,%s",
-                    param1, param2, param3, param4, options[0], options[1], options[2], options[3]);*/
-
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",

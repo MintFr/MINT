@@ -240,7 +240,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // Paintlists for the effects on the polylines //
 
         // for the white border
-        /*
+        /**
          * STYLE
          */
         Paint paintBorder = new Paint();
@@ -444,7 +444,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         int t = Double.valueOf(itinerary.getDuration()).intValue();
         String s = convertIntToHour(t);
         System.out.println(s);
-        //String s = Integer.toString(t);
         timeInfo.setText(s);
 
         //transportation
@@ -532,8 +531,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         TextView pollution = findViewById(R.id.pollution);
 
         // get start and end addresses
-        String start = getString(R.string.itinerary_point1)+" : "+(PreferencesAddresses.getAddress("startAddress",ItineraryActivity.this));
-        String end = getString(R.string.itinerary_point2)+" : "+(PreferencesAddresses.getAddress("endAddress",ItineraryActivity.this));
+        String start = getString(R.string.itinerary_point1)+" : "+
+                (PreferencesAddresses.getAddress("startAddress",ItineraryActivity.this));
+        String end = getString(R.string.itinerary_point2)+" : "+
+                (PreferencesAddresses.getAddress("endAddress",ItineraryActivity.this));
 
         if (itinerary.getPointSize() > 0){
             // start and end
@@ -568,17 +569,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
-                    //TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
-                    //TextView street = stepView.findViewById(R.id.street);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
                     String streetName = STEPS.get(k-1).getAddress();
                     int dist = STEPS.get(k-1).getDistance();
-                    //int timeMin = (itinerary.getStepTime().get(k-1) % 3600)/60; // amount of minutes it takes to travel this step
-                    //int timeSec = (itinerary.getStepTime().get(k-1) % 60 ); // remaining seconds
                     stepTimeMin.setText(streetName);
-                    //stepTimeSec.setText(String.format("%02d",timeSec));
                     stepDist.setText(String.format("%d",dist));
-                    //stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)));
                     // add the textView to the linearlayout which contains the steps
                     stepsLayout.addView(stepView,k+1);
                 }
@@ -642,12 +637,15 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 minutes = minutes - hours*60;
                 System.out.println("minutes" +minutes);
 
-                int hourStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
-                int minutesStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int hourStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))
+                        +Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))
+                        +Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
                 int resHour = hourStart + hours;
                 System.out.println("HourStart" +list.get(i).getTimeOption());
 
-                System.out.println("HourStart" + 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1))));
+                System.out.println("HourStart" + 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))
+                        +Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1))));
 
                 int resMin = minutesStart+minutes;
                 if (resMin>=60){
@@ -681,8 +679,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 minutes = minutes - hours*60;
                 System.out.println("minutes" +minutes);
 
-                int hourEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
-                int minutesEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int hourEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))
+                        +Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))
+                        +Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
                 int resHour = hourEnd - hours;
                 System.out.println("HourStart" +list.get(i).getTimeOption());
 
@@ -744,9 +744,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 public void onClick(View v) {
                     int i = (int) v.getTag() - 100; // this lets us find the corresponding itinerary for which we want to save the pollution data
                     // we inform the user that he just saved this pollution data to his profile :
-                    Toast.makeText(ItineraryActivity.this, "L'exposition associée à ce trajet a bien été ajoutée à votre profil", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryActivity.this,
+                            "L'exposition associée à ce trajet a bien été ajoutée à votre profil",
+                            Toast.LENGTH_SHORT).show();
                     // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
-                    PreferencesPollution.setLastPollution((int)list.get(i).getPollution(),ItineraryActivity.this);
+                    PreferencesPollution.setLastPollution(
+                            (int)list.get(i).getPollution(),ItineraryActivity.this);
                 }
             });
 
@@ -777,7 +780,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         recapLayout.post(new Runnable() {
             @Override
             public void run() {
-                sheetBehaviorRecap.setState(sheetBehaviorRecap.getState()==BottomSheetBehavior.STATE_COLLAPSED? BottomSheetBehavior.STATE_EXPANDED: BottomSheetBehavior.STATE_COLLAPSED);
+                sheetBehaviorRecap.setState(
+                        sheetBehaviorRecap.getState()==BottomSheetBehavior.STATE_COLLAPSED?
+                                BottomSheetBehavior.STATE_EXPANDED:
+                                BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }

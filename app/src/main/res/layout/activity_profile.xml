@@ -10,7 +10,8 @@
     <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/shadow_profile">
 
         <ImageView
             android:id="@+id/logo"
@@ -39,6 +40,8 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
                     android:padding="20dp">
 
                     <ImageView
@@ -66,7 +69,7 @@
                         android:layout_toRightOf="@id/user_image"
                         android:gravity="start"
                         android:text="@string/user_name"
-                        android:textColor="@color/DarkGrey_Profile"
+                        android:textColor="@color/LightBlack_Profile"
                         android:textSize="20sp" />
 
                     <TextView
@@ -76,14 +79,14 @@
                         android:layout_alignStart="@id/name"
                         android:layout_alignLeft="@id/name"
                         android:layout_alignBottom="@id/user_image"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:fontFamily="@font/quicksand_light"
                         android:gravity="start"
                         android:paddingBottom="15dp"
                         android:text="@string/param_button"
-                        android:textColor="@color/DarkGrey_Profile"
-                        android:textSize="16sp"
-                        android:clickable="true"
-                        android:focusable="true"/>
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/sensibility"
@@ -101,24 +104,24 @@
                         android:paddingBottom="5dp"
                         android:text="@string/sensibility_button"
                         android:textAllCaps="false"
-                        android:textColor="@color/DarkGrey_Profile"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/set_sensibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/sensibility"
-                        android:layout_toEndOf="@id/sensibility"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginStart="30dp"
                         android:layout_below="@id/user_image"
-                        android:text="@string/set_sensibility"
-                        android:textColor="@color/colorAccent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toEndOf="@id/sensibility"
+                        android:layout_toRightOf="@id/sensibility"
                         android:gravity="end"
                         android:paddingTop="10dp"
                         android:paddingBottom="5dp"
-                        android:textSize="14sp"/>
+                        android:text="@string/set_sensibility"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/favorite_addresses"
@@ -134,12 +137,12 @@
                         android:paddingBottom="5dp"
                         android:text="@string/favorite_addresses_button"
                         android:textAllCaps="false"
-                        android:textColor="@color/DarkGrey_Profile"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/favorite_transportation"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_addresses"
                         android:layout_alignStart="@id/user_image"
@@ -147,64 +150,83 @@
                         android:layout_marginStart="11dp"
                         android:layout_marginLeft="11dp"
                         android:background="@color/Transparent_Profile"
+                        android:gravity="left"
                         android:minHeight="0dp"
                         android:paddingBottom="5dp"
                         android:text="@string/favorite_transportation_button"
                         android:textAllCaps="false"
-                        android:textColor="@color/DarkGrey_Profile"
+                        android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_transportation"
-                        android:layout_alignEnd="@id/favorite_transportation"
-                        android:layout_alignRight="@id/favorite_transportation"
-                        android:layout_alignLeft="@id/favorite_transportation"
                         android:layout_alignStart="@id/favorite_transportation"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp">
+                        android:layout_alignLeft="@id/favorite_transportation">
+
                         <ImageView
                             android:id="@+id/car_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/car_simple"
                             android:background="@color/Transparent_Profile"
-                            android:paddingTop="5dp"
+                            android:paddingTop="3dp"
+                            android:src="@drawable/button_car"
                             android:visibility="gone"
-                            android:contentDescription="TODO" />
+                            android:layout_marginStart="30dp"
+                            android:contentDescription="TODO"
+                            android:layout_marginLeft="30dp" />
+
                         <ImageView
                             android:id="@+id/tram_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/tram_simple"
                             android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
+                            android:src="@drawable/button_tram"
                             android:visibility="gone"
-                            android:contentDescription="TODO" />
+                            android:layout_marginStart="40dp"
+                            android:contentDescription="TODO"
+                            android:layout_marginLeft="40dp" />
+
                         <ImageView
                             android:id="@+id/bike_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/bike_simple"
                             android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
+                            android:src="@drawable/button_bike"
                             android:visibility="gone"
-                            android:contentDescription="TODO" />
+                            android:layout_marginStart="40dp"
+                            android:contentDescription="TODO"
+                            android:layout_marginLeft="40dp" />
+
                         <ImageView
                             android:id="@+id/walk_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/walk_simple"
                             android:background="@color/Transparent_Profile"
                             android:paddingTop="3dp"
+                            android:src="@drawable/button_walk"
                             android:visibility="gone"
-                            android:contentDescription="TODO" />
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="30dp"
+                            android:contentDescription="TODO"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="30dp" />
 
                     </LinearLayout>
+
+                    <View
+                        android:id="@+id/dim_popup"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/LightGrey_Profile"
+                        android:visibility="invisible" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -214,22 +236,24 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
                     android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
 
                     <TextView
                         android:id="@+id/exposition_today"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical|end"
-                        android:paddingLeft="10dp"
                         android:layout_weight="2"
                         android:gravity="start"
-                        android:maxWidth="180dp"
+                        android:maxWidth="90dp"
+                        android:paddingLeft="10dp"
                         android:text="@string/exposure_last_travel_text"
                         android:textColor="@color/DarkGrey_Profile"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <!--<ImageView
                         android:id="@+id/graph"
@@ -248,23 +272,23 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center">
-                    <TextView
-                        android:id="@+id/exposure_today"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/max_value_exposure"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="32sp"
-                        style="@style/bold"/>
+                        <TextView
+                            android:id="@+id/exposure_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/quicksand_bold"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/max_value_exposure"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="32sp"
+                            style="@style/bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="-8dp"
                             android:text="@string/exposition_unit"
                             android:textSize="12sp"
-                            android:textColor="@color/colorAccent"
+                            android:textColor="@color/PrimaryLight_Profile"
                             android:layout_centerHorizontal="true"
                             android:layout_below="@id/exposure_today"/>
                     </RelativeLayout>
@@ -278,6 +302,8 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
                     android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
                     <TextView
@@ -301,7 +327,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="semaine"
+                            android:text="Semaine"
                             android:background="@drawable/graph_button_states"
                             android:textAllCaps="false"
                             android:textColor="@color/colorDarkGrey"/>
@@ -310,7 +336,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="mois"
+                            android:text="Mois"
                             android:background="@drawable/graph_button_states"
                             android:textAllCaps="false"
                             android:textColor="@color/colorDarkGrey"/>
@@ -319,7 +345,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="année"
+                            android:text="Année"
                             android:background="@drawable/graph_button_states"
                             android:textAllCaps="false"
                             android:textColor="@color/colorDarkGrey"/>
@@ -348,10 +374,10 @@
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart"
-                        android:layout_width="300dp"
+                        android:layout_width="250dp"
                         android:layout_height="250dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/graph_buttons_layout"/>
+                        android:layout_below="@id/graph_buttons_layout"
+                        android:layout_centerHorizontal="true" />
 
                 </RelativeLayout>
 
@@ -371,13 +397,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
-
-    <View
-        android:id="@+id/dim_popup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/LightGrey_Profile"
-        android:visibility="invisible"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

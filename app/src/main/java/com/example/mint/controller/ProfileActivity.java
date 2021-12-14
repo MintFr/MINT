@@ -1,19 +1,31 @@
 package com.example.mint.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.mint.controller.MenuSwitcherActivity;
-import com.example.mint.model.Preferences;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mint.R;
+import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesDate;
 import com.example.mint.model.PreferencesPollution;
-import com.example.mint.model.PreferencesAddresses;
-import com.example.mint.R;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesTransport;
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,21 +37,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +51,9 @@ import java.util.concurrent.TimeUnit;
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
  */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
+
 
     /**
      * dim the screen behind the popup window
@@ -89,15 +89,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button sensibilityButton;
     private PopupWindow sensibilityPopupWindow;
 
+
     /**
      * transportation
      */
-    private ImageView carIcon;
-    private ImageView tramIcon;
-    private ImageView bikeIcon;
-    private ImageView walkIcon;
-    private Button favoriteTransportationButton;
-    private PopupWindow transportationPopupWindow;
+
+    private ImageButton carButton;
+    private ImageButton tramButton;
+    private ImageButton bikeButton;
+    private ImageButton walkButton;
 
 
     //private static final String TAG = "ProfileActivity"; //--> for debugging
@@ -109,6 +109,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //debbogage
+        Log.d(LOG_TAG,"------");
+        Log.d(LOG_TAG,"Save State Profile OnCreate");
+
         setContentView(R.layout.activity_profile);
 
         //Preferences.clearAddresses(this);
@@ -119,7 +124,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         parameters = findViewById(R.id.parameters);
         sensibilityButton = findViewById(R.id.sensibility);
         favoriteAddressesButton = findViewById(R.id.favorite_addresses);
-        favoriteTransportationButton = findViewById(R.id.favorite_transportation);
+        //favoriteTransportationButton = findViewById(R.id.favorite_transportation);
 
         dim_popup = findViewById(R.id.dim_popup);
 
@@ -198,12 +203,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // set tags to know which button is pressed when launching onClick
         sensibilityButton.setTag(0);
         favoriteAddressesButton.setTag(1);
-        favoriteTransportationButton.setTag(2);
+        /////////favoriteTransportationButton.setTag(2);
 
         //launches "onClick" when one button is clicked
         sensibilityButton.setOnClickListener(this);
         favoriteAddressesButton.setOnClickListener(this);
-        favoriteTransportationButton.setOnClickListener(this);
+        /////////favoriteTransportationButton.setOnClickListener(this);
+
+
+
+
 
         // on click callback for parameters : open new activity
         parameters.setOnClickListener(new View.OnClickListener() {
@@ -452,86 +461,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SENSIBILITY POPUP END //
         /////////////////////////////////////////////////////////
 
-        /////////////////////////////////////////////////////////
-        // TRANSPORTATION POPUP //
-        /////////////////////////////////////////////////////////
 
-        // Create the Popup Window
-        transportationPopupWindow = new PopupWindow(this);
-        transportationPopupWindow.setBackgroundDrawable(null);
-        transportationPopupWindow.setContentView(transportationPopupView);
-        transportationPopupWindow.setWidth(width);
-        transportationPopupWindow.setHeight(height);
-        transportationPopupWindow.setFocusable(focusable);
-
-        // Link elements from the popup
-        ImageButton carButton = transportationPopupView.findViewById(R.id.car_button);
-        ImageButton tramButton = transportationPopupView.findViewById(R.id.tram_button);
-        ImageButton bikeButton = transportationPopupView.findViewById(R.id.bike_button);
-        ImageButton walkButton = transportationPopupView.findViewById(R.id.walk_button);
-        carIcon = findViewById(R.id.car_icon);
-        tramIcon = findViewById(R.id.tram_icon);
-        bikeIcon = findViewById(R.id.bike_icon);
-        walkIcon = findViewById(R.id.walk_icon);
-
-        // on opening of profile page, display favorite means of transportation
-        displayFavoriteTransportation();
-
-        // Tags to determine which button is clicked in "onTransportationClick"
-        carButton.setTag(15);
-        tramButton.setTag(16);
-        bikeButton.setTag(17);
-        walkButton.setTag(18);
-
-        // Highlight already selected favorite means of transportation
-        ArrayList<String> favoriteTransportation = PreferencesTransport.getPrefTransportation("Transportation",this);
-        for (int i = 15;i<19;i++){
-            ImageButton button = transportationPopupView.findViewWithTag(i);
-            String transportation = button.getContentDescription().toString();
-            for (int j = 0;j<4;j++){
-                if (transportation.equals(favoriteTransportation.get(j))){
-                    button.setActivated(true);
-                }
-            }
-        }
-
-
-        // Change state of button once it is clicked
-        View.OnClickListener onTransportationClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int i = (int) v.getTag();
-                ImageButton buttonClicked = transportationPopupView.findViewWithTag(i);
-                buttonClicked.setActivated(!buttonClicked.isActivated());
-                int key = i-15;
-                String value = buttonClicked.getContentDescription().toString();
-                if (buttonClicked.isActivated()){
-                    PreferencesTransport.addTransportation("Transportation",key,value,ProfileActivity.this);
-                }
-                else if (!buttonClicked.isActivated()){
-                    PreferencesTransport.removeTransportation("Transportation",key,ProfileActivity.this);
-                }
-                System.out.println(PreferencesTransport.getPrefTransportation("Transportation",ProfileActivity.this));
-            }
-        };
-
-        carButton.setOnClickListener(onTransportationClick);
-        tramButton.setOnClickListener(onTransportationClick);
-        bikeButton.setOnClickListener(onTransportationClick);
-        walkButton.setOnClickListener(onTransportationClick);
-
-        //callback when popup is dismissed
-        transportationPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                dim_popup.setVisibility(View.INVISIBLE); // remove background dimness
-                displayFavoriteTransportation(); // check again which means of transportation have been selected
-            }
-        });
-
-        /////////////////////////////////////////////////////////
-        // TRANSPORTATION POPUP END //
-        /////////////////////////////////////////////////////////
 
         /////////////////////////////////////////////////////////
         // BOTTOM MENU //
@@ -639,55 +569,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 // show the addresses popup window
                 addressPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 break;
-            case 2:
-                // show the transportation popup window
-                transportationPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-                break;
         }
     }
 
-    /**
-     * Get icon from int
-     * @param i : index which corresponds to the icon
-     * @return : the ImageView of the corresponding icon
-     */
-    public ImageView findIconFromInt(int i){
-        ImageView icon = new ImageView(ProfileActivity.this);
-        switch (i){
-            case 0:
-                icon=carIcon;
-                break;
-            case 1:
-                icon=tramIcon;
-                break;
-            case 2:
-                icon=bikeIcon;
-                break;
-            case 3:
-                icon=walkIcon;
-                break;
-        }
-        return icon;
-    }
+
 
     /**
-     * This method displays the already selected favorite means of transportation on the main profile page
+     * This method highlight the favorite transportation buttons when clicked
      */
-    public void displayFavoriteTransportation(){
-        // we go through all the means of transportation
-        for(int i = 0;i<4;i++){
-            // gets the right icon from the index
-            ImageView selectedIcon = findIconFromInt(i);
-            if (PreferencesTransport.getPrefTransportation("Transportation",ProfileActivity.this).get(i).equals("--")) {
-                // if this means of transporation is not in the preferences list, we do not display it
-                selectedIcon.setVisibility(View.GONE);
-            }
-            else {
-                // if it is, we display it
-                selectedIcon.setVisibility(View.VISIBLE);
-            }
-        }
+
+    public void highlight(View transportationButton) {
+        //check if the button is already activated or not
+        transportationButton.setActivated(!transportationButton.isActivated());
+        if(transportationButton.isActivated()){
+            //the buttons have a specific tag and a content description : allow to know which one have to be added to PreferenceTransport
+            PreferencesTransport.addTransportation("Transportation",Integer.parseInt((transportationButton.getTag().toString())), transportationButton.getContentDescription().toString(),ProfileActivity.this); }
+        else if(!transportationButton.isActivated()) {
+            //same as above but to remove
+            PreferencesTransport.removeTransportation("Transportation",Integer.parseInt(transportationButton.getTag().toString()),ProfileActivity.this);}
     }
+
 
     /**
      * This adds the pollution from the last itinerary to today's pollution
@@ -1072,7 +973,57 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(LOG_TAG, "Save State Profile OnStart");
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.d(LOG_TAG, "Save State Profile OnPause");
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.d(LOG_TAG, "Save State Profile OnRestart");
+    }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "Save State Profile OnResume");
+        carButton = this.findViewById(R.id.car_button) ;
+        tramButton = this.findViewById(R.id.tram_button) ;
+        bikeButton = this.findViewById(R.id.bike_button) ;
+        walkButton = this.findViewById(R.id.walk_button) ;
+
+
+        ArrayList<String> favoriteTransportation = PreferencesTransport.getPrefTransportation("Transportation",this);
+        if(!favoriteTransportation.isEmpty()) {
+
+                carButton.setActivated(favoriteTransportation.get(0).equals("car_button"));
+                tramButton.setActivated(favoriteTransportation.get(1).equals("tram_button"));
+                bikeButton.setActivated(favoriteTransportation.get(2).equals("bike_button"));
+                walkButton.setActivated(favoriteTransportation.get(3).equals("walk_button"));
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(LOG_TAG, "Save State Profile OnStop");
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(LOG_TAG, "Save State Profile OnDestroy");
+    }
 
 
 

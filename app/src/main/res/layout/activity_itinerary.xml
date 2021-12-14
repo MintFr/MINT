@@ -5,7 +5,7 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/PrimaryWhite_Itinerary"
     tools:context=".controller.ItineraryActivity">
 
     <include
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
         android:src="@drawable/ic_zoom_in"
-        app:backgroundTint="#ffffff"
+        app:backgroundTint="@color/PrimaryWhite_Itinerary"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer1"
         app:layout_anchorGravity="top|end"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
         android:src="@drawable/ic_zoom_out"
-        app:backgroundTint="#ffffff"
+        app:backgroundTint="@color/PrimaryWhite_Itinerary"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer2"
         app:layout_anchorGravity="top|end"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
         android:src="@drawable/ic_locate"
-         android:backgroundTint="#ffffff"
+         android:backgroundTint="@color/PrimaryWhite_Itinerary"
         app:borderWidth="0dp"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer3"
@@ -94,8 +94,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="#999999"
-        android:background="#F8F8F8"
+        app:itemTextColor="@color/DarkGrey_Itinerary"
+        android:background="@color/White_Itinerary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

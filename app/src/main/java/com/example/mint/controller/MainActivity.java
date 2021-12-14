@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (favoriteTrans.get(j).equals("walk_button")) {
                 fav[j] = 4;
-                Log.d(LOG_TAG, "oui  " + favoriteTrans.get(j));
             }
         }
         System.out.println("{"+fav[0]+","+fav[1]+","+fav[2]+","+fav[3]+"}");
@@ -1247,7 +1246,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onResume(){
         super.onResume();
         Log.d(LOG_TAG, "Save State Main OnResume");
-        Log.d(LOG_TAG, "State of Preference Transportation" + String.valueOf(PreferencesTransport.getPrefTransportation("Trans_Pref",this)));
     }
     @Override
     public void onStop(){

@@ -168,11 +168,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //debbogage
         Log.d(LOG_TAG,"------");
         Log.d(LOG_TAG,"Save State Main OnCreate");
-
-        requestLocalisationPermission(); //line 447
+        requestLocalisationPermission();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        requestLocalisationPermission();
+
 
         // First step to highlight already selected favorite means of transportation
         // (next and last step in "showOptions()"
@@ -315,6 +314,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(LOG_TAG, "Save State Main OnStart");
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////Centrers the map on lauch on the users position //////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -332,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 getLocation();
                 if (locationUser != null){
+                //we put the marker on the map if the point returned is not null
                 Marker positionMarker = new Marker(map);
                 pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
                 positionMarker.setPosition(pointTempo);
@@ -342,7 +344,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mapController.setCenter(pointTempo);
                 }
                 else {
-
+                    //TODO : fix this
+                    // if the return is null we show a toast to the user
                     Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
                     toast.show();
 
@@ -793,6 +796,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         getLocation();
                         if (locationUser != null) {
+                            //We put the marker on the map
+                            //TODO: refactor this in a function
                             Marker positionMarker = new Marker(map);
                             pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
                             positionMarker.setPosition(pointTempo);
@@ -869,16 +874,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (map.getOverlays().size() !=0){
             map.getOverlays().clear();
             map.postInvalidate();
+        }
+        else {
+            // if there is no marker already we center the map on the new point
             mapController.setCenter(pointTempo);
         }
 
         //printing a new position marker on the map
+        if (map!= null){
         Marker positionMarker = new Marker(map);
         positionMarker.setPosition(pointTempo);
         positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
         positionMarker.setFlat(true);
         positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(positionMarker);
+        }
 
 
 
@@ -903,6 +913,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     popUp.dismiss();
                 }
                 // if we click on My Position, ask permission for geolocalisation
+                //TODO : refactor this in a function
                 if (id==0) {
                     // We need this parameter to check if the phone's GPS is activated
                     locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
@@ -1351,11 +1362,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }//end of check int
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(LOG_TAG, "Save State Main OnStart");
-    }
     @Override
     public void onPause(){
         super.onPause();

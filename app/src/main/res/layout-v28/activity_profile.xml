@@ -29,13 +29,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="84dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="84dp">
 
                 <RelativeLayout
                     android:id="@+id/profile_main_box"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="330dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
@@ -86,7 +86,8 @@
                         android:paddingBottom="15dp"
                         android:text="@string/param_button"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <Button
                         android:id="@+id/sensibility"
@@ -105,7 +106,8 @@
                         android:text="@string/sensibility_button"
                         android:textAllCaps="false"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <TextView
                         android:id="@+id/set_sensibility"
@@ -138,9 +140,10 @@
                         android:text="@string/favorite_addresses_button"
                         android:textAllCaps="false"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/favorite_transportation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -158,68 +161,92 @@
                         android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/favorite_transportation"
-                        android:layout_alignStart="@id/favorite_transportation"
-                        >
+                    <ImageButton
+                        android:id="@+id/car_button"
+                        android:layout_width="@dimen/transport_button_size"
+                        android:layout_height="@dimen/transport_button_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/transport_button_gap"
+                        android:layout_marginLeft="@dimen/transport_button_gap"
+                        android:contentDescription="@string/car_button"
+                        android:onClick="highlight"
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="0"
+                        app:srcCompat="@drawable/button_car"
+                        tools:ignore="TouchTargetSizeCheck" />
 
-                        <ImageView
-                            android:id="@+id/car_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/Transparent_Profile"
-                            android:paddingTop="3dp"
-                            android:src="@drawable/button_car"
-                            android:visibility="gone"
-                            android:layout_marginStart="30dp"
-                            android:contentDescription="TODO" />
+                    <ImageButton
+                        android:id="@+id/tram_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/tram_transport_button_gap"
+                        android:layout_marginLeft="@dimen/tram_transport_button_gap"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/tram_button"
+                        android:onClick="highlight"
 
-                        <ImageView
-                            android:id="@+id/tram_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/Transparent_Profile"
-                            android:paddingTop="3dp"
-                            android:src="@drawable/button_tram"
-                            android:visibility="gone"
-                            android:layout_marginStart="40dp"
-                            android:contentDescription="TODO" />
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="1"
+                        app:srcCompat="@drawable/button_tram"
+                        tools:ignore="TouchTargetSizeCheck" />
 
-                        <ImageView
-                            android:id="@+id/bike_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/Transparent_Profile"
-                            android:paddingTop="3dp"
-                            android:src="@drawable/button_bike"
-                            android:visibility="gone"
-                            android:layout_marginStart="40dp"
-                            android:contentDescription="TODO" />
+                    <ImageButton
+                        android:id="@+id/bike_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
 
-                        <ImageView
-                            android:id="@+id/walk_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/Transparent_Profile"
-                            android:paddingTop="3dp"
-                            android:src="@drawable/button_walk"
-                            android:visibility="gone"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginEnd="30dp"
-                            android:contentDescription="TODO" />
 
-                    </LinearLayout>
+                        android:layout_alignBottom="@+id/tram_button"
+                        android:layout_marginEnd="@dimen/transport_button_gap"
+                        android:layout_marginRight="@dimen/transport_button_gap"
+                        android:layout_marginBottom="0dp"
+                        android:layout_toStartOf="@+id/walk_button"
+                        android:layout_toLeftOf="@+id/walk_button"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/bike_button"
+                        android:onClick="highlight"
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="2"
+                        app:srcCompat="@drawable/button_bike"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <ImageButton
+                        android:id="@+id/walk_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@id/car_button"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="@dimen/transport_button_gap"
+                        android:layout_marginRight="@dimen/transport_button_gap"
+                        android:layout_marginBottom="0dp"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/walk_button"
+                        android:onClick="highlight"
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="3"
+                        app:srcCompat="@drawable/button_walk"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <View
                         android:id="@+id/dim_popup"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="19dp"
+                        android:layout_marginRight="19dp"
+                        android:layout_marginBottom="20dp"
                         android:background="@color/LightGrey_Profile"
                         android:visibility="invisible" />
                 </RelativeLayout>
@@ -231,9 +258,9 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
+                    android:background="@drawable/layout_bg_profile_main"
                     android:elevation="2dp"
                     android:outlineAmbientShadowColor="@color/colorAccent"
-                    android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
 
                     <TextView
@@ -265,27 +292,29 @@
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
                         <TextView
                             android:id="@+id/exposure_today"
+                            style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_bold"
                             android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/quicksand_bold"
                             android:text="@string/max_value_exposure"
                             android:textColor="@color/colorAccent"
-                            android:textSize="32sp"
-                            style="@style/bold"/>
+                            android:textSize="32sp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/exposure_today"
+                            android:layout_centerHorizontal="true"
                             android:layout_marginTop="-8dp"
                             android:text="@string/exposition_unit"
-                            android:textSize="12sp"
                             android:textColor="@color/PrimaryLight_Profile"
-                            android:layout_centerHorizontal="true"
-                            android:layout_below="@id/exposure_today"/>
+                            android:textSize="12sp" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -293,79 +322,86 @@
                     android:id="@+id/profile_third_box"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_bg_profile_main"
                     android:elevation="2dp"
                     android:outlineAmbientShadowColor="@color/colorAccent"
-                    android:background="@drawable/layout_bg_profile_main"
                     android:padding="20dp">
+
                     <TextView
                         android:id="@+id/exposition_graph_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/mon_exposition"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/DarkGrey_Profile"
                         android:layout_marginBottom="5dp"
-                        android:paddingLeft="10dp"/>
+                        android:paddingLeft="10dp"
+                        android:text="@string/mon_exposition"
+                        android:textColor="@color/DarkGrey_Profile"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <LinearLayout
                         android:id="@+id/graph_buttons_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_below="@id/exposition_graph_title">
+                        android:layout_below="@id/exposition_graph_title"
+                        android:orientation="horizontal">
+
                         <Button
                             android:id="@+id/week"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Semaine"
                             android:background="@drawable/graph_button_states"
+                            android:text="Semaine"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey" />
+
                         <Button
                             android:id="@+id/month"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Mois"
                             android:background="@drawable/graph_button_states"
+                            android:text="Mois"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey" />
+
                         <Button
                             android:id="@+id/year"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Année"
                             android:background="@drawable/graph_button_states"
+                            android:text="Année"
                             android:textAllCaps="false"
-                            android:textColor="@color/colorDarkGrey"/>
+                            android:textColor="@color/colorDarkGrey" />
                     </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/slide_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/chart"
                         android:layout_alignTop="@id/chart"
-                        android:src="@drawable/ic_chevron_right"
-                        android:rotation="180"
-                        android:background="@color/PrimaryBlack_Profile"
+                        android:layout_alignBottom="@id/chart"
                         android:layout_toLeftOf="@id/chart"
-                        android:contentDescription="TODO" />
+                        android:background="@color/PrimaryBlack_Profile"
+                        android:contentDescription="TODO"
+                        android:rotation="180"
+                        android:src="@drawable/ic_chevron_right" />
+
                     <ImageButton
                         android:id="@+id/slide_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/chart"
                         android:layout_alignTop="@id/chart"
-                        android:src="@drawable/ic_chevron_right"
-                        android:background="@color/PrimaryBlack_Profile"
+                        android:layout_alignBottom="@id/chart"
                         android:layout_toRightOf="@id/chart"
-                        android:contentDescription="TODO" />
+                        android:background="@color/PrimaryBlack_Profile"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_chevron_right" />
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart"

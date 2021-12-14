@@ -49,7 +49,6 @@ import androidx.core.content.ContextCompat;
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
-import com.example.mint.model.Preferences;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -867,27 +866,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param location
      */
     public void onLocationChanged(Location location) {
-        //getting the new location ( I tried using location as in the argument but it doesn't work and this works
-        getLocation();
-        pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
-        //Deleting the previous marker
-        if (map.getOverlays().size() !=0){
-            map.getOverlays().clear();
-            map.postInvalidate();
-        }
-        else {
-            // if there is no marker already we center the map on the new point
-            mapController.setCenter(pointTempo);
-        }
+        if (!isDestroyed()) {
+            //getting the new location ( I tried using location as in the argument but it doesn't work and this works
+            getLocation();
+            pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
+            //Deleting the previous marker
+            if (map.getOverlays().size() != 0) {
+                map.getOverlays().clear();
+                map.postInvalidate();
+            } else {
+                // if there is no marker already we center the map on the new point
+                mapController.setCenter(pointTempo);
+            }
+            System.out.println(map);
 
-        //printing a new position marker on the map
-        if (map!= null){
-        Marker positionMarker = new Marker(map);
-        positionMarker.setPosition(pointTempo);
-        positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
-        positionMarker.setFlat(true);
-        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-        map.getOverlays().add(positionMarker);
+            //printing a new position marker on the map
+            if (map != null) {
+                Marker positionMarker = new Marker(map);
+                positionMarker.setPosition(pointTempo);
+                positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+                positionMarker.setFlat(true);
+                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                map.getOverlays().add(positionMarker);
+            }
         }
 
 

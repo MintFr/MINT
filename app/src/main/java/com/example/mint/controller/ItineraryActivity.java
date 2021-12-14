@@ -81,11 +81,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * MAP
      */
     private MapView map = null;
-    //private final ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;
-    //private GeoPoint startPoint;
-    //private GeoPoint endPoint;
-    //private GeoPoint stepPoint;
+
 
     /**
      * GEOPOINT POSITIONS
@@ -103,8 +100,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private RelativeLayout recapLayout;
 
     private FloatingActionButton recapButton;
-
-    //private Paint paintInside;
 
     private Paint paintInsideG; // color when the pollution is good
     private Paint paintInsideM; // color when the pollution is medium
@@ -146,7 +141,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // get the sensibility from preferences
-        /*
+        /**
          * POLLUTION DATA
          */
         String sensibility = PreferencesSensibility.getSensibility("Sensibility", this);
@@ -225,10 +220,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         //Map display
         map = findViewById(R.id.map);
-        //final MapBoxTileSource tileSource = new MapBoxTileSource();
-        //tileSource.retrieveAccessToken(this);
-        //tileSource.retrieveMapBoxMapId(this);
-        //map.setTileSource(tileSource);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint defaultPoint = new GeoPoint(47.21, -1.55);
@@ -406,9 +397,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY ITINERARY
-     * @param itinerary Itinerary
-     * @param list ArrayList<Itinerary>
-     * @param i int
+     * Display one itinerary on the map
+     * Is called on each itinerary
+     * @param itinerary Itinerary :  Current itinerary to display
+     * @param list ArrayList<Itinerary> : List of all itineraries to display
+     * @param i int : index of the  current itineray
+     *
+     *
      */
 
 
@@ -515,8 +510,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * DISPLAY DETAILS UNDER MAP
+     * DISPLAY DETAILS OF THE SELECTED ITINERARY UNDER MAP INSTEAD OF THE RECAP
+     * @param itinerary Selected itinerary
+     *
      */
+    //TODO fix this display so that is stays nicely
     private void displayDetails(Itinerary itinerary){
 //        // hide recap
 //        recapView.setVisibility(View.GONE);
@@ -601,7 +599,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * DISPLAY RECAP
-     * @param list ArrayList<Itinerary>
+     * Shows every itinerary proposed by the search at the bottom of the page
+     * @param list ArrayList<Itinerary> The list of all the itineraries
      */
     private void displayRecap(final ArrayList<Itinerary> list){
 
@@ -850,7 +849,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     /**
      * this function is used to find a polyline from its id which was user-selected (in our case, the id is its rank in the itinerary list)
      * @param id String
-     * @return
+     * @return polyline
      */
     private Polyline findPolylineFromId(String id){
         // to do this we go through all the polylines until we find the one whose id matches the requested id

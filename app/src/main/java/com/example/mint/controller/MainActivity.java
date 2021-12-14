@@ -72,6 +72,7 @@ import java.util.Locale;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
+    // For debug log
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private View dimPopup;
 
@@ -91,7 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MapView map;
     IMapController mapController;
     private Marker positionMarker;
-
+    private final static double LATITUDE_DEFAULT_MAP=47.21;
+    private final static double LONGITUDE_DEFAULT_MAP=-1.55;
 
     /**
      * Start Address
@@ -106,22 +108,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private com.example.mint.model.Address stepAddress;
     private EditText startPoint;
-    private EditText startPoint2; // for starPoint/endPoint inversion
     private EditText endPoint;
     private EditText stepPoint;
     private boolean stepVisibility = false; // "true" is stepPoint is visible, "false" if not
     private boolean stepBool = false; // "true" if the user has chosen a stepPoint, "false" if not
     private ImageButton addStepPoint;
-    private EditText latitude;
-    private EditText longitude;
     private ImageButton inversionButton;
     private Button search;
-    //private final int POSITION_PERMISSION_CODE = 1;
 
-    //boolean GpsStatus = false; //true if the user's location is activated on the phone
-
-    //private static final String TAG = "MainActivity"; //--> for debugging
-
+    /**
+     * Adress suggestions
+     */
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
     ListView addressListView;
@@ -156,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean starting;
     boolean fast;
     boolean healthy;
+    /**
+     * Temporary point for location changes
+     */
     private GeoPoint pointTempo;
 
     /**
@@ -164,16 +164,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //debbogage
+        // Debug
         Log.d(LOG_TAG,"------");
         Log.d(LOG_TAG,"Save State Main OnCreate");
+        // Check for localisation permission
         requestLocalisationPermission();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        // First step to highlight already selected favorite means of transportation
-        // (next and last step in "showOptions()"
+        // Highlighting selected favorite means of transportation chosen in Profile
+        // (next and last step in "showOptions()")
         ArrayList<String> favoriteTrans = PreferencesTransport.getPrefTransportation("Transportation",MainActivity.this);
         int[] fav = {0,0,0,0};
         for (int j = 0;j<4;j++) {
@@ -191,38 +192,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fav[j] = 4;
             }
         }
+
         System.out.println("{"+fav[0]+","+fav[1]+","+fav[2]+","+fav[3]+"}");
         PreferencesTransport.setOptionTransportation(fav,this);
 
         // get current date and time
-        year = cldr.get(Calendar.YEAR);
-        month = cldr.get(Calendar.MONTH);
-        day = cldr.get(Calendar.DAY_OF_MONTH);
-        hour = cldr.get(Calendar.HOUR_OF_DAY);
-        minutes = cldr.get(Calendar.MINUTE);
+        this.year = cldr.get(Calendar.YEAR);
+        this.month = cldr.get(Calendar.MONTH);
+        this.day = cldr.get(Calendar.DAY_OF_MONTH);
+        this.hour = cldr.get(Calendar.HOUR_OF_DAY);
+        this.minutes = cldr.get(Calendar.MINUTE);
 
         // First step to set default date and time to current date and time
-        // (next and last step in "showOptions()"
-        dateText = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
-        timeText = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
+        // (next and last step in "showOptions()")
+        this.dateText = String.format("%02d",day) + "/" + String.format("%02d",(month+1)) + "/" + year;
+        this.timeText = String.format("%02d",hour) + ":" + String.format("%02d",minutes);
 
         // First step to select if you want start time or end time. Start time is automatically selected
         // (next and last step in "showOptions()")
-        starting = true;
+        this.starting = true;
 
-        // Initialisation
-        startPoint = findViewById(R.id.startPoint);
-        endPoint = findViewById(R.id.endPoint);
-        stepPoint = findViewById(R.id.stepPoint);
-        search = findViewById(R.id.search);
-        addStepPoint = findViewById(R.id.addStepPoint);
-        myPosition = findViewById(R.id.myPosition);
-        option = findViewById(R.id.options);
-        dimPopup = findViewById(R.id.dim_popup);
+        // Initialisation from layout activity_main
+        this.startPoint = findViewById(R.id.startPoint);
+        this.endPoint = findViewById(R.id.endPoint);
+        this.stepPoint = findViewById(R.id.stepPoint);
+        this.search = findViewById(R.id.search);
+        this.addStepPoint = findViewById(R.id.addStepPoint);
+        this.myPosition = findViewById(R.id.myPosition);
+        this.option = findViewById(R.id.options);
+        this.dimPopup = findViewById(R.id.dim_popup);
 
-        start = startPoint.getText().toString();
-        end = endPoint.getText().toString();
+        // String of the adresses
+        this.start = startPoint.getText().toString();
+        this.end = endPoint.getText().toString();
 
+        // Initializing Adresses with Adress Class
         this.endAddress = new com.example.mint.model.Address();
         this.startAddress = new com.example.mint.model.Address();
         this.stepAddress = new com.example.mint.model.Address();
@@ -235,11 +239,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             /**
-             * Set the search button enable if the length of the text written in the field s (start or end) is not zero
-             * @param s
-             * @param start
-             * @param before
-             * @param count
+             * Set the search button enable if the length of the text written in the field
+             * s (start or end) is not zero.
              */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -268,17 +269,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         endPoint.setTag(1);
         search.setTag(2);
         option.setTag(3);
-        myPosition.setTag(4);
+        myPosition.setTag(40);
         stepPoint.setTag(10);
 
         Context context = getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
-        //Map
+        // Map by default centered on Nantes Island
         map = findViewById(R.id.mapView);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
-        GeoPoint startPoint = new GeoPoint(47.21, -1.55);
+        GeoPoint startPoint = new GeoPoint(LATITUDE_DEFAULT_MAP, LONGITUDE_DEFAULT_MAP);
         mapController = map.getController();
         mapController.setZoom(15.0);
         mapController.setCenter(startPoint);
@@ -306,21 +307,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-
-
     }
 
+    /**
+     * OnStart methos, applied right after onCreate.
+     * This method tries to center the map on the location of the user, if GPS granted.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////Centrers the map on lauch on the users position //////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////// Centers the map on lauch on the user's position ///////////
+        /////////////////////////////////////////////////////////////////////////////////////////
         // We need this parameter to check if the phone's GPS is activated
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        assert locationManager != null; //check if there the app is allowed to access location
+        assert locationManager != null; // check if there the app is allowed to access location
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
 
         // If the permission to access to the user's location is already given, we use it
@@ -345,7 +348,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else {
                     //TODO : fix this
                     // if the return is null we show a toast to the user
-                    Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(
+                            getApplicationContext(),
+                            "Nous n'avons pas réussi à vous localiser",
+                            Toast.LENGTH_SHORT
+                    );
                     toast.show();
 
                 }
@@ -356,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showAlertMessageNoGps();
             }
         }
-        Log.d("test geo loc", "onStart: finished ");
+        Log.d(LOG_TAG, "onStart: finished ");
 
     }
 
@@ -364,7 +371,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // BACK BUTTON //
     /////////////////////////////////////////////////////////
     /**
-     * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
+     * Overrides onBackPressed method so we can navigate to the previous activity
+     * when the phone's back button is pressed
      */
     @Override
     public void onBackPressed(){
@@ -388,7 +396,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //---------TRANSITIONS-----------
         //For Left-To-Right transitions
-        if(targetActivity.equals("com.example.mint.MapsActivity") || targetActivity.equals("com.example.mint.controller.ProfileActivity")){
+        if(
+                targetActivity.equals("com.example.mint.MapsActivity")
+                        || targetActivity.equals("com.example.mint.controller.ProfileActivity")
+        ){
 
         // hide/show stepPoint when the user clicks on the addStepPoint button
 
@@ -404,8 +415,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**
-     * function that creates the popup window on selection of editTexts
-     * @return
+     * Method that creates the popup window on selection of adress' editTexts
+     * @return: PopupWindow
      */
     private PopupWindow showFavoriteAddresses() {
 
@@ -631,12 +642,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-        // the buttons for selecting if you want start time or end time.
-        // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
-        Button plusRapide = optionPopupView.findViewById(R.id.fastest);
-        Button plusSain = optionPopupView.findViewById(R.id.healthier);
-        plusRapide.setTag(10);
-        plusSain.setTag(11);
 
         // the buttons for selecting if you want start time or end time. start time is automatically selected
         Button startTime = optionPopupView.findViewById(R.id.start_time);
@@ -671,6 +676,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         // the buttons for selecting if you want the healthier path or the fastest one.
+        // the buttons for selecting if you want start time or end time.
+        // the buttons for selecting if you want the healthier path or the fastest one. plusRapide is automatically selected
         Button fastest = optionPopupView.findViewById(R.id.fastest);
         Button healthier = optionPopupView.findViewById(R.id.healthier);
         fastest.setTag(10);
@@ -729,8 +736,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fastest.setOnClickListener(onFastOrHealthyClick);
         healthier.setOnClickListener(onFastOrHealthyClick);
 
-
-
         return popupOptions;
     }
 
@@ -774,7 +779,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /**Return the answer of the location permission request in a "short toast window" at the bottom
+    /**
+     * Return the answer of the location permission request in a "short toast window" at the bottom
      * of the screen and print the user's position if we have the permission
      * @param requestCode
      * @param grantResults
@@ -866,6 +872,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param location
      */
     public void onLocationChanged(Location location) {
+        // Check if the activity is destroyed, if true then no need to update locations
         if (!isDestroyed()) {
             //getting the new location ( I tried using location as in the argument but it doesn't work and this works
             getLocation();
@@ -890,9 +897,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 map.getOverlays().add(positionMarker);
             }
         }
-
-
-
     }
 
     /////////////////////////////////////////////////////////
@@ -967,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View v){
-        int i = (int) v.getTag(); //if 2 : search, if 3 : option , if 4 : ma position
+        int i = (int) v.getTag(); //if 2 : search, if 3 : option , if 40 : ma position
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
         step = stepPoint.getText().toString();
@@ -1238,7 +1242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     dimPopup.setVisibility(View.VISIBLE);
                     popUp.showAtLocation(v,Gravity.CENTER,0,0);
                 }
-        else if (i==4){
+        else if (i==40){
             // We need this parameter to check if the phone's GPS is activated
             locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             assert locationManager != null; //check if there the app is allowed to access location

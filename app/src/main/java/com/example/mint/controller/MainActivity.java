@@ -46,13 +46,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
-
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
@@ -66,6 +59,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,10 +74,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, LocationListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
-
-    private Boolean mRequestingLocationUpdates;
-
     private View dimPopup;
 
     /**
@@ -91,16 +81,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
-    private int idInt = 0; // We need this to know where we have to write the location of the user : in the startPoint, stepPoint or endPoint
+    private int idInt = -1; // We need this to know where we have to write the location of the user : in the startPoint, stepPoint or endPoint
     boolean GpsStatus = false; //true if the user's location is activated on the phone
     private final int POSITION_PERMISSION_CODE = 1;
     LocationManager locationManager;
-
+    Location locationUser;
     /**
      * Map
      */
     private MapView map;
     IMapController mapController;
+    private Marker positionMarker;
+
 
     /**
      * Start Address
@@ -149,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton iconDateBtn;
     private ImageButton iconTimeBtn;
     private Button timeBtn;
+    private Button myPosition;
     PopupWindow popUp;
     PopupWindow popUpCalendar;
     TimePicker timePicker;
@@ -164,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean starting;
     boolean fast;
     boolean healthy;
+    private GeoPoint pointTempo;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
@@ -174,10 +168,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //debbogage
         Log.d(LOG_TAG,"------");
         Log.d(LOG_TAG,"Save State Main OnCreate");
-
-        requestLocalisationPermission(); //line 447
+        requestLocalisationPermission();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // First step to highlight already selected favorite means of transportation
         // (next and last step in "showOptions()"
@@ -223,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stepPoint = findViewById(R.id.stepPoint);
         search = findViewById(R.id.search);
         addStepPoint = findViewById(R.id.addStepPoint);
-
+        myPosition = findViewById(R.id.myPosition);
         option = findViewById(R.id.options);
         dimPopup = findViewById(R.id.dim_popup);
 
@@ -268,12 +262,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stepPoint.addTextChangedListener(textChangedListener);
         search.setOnClickListener(this);
         option.setOnClickListener(this);
+        myPosition.setOnClickListener(this);
 
         // set the tags for when onClick is called
         startPoint.setTag(0);
         endPoint.setTag(1);
         search.setTag(2);
         option.setTag(3);
+        myPosition.setTag(4);
         stepPoint.setTag(10);
 
         Context context = getApplicationContext();
@@ -303,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stepPoint.setVisibility(View.VISIBLE);
                     addStepPoint.setActivated(true);
                     stepVisibility = true;
-                } // make the stepPoint INvisible when it is
+                } // make the stepPoint Invisible when it is
                 else {
                     stepPoint.setVisibility(View.GONE);
                     addStepPoint.setActivated(false);
@@ -312,6 +308,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "Save State Main OnStart");
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////Centrers the map on lauch on the users position //////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // We need this parameter to check if the phone's GPS is activated
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        assert locationManager != null; //check if there the app is allowed to access location
+        GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
+
+        // If the permission to access to the user's location is already given, we use it
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            // We also need the phone's GPS to be activated. We check this here.
+            if (GpsStatus){
+
+                getLocation();
+                if (locationUser != null){
+                //we put the marker on the map if the point returned is not null
+                Marker positionMarker = new Marker(map);
+                pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+                positionMarker.setPosition(pointTempo);
+                positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+                positionMarker.setFlat(true);
+                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                map.getOverlays().add(positionMarker);
+                mapController.setCenter(pointTempo);
+                }
+                else {
+                    //TODO : fix this
+                    // if the return is null we show a toast to the user
+                    Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                }
+            }
+
+            // If the phone's GPS is NOT activated, we ask the user to activate it
+            else {
+                showAlertMessageNoGps();
+            }
+        }
+        Log.d("test geo loc", "onStart: finished ");
 
     }
 
@@ -711,7 +757,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // If the user click on this button, we ask her/him the permission to use her/his position
                             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                            popUp.dismiss();
+                            dialog.dismiss();
+                            Log.d("test geo loc", "onClick: finished");
                         }
                     })
                     .setNegativeButton("annuler", new DialogInterface.OnClickListener() {
@@ -739,12 +786,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == POSITION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Autorisation ACCORDÉE", Toast.LENGTH_SHORT).show();
+                //if the result is positive we do what we want to do
                 // If the permission to access to the user's location is  allowed AND if the GPS' phone is activated,
                 // we use this location
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && GpsStatus) {
-                    popUp.dismiss();
-                    getLocation(); //getLocation to avoid clicking again on "Ma position"
+
+                    if (GpsStatus) {
+
+                        getLocation();
+                        if (locationUser != null) {
+                            //We put the marker on the map
+                            //TODO: refactor this in a function
+                            Marker positionMarker = new Marker(map);
+                            pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
+                            positionMarker.setPosition(pointTempo);
+                            positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+                            positionMarker.setFlat(true);
+                            positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                            map.getOverlays().add(positionMarker);
+                            mapController.setCenter(pointTempo);
+                        }
+                        else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+
+                    // If the phone's GPS is NOT activated, we ask the user to activate it
+                    else {
+                        showAlertMessageNoGps();
+                    }
                 }
             }
             else {
@@ -766,7 +838,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)); //access to phone's settings to activate GPS
                         ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                 Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
-                        popUp.dismiss();
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("non", new DialogInterface.OnClickListener(){ //refuse to activate GPS
@@ -783,32 +855,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @SuppressLint("MissingPermission")
     private void getLocation(){
-        // Requesting ACCESS_FINE_LOCATION using Dexter library
-        Dexter.withActivity(this)
-                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-                        //mRequestingLocationUpdates = true;
-                        //startLocationUpdates();
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        if (response.isPermanentlyDenied()) {
-                            // open device settings when the permission is
-                            // denied permanently
-                            //openSettings();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).check();
+        //Access user's location
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, MainActivity.this);
+        locationUser =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-
 
     /** Print user's position If we need to convert the
      * coordinates in an address, we need to do it here with a "geocoder"
@@ -816,25 +867,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param location
      */
     public void onLocationChanged(Location location) {
-        //String position = location.getLatitude() + "," + location.getLongitude();
-        Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());
-        // We write the location in the good place : startPoint, stepPoint or endPoint
-        if (idInt == 0){
-            startAddress.setLocationName(String.valueOf(R.string.position_text));
-            startAddress.setCoordinates(coordinates);
-            startPoint.setText("Ma position");
-            //startPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
-        } if (idInt == 1) {
-            endAddress.setLocationName(String.valueOf(R.string.position_text));
-            endAddress.setCoordinates(coordinates);
-            endPoint.setText("Ma position");
-            //endPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
-        } if (idInt == 2) {
-            stepAddress.setLocationName(String.valueOf(R.string.position_text));
-            stepAddress.setCoordinates(coordinates);
-            stepPoint.setText("Ma position");
-            //stepPoint.setSelection(buttonClicked.length()-1); // set cursor at end of text
+        //getting the new location ( I tried using location as in the argument but it doesn't work and this works
+        getLocation();
+        pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+        //Deleting the previous marker
+        if (map.getOverlays().size() !=0){
+            map.getOverlays().clear();
+            map.postInvalidate();
         }
+        else {
+            // if there is no marker already we center the map on the new point
+            mapController.setCenter(pointTempo);
+        }
+
+        //printing a new position marker on the map
+        if (map!= null){
+        Marker positionMarker = new Marker(map);
+        positionMarker.setPosition(pointTempo);
+        positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+        positionMarker.setFlat(true);
+        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+        map.getOverlays().add(positionMarker);
+        }
+
+
+
     }
 
     /////////////////////////////////////////////////////////
@@ -856,6 +913,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     popUp.dismiss();
                 }
                 // if we click on My Position, ask permission for geolocalisation
+                //TODO : refactor this in a function
                 if (id==0) {
                     // We need this parameter to check if the phone's GPS is activated
                     locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
@@ -870,6 +928,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (GpsStatus){
                             popUp.dismiss();
                             getLocation();
+                            if (idButton == startPoint.getId()){
+                                idInt = 0;
+                                startPoint.setText("Ma position");
+                                startPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+                            }
+                            if (idButton == endPoint.getId()) {
+                                idInt = 1;
+                                endPoint.setText("Ma position");
+                                endPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+                            }
+                            if (idButton == stepPoint.getId()) {
+                                idInt = 2;
+                                stepPoint.setText("Ma position");
+                                stepPoint.setSelection(buttonClicked.length()); // set cursor at end of text
+                            }
                         }
 
                         // If the phone's GPS is NOT activated, we ask the user to activate it
@@ -893,13 +966,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View v){
-        int i = (int) v.getTag(); //if 2 : search, if 3 : option
+        int i = (int) v.getTag(); //if 2 : search, if 3 : option , if 4 : ma position
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
         step = stepPoint.getText().toString();
 
         // things to do when user clicks search
         if(i==2){
+            //First we check if the "Ma Position" is selected in the search, if So we take the last known position as the start or the end adress
+            if (locationUser != null){
+            Coordinates coordinates = new Coordinates(locationUser.getLatitude(),locationUser.getLongitude());
+            // We write the location in the good place : startPoint, stepPoint or endPoint
+            if (idInt == 0){
+                startAddress.setLocationName(String.valueOf(R.string.position_text));
+                startAddress.setCoordinates(coordinates);
+            } if (idInt == 1) {
+                endAddress.setLocationName(String.valueOf(R.string.position_text));
+                endAddress.setCoordinates(coordinates);
+            } if (idInt == 2) {
+                stepAddress.setLocationName(String.valueOf(R.string.position_text));
+                stepAddress.setCoordinates(coordinates);
+
+            }
+            }
+
             if (start.length() == 0 || end.length() == 0){
                 // if nothing has been typed in, nothing happens and you get a message
                 Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
@@ -1147,6 +1237,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     dimPopup.setVisibility(View.VISIBLE);
                     popUp.showAtLocation(v,Gravity.CENTER,0,0);
                 }
+        else if (i==4){
+            // We need this parameter to check if the phone's GPS is activated
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            assert locationManager != null; //check if there the app is allowed to access location
+            GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
+
+            // If the permission to access to the user's location is already given, we use it
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                // We also need the phone's GPS to be activated. We check this here.
+                if (GpsStatus){
+                    // if there's already a marker on the map it is deleted
+                    if (map.getOverlays().size() !=0){
+                        map.getOverlays().clear();
+                        map.postInvalidate();
+                    }
+                    getLocation();
+                    //we put a new marker on the map where the user is
+                    if (locationUser != null){
+                    Marker positionMarker = new Marker(map);
+                    pointTempo = new GeoPoint(locationUser.getLatitude(),locationUser.getLongitude());
+                    positionMarker.setPosition(pointTempo);
+                    positionMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+                    positionMarker.setFlat(true);
+                    positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                    map.getOverlays().add(positionMarker);
+                    mapController.setCenter(pointTempo);
+                    }
+                    else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                }
+
+                // If the phone's GPS is NOT activated, we ask the user to activate it
+                else {
+                    showAlertMessageNoGps();
+                }
+            }
+
+            // If we don't have the permission, we ask the permission to use their location
+            else {
+                requestLocalisationPermission(); //line 447
+            }
+        }
+
     }
 
     /**
@@ -1224,11 +1362,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }//end of check int
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(LOG_TAG, "Save State Main OnStart");
-    }
     @Override
     public void onPause(){
         super.onPause();

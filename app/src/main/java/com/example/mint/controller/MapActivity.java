@@ -90,8 +90,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
-    //private static final String TAG = "MapActivity"; //--> for debugging
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,12 +107,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
 
         try {
-            /*
-            URL url = new URL("http://ser-info-03.ec-nantes.fr:8080/itineraryBIS/map");
-            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();//open
-            InputStream in = new BufferedInputStream(urlCon.getInputStream());
-            String response = readStream(in);
-             */
+
             InputStream inputStream = this.getResources().openRawResource(R.raw.maptan);
             InputStream inputStream1 = this.getResources().openRawResource(R.raw.data_top);
             String jsonString = readStream(inputStream);
@@ -122,15 +115,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             lines = readJSON(jsonString);
             pol_streets = readJSONPol(jsonString1);
 
-
-
-        }
-        /*
-        catch (MalformedURLException e) {
-            e.printStackTrace();
         }
 
-*/
         catch (IOException e) {
             e.printStackTrace();
         }

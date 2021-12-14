@@ -1,20 +1,31 @@
 package com.example.mint.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.mint.controller.MenuSwitcherActivity;
-import com.example.mint.model.Preferences;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mint.R;
+import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesDate;
 import com.example.mint.model.PreferencesPollution;
-import com.example.mint.model.PreferencesAddresses;
-import com.example.mint.R;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesTransport;
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,21 +38,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +46,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TransferQueue;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings

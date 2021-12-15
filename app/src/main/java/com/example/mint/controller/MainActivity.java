@@ -44,6 +44,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -163,6 +165,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean starting;
     boolean fast;
     boolean healthy;
+    boolean isFragmentDisplayed;
+
+    private static final int ACCESS_FINE_LOCATION_CODE = 100;
+
+    public void displayFragment() {
+
+        // Get the FragmentManager and start a transaction.
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+
+
+        // Set boolean flag to indicate fragment is open.
+        isFragmentDisplayed = true;
+    }
+
+    /*
+    public void perm(View view){
+        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION_CODE);
+    }*/
+
+    private Button locate;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
@@ -173,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         requestLocalisationPermission(); //line 447
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // First step to highlight already selected favorite means of transportation
         // (next and last step in "showOptions()"
@@ -732,7 +757,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == POSITION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Autorisation ACCORDÉE", Toast.LENGTH_SHORT).show();
+
                 // If the permission to access to the user's location is  allowed AND if the GPS' phone is activated,
                 // we use this location
                 if (ContextCompat.checkSelfPermission(MainActivity.this,

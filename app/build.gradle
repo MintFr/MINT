@@ -48,6 +48,7 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.android.support:support-v4:28.0.0'
 
     // Dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'

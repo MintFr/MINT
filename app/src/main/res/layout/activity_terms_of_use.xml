@@ -53,9 +53,10 @@
 
         <ImageView
             android:id="@+id/back_button_terms_of_use"
-            android:layout_width="35dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:onClick="onClickBackButton"
+            android:paddingRight="-20dp"
             android:src="@drawable/ic_chevron_left" />
 
         <TextView

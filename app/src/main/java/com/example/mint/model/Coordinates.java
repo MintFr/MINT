@@ -16,7 +16,8 @@ public class Coordinates implements Serializable {
 
     /**
      * Constructor using latitude and longitude
-     * @param latitude double
+     *
+     * @param latitude  double
      * @param longitude double
      */
     public Coordinates(double latitude, double longitude) {
@@ -26,6 +27,7 @@ public class Coordinates implements Serializable {
 
     /**
      * Access latitude
+     *
      * @return double latitude
      */
     public double getLatitude() {
@@ -34,6 +36,7 @@ public class Coordinates implements Serializable {
 
     /**
      * Set latitude
+     *
      * @param latitude double
      */
     public void setLatitude(double latitude) {
@@ -42,6 +45,7 @@ public class Coordinates implements Serializable {
 
     /**
      * Access longitude
+     *
      * @return double longitude
      */
     public double getLongitude() {
@@ -50,6 +54,7 @@ public class Coordinates implements Serializable {
 
     /**
      * Set longitude
+     *
      * @param longitude double
      */
     public void setLongitude(double longitude) {
@@ -58,9 +63,10 @@ public class Coordinates implements Serializable {
 
     /**
      * Test if the coordinates are equal to zero
+     *
      * @return boolean
      */
-    public boolean isZero(){
+    public boolean isZero() {
         return this.latitude == 0 && this.longitude == 0;
     }
 }

@@ -2,14 +2,14 @@ package com.example.mint.model;
 
 import java.io.Serializable;
 
-public class Step implements Serializable{
+public class Step implements Serializable {
     private String address;
     private int distance;
 
     public Step() {
     }
 
-    public Step(String address, int distance){
+    public Step(String address, int distance) {
         this.address = address;
         this.distance = distance;
     }
@@ -30,7 +30,7 @@ public class Step implements Serializable{
         this.distance = distance;
     }
 
-    public void increaseDistance(int length){
+    public void increaseDistance(int length) {
         this.distance += length;
     }
 }

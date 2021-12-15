@@ -9,4 +9,8 @@
     <dimen name="title_bottomsheet_height">68dp</dimen>
     <dimen name="bottom_navigation_height">53dp</dimen>
     <dimen name="peek_height">121dp</dimen>
+    <dimen name="transport_button_size">30dp</dimen>
+    <dimen name="transport_button_gap">40dp</dimen>
+    <dimen name="tram_transport_button_gap">120dp</dimen>
+    <dimen name="button_scale">1.3</dimen>
 </resources>

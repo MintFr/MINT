@@ -72,7 +72,7 @@
         android:contentDescription="TODO" />
 
     <TextView
-        android:id="@+id/legal"
+        android:id="@+id/terms_of_use_text"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/settings_separator_3"
@@ -81,7 +81,7 @@
         android:focusable="true"
         android:gravity="center_vertical"
         android:paddingLeft="30dp"
-        android:text="@string/settings_legal"
+        android:text="@string/terms_of_use"
         android:textSize="20sp"
         android:onClick="onClickTermsOfUse"
         />
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/LightLightGrey_Settings"
-        android:layout_below="@id/legal"/>
+        android:layout_below="@id/terms_of_use_text"/>
     <androidx.appcompat.widget.SwitchCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

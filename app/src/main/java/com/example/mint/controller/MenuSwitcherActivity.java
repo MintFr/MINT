@@ -27,6 +27,7 @@ class MenuSwitcherActivity implements BottomNavigationView.OnNavigationItemSelec
 
     /**
      * Constructor for MenuSwitcherActivity
+     *
      * @param currentActivity Activity : current activity for each activity of the app
      */
     MenuSwitcherActivity(Activity currentActivity) {
@@ -37,6 +38,7 @@ class MenuSwitcherActivity implements BottomNavigationView.OnNavigationItemSelec
     /**
      * Start a new activity depending on what is clicked on the Menu
      * Configuration for the transition
+     *
      * @param targetItem Menu Item
      * @return boolean
      */
@@ -74,9 +76,9 @@ class MenuSwitcherActivity implements BottomNavigationView.OnNavigationItemSelec
 
             //---------TRANSITIONS-----------
             // For Left-To-Right transitions
-            if(activity.getClass() == MainActivity.class && targetItemId == R.id.maps ||
+            if (activity.getClass() == MainActivity.class && targetItemId == R.id.maps ||
                     activity.getClass() == MainActivity.class
-                    || activity.getClass() == MapActivity.class && targetItemId == R.id.profile){
+                    || activity.getClass() == MapActivity.class && targetItemId == R.id.profile) {
 
                 // Override the transition and finish the current activity
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -86,8 +88,8 @@ class MenuSwitcherActivity implements BottomNavigationView.OnNavigationItemSelec
             }
 
             // For Right-To-Left transitions
-            if(activity.getClass() == MapActivity.class || activity.getClass() == ProfileActivity.class
-                    && targetItemId == R.id.itinerary || activity.getClass() == ProfileActivity.class){
+            if (activity.getClass() == MapActivity.class || activity.getClass() == ProfileActivity.class
+                    && targetItemId == R.id.itinerary || activity.getClass() == ProfileActivity.class) {
 
                 // Override the transition and finish the current activity
                 activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

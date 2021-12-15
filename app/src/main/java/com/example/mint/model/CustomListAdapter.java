@@ -22,19 +22,21 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      * Constructor
+     *
      * @param context Context
-     * @param items ArrayList<String>
+     * @param items   ArrayList<String>
      */
     public CustomListAdapter(Context context, ArrayList<String> items) {
         this.context = context;
         this.items = items;
-        nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress",context);
+        nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress", context);
     }
 
     //returns total number of items in the list
 
     /**
      * Access total number of items in the list
+     *
      * @return int
      */
     @Override
@@ -46,6 +48,7 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      * Access item at a given position in the list
+     *
      * @param position : int - position in the list
      * @return Object
      */
@@ -55,7 +58,6 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     /**
-     *
      * @param position
      * @return
      */
@@ -65,46 +67,45 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     /**
-     *
      * @param position
      * @return
      */
     @Override
-    public int getItemViewType(int position){
-        if(position ==1 || position == nbLastAdd+2) {
+    public int getItemViewType(int position) {
+        if (position == 1 || position == nbLastAdd + 2) {
             return 1; // header item
-        }
-        else {
+        } else {
             return 0;// regular items
         }
     }
 
     /**
      * Returns true if the item is not a header
+     *
      * @param position : index of the item
      * @return boolean, true if regular, false if header
      */
     @Override
     public boolean isEnabled(int position) {
-        return position !=1 && position != nbLastAdd + 2;
+        return position != 1 && position != nbLastAdd + 2;
     }
 
     /**
      * Returns the view to be displayed for each item of the list
-     * @param position : index of the item
+     *
+     * @param position    : index of the item
      * @param convertView : the view that will be displayed
-     * @param parent : the parent of the item
+     * @param parent      : the parent of the item
      * @return convertView : the view that will be displayed
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // regular item
-        if(getItemViewType(position)==0){
+        if (getItemViewType(position) == 0) {
             // inflate regular item layout
-            convertView = inflater.inflate(R.layout.list_item,parent,false);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
             // get elements from the layout
             TextView text = convertView.findViewById(R.id.text_item);
             ImageView icon = convertView.findViewById(R.id.icon);
@@ -113,19 +114,19 @@ public class CustomListAdapter extends BaseAdapter {
             text.setText(items.get(position));
 
             // if in favorites, remove cross and add star
-            if (position>nbLastAdd+1){
+            if (position > nbLastAdd + 1) {
                 remove.setVisibility(View.GONE);
                 icon.setImageResource(R.drawable.ic_star);
             }
 
             // if it's my position, remove cross and add locate symbol
-            if (position==0){
+            if (position == 0) {
                 remove.setVisibility(View.GONE);
                 icon.setImageResource(R.drawable.ic_locate);
             }
 
             // if it's a history item, make cross visible and set onClick callback when you click on cross
-            else{
+            else {
                 final View finalConvertView = convertView;
                 final int finalPosition = position;
                 remove.setVisibility(View.VISIBLE);
@@ -137,7 +138,7 @@ public class CustomListAdapter extends BaseAdapter {
                         finalConvertView.setVisibility(View.GONE);
                         items.remove(finalPosition);
                         notifyDataSetChanged();
-                        PreferencesAddresses.removeLastAddress("lastAddress",finalPosition-1,context);
+                        PreferencesAddresses.removeLastAddress("lastAddress", finalPosition - 1, context);
                         nbLastAdd--;
                     }
                 });
@@ -148,7 +149,7 @@ public class CustomListAdapter extends BaseAdapter {
 
         // else, we inflate the list_header layout
         else {
-            convertView = inflater.inflate(R.layout.list_header,parent,false);
+            convertView = inflater.inflate(R.layout.list_header, parent, false);
             // the headers are not clickable
             convertView.setClickable(false);
             TextView text = convertView.findViewById(R.id.text_item);

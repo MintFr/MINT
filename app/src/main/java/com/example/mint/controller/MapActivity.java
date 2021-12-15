@@ -1,5 +1,8 @@
 package com.example.mint.controller;
 
+import static android.graphics.Color.argb;
+import static android.graphics.Color.rgb;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,9 +23,8 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.mint.controller.MenuSwitcherActivity;
-import com.example.mint.model.Pollution;
 import com.example.mint.R;
+import com.example.mint.model.Pollution;
 import com.example.mint.model.TanMap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,17 +52,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.graphics.Color.argb;
-import static android.graphics.Color.green;
-import static android.graphics.Color.rgb;
-
 /**
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
  * MapActivity is a inherited class from AppCompatActivity which is a base class of Andorid Studio
  */
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-
+    LayoutInflater inflaterMap;
     ////////////////////////
     ////////  MAP  /////////
     ////////////////////////
@@ -69,12 +67,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private IMapController mapController = null;
     private GeoPoint defaultPoint;
     private TanMap[] lines;
-    private Pollution[] pol_streets;
 
     ////////////////////////
     /////// BUTTONS  ///////
     ////////////////////////
-
+    private Pollution[] pol_streets;
     private FloatingActionButton zoomInButton;
     private FloatingActionButton zoomOutButton;
     private FloatingActionButton locateButton;
@@ -84,9 +81,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private Paint paintInside;
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
-
-
-    LayoutInflater inflaterMap;
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -115,12 +109,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             lines = readJSON(jsonString);
             pol_streets = readJSONPol(jsonString1);
 
-        }
-
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -163,10 +154,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         paintBorder.setAntiAlias(true);
 
 
-
-
-
-
         /////////////////////////////////////////////////////////
         //                   SPINNER                           //
         /////////////////////////////////////////////////////////
@@ -201,9 +188,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-        /////////////////////////////////////////////////////////
-        //                   BACK BUTTON                       //
-        /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+    //                   BACK BUTTON                       //
+    /////////////////////////////////////////////////////////
 
 
     @Override
@@ -267,10 +254,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             this.finish();
         }
     }
-        /////////////////////////////////////////////////////////
-        //                   BACK BUTTON END                   //
-        /////////////////////////////////////////////////////////
-
+    /////////////////////////////////////////////////////////
+    //                   BACK BUTTON END                   //
+    /////////////////////////////////////////////////////////
 
 
     @Override
@@ -289,7 +275,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 mScaleBarOverlay = new ScaleBarOverlay(map);
                 mScaleBarOverlay.setCentred(true);
                 //play around with these values to get the location on screen in the right place for your application
-                mScaleBarOverlay.setScaleBarOffset((int) (dm.widthPixels * 0.76), (int) (dm.heightPixels*0.72));
+                mScaleBarOverlay.setScaleBarOffset((int) (dm.widthPixels * 0.76), (int) (dm.heightPixels * 0.72));
                 map.getOverlays().add(this.mScaleBarOverlay);
 
                 map.invalidate(); // this is to refresh the display
@@ -331,7 +317,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             case 13: // zoom in
                 map.getController().zoomIn();
                 break;
-            default :
+            default:
                 break;
         }
     }
@@ -339,6 +325,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Function to read a file.
+     *
      * @param is
      * @return
      * @throws IOException
@@ -355,6 +342,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Function to read a JSON file
+     *
      * @param response String in JSON array format.
      * @return return a TanMap array, which contains all bus lines.
      * @throws JSONException
@@ -363,7 +351,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         JSONArray json = new JSONArray(response);
 
         System.out.println(json.getJSONObject(0));
-        System.out.println("json length : "+json.length());
+        System.out.println("json length : " + json.length());
         TanMap[] lines = new TanMap[json.length()];
         for (int i = 0; i < json.length(); i++) {
             lines[i] = new TanMap(json.getJSONObject(i));
@@ -373,6 +361,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Function to read a JSON file which store pollution data
+     *
      * @param response
      * @return
      * @throws JSONException
@@ -392,6 +381,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display the tan network
+     *
      * @param lines
      * @throws IOException
      */
@@ -403,16 +393,18 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display the pollution
+     *
      * @param streets
      */
-    private void displayPollution(Pollution[] streets){
-        for (Pollution street : streets){
+    private void displayPollution(Pollution[] streets) {
+        for (Pollution street : streets) {
             displayStreet(street);
         }
     }
 
     /**
      * Display a busline
+     *
      * @param busline
      * @throws IOException
      */
@@ -429,23 +421,22 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display a street
+     *
      * @param street
      */
-    private void displayStreet(Pollution street){
+    private void displayStreet(Pollution street) {
         List<GeoPoint> geoPoints = new ArrayList<>();
         geoPoints.add(new GeoPoint(street.getStart().getLatitude(), street.getStart().getLongitude()));
         geoPoints.add(new GeoPoint(street.getEnd().getLatitude(), street.getEnd().getLongitude()));
         // then we attribute it to the new polyline
         final Polyline line = new Polyline(map);
         line.setPoints(geoPoints);
-        if (street.getPol()<5.2){
-            line.getOutlinePaint().setColor(rgb(0,255,0));
-        }
-        else if(street.getPol()>5.2 && street.getPol()<5.6){
-            line.getOutlinePaint().setColor(rgb(0,0,255));
-        }
-        else{
-            line.getOutlinePaint().setColor(rgb(255,0,0));
+        if (street.getPol() < 5.2) {
+            line.getOutlinePaint().setColor(rgb(0, 255, 0));
+        } else if (street.getPol() > 5.2 && street.getPol() < 5.6) {
+            line.getOutlinePaint().setColor(rgb(0, 0, 255));
+        } else {
+            line.getOutlinePaint().setColor(rgb(255, 0, 0));
         }
         map.getOverlays().add(line);
 
@@ -455,6 +446,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Display a single route
+     *
      * @param route
      * @param name
      * @param direction
@@ -472,26 +464,26 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         line.setPoints(geoPoints);
 
         // then we handle the color :
-        int alpha =  0xff;
+        int alpha = 0xff;
         int red = (color >> 16) & 0xff;
-        int green = (color >>  8) & 0xff;
-        int blue = (color      ) & 0xff;
-        line.getOutlinePaint().setColor(argb(alpha,red,green,blue));
+        int green = (color >> 8) & 0xff;
+        int blue = (color) & 0xff;
+        line.getOutlinePaint().setColor(argb(alpha, red, green, blue));
 
         // this is to be able to identify the line later on
         line.setId(String.valueOf(i));
 
         // SETUP INFO WINDOW
-        final View infoWindowMapView = inflaterMap.inflate(R.layout.map_infowindow,null);
+        final View infoWindowMapView = inflaterMap.inflate(R.layout.map_infowindow, null);
 
         RelativeLayout relativeLayout = (RelativeLayout) infoWindowMapView.findViewById(R.id.bus_line_figure_background);
-        TextView busLineName =  relativeLayout.findViewById(R.id.bus_line_figure);
+        TextView busLineName = relativeLayout.findViewById(R.id.bus_line_figure);
         TextView busLineDirection = infoWindowMapView.findViewById(R.id.bus_line_direction);
 
-        relativeLayout.setBackgroundColor(argb(alpha,red,green,blue));
-        if (red == 0xff && green == 0xff && blue == 0xff){
-            busLineDirection.setTextColor(argb(alpha,0,0,0));
-            busLineName.setTextColor(argb(alpha,0,0,0));
+        relativeLayout.setBackgroundColor(argb(alpha, red, green, blue));
+        if (red == 0xff && green == 0xff && blue == 0xff) {
+            busLineDirection.setTextColor(argb(alpha, 0, 0, 0));
+            busLineName.setTextColor(argb(alpha, 0, 0, 0));
 
         }
         /*
@@ -509,8 +501,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         busLineName.setText(name);
 
 
-
-        final InfoWindow infoWindow = new InfoWindow(infoWindowMapView,map) {
+        final InfoWindow infoWindow = new InfoWindow(infoWindowMapView, map) {
             @Override
             public void onOpen(Object item) {
             }
@@ -541,6 +532,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Function to highlight the chosen itinerary
+     *
      * @param polyline
      * @param mapView
      * @param eventPos
@@ -569,7 +561,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         // which concerns only the last polyline in the overlay.
         int n = map.getOverlays().size();
         System.out.println(n);
-        Polyline alreadySelectedPolyline = (Polyline) map.getOverlays().get(n-2);
+        Polyline alreadySelectedPolyline = (Polyline) map.getOverlays().get(n - 2);
         resetPolylineAppearance(alreadySelectedPolyline);
         alreadySelectedPolyline.closeInfoWindow();
         map.invalidate();
@@ -581,9 +573,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /**
      * Reset the appearance of a polyline that was highlighted
+     *
      * @param polyline
      */
-    private void resetPolylineAppearance (Polyline polyline){
+    private void resetPolylineAppearance(Polyline polyline) {
         List<PaintList> pl = polyline.getOutlinePaintLists();
         if (pl.size() != 0) {
             @ColorInt int color = pl.get(1).getPaint().getColor();
@@ -592,7 +585,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
-
 
 
 }

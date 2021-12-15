@@ -22,6 +22,7 @@ public class TermsOfUseActivity extends AppCompatActivity {
 
     /**
      * Methods which returns to the previous activity, which is Settings Activity.
+     *
      * @param view
      */
     public void onClickBackButton(View view) {

@@ -1,13 +1,12 @@
 package com.example.mint.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.mint.model.AsyncItineraryCompute;
-import com.example.mint.model.Preferences;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.mint.R;
+import com.example.mint.model.AsyncItineraryCompute;
 import com.example.mint.model.PreferencesTransport;
 
 /**

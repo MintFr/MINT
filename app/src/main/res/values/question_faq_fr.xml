@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="faq_question_1">Question 1</string>
+    <string-array name="faq_answer_1">
+        <item>Answer 1</item>
+    </string-array>
+    <string name="faq_question_2">Question 2</string>
+    <string-array name="faq_answer_2">
+        <item>Answer 2</item>
+        <item> This is  a test</item>
+    </string-array>
+    <string name="faq_question_3">Question 3</string>
+    <string-array name="faq_answer_3">
+        <item>Answer 3</item>
+    </string-array>
+    <string name="faq_question_4">Question 4</string>
+    <string-array name="faq_answer_4">
+        <item>Answer 4</item>
+    </string-array>
+
+
+
+</resources>

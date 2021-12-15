@@ -28,18 +28,20 @@
         android:layout_above="@id/settings_separator_2"
         android:layout_alignParentRight="true"
         android:contentDescription="TODO" />
+
     <TextView
         android:id="@+id/faq"
-        android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingLeft="30dp"
-        android:gravity="center_vertical"
-        android:text="@string/settings_faq"
-        android:textSize="20sp"
+        android:layout_below="@id/settings_separator_1"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:layout_below="@id/settings_separator_1" />
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp"
+        android:text="@string/settings_faq"
+        android:textSize="20sp"
+        android:onClick="onClickFAQ"/>
     <View
         android:id="@+id/settings_separator_2"
         android:layout_width="match_parent"

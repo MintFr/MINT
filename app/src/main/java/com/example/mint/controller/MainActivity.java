@@ -74,28 +74,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // For debug log
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
-    private View dimPopup;
-
+    private final static double LATITUDE_DEFAULT_MAP = 47.21;
+    private final static double LONGITUDE_DEFAULT_MAP = -1.55;
+    // get current date and time
+    final Calendar cldr = Calendar.getInstance();
     /**
      * GEOLOC
      */
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
-    private int idInt = -1; // We need this to know where we have to write the location of the user : in the startPoint, stepPoint or endPoint
-    boolean GpsStatus = false; //true if the user's location is activated on the phone
     private final int POSITION_PERMISSION_CODE = 1;
+    boolean GpsStatus = false; //true if the user's location is activated on the phone
     LocationManager locationManager;
     Location locationUser;
+    IMapController mapController;
+    /**
+     * Adress suggestions
+     */
+    ArrayList<String> lastAddressList;
+    ArrayList<String> addressList;
+    ListView addressListView;
+    String start;
+    String end;
+    String step;
+    EditText buttonClicked;
+    PopupWindow popUp;
+    PopupWindow popUpCalendar;
+    TimePicker timePicker;
+    int year;
+    int month;
+    int day;
+    int hour;
+    int minutes;
+    String dateText;
+    String timeText;
+    boolean starting;
+    boolean fast;
+    boolean healthy;
+    private View dimPopup;
+    private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
+    private int idInt = -1; // We need this to know where we have to write the location of the user : in the startPoint, stepPoint or endPoint
     /**
      * Map
      */
     private MapView map;
-    IMapController mapController;
     private Marker positionMarker;
-    private final static double LATITUDE_DEFAULT_MAP = 47.21;
-    private final static double LONGITUDE_DEFAULT_MAP = -1.55;
-
     /**
      * Start Address
      */
@@ -116,19 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton addStepPoint;
     private ImageButton inversionButton;
     private Button search;
-
-    /**
-     * Adress suggestions
-     */
-    ArrayList<String> lastAddressList;
-    ArrayList<String> addressList;
-    ListView addressListView;
-    String start;
-    String end;
-    String step;
-    EditText buttonClicked;
-
-
     /**
      * Options
      */
@@ -138,21 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private Button myPosition;
-    PopupWindow popUp;
-    PopupWindow popUpCalendar;
-    TimePicker timePicker;
-    // get current date and time
-    final Calendar cldr = Calendar.getInstance();
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minutes;
-    String dateText;
-    String timeText;
-    boolean starting;
-    boolean fast;
-    boolean healthy;
     /**
      * Temporary point for location changes
      */

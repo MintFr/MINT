@@ -23,8 +23,9 @@ public class Address {
 
     /**
      * Constructor with 2 parameters
+     *
      * @param locationName String
-     * @param coordinates Coordinates
+     * @param coordinates  Coordinates
      */
     public Address(String locationName, Coordinates coordinates) {
         this.locationName = locationName;
@@ -33,6 +34,7 @@ public class Address {
 
     /**
      * Constructor with parameter locationName
+     *
      * @param locationName String
      */
     public Address(String locationName) {
@@ -41,6 +43,7 @@ public class Address {
 
     /**
      * Constructor with parameters coordinates
+     *
      * @param coordinates Coordinates
      */
     public Address(Coordinates coordinates) {
@@ -49,6 +52,7 @@ public class Address {
 
     /**
      * Access location name of the Address
+     *
      * @return String locationName
      */
     public String getLocationName() {
@@ -57,6 +61,7 @@ public class Address {
 
     /**
      * Set the locationName of the Address
+     *
      * @param locationName String
      */
     public void setLocationName(String locationName) {
@@ -65,6 +70,7 @@ public class Address {
 
     /**
      * Access the coordinates of the Address
+     *
      * @return Coordinates coordinates
      */
     public Coordinates getCoordinates() {
@@ -73,6 +79,7 @@ public class Address {
 
     /**
      * Set the coordinates of the Address from existing coordinates
+     *
      * @param coordinates Coordinates
      */
     public void setCoordinates(Coordinates coordinates) {
@@ -81,7 +88,8 @@ public class Address {
 
     /**
      * Set the coordinates of the Address from latitude et longitude
-     * @param latitude Double
+     *
+     * @param latitude  Double
      * @param longitude Double
      */
     public void setCoordinates(double latitude, double longitude) {

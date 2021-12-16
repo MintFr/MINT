@@ -12,6 +12,7 @@ import com.example.mint.R;
 
 public class FaqActivity extends AppCompatActivity {
     String mAnswer;
+    String mQuestion;
     boolean isExpanded;
     TextView textView;
     ImageButton imageButton;
@@ -23,16 +24,19 @@ public class FaqActivity extends AppCompatActivity {
         setContentView(R.layout.activity_faq);
 
         mAnswer = getResources().getString(R.string.lorem_ipsum);
-        textView = (TextView) findViewById(R.id.expandableTextView);
-        imageButton = (ImageButton) findViewById(R.id.expandBtn);
+        textView = (TextView) findViewById(R.id.question1_text);
+        mQuestion = textView.getText().toString();
+        imageButton = (ImageButton) findViewById(R.id.question1_button);
 
-        imageButton.setImageResource(R.drawable.ic_chevron_right);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isExpanded = ! isExpanded;
-                imageButton.setImageResource(isExpanded?R.drawable.ic_chevron_left:R.drawable.ic_chevron_right);
-                textView.setText(isExpanded?mAnswer:mAnswer.substring(0,10));
+                isExpanded = !isExpanded;
+                imageButton.setImageResource(
+                        isExpanded
+                                ? R.drawable.ic_baseline_expand_less_24
+                                : R.drawable.ic_baseline_expand_more_24);
+                textView.setText(isExpanded ? mQuestion + "\n \n" + mAnswer : mQuestion);
             }
         });
     }

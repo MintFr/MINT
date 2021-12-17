@@ -12,56 +12,54 @@ import com.example.mint.R;
 
 import java.util.ArrayList;
 
+/**
+ * Activity of FAQ, where you can drop down a selected question.
+ */
 public class FaqActivity extends AppCompatActivity implements View.OnClickListener {
+    // Nb of questions in the FAQ. Locating in values/called_integers.xml
     int nbQuestions;
+    // As we don't know the nb of questions, we use lists to store data
+    // Because each button has the same role but for a different question
     ArrayList<String> mAnswers = new ArrayList<>();
     ArrayList<String> mQuestions = new ArrayList<>();
     ArrayList<Boolean> areExpanded = new ArrayList<>();
     ArrayList<TextView> textViews = new ArrayList<>();
     ArrayList<ImageButton> imageButtons = new ArrayList<>();
 
-/*
-
-    mAnswer2 = getResources().getString(R.string.lorem_ipsum);
-    textView2 = (TextView) findViewById(R.id.question2_text);
-    mQuestion2 = textView2.getText().toString();
-    imageButton2 = (ImageButton) findViewById(R.id.question2_button);
-
-    mAnswer3 = getResources().getString(R.string.lorem_ipsum);
-    textView3= (TextView) findViewById(R.id.question3_text);
-    mQuestion3 = textView3.getText().toString();
-    imageButton3 = (ImageButton) findViewById(R.id.question3_button);
-
-
-    /*
-            mAnswer = getResources().getString(R.string.lorem_ipsum);
-            textView = (TextView) findViewById(R.id.question1_text);
-            mQuestion = textView.getText().toString();
-            imageButton = (ImageButton) findViewById(R.id.question1_button);
-
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    isExpanded = !isExpanded;
-                    imageButton.setImageResource(
-                            isExpanded
-                                    ? R.drawable.ic_baseline_expand_less_24
-                                    : R.drawable.ic_baseline_expand_more_24);
-                    textView.setText(isExpanded ? mQuestion + "\n \n" + mAnswer : mQuestion);
-                }
-            }
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // We need to fulfill the different arrays with data
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
+        // Getting from xml
         nbQuestions = getResources().getInteger(R.integer.nbQuestionFAQ);
-        for (int i=0; i<nbQuestions; i++){
-            mAnswers.add(getResources().getString(R.string.lorem_ipsum));
-            textViews.add((TextView) findViewById(R.id.question1_text));
+        // For each question, we add the elements we need in arrays
+        for (int i = 0; i < nbQuestions; i++) {
+            // To get to the ids which are "faq_answer_1", "question3_button" etc...
+            String idAndswer = "faq_answer_" + (i + 1);
+            String idQuestion = "question" + (i + 1) + "_text";
+            String idButton = "question" + (i + 1) + "_button";
+            mAnswers.add(
+                    getResources().getString(
+                            getResources().getIdentifier(
+                                    idAndswer, "string", getPackageName()
+                            )
+                    )
+            );
+            textViews.add(
+                    (TextView) findViewById(
+                            getResources().getIdentifier(
+                                    idQuestion, "id", getPackageName()
+                            )
+                    )
+            );
             mQuestions.add(textViews.get(i).getText().toString());
-            ImageButton buttonI = (ImageButton) findViewById(R.id.question1_button);
+            ImageButton buttonI = (ImageButton) findViewById(
+                    getResources().getIdentifier(
+                            idButton, "id", getPackageName()
+                    )
+            );
             buttonI.setOnClickListener(this);
             imageButtons.add(buttonI);
 
@@ -69,12 +67,12 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    public int getIndiceButton(int buttonId, ArrayList<ImageButton> imageButtons){
-        int res=0;
-        for (int i=0; i<nbQuestions; i++){
+    public int getIndiceButton(int buttonId, ArrayList<ImageButton> imageButtons) {
+        int res = 0;
+        for (int i = 0; i < nbQuestions; i++) {
             ImageButton imageButtoni = imageButtons.get(i);
-            if (buttonId == imageButtoni.getId()){
-                res=i;
+            if (buttonId == imageButtoni.getId()) {
+                res = i;
                 break;
             }
         }
@@ -96,58 +94,12 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
                 isExpanded
                         ? R.drawable.ic_baseline_expand_less_24
                         : R.drawable.ic_baseline_expand_more_24);
-        textView.setText(isExpanded ? mQuestion + "\n \n" + mAnswer : mQuestion);
+        textView.setText(isExpanded ? mQuestion + "\n \n" + mAnswer + "\n \n" : mQuestion);
 
         areExpanded.set(indiceButton, isExpanded);
         textViews.set(indiceButton, textView);
 
     }
-
-
-
-
-
-
-/*
-
-        mQuestion = "";
-        mAnswer = "";
-        // Id of clicked button (int)
-        int idButton = v.getId();
-        imageButton = (ImageButton) findViewById(idButton);
-        // String of the id
-        String name = getResources().getResourceEntryName(idButton);
-        String[] names = name.split("_");
-        Log.d("FAQ_class", Arrays.toString(names));
-        Log.d("FAQ_class", names[0] + "    " + names[1]);
-        String idBeginning = names[0] + "_text";
-
-
-        // Getting id of the text view from this button number
-        int idQuestionFromButton = getResources().getIdentifier(idBeginning, "id", getPackageName());
-        textView = findViewById(idQuestionFromButton);
-        mQuestion = textView.getText().toString();
-
-        isExpanded = !isExpanded;
-        imageButton.setImageResource(
-                isExpanded ?
-                        R.drawable.ic_baseline_expand_less_24 :
-                        R.drawable.ic_baseline_expand_more_24
-        );
-        textView.setText(
-                isExpanded ?
-                        mQuestion + "\n \n" + mAnswer :
-                        mQuestion
-        );
-
-    }
-/*
-    @Override
-    protected void onStart() {
-        super.onStart();
-        imageButton.setOnClickListener(this);
-    }
- */
 
     public void onClickBackButton(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);

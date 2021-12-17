@@ -48,8 +48,7 @@
                         android:id="@+id/question1_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_expand_more_24"
-                        android:onClick="onClick"/>
+                        android:src="@drawable/ic_baseline_expand_more_24" />
                 </LinearLayout>
 
                 <View
@@ -71,8 +70,7 @@
                         android:id="@+id/question2_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_expand_more_24"
-                        android:onClick="onClick"/>
+                        android:src="@drawable/ic_baseline_expand_more_24" />
                 </LinearLayout>
 
                 <View
@@ -94,8 +92,7 @@
                         android:id="@+id/question3_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_expand_more_24"
-                        android:onClick="onClick"/>
+                        android:src="@drawable/ic_baseline_expand_more_24" />
                 </LinearLayout>
 
                 <View

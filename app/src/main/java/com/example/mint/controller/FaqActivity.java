@@ -55,13 +55,19 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
+        isExpanded = false;
+        mAnswer = getResources().getString(R.string.lorem_ipsum);
+
 
     }
 
     @Override
     public void onClick(View v) {
+        mQuestion = "";
+        mAnswer = "";
         // Id of clicked button (int)
         int idButton = v.getId();
+        imageButton = (ImageButton) findViewById(idButton);
         // String of the id
         String name = getResources().getResourceEntryName(idButton);
         String[] names = name.split("_");
@@ -74,7 +80,6 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
         int idQuestionFromButton = getResources().getIdentifier(idBeginning, "id", getPackageName());
         textView = findViewById(idQuestionFromButton);
         mQuestion = textView.getText().toString();
-        mAnswer = getResources().getString(R.string.lorem_ipsum);
 
         isExpanded = !isExpanded;
         imageButton.setImageResource(

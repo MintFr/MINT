@@ -6,6 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".controller.SettingsActivity">
 
+    <View
+        android:id="@+id/settings_separator_"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/dark_mode"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="-64dp"
+        android:background="@color/LightLightGrey_Settings"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/legal_notices"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/settings_separator_3"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="-1dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp"
+        android:text="@string/mentions_l_gales"
+        android:textSize="20sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="-1dp"
+        android:onClick="onClickLegalNotices"/>
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="84dp"
@@ -28,11 +61,8 @@
         android:layout_above="@id/settings_separator_2"
         android:layout_below="@id/settings_separator_1"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:contentDescription="TODO"
-        android:src="@drawable/ic_chevron_right" />
-
-    <TextView
+        android:contentDescription="TODO" />
+    <Button
         android:id="@+id/faq"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -81,7 +111,7 @@
         android:src="@drawable/ic_chevron_right" />
 
     <TextView
-        android:id="@+id/terms_of_use_text"
+        android:id="@+id/legal_notices_text"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/settings_separator_3"
@@ -98,8 +128,8 @@
         android:id="@+id/settings_separator_4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/terms_of_use_text"
-        android:background="@color/LightLightGrey_Settings" />
+        android:background="@color/LightLightGrey_Settings"
+        android:layout_below="@id/legal_notices_text"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:layout_width="wrap_content"
@@ -107,17 +137,24 @@
         android:layout_above="@id/settings_separator_5"
         android:layout_below="@id/settings_separator_4"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp" />
+        android:layout_marginTop="29dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="-29dp" />
 
     <TextView
         android:id="@+id/dark_mode"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/settings_separator_4"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="63dp"
         android:gravity="center_vertical"
         android:paddingLeft="30dp"
         android:text="@string/settings_dark_mode"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="3dp" />
 
     <View
         android:id="@+id/settings_separator_5"
@@ -138,4 +175,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="312dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="15dp"
+        app:srcCompat="@drawable/ic_chevron_right"
+        tools:ignore="VectorDrawableCompat" />
+
 </RelativeLayout>

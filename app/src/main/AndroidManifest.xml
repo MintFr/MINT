@@ -25,6 +25,8 @@
         <activity
             android:name=".controller.FaqActivity"
             android:exported="true" />
+        android:usesCleartextTraffic="true">
+        <activity android:name=".controller.LegalNoticesActivity"></activity>
         <activity
             android:name=".controller.TermsOfUseActivity"
             android:exported="true" />

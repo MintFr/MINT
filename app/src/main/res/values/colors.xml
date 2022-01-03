@@ -17,6 +17,9 @@
     <color name="colorTransparentWhite">#11ffffff</color>
 
     <!-- Colors for  layout activity_itinerary -->
+    <color name="White_Main">#F8F8F8</color>
+
+    <!-- Colors for  layout activity_itinerary -->
     <color name="PrimaryWhite_Itinerary">#ffffff</color>
     <color name="White_Itinerary">#F8F8F8</color>
     <color name="DarkGrey_Itinerary">#999999</color>

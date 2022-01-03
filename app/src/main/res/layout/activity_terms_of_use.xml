@@ -60,7 +60,7 @@
             android:src="@drawable/ic_chevron_left" />
 
         <TextView
-            android:id="@+id/terms_of_use_title"
+            android:id="@+id/faq_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"

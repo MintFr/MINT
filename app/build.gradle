@@ -31,7 +31,18 @@ android {
     dexOptions {
 		preDexLibraries = true
 	}
+
+
 }
+
+tasks.register('copyFile',Copy) {
+
+        from 'D:/Dev/Mint/Fullcode/MINT/app/src/test/java/resources/jsonTest.json'
+        into 'D:/Dev/Mint/Fullcode/MINT/app/build/intermediates/javac/debugUnitTest/classes/'
+        println 'A message which is logged at QUIET level'
+
+}
+
 repositories {
     maven { url 'https://jitpack.io' }
 }

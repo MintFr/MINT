@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -51,6 +53,11 @@ import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesTransport;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.osmdroid.api.IMapController;
@@ -65,6 +72,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
@@ -304,6 +312,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void addMarker(GoogleMap map, double lat, double lon) {
+        map.addMarker(new MarkerOptions().position(lat, lon))
+    }
+}
+    /**
+     * Creation of the position marker
+     */
+    Marker myLocMarker = map.addMarker(new MarkerOptions()
+            .position(pointTempo)
+            .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.bluebox, "your text goes here"))));
+
+    /**
+     * Resizing Bitmap in order to use it as the position's marker
+     */
+    public Bitmap resizeBitmap(String drawableName,int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
+        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+
     /**
      * OnStart methos, applied right after onCreate.
      * This method tries to center the map on the location of the user, if GPS granted.
@@ -331,12 +357,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getLocation();
                 if (locationUser != null) {
                     //we put the marker on the map if the point returned is not null
-                    Marker positionMarker = new Marker(map);
+
+                    //convert the market ic_position into a bitmap
+                    Bitmap ic_pos = BitmapFactory.decodeResource(getResources(), R.drawable.ic_position);
+                    );
+
+                    Marker positionMarker = new Marker();
                     pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
                     positionMarker.setPosition(pointTempo);
                     positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                     positionMarker.setFlat(true);
-                    positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                  ;
+                    positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                     map.getOverlays().add(positionMarker);
                     mapController.setCenter(pointTempo);
                 } else {
@@ -803,7 +835,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             positionMarker.setPosition(pointTempo);
                             positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                             positionMarker.setFlat(true);
-                            positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                            positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                             map.getOverlays().add(positionMarker);
                             mapController.setCenter(pointTempo);
                         } else {
@@ -887,7 +919,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 positionMarker.setPosition(pointTempo);
                 positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                 positionMarker.setFlat(true);
-                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                 map.getOverlays().add(positionMarker);
             }
         }
@@ -1263,7 +1295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         positionMarker.setPosition(pointTempo);
                         positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                         positionMarker.setFlat(true);
-                        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                         map.getOverlays().add(positionMarker);
                         mapController.setCenter(pointTempo);
                     } else {

@@ -82,4 +82,7 @@
     <!-- Colors spinner_dropdown_item -->
     <color name="PrimaryGreen_Spinner_Dropdown">#084528</color>
 
+    <!-- Colors ic_position -->
+    <color name="FlashRed_position">#F00020</color>
+
 </resources>

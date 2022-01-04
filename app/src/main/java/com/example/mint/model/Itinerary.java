@@ -3,6 +3,7 @@ package com.example.mint.model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -21,11 +22,10 @@ public class Itinerary implements Serializable {
     private Coordinates step;
 
 
-
     /**
      * Default constructor
      */
-    public Itinerary(){
+    public Itinerary() {
         this.type = "n/a";
         this.pollution = 0.;
         this.duration = 0.;
@@ -38,42 +38,44 @@ public class Itinerary implements Serializable {
 
     /**
      * Constructor with parameter
-     * @param type String
-     * @param pollution double
-     * @param duration double
-     * @param distance double
-     * @param stepTime ArrayList<Integer>
+     *
+     * @param type         String
+     * @param pollution    double
+     * @param duration     double
+     * @param distance     double
+     * @param stepTime     ArrayList<Integer>
      * @param stepDistance ArrayList<Integer>
-     * @param points ArrayList<double[]>
+     * @param points       ArrayList<double[]>
      */
     public Itinerary(String type, double pollution, double duration, ArrayList<Integer> stepTime, ArrayList<Integer> stepDistance, ArrayList<double[]> points, double distance) {
-        this.type=type;
-        this.pollution=pollution;
+        this.type = type;
+        this.pollution = pollution;
         this.duration = duration;
-        this.distance=distance;
+        this.distance = distance;
         //this.stepTime=stepTime;
         //this.stepDistance=stepDistance;
-        this.points=points;
+        this.points = points;
     }
 
     /**
      * Constructor from a json object
+     *
      * @param json JSONObject
      */
-    public Itinerary(JSONObject json){
+    public Itinerary(JSONObject json) {
         //Reading JSON
-        try{
+        try {
             this.type = json.getString("transport");
             this.distance = json.getDouble("distance");
             this.timeOption = json.getString("time");
             this.hourStart = json.getBoolean("hofStart");
             this.duration = json.getDouble("duration");
-            this.pollution = (int) json.getDouble("exposition")/10;
+            this.pollution = (int) json.getDouble("exposition") / 10;
             this.hasStep = json.getBoolean("hasStep");
             this.points = new ArrayList<>();
             JSONArray tempDetail = json.getJSONArray("details");
             ArrayList<Step> detail = new ArrayList<>();
-            for(int i = 0; i<tempDetail.length(); i++){
+            for (int i = 0; i < tempDetail.length(); i++) {
                 JSONObject step = tempDetail.getJSONObject(i);
                 String address = step.getString("addressStep");
                 int length = step.getInt("lengthStep");
@@ -81,20 +83,19 @@ public class Itinerary implements Serializable {
                 //System.out.println(address);
             }
             this.setDetail(detail);
-            if (hasStep){
-            JSONArray coordStep = json.getJSONArray("step");
-            System.out.println(coordStep);
-            this.step = new Coordinates(coordStep.getDouble(0), coordStep.getDouble(1));
+            if (hasStep) {
+                JSONArray coordStep = json.getJSONArray("step");
+                System.out.println(coordStep);
+                this.step = new Coordinates(coordStep.getDouble(0), coordStep.getDouble(1));
             }
 
             JSONArray steps = json.getJSONArray("pointsItinerary");
 
-            for (int i = 0; i<steps.length(); i++)
-            {
+            for (int i = 0; i < steps.length(); i++) {
                 JSONObject point = steps.getJSONObject(i);
                 double longitude = point.getDouble("longitude");
                 double latitude = point.getDouble("latitude");
-                double[] p = {latitude,longitude};
+                double[] p = {latitude, longitude};
                 this.points.add(p);
             }
             int s = this.points.size();
@@ -111,12 +112,12 @@ public class Itinerary implements Serializable {
     }
 
 
-
     /**
      * Copy constructor
+     *
      * @param itinerary Itinerary
      */
-    public Itinerary(Itinerary itinerary){
+    public Itinerary(Itinerary itinerary) {
         this.detail = itinerary.getDetail();
         this.hasStep = itinerary.isHasStep();
         this.step = itinerary.getStep();
@@ -133,6 +134,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access itinerary's type of transportation
+     *
      * @return
      */
     public String getType() {
@@ -141,6 +143,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Set itinerary's type of transportation
+     *
      * @param type
      */
     public void setType(String type) {
@@ -149,6 +152,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access itinerary's score of pollution
+     *
      * @return
      */
     public double getPollution() {
@@ -157,6 +161,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Set itinerary's score of pollution
+     *
      * @param pollution
      */
     public void setPollution(Float pollution) {
@@ -164,7 +169,17 @@ public class Itinerary implements Serializable {
     }
 
     /**
+     * Set pollution of the itinerary
+     *
+     * @param pollution
+     */
+    public void setPollution(double pollution) {
+        this.pollution = pollution;
+    }
+
+    /**
      * Access total duration
+     *
      * @return
      */
     public double getDuration() {
@@ -173,26 +188,15 @@ public class Itinerary implements Serializable {
 
     /**
      * Set total duration
+     *
      * @param duration
      */
     public void setDuration(Float duration) {
         this.duration = duration;
     }
 
-    /**
-     * Set total distance
-     * @param distance
-     */
-    public void setDistance(double distance){
-        this.distance = distance;
-    }
-
-    /**
-     * Access total distance
-     * @return
-     */
-    public double getDistance(){
-        return distance;
+    public void setDuration(double duration) {
+        this.duration = duration;
     }
 
     /*public ArrayList<Integer> getStepTime() {
@@ -212,8 +216,27 @@ public class Itinerary implements Serializable {
     }*/
 
     /**
+     * Access total distance
+     *
+     * @return
+     */
+    public double getDistance() {
+        return distance;
+    }
+
+    /**
+     * Set total distance
+     *
+     * @param distance
+     */
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    /**
      * Access all the successive points of the itinerary
-     * @return ArrayList<double[]>
+     *
+     * @return ArrayList<double [ ]>
      */
     public ArrayList<double[]> getPoints() {
         return points;
@@ -221,6 +244,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Set the list of successive points
+     *
      * @param points
      */
     public void setPoints(ArrayList<double[]> points) {
@@ -229,6 +253,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access the total number of Points in the itinerary
+     *
      * @return
      */
     public int getPointSize() {
@@ -237,6 +262,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access the time Option
+     *
      * @return
      */
     public String getTimeOption() {
@@ -245,6 +271,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Set the time Option
+     *
      * @param timeOption
      */
     public void setTimeOption(String timeOption) {
@@ -252,7 +279,6 @@ public class Itinerary implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isHourStart() {
@@ -264,15 +290,8 @@ public class Itinerary implements Serializable {
     }
 
     /**
-     * Set pollution of the itinerary
-     * @param pollution
-     */
-    public void setPollution(double pollution) {
-        this.pollution = pollution;
-    }
-
-    /**
      * Set total duration
+     *
      * @param time
      */
     public void setTime(double time) {
@@ -281,6 +300,7 @@ public class Itinerary implements Serializable {
 
     /**
      * Access detail of the itinerary : all the successive streets to follow
+     *
      * @return
      */
     public ArrayList<Step> getDetail() {
@@ -291,12 +311,9 @@ public class Itinerary implements Serializable {
         this.detail = detail;
     }
 
-    public void setDuration(double duration) {
-        this.duration = duration;
-    }
-
     /**
      * Access the information regarding the existence of a step in the itinerary
+     *
      * @return
      */
     public boolean isHasStep() {

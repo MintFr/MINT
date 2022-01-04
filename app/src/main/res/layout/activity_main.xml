@@ -125,50 +125,50 @@
 
     <ImageButton
         android:id="@+id/addStepPoint"
-        android:layout_width="35dp"
+        android:layout_width="48dp"
         android:layout_height="35dp"
         android:layout_alignTop="@+id/startPoint"
         android:layout_alignBottom="@id/endPoint"
         android:layout_toLeftOf="@id/startPoint"
         android:background="#00FFFFFF"
+        android:contentDescription="TODO"
         android:src="@drawable/button_addstep"
         app:layout_constraintBottom_toBottomOf="@+id/endPoint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".01"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/startPoint"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toTopOf="@+id/startPoint" />
 
     <ImageButton
         android:id="@+id/inversion"
-        android:layout_width="35dp"
+        android:layout_width="48dp"
         android:layout_height="35dp"
         android:layout_alignTop="@+id/startPoint"
         android:layout_alignBottom="@id/endPoint"
         android:layout_toRightOf="@id/startPoint"
         android:background="#00FFFFFF"
+        android:contentDescription="TODO"
         android:src="@drawable/ic_swap"
         app:layout_constraintBottom_toBottomOf="@+id/endPoint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".99"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/startPoint"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toTopOf="@+id/startPoint" />
 
     <Button
         android:id="@+id/options"
+        style="@style/Button"
         android:layout_width="70dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="6dp"
+        android:layout_height="48dp"
         android:layout_below="@id/endPoint"
         android:layout_alignRight="@id/endPoint"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/quicksand_regular"
         android:gravity="center"
-        android:text="@string/text_options"
-        android:textAllCaps="false"
-        style="@style/Button"
         android:padding="0dp"
+        android:text="@string/text_options"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="#084528"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.843"
@@ -178,10 +178,10 @@
     <Button
         android:id="@+id/search"
         android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="7dp"
+        android:layout_height="48dp"
         android:layout_below="@id/options"
         android:layout_alignRight="@id/endPoint"
+        android:layout_marginTop="7dp"
         android:background="@drawable/shape_search"
         android:fontFamily="@font/quicksand_regular"
         android:text="@string/button_search"
@@ -193,6 +193,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/options" />
 
+    <ImageButton
+        android:id="@+id/myPosition"
+        android:layout_height="70dp"
+        android:layout_width="70dp"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:padding="70dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/button_location"
+        android:background="#00ffffff"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"
         android:id="@+id/bottom_navigation"
@@ -201,7 +216,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         app:itemTextColor="#999999"
-        android:background="#F8F8F8"
+        android:background="@color/White_Main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

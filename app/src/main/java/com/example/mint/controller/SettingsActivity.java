@@ -15,6 +15,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     /**
      * This activity handles the various application settings (FAQ, language...)
+     *
      * @param savedInstanceState
      */
     @Override
@@ -31,8 +32,34 @@ public class SettingsActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
+    /**
+     * Method applying when user clicks on "Mentions légales". Launches the TermsofUse Activity.
+     *
+     * @param view
+     */
     public void onClickTermsOfUse(View view) {
         Intent intent = new Intent(this, TermsOfUseActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Method applying when user clicks on "FAQ". Launches the FAQActivity.
+     *
+     * @param view
+     */
+    public void onClickFAQ(View view) {
+        Intent intent = new Intent(this, FaqActivity.class);
+        startActivity(intent);
+    }
+  
+  
+    /**
+     * Method applying when user clicks on "Mentions légales". Launches the LegalNotices Activity.
+     *
+     * @param view
+     */
+    public void onClickLegalNotices(View view) {
+        Intent intent = new Intent(this, LegalNoticesActivity.class);
         startActivity(intent);
     }
 }

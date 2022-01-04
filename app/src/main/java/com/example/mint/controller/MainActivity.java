@@ -18,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -43,6 +44,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton iconDateBtn;
     private ImageButton iconTimeBtn;
     private Button timeBtn;
-    private Button myPosition;
+    private ImageButton myPosition;
     /**
      * Temporary point for location changes
      */
@@ -897,6 +899,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      * @param location
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void onLocationChanged(Location location) {
         // Check if the activity is destroyed, if true then no need to update locations
         if (!isDestroyed()) {

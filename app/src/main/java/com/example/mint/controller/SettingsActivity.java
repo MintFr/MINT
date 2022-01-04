@@ -41,4 +41,25 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TermsOfUseActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * Method applying when user clicks on "FAQ". Launches the FAQActivity.
+     *
+     * @param view
+     */
+    public void onClickFAQ(View view) {
+        Intent intent = new Intent(this, FaqActivity.class);
+        startActivity(intent);
+    }
+  
+  
+    /**
+     * Method applying when user clicks on "Mentions légales". Launches the LegalNotices Activity.
+     *
+     * @param view
+     */
+    public void onClickLegalNotices(View view) {
+        Intent intent = new Intent(this, LegalNoticesActivity.class);
+        startActivity(intent);
+    }
 }

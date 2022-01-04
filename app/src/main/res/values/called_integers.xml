@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="defaut_int">1</integer>
+    <integer name="nbQuestionFAQ">3</integer>
 
 </resources>

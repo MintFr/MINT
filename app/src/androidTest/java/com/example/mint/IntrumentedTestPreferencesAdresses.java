@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.mint.controller.ProfileActivity;
 import com.example.mint.model.PreferencesAddresses;
 
 import org.junit.After;
@@ -20,7 +21,7 @@ public class IntrumentedTestPreferencesAdresses {
     @Before
     public void setup(){
         PreferencesAddresses.clearAddresses(context);
-        PreferencesAddresses.addAddress("startAddress","ecole",context);
+        PreferencesAddresses.addAddress("Address",1,"ecole", context);
     }
 
     @Test

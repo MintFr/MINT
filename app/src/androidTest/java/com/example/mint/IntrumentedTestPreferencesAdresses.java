@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.example.mint.controller.ProfileActivity;
+import com.example.mint.model.Address;
 import com.example.mint.model.PreferencesAddresses;
 
 import org.junit.After;
@@ -22,6 +23,7 @@ public class IntrumentedTestPreferencesAdresses {
     public void setup(){
         PreferencesAddresses.clearAddresses(context);
         PreferencesAddresses.addAddress("Address",0,"ecole", context);
+        PreferencesAddresses.clearAddressItinerary(context);
     }
 
     @Test
@@ -42,6 +44,13 @@ public class IntrumentedTestPreferencesAdresses {
         assertTrue(PreferencesAddresses.getAddress("StartAddress",context)=="ecle");
     }
 
+    @Test
+    public void testRemoveAddress(){
+        PreferencesAddresses.addAddress("Address",1,"caca", context);
+        PreferencesAddresses.removeAddress("Address",1,context);
+        assertTrue(PreferencesAddresses.getNumberOfAddresses("Address",context)==1);
+
+    }
     @After
     public void setDown(){
         PreferencesAddresses.clearAddresses(context);

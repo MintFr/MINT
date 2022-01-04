@@ -21,14 +21,27 @@ public class IntrumentedTestPreferencesAdresses {
     @Before
     public void setup(){
         PreferencesAddresses.clearAddresses(context);
-        PreferencesAddresses.addAddress("Address",1,"ecole", context);
+        PreferencesAddresses.addAddress("Address",0,"ecole", context);
     }
 
     @Test
-    public void testGetAddress(){
+    public void testGetPrefAddress(){
 
-        assertTrue(PreferencesAddresses.getAddress("startAddress",context)=="ecole");
+        assertTrue(PreferencesAddresses.getPrefAddresses("Address",context).get(0)=="ecole");
     }
+
+    @Test
+    public void testGetNumberOfAddress(){
+
+        assertTrue(PreferencesAddresses.getNumberOfAddresses("Address",context)==1);
+    }
+    @Test
+    public void testAddGetAddressItinerary(){
+        PreferencesAddresses.addAddress("StartAddress","ecle",context);
+        Log.d("testAddGetAddressItinerary",PreferencesAddresses.getAddress("StartAddress",context));
+        assertTrue(PreferencesAddresses.getAddress("StartAddress",context)=="ecle");
+    }
+
     @After
     public void setDown(){
         PreferencesAddresses.clearAddresses(context);

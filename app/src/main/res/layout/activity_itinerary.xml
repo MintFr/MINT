@@ -25,12 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
+        android:contentDescription=""
         android:src="@drawable/ic_zoom_in"
         app:backgroundTint="@color/PrimaryWhite_Itinerary"
         app:fabSize="mini"
         app:layout_anchor="@+id/spacer1"
         app:layout_anchorGravity="top|end"
-        android:contentDescription="" />
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:id="@+id/spacer1"

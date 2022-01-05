@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -307,33 +305,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-/*
-    private void addMarker(GoogleMap map, double lat, double lon) {
-        LatLng latlng = new LatLng(lat,lon);
-
-        map.addMarker(new MarkerOptions().position(latlng));
-
-    }
-*/
-    /**
-     * Creation of the position marker
-     */
-    /*
-    double lat = pointTempo.getLatitude();
-    double lng = pointTempo.getLongitude();
-    LatLng latlng = new LatLng(lat, lng);
-    Marker myLocMarker = map.addMarker(new MarkerOptions().position(latlng).icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.bluebox, "your text goes here"))));
-    */
-
-    /**
-     * Resizing Bitmap in order to use it as the position's marker
-     */
-
-
-    public Bitmap resizeBitmap(String drawableName,int width, int height) {
-        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(drawableName, "drawable", getPackageName()));
-        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
-    }
 
     /**
      * OnStart method, applied right after onCreate.
@@ -363,18 +334,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getLocation();
                 if (locationUser != null) {
                     //we put the marker on the map if the point returned is not null
-
-                    //convert the market ic_position into a bitmap
-                    Bitmap ic_pos = null;
-                    ic_pos = BitmapFactory.decodeResource(getResources(), R.drawable.ic_position);
-
-                    if ( ic_pos != null){
-                        Log.d(LOG_TAG,"test bitmap Width : " + ic_pos.getWidth());
-                    }
-                    else {Log.d(LOG_TAG, "bitmap null");}
-
-                    //resizeBitmap("ic_position",500,500);
-                    //Bitmap.createScaledBitmap(ic_pos, 100, 100, false);
 
                     Marker positionMarker = new Marker(map);
                     pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());

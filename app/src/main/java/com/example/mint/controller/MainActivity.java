@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * OnStart methos, applied right after onCreate.
+     * OnStart method, applied right after onCreate.
      * This method tries to center the map on the location of the user, if GPS granted.
      */
     @Override
@@ -316,8 +316,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(LOG_TAG, "Save State Main OnStart");
 
         /////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////// Centers the map on lauch on the user's position ///////////
+        ///////////////////////////// Centers the map on launch on the user's position ///////////
         /////////////////////////////////////////////////////////////////////////////////////////
+
         // We need this parameter to check if the phone's GPS is activated
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         assert locationManager != null; // check if there the app is allowed to access location
@@ -333,12 +334,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getLocation();
                 if (locationUser != null) {
                     //we put the marker on the map if the point returned is not null
+
                     Marker positionMarker = new Marker(map);
                     pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
                     positionMarker.setPosition(pointTempo);
                     positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                     positionMarker.setFlat(true);
-                    positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                    positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                     map.getOverlays().add(positionMarker);
                     mapController.setCenter(pointTempo);
                 } else {
@@ -805,7 +807,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             positionMarker.setPosition(pointTempo);
                             positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                             positionMarker.setFlat(true);
-                            positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                            positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                             map.getOverlays().add(positionMarker);
                             mapController.setCenter(pointTempo);
                         } else {
@@ -890,7 +892,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 positionMarker.setPosition(pointTempo);
                 positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                 positionMarker.setFlat(true);
-                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                 map.getOverlays().add(positionMarker);
             }
         }
@@ -1266,7 +1268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         positionMarker.setPosition(pointTempo);
                         positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                         positionMarker.setFlat(true);
-                        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                        positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                         map.getOverlays().add(positionMarker);
                         mapController.setCenter(pointTempo);
                     } else {

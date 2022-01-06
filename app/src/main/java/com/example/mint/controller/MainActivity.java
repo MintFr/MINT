@@ -1098,6 +1098,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     }
                 }
 
+                // TODO : debug when clicks "ma position" and then switches start and end
                 ////////////////////////////////////////////////////////////////////////////////////
                 //start itinerary calculation activity if the device has an internet connection
                 int error = 0;

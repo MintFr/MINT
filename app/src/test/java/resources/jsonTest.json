@@ -1,16 +1,16 @@
 {
   "details": [{"addressStep": "adresse 1",
     "lengthStep": 15},
-    {"addressStep": "adresse2","lengthStep":0.3}]
+    {"addressStep": "adresse   2","lengthStep":30.3}],
 
   "time": "\"15:30\"",
-  "distance": 15.3,
+  "distance": 45.3,
   "duration": 150.3,
   "exposition": 1500.3,
   "transport": "\"voiture\"",
-  "pointItinerary": [
+  "pointsItinerary": [
      {"latitude" : 15.3,
-      "longitude": 30.15},
+      "longitude": 30},
      {"latitude" : 150.03,
       "longitude": 300.15}
   ],

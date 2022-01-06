@@ -3,16 +3,11 @@ package com.example.mint.controller;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-//import android.graphics.Typeface;
-//import android.location.Geocoder;
-//import android.os.Build;
 import android.os.Bundle;
-//import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-//import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,19 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import androidx.annotation.NonNull;
-//import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-//import androidx.constraintlayout.widget.ConstraintLayout;
-//import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
-import com.example.mint.model.Itinerary;
-import com.example.mint.model.Preferences;
-import com.example.mint.model.PreferencesPollution;
-import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.R;
+import com.example.mint.model.Itinerary;
+import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesPollution;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.Step;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,34 +31,44 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
-//import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
-//import org.osmdroid.tileprovider.tilesource.ITileSource;
-//import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-//import org.osmdroid.views.overlay.ItemizedIconOverlay;
-//import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-//import org.osmdroid.views.overlay.Overlay;
-//import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PaintList;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
-//import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
+//import android.graphics.Typeface;
+//import android.location.Geocoder;
+//import android.os.Build;
+//import android.view.Gravity;
+//import android.view.ViewGroup;
+//import androidx.annotation.NonNull;
+//import androidx.annotation.RequiresApi;
+//import androidx.constraintlayout.widget.ConstraintLayout;
+//import androidx.constraintlayout.widget.ConstraintSet;
+//import org.osmdroid.tileprovider.tilesource.HEREWeGoTileSource;
+//import org.osmdroid.tileprovider.tilesource.ITileSource;
+//import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
+//import org.osmdroid.views.overlay.ItemizedIconOverlay;
+//import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+//import org.osmdroid.views.overlay.Overlay;
+//import org.osmdroid.views.overlay.OverlayItem;
+//import org.w3c.dom.Text;
 //import java.io.IOException;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 //import java.util.Arrays;
 //import java.util.Calendar;
 //import java.util.Date;
-import java.util.List;
 //import java.util.Locale;
 //import java.util.zip.Inflater;
 
@@ -169,7 +169,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 threshold = 80;
                 break;
             case "--" :
-                threshold = 80;
+                // TODO : Change it by default, just for good colors
+                threshold = 33;
                 break;
         }
 
@@ -475,7 +476,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         else if((itinerary.getPollution()>=33)&&(itinerary.getPollution()<66)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
         }
-        else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=100)){
+        else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=1000)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
         final InfoWindow infoWindow = new InfoWindow(infoWindowView,map) {

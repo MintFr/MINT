@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Temporary point for location changes
      */
-    private GeoPoint pointTempo;
+    private GeoPoint tmpPoint;
 
     /**
      * This activity handles the input of start and end points and the itinerary options
@@ -261,14 +261,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stepPoint.setOnFocusChangeListener(this);
         stepPoint.addTextChangedListener(textChangedListener);
         search.setOnClickListener(this);
-        option.setOnClickListener(this);
         myPosition.setOnClickListener(this);
 
         // set the tags for when onClick is called
         startPoint.setTag(0);
         endPoint.setTag(1);
         search.setTag(2);
-        option.setTag(3);
         myPosition.setTag(40);
         stepPoint.setTag(10);
 
@@ -324,13 +322,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //we put the marker on the map if the point returned is not null
 
                     Marker positionMarker = new Marker(map);
-                    pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
-                    positionMarker.setPosition(pointTempo);
+                    tmpPoint = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
+                    positionMarker.setPosition(tmpPoint);
                     positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                     positionMarker.setFlat(true);
                     positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                     map.getOverlays().add(positionMarker);
-                    mapController.setCenter(pointTempo);
+                    mapController.setCenter(tmpPoint);
                 } else {
                     //TODO : fix this
                     // if the return is null we show a toast to the user
@@ -725,13 +723,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-            new AlertDialog.Builder(this) //create a dialog window to autorise access to location only if the user previously refused to grant location
+            new AlertDialog.Builder(this) //create a dialog window to authorize access to location only if the user previously refused to grant location
                     .setTitle("Autorisation nécessaire")
                     .setMessage("Nous avons besoin de votre autorisation pour utiliser votre géolocalisation.")
                     .setPositiveButton("autoriser", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // If the user click on this button, we ask her/him the permission to use her/his position
+                            // If the user clicks on this button, we ask the permission to use phone's position
                             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION}, POSITION_PERMISSION_CODE);
                             dialog.dismiss();
@@ -778,13 +776,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //We put the marker on the map
                             //TODO: refactor this in a function
                             Marker positionMarker = new Marker(map);
-                            pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
-                            positionMarker.setPosition(pointTempo);
+                            tmpPoint = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
+                            positionMarker.setPosition(tmpPoint);
                             positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                             positionMarker.setFlat(true);
                             positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                             map.getOverlays().add(positionMarker);
-                            mapController.setCenter(pointTempo);
+                            mapController.setCenter(tmpPoint);
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
                             toast.show();
@@ -850,21 +848,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isDestroyed()) {
             //getting the new location ( I tried using location as in the argument but it doesn't work and this works
             getLocation();
-            pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
+            tmpPoint = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
             //Deleting the previous marker
             if (map.getOverlays().size() != 0) {
                 map.getOverlays().clear();
                 map.postInvalidate();
             } else {
                 // if there is no marker already we center the map on the new point
-                mapController.setCenter(pointTempo);
+                mapController.setCenter(tmpPoint);
             }
             System.out.println(map);
 
             //printing a new position marker on the map
             if (map != null) {
                 Marker positionMarker = new Marker(map);
-                positionMarker.setPosition(pointTempo);
+                positionMarker.setPosition(tmpPoint);
                 positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                 positionMarker.setFlat(true);
                 positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
@@ -947,7 +945,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View v) {
-        int i = (int) v.getTag(); //if 2 : search, if 3 : option , if 40 : ma position
+        int i = (int) v.getTag(); //if 2 : search, if 40 : ma position
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
         step = stepPoint.getText().toString();
@@ -1213,12 +1211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-        // things to do when user clicks options
-        else if (i == 3) {
-            popUp = showOptions();
-            dimPopup.setVisibility(View.VISIBLE);
-            popUp.showAtLocation(v, Gravity.CENTER, 0, 0);
-        } else if (i == 40) {
+        else if (i == 40) {
             // We need this parameter to check if the phone's GPS is activated
             locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             assert locationManager != null; //check if there the app is allowed to access location
@@ -1239,13 +1232,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //we put a new marker on the map where the user is
                     if (locationUser != null) {
                         Marker positionMarker = new Marker(map);
-                        pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
-                        positionMarker.setPosition(pointTempo);
+                        tmpPoint = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
+                        positionMarker.setPosition(tmpPoint);
                         positionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
                         positionMarker.setFlat(true);
                         positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_position));
                         map.getOverlays().add(positionMarker);
-                        mapController.setCenter(pointTempo);
+                        mapController.setCenter(tmpPoint);
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Nous n'avons pas réussi à vous localiser", Toast.LENGTH_SHORT);
                         toast.show();
@@ -1402,7 +1395,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         endPoint.setText(startText);
         startPoint.setText(endText);
     }
-}
+
+    public void onClickOptions(View view) {
+        // things to do when user clicks options
+            popUp = showOptions();
+            dimPopup.setVisibility(View.VISIBLE);
+            popUp.showAtLocation(view, Gravity.CENTER, 0, 0);
+        }
+    }
+
 
 
 

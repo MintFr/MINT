@@ -243,9 +243,9 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="19dp"
-                        android:layout_marginRight="19dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginEnd="106dp"
+                        android:layout_marginRight="106dp"
+                        android:layout_marginBottom="131dp"
                         android:background="@color/LightGrey_Profile"
                         android:visibility="invisible" />
                 </RelativeLayout>

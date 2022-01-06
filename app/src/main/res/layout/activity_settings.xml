@@ -44,7 +44,8 @@
         android:onClick="onClickFAQ"
         android:paddingLeft="30dp"
         android:text="@string/settings_faq"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"/>
 
     <View
         android:id="@+id/settings_separator_2"
@@ -61,7 +62,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="30dp"
         android:text="@string/settings_language"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"/>
 
     <View
         android:id="@+id/settings_separator_3"
@@ -92,7 +94,8 @@
         android:onClick="onClickTermsOfUse"
         android:paddingLeft="30dp"
         android:text="@string/terms_of_use"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"/>
 
     <View
         android:id="@+id/settings_separator_4"
@@ -113,7 +116,8 @@
         android:onClick="onClickLegalNotices"
         android:paddingLeft="30dp"
         android:text="@string/mentions_l_gales"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -151,7 +155,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="30dp"
         android:text="@string/settings_dark_mode"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"/>
 
     <View
         android:id="@+id/settings_separator_6"

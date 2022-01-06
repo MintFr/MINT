@@ -11,7 +11,15 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints">
+
+        <View
+            android:id="@+id/dim_popup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#73000000"
+            android:visibility="invisible" />
+    </org.osmdroid.views.MapView>
 
 
     <ImageView
@@ -209,23 +217,16 @@
         android:background="#00ffffff"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        app:itemTextAppearance="@style/BottomStyle"
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="#999999"
         android:background="@color/White_Main"
+        app:itemTextAppearance="@style/BottomStyle"
+        app:itemTextColor="#999999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
-
-    <View
-        android:id="@+id/dim_popup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#73000000"
-        android:visibility="invisible" />
 
 </RelativeLayout>

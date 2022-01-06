@@ -962,24 +962,32 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
 
+        // Check good coordonnates
+        // TODO : Create method checkGoodAdresses(start, end, step)
+        boolean goodCoordonates = true;
         if (start.length() == 0 || end.length() == 0) {
+            goodCoordonates = false;
             // if nothing has been typed in, nothing happens and you get a message
             Toast.makeText(MainActivity.this, "Vous devez remplir les deux champs", Toast.LENGTH_SHORT).show();
         } // stepPoint management: we check whether there is a stepPoint
-        else if (step.length() > 0) {
+        else if (step.length() > 0 && stepPoint.isShown()) {
             stepBool = true;
             // if at least two addresses are the same, do nothing
             if (step.equals(start) || step.equals(end) || start.equals(end)) {
+                // goodCoordonates = false;
+                Log.d(LOG_TAG, "TAGG On rentre dans step.length > 0 le 1er");
                 Toast.makeText(MainActivity.this, "Veuillez rentrer des adresses différentes", Toast.LENGTH_SHORT).show();
             }
         } else if (start.equals(end)) {
+            goodCoordonates = false;
             // if both addresses are the same, do nothing
             Toast.makeText(MainActivity.this, "Veuillez entrer deux adresses différentes", Toast.LENGTH_SHORT).show();
-        } else {
+        }
 
+        // if (goodCoordonates) {
             // stepPoint management: we check whether there is a stepPoint
             boolean stepEqualStartOrEnd = false;
-            if (step.length() > 0) {
+            if (step.length() > 0 && stepPoint.isShown()) {
                 stepBool = true;
                 // if at least two addresses are the same, do nothing
                 if (step.equals(start) || step.equals(end) || start.equals(end)) {
@@ -991,7 +999,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             // Checking if there is a stepPoint:
             //      if yes : stepPoint must be different than startPoint and endPoint
             //      if not : go
-            if (!stepBool || (stepBool && !stepEqualStartOrEnd)) {
+            if ((!stepBool || (stepBool && !stepEqualStartOrEnd)) && goodCoordonates) {
 
                 ////////////////////////////////////////////////////////////////////////////////////
                 // History's management
@@ -1073,7 +1081,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     e.printStackTrace();
                 }
                 //For the step point
-                if (stepBool) {
+                if (stepBool && stepPoint.isShown()) {
                     Geocoder geocoderStep = new Geocoder(MainActivity.this, Locale.getDefault());
                     try {
                         if (!step.equals(R.string.position_text)) {       //check if location is not chosen
@@ -1115,7 +1123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     error = 5;
                 }
 
-                System.out.println("error" + error);
+                Log.d(LOG_TAG, "TAGG error : " + error);
                 switch (error) {
                     case 0:
                         Intent intent = new Intent(getApplicationContext(), LoadingPageActivity.class);
@@ -1173,7 +1181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
                 }
             }
-        }
 
 
 
@@ -1196,10 +1203,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
                 }*/
 
-        PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
-        PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
-        PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
-
+            PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
+            PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
+            PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
+       // }
     }
 
 

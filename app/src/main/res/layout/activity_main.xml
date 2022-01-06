@@ -194,7 +194,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.814"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/options" />
+        app:layout_constraintTop_toBottomOf="@+id/options"
+        android:layout_alignEnd="@id/endPoint"
+        android:onClick="onClickSearch"/>
 
     <ImageButton
         android:id="@+id/myPosition"
@@ -209,7 +211,8 @@
         android:padding="70dp"
         android:adjustViewBounds="true"
         android:src="@drawable/button_location"
-        android:background="#00ffffff"/>
+        android:background="#00ffffff"
+        android:onClick="onClickLocationButton"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"

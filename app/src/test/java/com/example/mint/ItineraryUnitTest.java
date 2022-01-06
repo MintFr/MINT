@@ -37,7 +37,6 @@ public class ItineraryUnitTest {
         try {
             String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
             JSONObject jsonObj = new JSONObject(content);
-            System.out.println(jsonObj);
 
             Itinerary output = new Itinerary(jsonObj);
 
@@ -49,9 +48,6 @@ public class ItineraryUnitTest {
             assertTrue(output.isHourStart());
             assertFalse(output.isHasStep());
             assertNull(output.getStep());
-
-
-            System.out.println(output);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -69,7 +65,6 @@ public class ItineraryUnitTest {
         try {
             String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
             JSONObject jsonObj = new JSONObject(content);
-            System.out.println(jsonObj);
 
             Itinerary output = new Itinerary(jsonObj);
 
@@ -86,6 +81,7 @@ public class ItineraryUnitTest {
                             30
                     )
             );
+
             assertEquals(expectedDetails.size(), output.getDetail().size());
             for (int i = 0; i < output.getDetail().size(); i++) {
                 assertEquals(
@@ -106,14 +102,13 @@ public class ItineraryUnitTest {
 
     @Test
     public void constructorJSONPointsItinerary() {
-
+        // Reading file from resources and casting it in JSONObject
         String resourceName = "src/test/java/resources/jsonTest.json";
         File file = new File(resourceName);
 
         try {
             String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
             JSONObject jsonObj = new JSONObject(content);
-            System.out.println(jsonObj);
 
             Itinerary output = new Itinerary(jsonObj);
 
@@ -138,35 +133,3 @@ public class ItineraryUnitTest {
 
 }
 // TODO : Test itinerary with a step
-
-    /*
-    @Test
-    public void itineraryIsCorrect() {
-
-        File file = null;
-        URL url = this.getClass().getClassLoader().getResource("jsonTest.json");
-
-        //System.out.println(url.getPath());
-        try {
-            file = Paths.get(url.toURI()).toFile();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        assertNotNull(this.getClass().getClassLoader().getResource("jsonTest.json"));
-
-        String result = "{/D:/Dev/Mint/Fullcode/MINT/app/build/intermediates/javac/debugUnitTest/classes/jsonTest.json}";
-        try {
-            System.out.println("on entre dans le try");
-            JSONObject jObject = new JSONObject(result);
-            System.out.println("on crée je JSONObject");
-            Itinerary itinerary = new Itinerary(jObject);
-            assertEquals(itinerary.getDistance(),15.3,0.001);
-            System.out.println("on passe dans le try");
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-    }*/
-
-
-

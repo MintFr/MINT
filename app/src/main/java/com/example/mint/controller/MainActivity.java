@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Check for localisation permission
         requestLocalisationPermission();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_big);
 
 
         // Highlighting selected favorite means of transportation chosen in Profile

@@ -228,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.startAddress = new com.example.mint.model.Address();
         this.stepAddress = new com.example.mint.model.Address();
 
+        // startPoint/endPoint inversion
+        this.inversionButton = findViewById(R.id.inversion);
+
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
             @Override
@@ -288,23 +291,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
-        addStepPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // make the stepPoint visible when it is not
-                if (!stepVisibility) {
-                    stepPoint.setVisibility(View.VISIBLE);
-                    addStepPoint.setActivated(true);
-                    stepVisibility = true;
-                } // make the stepPoint Invisible when it is
-                else {
-                    stepPoint.setVisibility(View.GONE);
-                    addStepPoint.setActivated(false);
-                    stepVisibility = false;
-                }
-            }
-        });
     }
+
 
     /**
      * OnStart method, applied right after onCreate.
@@ -321,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // We need this parameter to check if the phone's GPS is activated
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        assert locationManager != null; // check if there the app is allowed to access location
+        // assert locationManager != null; // check if there the app is allowed to access location
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
 
         // If the permission to access to the user's location is already given, we use it
@@ -455,19 +443,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // set the listview as popup content
         popupWindow.setContentView(addressListView);
-
-        // startPoint/endPoint inversion
-        inversionButton = findViewById(R.id.inversion);
-        inversionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startPoint2.setText(startPoint.getText());$
-                Editable startText = startPoint.getText();
-                Editable endText = endPoint.getText();
-                endPoint.setText(startText);
-                startPoint.setText(endText);
-            }
-        });
 
         return popupWindow;
     }
@@ -1402,7 +1377,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(LOG_TAG, "Save State Main OnDestroy");
     }
 
+    /**
+     * When users click on plus button to get a step during itinerary.
+     *
+     * @param v
+     */
+    public void onClickStepPointButton(View v) {
+        // make the stepPoint visible when it is not
+        if (!stepVisibility) {
+            stepPoint.setVisibility(View.VISIBLE);
+            addStepPoint.setActivated(true);
+            stepVisibility = true;
+        } // make the stepPoint Invisible when it is
+        else {
+            stepPoint.setVisibility(View.GONE);
+            addStepPoint.setActivated(false);
+            stepVisibility = false;
+        }
+    }
 
+    public void onClickInversionButton(View view) {
+        Editable startText = startPoint.getText();
+        Editable endText = endPoint.getText();
+        endPoint.setText(startText);
+        startPoint.setText(endText);
+    }
 }
 
 

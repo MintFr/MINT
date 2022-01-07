@@ -152,8 +152,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             case "Pas de sensibilité":
                 threshold = 80;
                 break;
-            case "--":
-                threshold = 80;
+            case "--" :
+                // TODO : Change it by default, just for good colors
+                threshold = 33;
                 break;
         }
 
@@ -456,7 +457,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
         } else if ((itinerary.getPollution() >= 33) && (itinerary.getPollution() < 66)) {
             pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
-        } else if ((itinerary.getPollution() >= 66) && (itinerary.getPollution() <= 100)) {
+        }
+        else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=1000)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
         final InfoWindow infoWindow = new InfoWindow(infoWindowView, map) {

@@ -131,5 +131,39 @@ public class ItineraryUnitTest {
         }
     }
 
+
+    @Test
+    public void constructorJSONStepItinerary() {
+        // Reading file from resources and casting it in JSONObject
+        String resourceName = "src/test/java/resources/jsonStepTest.json";
+        File file = new File(resourceName);
+
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
+            JSONObject jsonObj = new JSONObject(content);
+
+            Itinerary output = new Itinerary(jsonObj);
+            assertTrue(output.isHasStep());
+
+            double stepLat = 47.2471341;
+            double stepLong = -1.5525426;
+            boolean isStepReached = false;
+            double epsilon = 0.0001;
+            for (int i = 0; i < output.getPointSize(); i++) {
+                double[] coordi = output.getPoints().get(i);
+                if (
+                        (Math.abs(stepLat - coordi[0]) < epsilon)
+                                && (Math.abs(stepLong - coordi[1]) < epsilon)
+                ) {
+                    isStepReached = true;
+                    break;
+                }
+            }
+            assertTrue(isStepReached);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
-// TODO : Test itinerary with a step

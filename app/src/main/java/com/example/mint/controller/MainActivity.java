@@ -1161,6 +1161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * This methods allows to check if the itinerary can be launched.
      * Particularly, it checks if the different adresses entered by the user are the same,
      * or if one is missing.
+     *
      * @return boolean : true if everything is okay, false otherwise.
      */
     private boolean checkGoodAddressesForItinerary() {
@@ -1194,7 +1195,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         // If step point : check if it's different than start and end
         return ((!stepBool || (stepBool && !stepEqualStartOrEnd)) && goodStartAndEnd);
     }
-
 
 
     /**

@@ -910,17 +910,17 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                             getLocation();
                             if (idButton == startPoint.getId()) {
                                 idInt = 0;
-                                startPoint.setText("Ma position");
+                                startPoint.setText(R.string.position_text);
                                 startPoint.setSelection(buttonClicked.length()); // set cursor at end of text
                             }
                             if (idButton == endPoint.getId()) {
                                 idInt = 1;
-                                endPoint.setText("Ma position");
+                                endPoint.setText(R.string.position_text);
                                 endPoint.setSelection(buttonClicked.length()); // set cursor at end of text
                             }
                             if (idButton == stepPoint.getId()) {
                                 idInt = 2;
-                                stepPoint.setText("Ma position");
+                                stepPoint.setText(R.string.position_text);
                                 stepPoint.setSelection(buttonClicked.length()); // set cursor at end of text
                             }
                         }
@@ -968,7 +968,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
 
-        if (checkGoodAdressesForItinerary()) {
+        if (checkGoodAddressesForItinerary()) {
             ////////////////////////////////////////////////////////////////////////////////////
             // History's management
             ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
@@ -1021,7 +1021,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             //For the start point
             Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
             try {
-                if (!start.equals(R.string.position_text)) {  //check if location is not chosen
+                if (!start.equals(String.valueOf(R.string.position_text))) {  //check if location is not chosen
                     List addressListStart = geocoderStart.getFromLocationName(start, 1);
                     if (addressListStart != null && addressListStart.size() > 0) {
                         Address addressStart = (Address) addressListStart.get(0);
@@ -1036,7 +1036,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             //For the end point
             Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
             try {
-                if (!end.equals(R.string.position_text)) {       //check if location is not chosen
+                if (!end.equals(String.valueOf(R.string.position_text))) {       //check if location is not chosen
                     List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
                     if (addressListEnd != null && addressListEnd.size() > 0) {
                         Address addressEnd = (Address) addressListEnd.get(0);
@@ -1052,7 +1052,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             if (stepBool && stepPoint.isShown()) {
                 Geocoder geocoderStep = new Geocoder(MainActivity.this, Locale.getDefault());
                 try {
-                    if (!step.equals(R.string.position_text)) {       //check if location is not chosen
+                    if (!step.equals(String.valueOf(R.string.position_text))) {       //check if location is not chosen
                         List addressListStep = geocoderStep.getFromLocationName(step, 1);
                         if (addressListStep != null && addressListStep.size() > 0) {
                             Address addressStep = (Address) addressListStep.get(0);
@@ -1151,27 +1151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
 
-
-
-                /*if (CheckInternet()){
-                    if (!endAddress.getCoordinates().isZero() & !startAddress.getCoordinates().isZero()){
-                    Intent intent = new Intent(getApplicationContext(),LoadingPageActivity.class);
-                    intent.putExtra("param1", endAddress.getCoordinates().getLatitude());
-                    intent.putExtra("param2", endAddress.getCoordinates().getLongitude());
-                    intent.putExtra("param3", startAddress.getCoordinates().getLatitude());
-                    intent.putExtra("param4", startAddress.getCoordinates().getLongitude());
-                    startActivity(intent);
-                    finish();
-                }
-                    else{
-                        Toast.makeText(this, "Conversion impossible, entrez une nouvelle adresse ou réessayez plus tard", Toast.LENGTH_SHORT).show();
-                    }
-
-                    }
-                else{
-                    Toast.makeText(this, "No Internet.", Toast.LENGTH_SHORT).show();
-                }*/
-
         PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
         PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
         PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
@@ -1184,7 +1163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * or if one is missing.
      * @return boolean : true if everything is okay, false otherwise.
      */
-    private boolean checkGoodAdressesForItinerary() {
+    private boolean checkGoodAddressesForItinerary() {
         boolean goodStartAndEnd = true;
         // Check start and end adresses are not null
         if (start.length() == 0 || end.length() == 0) {
@@ -1353,6 +1332,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * @param view
      */
     public void onClickInversionButton(View view) {
+        String myPositionText = String.valueOf(R.string.position_text);
         Editable startText = startPoint.getText();
         Editable endText = endPoint.getText();
         endPoint.setText(startText);

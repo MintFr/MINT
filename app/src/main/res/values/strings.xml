@@ -98,6 +98,7 @@
     <string name="walk_choice">4</string>
     <string name="calendar">Calendrier</string>
     <string name="mint_logo">Mint_logo</string>
+    <string name="ma_position">ma position</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus ornare suspendisse sed nisi lacus sed viverra tellus. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Cursus in hac habitasse platea. A pellentesque sit amet porttitor. Interdum posuere lorem ipsum dolor sit. Aenean vel elit scelerisque mauris pellentesque pulvinar. Sagittis eu volutpat odio facilisis. Feugiat scelerisque varius morbi enim nunc. Sed vulputate mi sit amet mauris. Tempus quam pellentesque nec nam aliquam sem. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet. Orci nulla pellentesque dignissim enim. Risus viverra adipiscing at in tellus integer feugiat scelerisque. Integer enim neque volutpat ac tincidunt. Tortor pretium viverra suspendisse potenti nullam.
 
 Erat velit scelerisque in dictum non consectetur. Amet venenatis urna cursus eget nunc scelerisque viverra. Dignissim diam quis enim lobortis scelerisque fermentum dui. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Lorem ipsum dolor sit amet consectetur. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Eu augue ut lectus arcu. Praesent semper feugiat nibh sed. Aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi. Faucibus et molestie ac feugiat sed lectus. Morbi tempus iaculis urna id volutpat lacus laoreet non curabitur. Urna molestie at elementum eu. Elementum nibh tellus molestie nunc non blandit massa. Ultricies lacus sed turpis tincidunt id aliquet risus feugiat in. At auctor urna nunc id cursus metus aliquam eleifend mi.
@@ -118,5 +119,7 @@ Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida. Eget felis eget 
 
 Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermentum dui faucibus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa. Pharetra pharetra massa massa ultricies. Tincidunt eget nullam non nisi est sit. Duis ultricies lacus sed turpis tincidunt id. Molestie at elementum eu facilisis sed odio morbi. Diam in arcu cursus euismod quis viverra. Pulvinar pellentesque habitant morbi tristique senectus. Pellentesque habitant morbi tristique senectus et netus et. Viverra justo nec ultrices dui. Eget egestas purus viverra accumsan in nisl. Penatibus et magnis dis parturient montes. Volutpat maecenas volutpat blandit aliquam etiam erat velit. Egestas sed tempus urna et pharetra pharetra. Fusce ut placerat orci nulla pellentesque. Euismod in pellentesque massa placerat duis.</string>
     <string name="terms_of_use">Conditions d\'utilisation</string>
+    <string name="mentions_l_gales">Mentions légales</string>
+    <string name="mentions_l_gales2">Mentions Légales</string>
 
 </resources>

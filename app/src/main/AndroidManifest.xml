@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.mint">
+    package="com.example.mint" >
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,14 +21,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".controller.FaqActivity"
+            android:exported="true" />
         android:usesCleartextTraffic="true">
+        <activity android:name=".controller.LegalNoticesActivity"></activity>
         <activity
             android:name=".controller.TermsOfUseActivity"
             android:exported="true" />
         <activity android:name=".controller.SettingsActivity" />
         <activity android:name=".controller.ItineraryActivity" />
         <activity android:name=".controller.LoadingPageActivity" />
-        <activity android:name=".controller.SplashScreenActivity">
+        <activity android:name=".controller.SplashScreenActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

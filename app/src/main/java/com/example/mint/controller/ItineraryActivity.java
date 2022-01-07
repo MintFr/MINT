@@ -78,63 +78,47 @@ import java.util.List;
 public class ItineraryActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
-     * MAP
-     */
-    private MapView map = null;
-    //private final ArrayList<double[]> response = new ArrayList<>();
-    private IMapController mapController = null;
-    //private GeoPoint startPoint;
-    //private GeoPoint endPoint;
-    //private GeoPoint stepPoint;
-
-    /**
      * GEOPOINT POSITIONS
      */
     GeoPoint startPosition;
     GeoPoint endPosition;
     List<GeoPoint> markers;
     GeoPoint stepPosition;
-
+    /**
+     * ITINERARY
+     */
+    ArrayList<Itinerary> itineraries;
+    /**
+     * INFLATER : brings up necessary views
+     */
+    LayoutInflater inflater;
+    /**
+     * MAP
+     */
+    private MapView map = null;
+    private IMapController mapController = null;
     /**
      * LAYOUT AND MENU
      */
     private BottomSheetBehavior sheetBehaviorDetail;
     private BottomSheetBehavior sheetBehaviorRecap;
     private RelativeLayout recapLayout;
-
     private FloatingActionButton recapButton;
-
-    //private Paint paintInside;
-
     private Paint paintInsideG; // color when the pollution is good
     private Paint paintInsideM; // color when the pollution is medium
     private Paint paintInsideB; // color when the pollution is bad
-
     private Paint paintInsideSelectedG; // color when the pollution of the selected itinerary is good
     private Paint paintInsideSelectedM; // color when the pollution of the selected itinerary is medium
     private Paint paintInsideSelectedB; // color when the pollution of the selected itinerary is bad
-
     private PaintList plInside;
     private PaintList plInsideSelected;
     private PaintList plBorder;
     private PaintList plBorderSelected;
-
-
-
-    /**
-     * ITINERARY
-     */
-    ArrayList<Itinerary> itineraries;
-
     private int threshold;
 
     /**
-     * INFLATER : brings up necessary views
-     */
-    LayoutInflater inflater;
-
-    /**
      * On create of this activity, display itineraries and the recap of all the itineraries
+     *
      * @param savedInstanceState Bundle
      */
     @Override
@@ -146,26 +130,26 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // get the sensibility from preferences
-        /*
+        /**
          * POLLUTION DATA
          */
         String sensibility = PreferencesSensibility.getSensibility("Sensibility", this);
         //set the threshold for the display color of the itineraries
         // TODO change values for threshold once you have the data from captation
-        switch (sensibility){
-            case "Très élevée" :
+        switch (sensibility) {
+            case "Très élevée":
                 threshold = 5;
                 break;
-            case "Élevée" :
+            case "Élevée":
                 threshold = 15;
                 break;
-            case "Modérée" :
+            case "Modérée":
                 threshold = 35;
                 break;
-            case "Faible" :
+            case "Faible":
                 threshold = 55;
                 break;
-            case "Pas de sensibilité" :
+            case "Pas de sensibilité":
                 threshold = 80;
                 break;
             case "--" :
@@ -226,10 +210,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         //Map display
         map = findViewById(R.id.map);
-        //final MapBoxTileSource tileSource = new MapBoxTileSource();
-        //tileSource.retrieveAccessToken(this);
-        //tileSource.retrieveMapBoxMapId(this);
-        //map.setTileSource(tileSource);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
         map.setMultiTouchControls(true);
         GeoPoint defaultPoint = new GeoPoint(47.21, -1.55);
@@ -250,7 +230,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // Paintlists for the effects on the polylines //
 
         // for the white border
-        /*
+        /**
          * STYLE
          */
         Paint paintBorder = new Paint();
@@ -259,7 +239,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         paintBorder.setColor(Color.WHITE);
         paintBorder.setStrokeCap(Paint.Cap.ROUND);
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
-        paintBorder.setShadowLayer(15,0,10,getResources().getColor(R.color.colorTransparentBlack));
+        paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
 
         // white border when line is selected
@@ -303,8 +283,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         plBorderSelected = new MonochromaticPaintList(paintBorderSelected);
 
         // display each itinerary we just got from the Async task
-        for (int j=0;j<itineraries.size();j++){
-            displayItinerary(itineraries.get(j), itineraries,j);
+        for (int j = 0; j < itineraries.size(); j++) {
+            displayItinerary(itineraries.get(j), itineraries, j);
         }
 
         // display recap
@@ -316,7 +296,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 // behaviour when you click anywhere on the map : we want to reset everything back to normal
                 InfoWindow.closeAllInfoWindowsOn(map);
-                for (int i = 1; i<itineraries.size(); i++){ // we go through all the polylines that are displayed
+                for (int i = 1; i < itineraries.size(); i++) { // we go through all the polylines that are displayed
                     Polyline selectedLine = (Polyline) map.getOverlays().get(i);
                     resetPolylineAppearance(selectedLine);
                 }
@@ -343,22 +323,22 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // add an overlay that will detect the taps on the map
         MapEventsOverlay mOverlay = new MapEventsOverlay(mReceive);
-        map.getOverlays().add(0,mOverlay);
+        map.getOverlays().add(0, mOverlay);
 
         // start and end markers (we only need to draw them once)
         Marker startMarker = new Marker(map);
-        startPosition = new GeoPoint(itineraries.get(0).getPoints().get(0)[0],itineraries.get(0).getPoints().get(0)[1]);
+        startPosition = new GeoPoint(itineraries.get(0).getPoints().get(0)[0], itineraries.get(0).getPoints().get(0)[1]);
         startMarker.setPosition(startPosition);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_CENTER);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
         startMarker.setFlat(true);
         startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         map.getOverlays().add(startMarker);
 
-        int indexEnd = itineraries.get(0).getPointSize()-1;
+        int indexEnd = itineraries.get(0).getPointSize() - 1;
         Marker endMarker = new Marker(map);
-        endPosition = new GeoPoint(itineraries.get(0).getPoints().get(indexEnd)[0],itineraries.get(0).getPoints().get(indexEnd)[1]);
+        endPosition = new GeoPoint(itineraries.get(0).getPoints().get(indexEnd)[0], itineraries.get(0).getPoints().get(indexEnd)[1]);
         endMarker.setPosition(endPosition);
-        endMarker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
         map.getOverlays().add(endMarker);
 
@@ -370,7 +350,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         map.post(new Runnable() {
             @Override
             public void run() {
-                map.zoomToBoundingBox(bounds,true,120);
+                map.zoomToBoundingBox(bounds, true, 120);
             }
         });
 
@@ -379,7 +359,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         boolean hasStep = itineraries.get(0).isHasStep();
         if (hasStep) {
             System.out.println("affichage step");
-            stepPosition = new GeoPoint(itineraries.get(0).getStep().getLatitude(),itineraries.get(0).getStep().getLongitude());
+            stepPosition = new GeoPoint(itineraries.get(0).getStep().getLatitude(), itineraries.get(0).getStep().getLongitude());
             Marker stepMarker = new Marker(map);
             stepMarker.setPosition(stepPosition);
             stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
@@ -396,30 +376,34 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }
+
     /**
      * Overrides method (when the activity has detected the user's press of the back key) to return to MainActivity
      */
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     /**
      * DISPLAY ITINERARY
-     * @param itinerary Itinerary
-     * @param list ArrayList<Itinerary>
-     * @param i int
+     * Display one itinerary on the map
+     * Is called on each itinerary
+     *
+     * @param itinerary Itinerary :  Current itinerary to display
+     * @param list      ArrayList<Itinerary> : List of all itineraries to display
+     * @param i         int : index of the  current itineray
      */
 
 
     //DISPLAY ITINERARY
-    private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list,int i){
+    private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list, int i) {
         // polyline for itinerary
         // first we create a list of geopoints for the geometry of the polyline
         List<GeoPoint> geoPoints = new ArrayList<>();
-        for (int j = 0; j<itinerary.getPointSize();j++){
-            geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0],itinerary.getPoints().get(j)[1]));
+        for (int j = 0; j < itinerary.getPointSize(); j++) {
+            geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]));
         }
 
         // then we attribute it to the new polyline
@@ -436,7 +420,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         line.setId(String.valueOf(i));
 
         // SETUP INFO WINDOW
-        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
+        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow, null);
 
 
         // find all the corresponding views in the infowindow
@@ -450,36 +434,34 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         int t = Double.valueOf(itinerary.getDuration()).intValue();
         String s = convertIntToHour(t);
         System.out.println(s);
-        //String s = Integer.toString(t);
         timeInfo.setText(s);
 
         //transportation
-        switch (itinerary.getType()){
-            case "Piéton" :
+        switch (itinerary.getType()) {
+            case "Piéton":
                 transportationInfo.setImageResource(R.drawable.ic_walk_activated);
                 break;
-            case "Voiture" :
+            case "Voiture":
                 transportationInfo.setImageResource(R.drawable.ic_car_activated);
                 break;
-            case "Transport en commun" :
+            case "Transport en commun":
                 transportationInfo.setImageResource(R.drawable.ic_tram_activated);
                 break;
-            case "Vélo" :
+            case "Vélo":
                 transportationInfo.setImageResource(R.drawable.ic_bike_activated);
                 break;
         }
 
         //pollution
-        if((itinerary.getPollution()>=0)&&(itinerary.getPollution()<33)){
+        if ((itinerary.getPollution() >= 0) && (itinerary.getPollution() < 33)) {
             pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
-        }
-        else if((itinerary.getPollution()>=33)&&(itinerary.getPollution()<66)){
+        } else if ((itinerary.getPollution() >= 33) && (itinerary.getPollution() < 66)) {
             pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
         }
         else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=1000)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
-        final InfoWindow infoWindow = new InfoWindow(infoWindowView,map) {
+        final InfoWindow infoWindow = new InfoWindow(infoWindowView, map) {
             @Override
             public void onOpen(Object item) {
             }
@@ -509,16 +491,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                highlightItinerary(polyline,mapView,eventPos,itinerary,list.size()); // function that highlights an itinerary
+                highlightItinerary(polyline, mapView, eventPos, itinerary, list.size()); // function that highlights an itinerary
                 return true;
             }
         });
     }
 
     /**
-     * DISPLAY DETAILS UNDER MAP
+     * DISPLAY DETAILS OF THE SELECTED ITINERARY UNDER MAP INSTEAD OF THE RECAP
+     *
+     * @param itinerary Selected itinerary
      */
-    private void displayDetails(Itinerary itinerary){
+    //TODO fix this display so that is stays nicely
+    private void displayDetails(Itinerary itinerary) {
 //        // hide recap
 //        recapView.setVisibility(View.GONE);
 //        // show details layout
@@ -535,26 +520,28 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         TextView pollution = findViewById(R.id.pollution);
 
         // get start and end addresses
-        String start = getString(R.string.itinerary_point1)+" : "+(PreferencesAddresses.getAddress("startAddress",ItineraryActivity.this));
-        String end = getString(R.string.itinerary_point2)+" : "+(PreferencesAddresses.getAddress("endAddress",ItineraryActivity.this));
+        String start = getString(R.string.itinerary_point1) + " : " +
+                (PreferencesAddresses.getAddress("startAddress", ItineraryActivity.this));
+        String end = getString(R.string.itinerary_point2) + " : " +
+                (PreferencesAddresses.getAddress("endAddress", ItineraryActivity.this));
 
-        if (itinerary.getPointSize() > 0){
+        if (itinerary.getPointSize() > 0) {
             // start and end
             viewPoint1.setText(start);
             viewPoint2.setText(end);
 
             // time
-            String timeStr = convertIntToHour( (int) itinerary.getDuration());
+            String timeStr = convertIntToHour((int) itinerary.getDuration());
             time.setText(timeStr);
 
             //pollution
             String str = "3";
             str = str.replaceAll("3", "³"); // set the 3 to superscript
-            String polStr = itinerary.getPollution()+"µg/m"+str;
+            String polStr = itinerary.getPollution() + "µg/m" + str;
             pollution.setText(polStr);
 
             //between start and end
-            if (itinerary.getPointSize()>2){
+            if (itinerary.getPointSize() > 2) {
 
                 // first we want to clear all previous steps that might already be displayed in itinerary detail
                 //it's a container for the views for each step that will be created with itinerary_step_layout
@@ -563,27 +550,21 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 // this is the number of steps from the previously displayed itinerary
                 int index = stepsLayout.indexOfChild(viewPoint2);
 
-                if (index>2) { // <=> if there is already something displayed in the stepsLayout
+                if (index > 2) { // <=> if there is already something displayed in the stepsLayout
                     stepsLayout.removeViews(2, index - 2);
                 }
                 System.out.println(STEPS.size());
-                for (int k=1;k<=STEPS.size();k++){
+                for (int k = 1; k <= STEPS.size(); k++) {
                     // k is going to be the index at which we add the stepView
-                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout,null); // get the view from layout
+                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout, null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
-                    //TextView stepTimeSec = stepView.findViewById(R.id.step_time_sec);
-                    //TextView street = stepView.findViewById(R.id.street);
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
-                    String streetName = STEPS.get(k-1).getAddress();
-                    int dist = STEPS.get(k-1).getDistance();
-                    //int timeMin = (itinerary.getStepTime().get(k-1) % 3600)/60; // amount of minutes it takes to travel this step
-                    //int timeSec = (itinerary.getStepTime().get(k-1) % 60 ); // remaining seconds
+                    String streetName = STEPS.get(k - 1).getAddress();
+                    int dist = STEPS.get(k - 1).getDistance();
                     stepTimeMin.setText(streetName);
-                    //stepTimeSec.setText(String.format("%02d",timeSec));
-                    stepDist.setText(String.format("%d",dist));
-                    //stepDist.setText(String.format("%d",itinerary.getStepDistance().get(k-1)));
+                    stepDist.setText(String.format("%d", dist));
                     // add the textView to the linearlayout which contains the steps
-                    stepsLayout.addView(stepView,k+1);
+                    stepsLayout.addView(stepView, k + 1);
                 }
             }
         } else {
@@ -595,24 +576,26 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // this attaches the map control buttons to the new bottom sheet (in this case details)
-        changeAnchor(recapButton,R.id.itinerary_detail_layout);
-        sheetBehaviorDetail.setPeekHeight((int)getResources().getDimension(R.dimen.peek_height));
+        changeAnchor(recapButton, R.id.itinerary_detail_layout);
+        sheetBehaviorDetail.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
 
     /**
      * DISPLAY RECAP
-     * @param list ArrayList<Itinerary>
+     * Shows every itinerary proposed by the search at the bottom of the page
+     *
+     * @param list ArrayList<Itinerary> The list of all the itineraries
      */
-    private void displayRecap(final ArrayList<Itinerary> list){
+    private void displayRecap(final ArrayList<Itinerary> list) {
 
         // ADD DIFFERENT ITINERARIES
         LinearLayout recapList = findViewById(R.id.recap_list);
         recapList.removeAllViews(); // remove the last views that were displayed
-        for (int i=0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
 
             // get list item view and the views inside it
-            View listItem = inflater.inflate(R.layout.recap_list_item,null);
+            View listItem = inflater.inflate(R.layout.recap_list_item, null);
             ImageView transportationIcon = listItem.findViewById(R.id.transportation_icon);
             TextView time = listItem.findViewById(R.id.recap_time);
             TextView exposition = listItem.findViewById(R.id.exposition_value);
@@ -623,89 +606,87 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
 
             // set time
-            String timeStr = convertIntToHour((int)list.get(i).getDuration());
+            String timeStr = convertIntToHour((int) list.get(i).getDuration());
             time.setText(timeStr);
 
             // set distance
-            String distStr = String.format("%.1f"+" km",list.get(i).getDistance() / 1000);
+            String distStr = String.format("%.1f" + " km", list.get(i).getDistance() / 1000);
             distance.setText(distStr);
 
             // set exposition
-            exposition.setText(String.format("%s",list.get(i).getPollution()));
-            if (list.get(i).isHourStart()){
+            exposition.setText(String.format("%s", list.get(i).getPollution()));
+            if (list.get(i).isHourStart()) {
                 //set time Start
                 System.out.println(list.get(i).getTimeOption());
                 timeStart.setText(list.get(i).getTimeOption());
                 int duration = (int) list.get(i).getDuration();
-                int minutes = duration / (int) 60;
-                int hours = minutes /(int) 60 ;
+                int minutes = duration / 60;
+                int hours = minutes / 60;
                 System.out.println("duration" + duration);
                 System.out.println("hours" + hours);
-                minutes = minutes - hours*60;
-                System.out.println("minutes" +minutes);
+                minutes = minutes - hours * 60;
+                System.out.println("minutes" + minutes);
 
-                int hourStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
-                int minutesStart = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int hourStart = 10 * Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))
+                        + Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesStart = 10 * Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))
+                        + Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
                 int resHour = hourStart + hours;
-                System.out.println("HourStart" +list.get(i).getTimeOption());
+                System.out.println("HourStart" + list.get(i).getTimeOption());
 
-                System.out.println("HourStart" + 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1))));
+                System.out.println("HourStart" + 10 * Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))
+                        + Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1))));
 
-                int resMin = minutesStart+minutes;
-                if (resMin>=60){
-                    resHour+=1;
-                    resMin-=60;
+                int resMin = minutesStart + minutes;
+                if (resMin >= 60) {
+                    resHour += 1;
+                    resMin -= 60;
                 }
-                if (resHour<10&&resMin<10) {
+                if (resHour < 10 && resMin < 10) {
                     System.out.println("cas1");
-                    timeEnd.setText((String.format("0%s:0%s",resHour,resMin)));
-                }
-                else if (resHour<10) {
+                    timeEnd.setText((String.format("0%s:0%s", resHour, resMin)));
+                } else if (resHour < 10) {
                     System.out.println("cas2");
-                    timeEnd.setText((String.format("0%s:%s",resHour,resMin)));
-                }
-                else if (resMin<10) {
+                    timeEnd.setText((String.format("0%s:%s", resHour, resMin)));
+                } else if (resMin < 10) {
                     System.out.println("cas3");
-                    timeEnd.setText((String.format("%s:0%s",resHour,resMin)));
-                }
-                else{
+                    timeEnd.setText((String.format("%s:0%s", resHour, resMin)));
+                } else {
                     System.out.println("cas4");
-                    timeEnd.setText((String.format("%s:%s",resHour,resMin)));
+                    timeEnd.setText((String.format("%s:%s", resHour, resMin)));
                 }
-            }
-            else{
+            } else {
                 timeEnd.setText(list.get(i).getTimeOption());
                 int duration = (int) list.get(i).getDuration();
-                int minutes = duration / (int) 60;
-                int hours = minutes /(int) 60 ;
+                int minutes = duration / 60;
+                int hours = minutes / 60;
                 System.out.println("duration" + duration);
                 System.out.println("hours" + hours);
-                minutes = minutes - hours*60;
-                System.out.println("minutes" +minutes);
+                minutes = minutes - hours * 60;
+                System.out.println("minutes" + minutes);
 
-                int hourEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
-                int minutesEnd = 10*Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))+Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
+                int hourEnd = 10 * Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(0)))
+                        + Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(1)));
+                int minutesEnd = 10 * Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(3)))
+                        + Integer.parseInt(String.valueOf(list.get(i).getTimeOption().charAt(4)));
                 int resHour = hourEnd - hours;
-                System.out.println("HourStart" +list.get(i).getTimeOption());
+                System.out.println("HourStart" + list.get(i).getTimeOption());
 
                 //System.out.println("HourStart" + 10*list.get(i).getTimeOption().charAt(0)+list.get(i).getTimeOption().charAt(1));
 
-                int resMin = minutesEnd-minutes;
-                if (resMin<0){
-                    resHour-=1;
-                    resMin=60+(minutesEnd-minutes);
+                int resMin = minutesEnd - minutes;
+                if (resMin < 0) {
+                    resHour -= 1;
+                    resMin = 60 + (minutesEnd - minutes);
                 }
-                if (resHour<10&&resMin<10) {
-                    timeStart.setText((String.format("0%s:0%s",resHour,resMin)));
-                }
-                else if (resHour<10) {
-                    timeStart.setText((String.format("0%s:%s",resHour,resMin)));
-                }
-                else if (resMin<10) {
-                    timeStart.setText((String.format("%s:0%s",resHour,resMin)));
-                }
-                else{
-                    timeStart.setText((String.format("%s:%s",resHour,resMin)));
+                if (resHour < 10 && resMin < 10) {
+                    timeStart.setText((String.format("0%s:0%s", resHour, resMin)));
+                } else if (resHour < 10) {
+                    timeStart.setText((String.format("0%s:%s", resHour, resMin)));
+                } else if (resMin < 10) {
+                    timeStart.setText((String.format("%s:0%s", resHour, resMin)));
+                } else {
+                    timeStart.setText((String.format("%s:%s", resHour, resMin)));
 
                 }
 
@@ -714,17 +695,17 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             //list.get(i).getTime
 
             // set transportation
-            switch (list.get(i).getType()){
-                case "Voiture" :
+            switch (list.get(i).getType()) {
+                case "Voiture":
                     transportationIcon.setImageResource(R.drawable.ic_car_activated);
                     break;
-                case "Vélo" :
+                case "Vélo":
                     transportationIcon.setImageResource(R.drawable.ic_bike_activated);
                     break;
-                case "Piéton" :
+                case "Piéton":
                     transportationIcon.setImageResource(R.drawable.ic_walk_activated);
                     break;
-                case "Transport en commun" :
+                case "Transport en commun":
                     transportationIcon.setImageResource(R.drawable.ic_tram_activated);
                     break;
             }
@@ -737,18 +718,21 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             listItem.setLayoutParams(params);
 
             // add the view to the layout
-            recapList.addView(listItem,i);
+            recapList.addView(listItem, i);
 
             // save pollution button
-            save.setTag((int)(100+i)); // we add 100 because otherwise we will override the tag for "listItem"
+            save.setTag(100 + i); // we add 100 because otherwise we will override the tag for "listItem"
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int i = (int) v.getTag() - 100; // this lets us find the corresponding itinerary for which we want to save the pollution data
                     // we inform the user that he just saved this pollution data to his profile :
-                    Toast.makeText(ItineraryActivity.this, "L'exposition associée à ce trajet a bien été ajoutée à votre profil", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryActivity.this,
+                            "L'exposition associée à ce trajet a bien été ajoutée à votre profil",
+                            Toast.LENGTH_SHORT).show();
                     // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
-                    PreferencesPollution.setLastPollution((int)list.get(i).getPollution(),ItineraryActivity.this);
+                    PreferencesPollution.setLastPollution(
+                            (int) list.get(i).getPollution(), ItineraryActivity.this);
                 }
             });
 
@@ -761,7 +745,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     int i = (int) v.getTag();
                     Polyline line = findPolylineFromId(String.valueOf(i));
                     GeoPoint pos = line.getInfoWindowLocation();
-                    highlightItinerary(line,map,pos,list.get(i),list.size());
+                    highlightItinerary(line, map, pos, list.get(i), list.size());
                 }
             });
         }
@@ -771,28 +755,32 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // this attaches the control buttons to the new bottom sheet (in this case recap)
-        changeAnchor(recapButton,R.id.itinerary_recap_layout);
+        changeAnchor(recapButton, R.id.itinerary_recap_layout);
 
         // reassign the original peekheight so we can get the top of the view
-        sheetBehaviorRecap.setPeekHeight((int)getResources().getDimension(R.dimen.peek_height));
+        sheetBehaviorRecap.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
         // we have to do it this way because of a bug from the google bottom sheet behavior
         recapLayout.post(new Runnable() {
             @Override
             public void run() {
-                sheetBehaviorRecap.setState(sheetBehaviorRecap.getState()==BottomSheetBehavior.STATE_COLLAPSED? BottomSheetBehavior.STATE_EXPANDED: BottomSheetBehavior.STATE_COLLAPSED);
+                sheetBehaviorRecap.setState(
+                        sheetBehaviorRecap.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
+                                BottomSheetBehavior.STATE_EXPANDED :
+                                BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }
 
     /**
      * This method makes the selected itinerary stand out
-     * @param polyline : the polyline of the itinerary that will be highlighted
-     * @param mapView : the background map
-     * @param eventPos : the geoPoint at which you click on the itinerary
+     *
+     * @param polyline  : the polyline of the itinerary that will be highlighted
+     * @param mapView   : the background map
+     * @param eventPos  : the geoPoint at which you click on the itinerary
      * @param itinerary : the itinerary that will be highlighted
-     * @param size : the size of the itinerary ArrayList
+     * @param size      : the size of the itinerary ArrayList
      */
-    private void highlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos,Itinerary itinerary,int size) {
+    private void highlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos, Itinerary itinerary, int size) {
         // show infowindow and details
         polyline.showInfoWindow();
         polyline.setInfoWindowLocation(eventPos);
@@ -806,13 +794,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // we remove it from the list of overlays and then add it again on top of all the other lines so it's in front
         mapView.getOverlays().remove(polyline);
-        mapView.getOverlays().add(size-1,polyline);
+        mapView.getOverlays().add(size - 1, polyline);
 
         // reset all other lines to original appearance
         // we know that the polylines have indexes ranging from 1 to list.size()-1 because of the order in which we drew them
-        for (int i=1;i<size;i++){
+        for (int i = 1; i < size; i++) {
             Polyline selectedLine = (Polyline) map.getOverlays().get(i);
-            if (selectedLine!=polyline){
+            if (selectedLine != polyline) {
                 resetPolylineAppearance(selectedLine);
                 selectedLine.closeInfoWindow();
             }
@@ -821,22 +809,24 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Convert a time in seconds to hours
+     *
      * @param seconds int
      * @return String
      */
     private String convertIntToHour(int seconds) {
-        int minutes = seconds / (int) 60;
-        int hours = minutes /(int) 60 ;
-        minutes = minutes - hours*60;
-        String res = String.format("%s h %s min",hours, minutes);
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+        minutes = minutes - hours * 60;
+        String res = String.format("%s h %s min", hours, minutes);
         return res;
     }
 
     /**
      * Reset the appearance of a polyline that was highlighted
+     *
      * @param polyline Polyline
      */
-    private void resetPolylineAppearance(Polyline polyline){
+    private void resetPolylineAppearance(Polyline polyline) {
         // clear all previous paints
         polyline.getOutlinePaintLists().clear();
         // find the itinerary we are referring to, in order to then find the color it has to be
@@ -850,14 +840,15 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this function is used to find a polyline from its id which was user-selected (in our case, the id is its rank in the itinerary list)
+     *
      * @param id String
-     * @return
+     * @return polyline
      */
-    private Polyline findPolylineFromId(String id){
+    private Polyline findPolylineFromId(String id) {
         // to do this we go through all the polylines until we find the one whose id matches the requested id
-        int i =1;
+        int i = 1;
         Polyline line = (Polyline) map.getOverlays().get(i);
-        while (!line.getId().equals(id)){
+        while (!line.getId().equals(id)) {
             line = (Polyline) map.getOverlays().get(i);
             i++;
         }
@@ -929,6 +920,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Method to control map
+     *
      * @param v View
      */
     @Override
@@ -938,7 +930,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             case 10: // recap button
                 // reset everything back to normal and display recap
                 InfoWindow.closeAllInfoWindowsOn(map);
-                for (int j = 1; j<itineraries.size(); j++){ // we go through all the polylines that are displayed
+                for (int j = 1; j < itineraries.size(); j++) { // we go through all the polylines that are displayed
                     Polyline selectedLine = (Polyline) map.getOverlays().get(j);
                     resetPolylineAppearance(selectedLine);
                 }
@@ -946,7 +938,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 break;
             case 11: // center on lines
                 BoundingBox bounds = BoundingBox.fromGeoPointsSafe(markers);
-                map.zoomToBoundingBox(bounds,true,120);
+                map.zoomToBoundingBox(bounds, true, 120);
                 break;
             case 12: // zoom out
                 map.getController().zoomOut();
@@ -959,10 +951,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * This method changes the anchor for the map control buttons when the bottom menu changes
+     *
      * @param fab : the bottom-most button
-     * @param id : the id of the view which we want to attach the buttons to
+     * @param id  : the id of the view which we want to attach the buttons to
      */
-    public void changeAnchor(FloatingActionButton fab, int id){
+    public void changeAnchor(FloatingActionButton fab, int id) {
         CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         p.setAnchorId(id);
         fab.setLayoutParams(p);
@@ -970,20 +963,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * this method decides which color the itinerary line will be, according to the threshold
+     *
      * @param itinerary Itinerary
      */
-    public void setColorForPolyline(Itinerary itinerary){
+    public void setColorForPolyline(Itinerary itinerary) {
         System.out.println("pollution" + itinerary.getPollution());
 
-        if (itinerary.getPollution()<=threshold){
+        if (itinerary.getPollution() <= threshold) {
             plInside = new MonochromaticPaintList(paintInsideG);
             plInsideSelected = new MonochromaticPaintList(paintInsideSelectedG);
-        }
-        else if (itinerary.getPollution()<=threshold+20){
+        } else if (itinerary.getPollution() <= threshold + 20) {
             plInside = new MonochromaticPaintList(paintInsideM);
             plInsideSelected = new MonochromaticPaintList(paintInsideSelectedM);
-        }
-        else if (itinerary.getPollution()>threshold+20){
+        } else if (itinerary.getPollution() > threshold + 20) {
             plInside = new MonochromaticPaintList(paintInsideB);
             plInsideSelected = new MonochromaticPaintList(paintInsideSelectedB);
         }

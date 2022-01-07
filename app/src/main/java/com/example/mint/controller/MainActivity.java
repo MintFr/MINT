@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private final static double LATITUDE_DEFAULT_MAP = 47.21;
     private final static double LONGITUDE_DEFAULT_MAP = -1.55;
+
+    // Nantes latitude and longitude boundaries
+    private final static double LATITUDE_MAX = 47.4;
+    private final static double LATITUDE_MIN = 47.0;
+    private final static double LONGITUDE_MAX = -1.3;
+    private final static double LONGITUDE_MIN = -1.8;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
     /**
@@ -1068,21 +1074,21 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 error = 2;
             } else if (endAddress.getCoordinates().isZero() || startAddress.getCoordinates().isZero()) { //conversion impossible
                 error = 1;
-            } else if (startAddress.getCoordinates().getLatitude() < 47.0 |
-                    startAddress.getCoordinates().getLatitude() > 47.4 |
-                    startAddress.getCoordinates().getLongitude() < -1.8 |
-                    startAddress.getCoordinates().getLongitude() > -1.3) {
+            } else if (startAddress.getCoordinates().getLatitude() < LATITUDE_MIN |
+                    startAddress.getCoordinates().getLatitude() > LATITUDE_MAX |
+                    startAddress.getCoordinates().getLongitude() < LONGITUDE_MIN |
+                    startAddress.getCoordinates().getLongitude() > LONGITUDE_MAX) {
                 //System.out.pri
                 error = 3;
-            } else if (endAddress.getCoordinates().getLatitude() < 47.0 |
-                    endAddress.getCoordinates().getLatitude() > 47.4 |
-                    endAddress.getCoordinates().getLongitude() < -1.8 |
-                    endAddress.getCoordinates().getLongitude() > -1.3) {
+            } else if (endAddress.getCoordinates().getLatitude() < LATITUDE_MIN |
+                    endAddress.getCoordinates().getLatitude() > LATITUDE_MAX |
+                    endAddress.getCoordinates().getLongitude() < LONGITUDE_MIN |
+                    endAddress.getCoordinates().getLongitude() > LONGITUDE_MAX) {
                 error = 4;
-            } else if (stepBool && stepAddress.getCoordinates().getLatitude() < 47.0 |
-                    stepAddress.getCoordinates().getLatitude() > 47.4 |
-                    stepAddress.getCoordinates().getLongitude() < -1.8 |
-                    stepAddress.getCoordinates().getLongitude() > -1.3) {
+            } else if (stepBool && stepPoint.isShown() && stepAddress.getCoordinates().getLatitude() < LATITUDE_MIN |
+                    stepAddress.getCoordinates().getLatitude() > LATITUDE_MAX |
+                    stepAddress.getCoordinates().getLongitude() < LONGITUDE_MIN |
+                    stepAddress.getCoordinates().getLongitude() > LONGITUDE_MAX) {
                 error = 5;
             }
 

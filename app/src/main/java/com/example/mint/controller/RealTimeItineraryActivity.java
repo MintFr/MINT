@@ -60,6 +60,10 @@ import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +95,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     LocationManager locationManager;
     Location locationUser;
     private Marker positionMarker;
-    private ArrayList<Itinerary> itineraries = new ArrayList<>();
+    private Itinerary itinerary = new Itinerary();
 
 
 
@@ -117,24 +121,22 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
         //Temporary Itinerary
-        JSONArray c = null;
+        String resourceName = "src/main/res/raw/itinerary_test.json";
+        File file = new File(resourceName);
+
         try {
-            c = new JSONArray(R.raw.itinerary6);
-        } catch (JSONException e) {
+            String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
+            JSONObject jsonObj = new JSONObject(content);
+
+            itinerary = new Itinerary(jsonObj);
+
+
+
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-        try {
-            if (c != null) {
-                for (int i = 0; i < c.length(); i++)            //to delete error message
-                {
-                    Itinerary itinerary = new Itinerary(c.getJSONObject(i));
-                    itineraries.add(itinerary);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println(itineraries.size());
+        Log.d("Json",itinerary.toString());
+
 
     }
     @Override

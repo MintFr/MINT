@@ -53,7 +53,7 @@ import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesTransport;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -282,12 +282,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapController.setCenter(startPoint);
 
         //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
         addStepPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -55,8 +55,10 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -178,19 +180,12 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         // Check for localisation permission
         requestLocalisationPermission();
         super.onCreate(savedInstanceState);
-
-        // Load the switch button
-        switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    setContentView(R.layout.activity_main_big);
-                } else {
-                    setContentView(R.layout.activity_main);
-                }
-            }
-        });
+        String sizePolice = PreferencesSize.getSize("police", MainActivity.this);
+        if (sizePolice.equals("normal")) {
+            setContentView(R.layout.activity_main);
+            } else {
+            setContentView(R.layout.activity_main_big);
+        }
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -303,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener((BottomNavigationView.OnNavigationItemSelectedListener) new MenuSwitcherActivity(this));
+        bottomNav.setOnNavigationItemSelectedListener((OnNavigationItemSelectedListener) new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);

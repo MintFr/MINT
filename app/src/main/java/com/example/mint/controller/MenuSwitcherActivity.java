@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import com.example.mint.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 /**
  * Bottom menu listener that switches to the right activity when a menu item is selected.
@@ -22,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * }</pre>
  * </p>
  */
-class MenuSwitcherActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+class MenuSwitcherActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final Activity activity;
 
     /**

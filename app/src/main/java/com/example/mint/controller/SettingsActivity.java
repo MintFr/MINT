@@ -9,7 +9,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -24,8 +24,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);

@@ -17,7 +17,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -28,10 +28,25 @@ android {
         }
     }
 
+    testOptions{
+        unitTests.returnDefaultValues = true
+    }
+
     dexOptions {
 		preDexLibraries = true
 	}
+
+
 }
+
+tasks.register('copyFile',Copy) {
+
+        from 'D:/Dev/Mint/Fullcode/MINT/app/src/test/java/resources/jsonTest.json'
+        into 'D:/Dev/Mint/Fullcode/MINT/app/build/intermediates/javac/debugUnitTest/classes/'
+        println 'A message which is logged at QUIET level'
+
+}
+
 repositories {
     maven { url 'https://jitpack.io' }
 }
@@ -48,12 +63,21 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //noinspection GradleCompatible
     implementation 'com.android.support:support-v4:28.0.0'
 
     // Dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
+    implementation 'androidx.test:core:1.3.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
+
+    //multidex
+    implementation 'com.android.support:multidex:2.0.1'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.json:json:20180813'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation 'androidx.test:core:1.0.0'
 }

@@ -26,7 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mint.R;
 import com.example.mint.model.Pollution;
 import com.example.mint.model.TanMap;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -175,8 +175,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         /////////////////////////////////////////////////////////
         //                   BOTTOM MENU                       //
         /////////////////////////////////////////////////////////
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(1);

@@ -36,7 +36,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -448,8 +448,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // BOTTOM MENU //
         /////////////////////////////////////////////////////////
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);
@@ -462,7 +462,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SLIDE ANIMATION //
         /////////////////////////////////////////////////////////
 
-        bottomNav.setSelectedItemId(R.id.profile);
+        /*bottomNav.setSelectedItemId(R.id.profile);*/
 
         //TODO This is redundant with MenuSwitcherActivity
         //Slide animation

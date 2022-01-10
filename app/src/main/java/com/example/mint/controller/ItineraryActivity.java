@@ -25,7 +25,7 @@ import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollution;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.Step;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -152,8 +152,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             case "Pas de sensibilité":
                 threshold = 80;
                 break;
-            case "--":
-                threshold = 80;
+            case "--" :
+                // TODO : Change it by default, just for good colors
+                threshold = 33;
                 break;
         }
 
@@ -368,8 +369,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         }
 
         //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
@@ -456,7 +457,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
         } else if ((itinerary.getPollution() >= 33) && (itinerary.getPollution() < 66)) {
             pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
-        } else if ((itinerary.getPollution() >= 66) && (itinerary.getPollution() <= 100)) {
+        }
+        else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=1000)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
         final InfoWindow infoWindow = new InfoWindow(infoWindowView, map) {

@@ -7,20 +7,12 @@
     android:focusableInTouchMode="true"
     tools:context=".controller.MainActivity">
 
-
     <org.osmdroid.views.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints" />
 
-        <View
-            android:id="@+id/dim_popup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#73000000"
-            android:visibility="invisible" />
-    </org.osmdroid.views.MapView>
 
     <ImageView
         android:id="@+id/logo"
@@ -35,12 +27,11 @@
 
     <EditText
         android:id="@+id/startPoint"
-        android:layout_width="@dimen/start_point_width_big"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/start_point_width"
+        android:layout_height="50dp"
         android:layout_below="@id/logo"
-        android:layout_alignRight="@id/mapView"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
-        android:layout_marginRight="15dp"
         android:background="@drawable/button_text_color"
         android:focusable="true"
         android:fontFamily="@font/quicksand_regular"
@@ -50,18 +41,18 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#999999"
-        android:textSize="24sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
         android:id="@+id/stepPoint"
-        android:layout_width="@dimen/start_point_width_big"
+        android:layout_width="@dimen/start_point_width"
         android:layout_height="50dp"
-        android:layout_marginTop="11dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/startPoint"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
         android:background="@drawable/button_text_color"
         android:focusable="true"
         android:fontFamily="@font/quicksand_regular"
@@ -72,20 +63,19 @@
         android:textAllCaps="false"
         android:textColor="#999999"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addStepPoint"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/addStepPoint" />
 
     <EditText
         android:id="@+id/endPoint"
-        android:layout_width="@dimen/start_point_width_big"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/start_point_width"
+        android:layout_height="50dp"
         android:layout_below="@id/stepPoint"
-        android:layout_alignRight="@id/mapView"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp"
-        android:layout_marginRight="15dp"
         android:background="@drawable/button_text_color"
         android:focusable="true"
         android:fontFamily="@font/quicksand_regular"
@@ -95,20 +85,54 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#999999"
-        android:textSize="24sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startPoint" />
 
+    <!--<EditText-->
+    <!--  android:id="@+id/stepPoint"
+      android:layout_width="@dimen/start_point_width"
+      android:layout_height="50dp"
+      android:background="@drawable/button_text_color"
+      android:focusable="true"
+      android:fontFamily="@font/quicksand_regular"
+      android:gravity="center_horizontal|center_vertical"
+      android:hint="@string/step_point"
+      android:inputType="text"
+      android:textAlignment="center"
+      android:textAllCaps="false"
+      android:textColor="#999999"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      android:visibility="gone" />-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/addStepPoint"-->
+
+
+    <!--<ImageButton
+        android:id="@+id/addStepPoint"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_baseline_add_circle_outline_24"
+        app:layout_constraintBottom_toBottomOf="@+id/endPoint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/startPoint" />-->
+
     <ImageButton
         android:id="@+id/addStepPoint"
         android:layout_width="48dp"
-        android:layout_height="75dp"
+        android:layout_height="35dp"
         android:layout_alignTop="@+id/startPoint"
-        android:layout_marginTop="15dp"
+        android:layout_alignBottom="@id/endPoint"
         android:layout_toLeftOf="@id/startPoint"
         android:background="#00FFFFFF"
         android:contentDescription="TODO"
+        android:onClick="onClickStepPointButton"
         android:src="@drawable/button_addstep"
         app:layout_constraintBottom_toBottomOf="@+id/endPoint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,12 +143,13 @@
     <ImageButton
         android:id="@+id/inversion"
         android:layout_width="48dp"
-        android:layout_height="75dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/startPoint"
         android:layout_alignBottom="@id/endPoint"
-        android:layout_marginBottom="15dp"
-        android:layout_toLeftOf="@id/startPoint"
+        android:layout_toRightOf="@id/startPoint"
         android:background="#00FFFFFF"
         android:contentDescription="TODO"
+        android:onClick="onClickInversionButton"
         android:src="@drawable/ic_swap"
         app:layout_constraintBottom_toBottomOf="@+id/endPoint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -135,19 +160,19 @@
     <Button
         android:id="@+id/options"
         style="@style/Button"
-        android:layout_width="95dp"
-        android:layout_height="68dp"
+        android:layout_width="70dp"
+        android:layout_height="48dp"
         android:layout_below="@id/endPoint"
         android:layout_alignRight="@id/endPoint"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/quicksand_regular"
         android:gravity="center"
+        android:onClick="onClickOptions"
         android:padding="0dp"
         android:text="@string/text_options"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#084528"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
@@ -155,17 +180,19 @@
 
     <Button
         android:id="@+id/search"
-        android:layout_width="160dp"
-        android:layout_height="68dp"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
         android:layout_below="@id/options"
+        android:layout_alignEnd="@id/endPoint"
         android:layout_alignRight="@id/endPoint"
         android:layout_marginTop="7dp"
         android:background="@drawable/shape_search"
         android:fontFamily="@font/quicksand_regular"
+        android:onClick="onClickSearch"
         android:text="@string/button_search"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.814"
         app:layout_constraintStart_toStartOf="parent"
@@ -183,10 +210,11 @@
         android:adjustViewBounds="true"
         android:background="#00ffffff"
         android:gravity="center"
+        android:onClick="onClickLocationButton"
         android:padding="70dp"
         android:src="@drawable/button_location" />
 
-    <com.google.android.material.navigation.NavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -198,5 +226,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/dim_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#73000000"
+        android:visibility="invisible" />
 
 </RelativeLayout>

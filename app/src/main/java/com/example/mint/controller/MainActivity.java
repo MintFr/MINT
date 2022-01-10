@@ -975,51 +975,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         Log.d(LOG_TAG, "TAGG : Coordinates 2 : " + endAddress.getCoordinates().toString());
 
         if (checkGoodAddressesForItinerary()) {
-            ////////////////////////////////////////////////////////////////////////////////////
-            // History's management
-            ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
-
-            // get the number of addresses in the history
-            int nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this);
-
-            // returns which of the start or end address already exists in the list and its index in the list
-            int[] sameAddresses = getSameAddresses(start, end);
-
-            // if none of the addresses already exist, add them
-            if (sameAddresses[0] == -1 && sameAddresses[1] == -1) {
-                PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
-            }
-
-            // if the startpoint already exists, move it to first position and add endpoint
-            else if (sameAddresses[0] != -1 && sameAddresses[1] == -1) {
-                PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                PreferencesAddresses.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
-                nbLastAdd++; // the number of addresses has increased by 1
-            }
-
-            // if the endpoint already exists, move it to first position and add startpoint
-            else if (sameAddresses[0] == -1 && sameAddresses[1] != -1) {
-                PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                nbLastAdd++; // the number of addresses has increased by 1
-            }
-
-            // if both addresses already exist, we move both addresses to first position
-            else {
-                PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
-                PreferencesAddresses.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
-            }
-
-            // check if number of addresses has gone over 3 and remove the ones over 3
-            if (nbLastAdd == 5) {
-                PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
-                PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-            } else if (nbLastAdd == 4) {
-                PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-            }
+            updateLastAddresses(start, end);
 
 
             ////////////////////////////////////////////////////////////////////////////////////
@@ -1159,6 +1115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
             }
 
+            // We switch on positionId, to see if My position has been chosen. If yes, we don't add
+            // it to Addresses.
             switch (positionId) {
                 case 0:
                     // PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
@@ -1180,6 +1138,88 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
     }
+
+    /**
+     * This method
+     * @param start
+     * @param end
+     */
+    private void updateLastAddresses(String start, String end) {
+        ////////////////////////////////////////////////////////////////////////////////////
+        // History's management
+        ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
+
+        // get the number of addresses in the history
+        int nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this);
+
+        // returns which of the start or end address already exists in the list and its index in the list
+        int[] sameAddresses = getSameAddresses(start, end);
+
+        // if none of the addresses already exist, add them
+        if (sameAddresses[0] == -1 && sameAddresses[1] == -1) {
+            PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+            PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
+            nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
+        }
+
+        // if the startpoint already exists, move it to first position and add endpoint
+        else if (sameAddresses[0] > -1 && sameAddresses[1] == -1) {
+            PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+            PreferencesAddresses.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
+            nbLastAdd++; // the number of addresses has increased by 1
+        }
+
+        // if the endpoint already exists, move it to first position and add startpoint
+        else if (sameAddresses[0] == -1 && sameAddresses[1] > -1) {
+            PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+            PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
+            nbLastAdd++; // the number of addresses has increased by 1
+        }
+
+        // if both addresses already exists, we move both addresses to first position
+        else if (sameAddresses[0] > -1 && sameAddresses[1] > -1) {
+            PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+            // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
+            PreferencesAddresses.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
+        }
+
+        // One of the parameters is equal to My position
+
+        // The start point is user's position
+        else if (sameAddresses[0] == -2) {
+            // End address is not known
+            if (sameAddresses[1] == -1) {
+                PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                nbLastAdd++;
+            }
+            // End address already known
+            else {
+                PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+            }
+        }
+        // The end point is user's location
+        else if (sameAddresses[1] == -2) {
+            // The start point is not known
+            if (sameAddresses[0] == -1) {
+                PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                nbLastAdd++;
+            }
+            // Start address already in the list, we put it first
+            else {
+                PreferencesAddresses.moveAddressFirst(sameAddresses[0], MainActivity.this);
+            }
+        }
+
+        // check if number of addresses has gone over 3 and remove the ones over 3
+        if (nbLastAdd == 5) {
+            PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
+            PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+        } else if (nbLastAdd == 4) {
+            PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+        }
+    }
+
+
 
     /**
      * This methods allows to check if the itinerary can be launched.
@@ -1262,25 +1302,27 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     }
 
     /**
-     * returns the index of the addresses that already exist in the history list, returns -1 if doesnt exist
+     * returns the index of the addresses that already exist in the history list.
+     * Returns -2 if the String is "ma position" and -1 if the index isn't in the addresses
      *
-     * @param start
-     * @param end
-     * @return
+     * @param start : String of the start address.
+     * @param end : String of the end address
+     * @return res : The first value is for the start address, the second for end address.
      */
     public int[] getSameAddresses(String start, String end) {
-        int[] arr = new int[2];
-        arr[0] = -1; // startpoint
-        arr[1] = -1; // endpoint
+        String myPositionText = getString(R.string.position_text);
+        int[] res = new int[2];
+        res[0] = start.equals(myPositionText) ? -2 : -1; // startpoint
+        res[1] = end.equals(myPositionText) ? -2 : -1; // endpoint
         for (int j = 0; j < PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this); j++) {
             String lastAddress = PreferencesAddresses.getLastAddresses("lastAddress", MainActivity.this).get(j);
             if (start.equals(lastAddress)) {
-                arr[0] = j;
+                res[0] = j;
             } else if (end.equals(lastAddress)) {
-                arr[1] = j;
+                res[1] = j;
             }
         }
-        return arr;
+        return res;
     }
 
     /**

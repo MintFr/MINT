@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
+    private Button temporaryItineraryRealTime;
     /**
      * Temporary point for location changes
      */
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
-
+        this.temporaryItineraryRealTime = findViewById(R.id.tempRealTimeItinerary);
         // String of the adresses
         this.start = startPoint.getText().toString();
         this.end = endPoint.getText().toString();
@@ -260,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         search.setOnClickListener(this);
         option.setOnClickListener(this);
         myPosition.setOnClickListener(this);
+        temporaryItineraryRealTime.setOnClickListener(this);
 
         // set the tags for when onClick is called
         startPoint.setTag(0);
@@ -268,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         option.setTag(3);
         myPosition.setTag(40);
         stepPoint.setTag(10);
+        temporaryItineraryRealTime.setTag(50);
 
         Context context = getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
@@ -1286,6 +1289,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             else {
                 requestLocalisationPermission(); //line 447
             }
+        }
+        //Test temporaire
+        else if (i==50){
+            Intent intent = new Intent ( this,RealTimeItineraryActivity.class);
+            startActivity(intent);
         }
 
     }

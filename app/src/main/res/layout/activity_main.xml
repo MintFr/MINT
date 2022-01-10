@@ -207,7 +207,23 @@
         android:adjustViewBounds="true"
         android:src="@drawable/button_location"
         android:background="#00ffffff"/>
-
+    <Button
+        android:id="@+id/tempRealTimeItinerary"
+        style="@style/Button"
+        android:layout_width="70dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/quicksand_regular"
+        android:gravity="center"
+        android:padding="0dp"
+        android:text="@string/testRealTimeItinerary"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#084528"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.843"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endPoint" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"
         android:id="@+id/bottom_navigation"

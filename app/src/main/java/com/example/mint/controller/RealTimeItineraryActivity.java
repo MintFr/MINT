@@ -43,6 +43,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -88,9 +91,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     LocationManager locationManager;
     Location locationUser;
     private Marker positionMarker;
+    private ArrayList<Itinerary> itineraries = new ArrayList<>();
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +116,25 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+        //Temporary Itinerary
+        JSONArray c = null;
+        try {
+            c = new JSONArray(R.raw.itinerary6);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (c != null) {
+                for (int i = 0; i < c.length(); i++)            //to delete error message
+                {
+                    Itinerary itinerary = new Itinerary(c.getJSONObject(i));
+                    itineraries.add(itinerary);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println(itineraries.size());
 
     }
     @Override

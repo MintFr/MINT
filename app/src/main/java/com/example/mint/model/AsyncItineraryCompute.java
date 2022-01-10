@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +96,7 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
         try {
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection(); // Open
+            Log.d("URL",urlConnection.toString());
             InputStream in = new BufferedInputStream(urlConnection.getInputStream()); // Stream
             publishProgress(2); //"marker" to display progress on splash screen
             result = readStream(in); //read text file

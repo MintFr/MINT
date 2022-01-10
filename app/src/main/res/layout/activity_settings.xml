@@ -137,6 +137,7 @@
         android:layout_alignParentLeft="true"
         android:background="@color/LightLightGrey_Settings" />
 
+
     <androidx.appcompat.widget.SwitchCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -162,6 +163,38 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/dark_mode"
+        android:background="@color/LightLightGrey_Settings" />
+
+    <TextView
+        android:id="@+id/switchPolice"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/settings_separator_6"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:onClick="onClickLegalNotices"
+        android:paddingLeft="30dp"
+        android:text="@string/settings_police"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_police_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/settings_separator_7"
+        android:layout_below="@id/settings_separator_6"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:checked="false" />
+
+    <View
+        android:id="@+id/settings_separator_7"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/switchPolice"
         android:background="@color/LightLightGrey_Settings" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

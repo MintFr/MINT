@@ -34,10 +34,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -164,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      *
      * @param savedInstanceState
      */
+
+    SwitchCompat switchCompat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -172,8 +178,19 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         // Check for localisation permission
         requestLocalisationPermission();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        // Load the switch button
+        switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    setContentView(R.layout.activity_main_big);
+                } else {
+                    setContentView(R.layout.activity_main);
+                }
+            }
+        });
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -286,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        bottomNav.setOnNavigationItemSelectedListener((BottomNavigationView.OnNavigationItemSelectedListener) new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);

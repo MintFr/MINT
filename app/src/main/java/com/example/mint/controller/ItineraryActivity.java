@@ -124,6 +124,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       //  charger le bouton puis activer ou pas
         setContentView(R.layout.activity_itinerary);
 
         // inflater used to display different views

@@ -111,15 +111,15 @@
         android:id="@+id/zoom_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/zoom_out"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="TODO"
+        android:onClick="zoomIn"
         android:src="@drawable/ic_zoom_in"
         app:backgroundTint="@color/PrimaryWhite_Itinerary"
-        app:fabSize="mini"
-        android:layout_alignParentRight="true"
-        android:contentDescription="TODO"
-        android:layout_above="@id/zoom_out"
-        android:layout_marginBottom="10dp"
-        android:onClick="zoomOut"/>
+        app:fabSize="mini" />
 
 
 

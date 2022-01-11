@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -27,37 +28,48 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
-        switchCompat.setChecked(!PreferencesSize.getSize("police", this).equals("normal"));
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    PreferencesSize.setSize("police", "big", SettingsActivity.this);
-                } else {
-                    PreferencesSize.setSize("police", "normal", SettingsActivity.this);
+        String sizePolice = PreferencesSize.getSize("police", SettingsActivity.this);
+
+        if (sizePolice.equals("big")) {
+            setContentView(R.layout.activity_settings_big);
+        } else {
+            setContentView(R.layout.activity_settings);
+        }
+
+        this.switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
+        switchCompat.setChecked(!sizePolice.equals("normal"));
+        switchCompat.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        Toast.makeText(
+                                SettingsActivity.this,
+                                "Modification appliquée au premier changement d'onglet.",
+                                Toast.LENGTH_SHORT).show();
+                        if (b) {
+                            PreferencesSize.setSize("police", "big", SettingsActivity.this);
+                        } else {
+                            PreferencesSize.setSize("police", "normal", SettingsActivity.this);
+                        }
+                    }
                 }
-            }
-        });
+        );
 
         //Bottom Menu
         Menu menu;
-        String sizePolice = PreferencesSize.getSize("police", SettingsActivity.this);
         if (sizePolice.equals("big")) {
             NavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);
             menu = bottomNav.getMenu();
-        }
-        else {
+        } else {
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);
             menu = bottomNav.getMenu();
         }
 
-        MenuItem menuItem = menu.getItem(0);
+        MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
     }
 
@@ -80,8 +92,8 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FaqActivity.class);
         startActivity(intent);
     }
-  
-  
+
+
     /**
      * Method applying when user clicks on "Mentions légales". Launches the LegalNotices Activity.
      *
@@ -97,6 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();
     }
+
     @Override
     public void onResume() {
         super.onResume();

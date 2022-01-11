@@ -118,8 +118,8 @@
         android:onClick="onClickLegalNotices"
         android:paddingLeft="30dp"
         android:text="@string/mentions_l_gales"
-        android:textSize="30sp"
-        android:textColor="@color/colorBlack"/>
+        android:textColor="@color/colorBlack"
+        android:textSize="30sp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -186,7 +186,6 @@
         android:clickable="true"
         android:focusable="true"
         android:gravity="center_vertical"
-        android:onClick="onClickLegalNotices"
         android:paddingLeft="30dp"
         android:text="@string/settings_police"
         android:textColor="@color/colorBlack"
@@ -201,6 +200,7 @@
         android:background="@color/White_Settings"
         android:fontFamily="@font/quicksand_regular"
         app:itemTextColor="@color/colorBlack"
+        app:itemTextAppearance="@style/BottomStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

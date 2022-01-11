@@ -561,7 +561,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         int buttonClicked = (int) v.getTag();
         // dim background of popup
-        dim_popup.setVisibility(View.VISIBLE);
+        // dim_popup.setVisibility(View.VISIBLE);
         switch (buttonClicked) {
             case 0:
                 // show the sensibility popup window

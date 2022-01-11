@@ -24,7 +24,9 @@ import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollution;
 import com.example.mint.model.PreferencesSensibility;
+import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.Step;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -125,7 +127,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        //  charger le bouton puis activer ou pas
-        setContentView(R.layout.activity_itinerary);
+        String sizePolice = PreferencesSize.getSize("police", ItineraryActivity.this);
+        if (sizePolice.equals("big")) {
+            setContentView(R.layout.activity_itinerary_big);
+        }
+        else {
+            setContentView(R.layout.activity_itinerary);
+        }
 
         // inflater used to display different views
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -370,10 +378,20 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         }
 
         //Bottom Menu
-        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
+        Menu menu;
+        if (sizePolice.equals("big")) {
+            NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+        else {
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }

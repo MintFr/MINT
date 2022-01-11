@@ -199,7 +199,7 @@
         android:layout_gravity="bottom"
         android:background="@color/White_Main"
         app:itemTextAppearance="@style/BottomStyle"
-        app:itemTextColor="#999999"
+        app:itemTextColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />

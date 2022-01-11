@@ -24,7 +24,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/bottom_navigation_height">
+            android:layout_marginBottom="@dimen/bottom_navigation_height_big">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 <RelativeLayout
                     android:id="@+id/profile_main_box"
                     android:layout_width="match_parent"
-                    android:layout_height="330dp"
+                    android:layout_height="475dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
@@ -52,8 +52,8 @@
                         android:layout_alignParentLeft="true"
                         android:contentDescription="@string/user_image"
                         android:padding="10dp"
-                        android:scaleX="1.2"
-                        android:scaleY="1.2"
+                        android:scaleX="1.3"
+                        android:scaleY="1.3"
                         android:src="@drawable/user_image" />
 
                     <TextView
@@ -64,13 +64,14 @@
                         android:layout_alignTop="@id/user_image"
                         android:layout_marginStart="0dp"
                         android:layout_marginLeft="0dp"
-                        android:layout_marginTop="60dp"
+                        android:layout_marginTop="50dp"
                         android:layout_toEndOf="@id/user_image"
                         android:layout_toRightOf="@id/user_image"
                         android:gravity="start"
+                        android:paddingLeft="10dp"
                         android:text="@string/user_name"
                         android:textColor="@color/LightBlack_Profile"
-                        android:textSize="20sp" />
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/parameters"
@@ -83,10 +84,11 @@
                         android:focusable="true"
                         android:fontFamily="@font/quicksand_light"
                         android:gravity="start"
-                        android:paddingBottom="15dp"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="22dp"
                         android:text="@string/param_button"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp"
+                        android:textSize="24sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <Button
@@ -101,12 +103,12 @@
                         android:background="@color/Transparent_Profile"
                         android:gravity="start"
                         android:minHeight="0dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="30dp"
                         android:text="@string/sensibility_button"
                         android:textAllCaps="false"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp"
+                        android:textSize="24sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <TextView
@@ -120,10 +122,10 @@
                         android:layout_toRightOf="@id/sensibility"
                         android:gravity="end"
                         android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
+                        android:paddingBottom="30dp"
                         android:text="@string/set_sensibility"
                         android:textColor="@color/colorAccent"
-                        android:textSize="14sp" />
+                        android:textSize="21sp" />
 
                     <Button
                         android:id="@+id/favorite_addresses"
@@ -136,11 +138,11 @@
                         android:layout_marginLeft="11dp"
                         android:background="@color/Transparent_Profile"
                         android:minHeight="0dp"
-                        android:paddingBottom="5dp"
+                        android:paddingBottom="30dp"
                         android:text="@string/favorite_addresses_button"
                         android:textAllCaps="false"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp"
+                        android:textSize="24sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <TextView
@@ -155,11 +157,11 @@
                         android:background="@color/Transparent_Profile"
                         android:gravity="start"
                         android:minHeight="0dp"
-                        android:paddingBottom="5dp"
+                        android:paddingBottom="10dp"
                         android:text="@string/favorite_transportation_button"
                         android:textAllCaps="false"
                         android:textColor="@color/Charcoal_Profile"
-                        android:textSize="16sp" />
+                        android:textSize="24sp" />
 
                     <ImageButton
                         android:id="@+id/car_button"
@@ -168,10 +170,10 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginStart="@dimen/transport_button_gap"
                         android:layout_marginLeft="@dimen/transport_button_gap"
                         android:contentDescription="@string/car_button"
                         android:onClick="highlight"
+                        android:paddingBottom="15dp"
                         android:scaleX="@dimen/button_scale"
                         android:scaleY="@dimen/button_scale"
                         android:tag="0"
@@ -190,7 +192,7 @@
                         android:background="#FFFFFF"
                         android:contentDescription="@string/tram_button"
                         android:onClick="highlight"
-
+                        android:paddingBottom="5dp"
                         android:scaleX="@dimen/button_scale"
                         android:scaleY="@dimen/button_scale"
                         android:tag="1"
@@ -201,8 +203,6 @@
                         android:id="@+id/bike_button"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-
-
                         android:layout_alignBottom="@+id/tram_button"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
@@ -212,6 +212,7 @@
                         android:background="#FFFFFF"
                         android:contentDescription="@string/bike_button"
                         android:onClick="highlight"
+                        android:paddingBottom="5dp"
                         android:scaleX="@dimen/button_scale"
                         android:scaleY="@dimen/button_scale"
                         android:tag="2"
@@ -230,6 +231,7 @@
                         android:background="#FFFFFF"
                         android:contentDescription="@string/walk_button"
                         android:onClick="highlight"
+                        android:paddingBottom="5dp"
                         android:scaleX="@dimen/button_scale"
                         android:scaleY="@dimen/button_scale"
                         android:tag="3"
@@ -259,37 +261,26 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/layout_bg_profile_main"
                     android:elevation="2dp"
+                    android:orientation="vertical"
                     android:outlineAmbientShadowColor="@color/colorAccent"
                     android:padding="20dp">
 
                     <TextView
                         android:id="@+id/exposition_today"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical|end"
                         android:layout_weight="2"
-                        android:gravity="start"
+                        android:gravity="center_horizontal"
                         android:maxWidth="90dp"
                         android:paddingLeft="10dp"
                         android:text="@string/exposure_last_travel_text"
-                        android:textColor="@color/DarkGrey_Profile"
-                        android:textSize="16sp"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
-                    <!--<ImageView
-                        android:id="@+id/graph"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical|end"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/graph_pie"
-                        android:src="@drawable/graph_pie" />-->
                     <RelativeLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1">
@@ -303,7 +294,7 @@
                             android:fontFamily="@font/quicksand_bold"
                             android:text="@string/max_value_exposure"
                             android:textColor="@color/colorAccent"
-                            android:textSize="32sp" />
+                            android:textSize="46sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -313,7 +304,7 @@
                             android:layout_marginTop="-8dp"
                             android:text="@string/exposition_unit"
                             android:textColor="@color/PrimaryLight_Profile"
-                            android:textSize="12sp" />
+                            android:textSize="18sp" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -337,8 +328,8 @@
                         android:layout_marginBottom="5dp"
                         android:paddingLeft="10dp"
                         android:text="@string/mon_exposition"
-                        android:textColor="@color/DarkGrey_Profile"
-                        android:textSize="16sp"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <LinearLayout

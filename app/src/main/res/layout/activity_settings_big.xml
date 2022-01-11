@@ -14,6 +14,7 @@
         android:contentDescription="@string/app_logo"
         android:src="@drawable/mint_icon" />
 
+
     <View
         android:id="@+id/settings_separator_1"
         android:layout_width="match_parent"
@@ -156,8 +157,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="30dp"
         android:text="@string/settings_dark_mode"
-        android:textSize="30sp"
-        android:textColor="@color/colorBlack"/>
+        android:textColor="@color/colorBlack"
+        android:textSize="30sp" />
 
     <View
         android:id="@+id/settings_separator_6"
@@ -165,6 +166,31 @@
         android:layout_height="2dp"
         android:layout_below="@id/dark_mode"
         android:background="@color/LightLightGrey_Settings" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_police_button"
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:layout_below="@id/settings_separator_6"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:checked="false" />
+
+    <TextView
+        android:id="@+id/switchPolice"
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:layout_below="@id/settings_separator_6"
+        android:layout_toStartOf="@+id/switch_police_button"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:onClick="onClickLegalNotices"
+        android:paddingLeft="30dp"
+        android:text="@string/settings_police"
+        android:textColor="@color/colorBlack"
+        android:textSize="30sp" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/bottom_navigation"

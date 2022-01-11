@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lorem_ipsum"
-                android:textSize="20sp" />
+                android:textSize="15dp" />
         </ScrollView>
     </LinearLayout>
 
@@ -65,7 +65,7 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1"
             android:text="@string/mentions_l_gales2"
-            android:textSize="24sp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>

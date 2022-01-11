@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     boolean healthy;
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
-    private int idInt = -1; // We need this to know where we have to write the location of the user : in the startPoint, stepPoint or endPoint
+    private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
     /**
      * Map
      */
@@ -224,9 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
 
-        // String of the adresses
-        this.start = startPoint.getText().toString();
-        this.end = endPoint.getText().toString();
 
         // Initializing Adresses with Adress Class
         this.endAddress = new com.example.mint.model.Address();
@@ -909,17 +906,17 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                             popUp.dismiss();
                             getLocation();
                             if (idButton == startPoint.getId()) {
-                                idInt = 0;
+                                positionId = 0;
                                 startPoint.setText(R.string.position_text);
                                 startPoint.setSelection(buttonClicked.length()); // set cursor at end of text
                             }
                             if (idButton == endPoint.getId()) {
-                                idInt = 1;
+                                positionId = 1;
                                 endPoint.setText(R.string.position_text);
                                 endPoint.setSelection(buttonClicked.length()); // set cursor at end of text
                             }
                             if (idButton == stepPoint.getId()) {
-                                idInt = 2;
+                                positionId = 2;
                                 stepPoint.setText(R.string.position_text);
                                 stepPoint.setSelection(buttonClicked.length()); // set cursor at end of text
                             }
@@ -949,71 +946,36 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         start = startPoint.getText().toString();
         end = endPoint.getText().toString();
         step = stepPoint.getText().toString();
+
+        Log.d(LOG_TAG, "TAGG : positionId = " + this.positionId);
+        Log.d(LOG_TAG, "TAGG : Coordinates 1 : " + startAddress.getCoordinates().toString());
+        Log.d(LOG_TAG, "TAGG : Coordinates 1 : " + endAddress.getCoordinates().toString());
+
+
+        Log.d(LOG_TAG + "TAGG", "start : " + start + "; end : " + end);
         //First we check if the "Ma Position" is selected in the search, if So we take the last known position as the start or the end adress
         if (locationUser != null) {
             Coordinates coordinates = new Coordinates(locationUser.getLatitude(), locationUser.getLongitude());
             // We write the location in the good place : startPoint, stepPoint or endPoint
-            if (idInt == 0) {
+            if (positionId == 0) {
                 startAddress.setLocationName(String.valueOf(R.string.position_text));
                 startAddress.setCoordinates(coordinates);
             }
-            if (idInt == 1) {
+            if (positionId == 1) {
                 endAddress.setLocationName(String.valueOf(R.string.position_text));
                 endAddress.setCoordinates(coordinates);
             }
-            if (idInt == 2) {
+            if (positionId == 2) {
                 stepAddress.setLocationName(String.valueOf(R.string.position_text));
                 stepAddress.setCoordinates(coordinates);
 
             }
         }
+        Log.d(LOG_TAG, "TAGG : Coordinates 2 : " + startAddress.getCoordinates().toString());
+        Log.d(LOG_TAG, "TAGG : Coordinates 2 : " + endAddress.getCoordinates().toString());
 
         if (checkGoodAddressesForItinerary()) {
-            ////////////////////////////////////////////////////////////////////////////////////
-            // History's management
-            ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
-
-            // get the number of addresses in the history
-            int nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this);
-
-            // returns which of the start or end address already exists in the list and its index in the list
-            int[] sameAddresses = getSameAddresses(start, end);
-
-            // if none of the addresses already exist, add them
-            if (sameAddresses[0] == -1 && sameAddresses[1] == -1) {
-                PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
-            }
-
-            // if the startpoint already exists, move it to first position and add endpoint
-            else if (sameAddresses[0] != -1 && sameAddresses[1] == -1) {
-                PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
-                PreferencesAddresses.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
-                nbLastAdd++; // the number of addresses has increased by 1
-            }
-
-            // if the endpoint already exists, move it to first position and add startpoint
-            else if (sameAddresses[0] == -1 && sameAddresses[1] != -1) {
-                PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
-                nbLastAdd++; // the number of addresses has increased by 1
-            }
-
-            // if both addresses already exist, we move both addresses to first position
-            else {
-                PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
-                // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
-                PreferencesAddresses.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
-            }
-
-            // check if number of addresses has gone over 3 and remove the ones over 3
-            if (nbLastAdd == 5) {
-                PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
-                PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-            } else if (nbLastAdd == 4) {
-                PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
-            }
+            updateLastAddresses(start, end);
 
 
             ////////////////////////////////////////////////////////////////////////////////////
@@ -1021,7 +983,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             //For the start point
             Geocoder geocoderStart = new Geocoder(MainActivity.this, Locale.getDefault());
             try {
-                if (!start.equals(String.valueOf(R.string.position_text))) {  //check if location is not chosen
+                Log.d(LOG_TAG, "TAGG : " + start + ", " + String.valueOf(R.string.position_text));
+                Log.d(LOG_TAG, getString(R.string.position_text).toString());
+                if (!start.equals(getString(R.string.position_text))) {  //check if location is not chosen
                     List addressListStart = geocoderStart.getFromLocationName(start, 1);
                     if (addressListStart != null && addressListStart.size() > 0) {
                         Address addressStart = (Address) addressListStart.get(0);
@@ -1036,7 +1000,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             //For the end point
             Geocoder geocoderEnd = new Geocoder(MainActivity.this, Locale.getDefault());
             try {
-                if (!end.equals(String.valueOf(R.string.position_text))) {       //check if location is not chosen
+                if (!end.equals(getString(R.string.position_text))) {       //check if location is not chosen
                     List addressListEnd = geocoderEnd.getFromLocationName(end, 1);
                     if (addressListEnd != null && addressListEnd.size() > 0) {
                         Address addressEnd = (Address) addressListEnd.get(0);
@@ -1052,7 +1016,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             if (stepBool && stepPoint.isShown()) {
                 Geocoder geocoderStep = new Geocoder(MainActivity.this, Locale.getDefault());
                 try {
-                    if (!step.equals(String.valueOf(R.string.position_text))) {       //check if location is not chosen
+                    if (!(step.equals(getString(R.string.position_text)))) {       //check if location is not chosen
                         List addressListStep = geocoderStep.getFromLocationName(step, 1);
                         if (addressListStep != null && addressListStep.size() > 0) {
                             Address addressStep = (Address) addressListStep.get(0);
@@ -1066,6 +1030,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 }
             }
 
+            Log.d(LOG_TAG, "TAGG : Coordinates 3 : " + startAddress.getCoordinates().toString());
+            Log.d(LOG_TAG, "TAGG : Coordinates 3 : " + endAddress.getCoordinates().toString());
             // TODO : debug when clicks "ma position" and then switches start and end
             ////////////////////////////////////////////////////////////////////////////////////
             //start itinerary calculation activity if the device has an internet connection
@@ -1078,7 +1044,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     startAddress.getCoordinates().getLatitude() > LATITUDE_MAX |
                     startAddress.getCoordinates().getLongitude() < LONGITUDE_MIN |
                     startAddress.getCoordinates().getLongitude() > LONGITUDE_MAX) {
-                //System.out.pri
                 error = 3;
             } else if (endAddress.getCoordinates().getLatitude() < LATITUDE_MIN |
                     endAddress.getCoordinates().getLatitude() > LATITUDE_MAX |
@@ -1103,10 +1068,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     intent.putExtra("param2", startAddress.getCoordinates().getLongitude());
                     intent.putExtra("param3", endAddress.getCoordinates().getLatitude());
                     intent.putExtra("param4", endAddress.getCoordinates().getLongitude());
-                    intent.putExtra("param5", stepBool); // to know if there is a stepPoint or not
+                    intent.putExtra("param5", stepBool && stepPoint.isShown()); // to know if there is a stepPoint or not
 
                     // Add stepPoint parameters if needed
-                    if (stepBool) {
+                    if (stepBool && stepPoint.isShown()) {
                         intent.putExtra("param6", stepAddress.getCoordinates().getLatitude());
                         intent.putExtra("param7", stepAddress.getCoordinates().getLongitude());
                     }
@@ -1149,13 +1114,112 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     break;
 
             }
+
+            // We switch on positionId, to see if My position has been chosen. If yes, we don't add
+            // it to Addresses.
+            switch (positionId) {
+                case 0:
+                    // PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
+                    PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
+                    PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
+                    break;
+                case 1:
+                    PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
+                    // PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
+                    PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
+                case 2:
+                    PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
+                    PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
+                    // PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
+                default:
+                    PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
+                    PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
+                    PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
+            }
+        }
+    }
+
+    /**
+     * This method
+     * @param start
+     * @param end
+     */
+    private void updateLastAddresses(String start, String end) {
+        ////////////////////////////////////////////////////////////////////////////////////
+        // History's management
+        ////////////// The history DOES NOT TAKE INTO ACCOUNT the stepPoint! //////////////
+
+        // get the number of addresses in the history
+        int nbLastAdd = PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this);
+
+        // returns which of the start or end address already exists in the list and its index in the list
+        int[] sameAddresses = getSameAddresses(start, end);
+
+        // if none of the addresses already exist, add them
+        if (sameAddresses[0] == -1 && sameAddresses[1] == -1) {
+            PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+            PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
+            nbLastAdd = nbLastAdd + 2; // the number of addresses has increased by 2
         }
 
-        PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
-        PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
-        PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
-        // }
+        // if the startpoint already exists, move it to first position and add endpoint
+        else if (sameAddresses[0] > -1 && sameAddresses[1] == -1) {
+            PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+            PreferencesAddresses.moveAddressFirst(sameAddresses[0] + 1, MainActivity.this);
+            nbLastAdd++; // the number of addresses has increased by 1
+        }
+
+        // if the endpoint already exists, move it to first position and add startpoint
+        else if (sameAddresses[0] == -1 && sameAddresses[1] > -1) {
+            PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+            PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
+            nbLastAdd++; // the number of addresses has increased by 1
+        }
+
+        // if both addresses already exists, we move both addresses to first position
+        else if (sameAddresses[0] > -1 && sameAddresses[1] > -1) {
+            PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+            // if the endpoint was after the startpoint in the list, the index at which we have to find the address is one higher
+            PreferencesAddresses.moveAddressFirst(sameAddresses[1] < sameAddresses[0] ? sameAddresses[0] : sameAddresses[0] + 1, MainActivity.this);
+        }
+
+        // One of the parameters is equal to My position
+
+        // The start point is user's position
+        else if (sameAddresses[0] == -2) {
+            // End address is not known
+            if (sameAddresses[1] == -1) {
+                PreferencesAddresses.addLastAddress("lastAddress", 0, end, MainActivity.this);
+                nbLastAdd++;
+            }
+            // End address already known
+            else {
+                PreferencesAddresses.moveAddressFirst(sameAddresses[1], MainActivity.this);
+            }
+        }
+        // The end point is user's location
+        else if (sameAddresses[1] == -2) {
+            // The start point is not known
+            if (sameAddresses[0] == -1) {
+                PreferencesAddresses.addLastAddress("lastAddress", 0, start, MainActivity.this);
+                nbLastAdd++;
+            }
+            // Start address already in the list, we put it first
+            else {
+                PreferencesAddresses.moveAddressFirst(sameAddresses[0], MainActivity.this);
+            }
+        }
+
+        // check if number of addresses has gone over 3 and remove the ones over 3
+        if (nbLastAdd == 5) {
+            PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd + 1, MainActivity.this);
+            PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+        } else if (nbLastAdd == 4) {
+            PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
+        }
     }
+
+
 
     /**
      * This methods allows to check if the itinerary can be launched.
@@ -1238,25 +1302,27 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     }
 
     /**
-     * returns the index of the addresses that already exist in the history list, returns -1 if doesnt exist
+     * returns the index of the addresses that already exist in the history list.
+     * Returns -2 if the String is "ma position" and -1 if the index isn't in the addresses
      *
-     * @param start
-     * @param end
-     * @return
+     * @param start : String of the start address.
+     * @param end : String of the end address
+     * @return res : The first value is for the start address, the second for end address.
      */
     public int[] getSameAddresses(String start, String end) {
-        int[] arr = new int[2];
-        arr[0] = -1; // startpoint
-        arr[1] = -1; // endpoint
+        String myPositionText = getString(R.string.position_text);
+        int[] res = new int[2];
+        res[0] = start.equals(myPositionText) ? -2 : -1; // startpoint
+        res[1] = end.equals(myPositionText) ? -2 : -1; // endpoint
         for (int j = 0; j < PreferencesAddresses.getNumberOfLastAddresses("lastAddress", MainActivity.this); j++) {
             String lastAddress = PreferencesAddresses.getLastAddresses("lastAddress", MainActivity.this).get(j);
             if (start.equals(lastAddress)) {
-                arr[0] = j;
+                res[0] = j;
             } else if (end.equals(lastAddress)) {
-                arr[1] = j;
+                res[1] = j;
             }
         }
-        return arr;
+        return res;
     }
 
     /**
@@ -1310,9 +1376,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     /**
      * When users click on plus button to get a step during itinerary.
      *
-     * @param v
+     * @param view
      */
-    public void onClickStepPointButton(View v) {
+    public void onClickStepPointButton(View view) {
         // make the stepPoint visible when it is not
         if (!stepVisibility) {
             stepPoint.setVisibility(View.VISIBLE);
@@ -1332,11 +1398,18 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * @param view
      */
     public void onClickInversionButton(View view) {
-        String myPositionText = String.valueOf(R.string.position_text);
+        String myPositionText = getString(R.string.position_text);
         Editable startText = startPoint.getText();
         Editable endText = endPoint.getText();
         endPoint.setText(startText);
         startPoint.setText(endText);
+
+        // If ma position is set, we need to update the positionId to get user's location.
+        if (startText.toString().equals(myPositionText)) {
+            this.positionId = 1;
+        } else if (endText.toString().equals(myPositionText)) {
+            this.positionId = 0;
+        }
     }
 
     /**

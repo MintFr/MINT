@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.example.mint.R;
 import com.example.mint.model.PreferencesSize;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class SettingsActivity extends AppCompatActivity {
     SwitchCompat switchCompat;
@@ -41,11 +42,22 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(2);
+        Menu menu;
+        String sizePolice = PreferencesSize.getSize("police", SettingsActivity.this);
+        if (sizePolice.equals("big")) {
+            NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+        else {
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+
+        MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }
 

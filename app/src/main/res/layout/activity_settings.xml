@@ -188,8 +188,7 @@
         android:layout_below="@id/settings_separator_6"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
-        android:checked="false"
-        android:onCheckedChanged="onClickBig"/>
+        android:checked="false" />
 
     <View
         android:id="@+id/settings_separator_7"
@@ -200,7 +199,7 @@
 
 
 
-    <com.google.android.material.navigation.NavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

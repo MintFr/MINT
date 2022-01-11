@@ -225,7 +225,8 @@
         app:itemTextColor="#999999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        />
 
     <View
         android:id="@+id/dim_popup"

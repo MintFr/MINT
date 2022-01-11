@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import com.example.mint.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 /**
@@ -22,7 +23,7 @@ import com.google.android.material.navigation.NavigationView;
  * }</pre>
  * </p>
  */
-class MenuSwitcherActivity implements NavigationView.OnNavigationItemSelectedListener {
+class MenuSwitcherActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
     private final Activity activity;
 
     /**

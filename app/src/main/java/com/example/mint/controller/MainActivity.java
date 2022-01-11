@@ -34,12 +34,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -58,7 +56,7 @@ import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
+import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -181,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         requestLocalisationPermission();
         super.onCreate(savedInstanceState);
         String sizePolice = PreferencesSize.getSize("police", MainActivity.this);
-        if (sizePolice.equals("normal")) {
-            setContentView(R.layout.activity_main);
-            } else {
+        if (sizePolice.equals("big")) {
             setContentView(R.layout.activity_main_big);
+            } else {
+            setContentView(R.layout.activity_main);
         }
 
         // Highlighting selected favorite means of transportation chosen in Profile
@@ -297,10 +295,20 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         mapController.setCenter(startPoint);
 
         //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener((OnNavigationItemSelectedListener) new MenuSwitcherActivity(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
+        Menu menu;
+        if (sizePolice.equals("big")) {
+            NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+        else {
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }

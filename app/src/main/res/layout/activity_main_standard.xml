@@ -170,18 +170,18 @@
 
     <ImageButton
         android:id="@+id/myPosition"
-        android:layout_height="70dp"
         android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_above="@+id/bottom_navigation"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"
         android:gravity="center"
         android:padding="70dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/button_location"
-        android:background="#00ffffff"/>
+        android:src="@drawable/button_location" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

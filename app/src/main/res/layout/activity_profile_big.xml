@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/GreenKaki_Profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.ProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shadow_profile">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_logo"
+            android:src="@drawable/mint_icon" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/bottom_navigation_height">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="84dp">
+
+                <RelativeLayout
+                    android:id="@+id/profile_main_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="330dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/user_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:contentDescription="@string/user_image"
+                        android:padding="10dp"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:src="@drawable/user_image" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/user_image"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="60dp"
+                        android:layout_toEndOf="@id/user_image"
+                        android:layout_toRightOf="@id/user_image"
+                        android:gravity="start"
+                        android:text="@string/user_name"
+                        android:textColor="@color/LightBlack_Profile"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/parameters"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/name"
+                        android:layout_alignLeft="@id/name"
+                        android:layout_alignBottom="@id/user_image"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/quicksand_light"
+                        android:gravity="start"
+                        android:paddingBottom="15dp"
+                        android:text="@string/param_button"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <Button
+                        android:id="@+id/sensibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_image"
+                        android:layout_alignStart="@id/user_image"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="@color/Transparent_Profile"
+                        android:gravity="start"
+                        android:minHeight="0dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/sensibility_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <TextView
+                        android:id="@+id/set_sensibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_image"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toEndOf="@id/sensibility"
+                        android:layout_toRightOf="@id/sensibility"
+                        android:gravity="end"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/set_sensibility"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/favorite_addresses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/sensibility"
+                        android:layout_alignStart="@id/user_image"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="@color/Transparent_Profile"
+                        android:minHeight="0dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/favorite_addresses_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <TextView
+                        android:id="@+id/favorite_transportation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/favorite_addresses"
+                        android:layout_alignStart="@id/user_image"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="@color/Transparent_Profile"
+                        android:gravity="start"
+                        android:minHeight="0dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/favorite_transportation_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="16sp" />
+
+                    <ImageButton
+                        android:id="@+id/car_button"
+                        android:layout_width="@dimen/transport_button_size"
+                        android:layout_height="@dimen/transport_button_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/transport_button_gap"
+                        android:layout_marginLeft="@dimen/transport_button_gap"
+                        android:contentDescription="@string/car_button"
+                        android:onClick="highlight"
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="0"
+                        app:srcCompat="@drawable/button_car"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <ImageButton
+                        android:id="@+id/tram_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/tram_transport_button_gap"
+                        android:layout_marginLeft="@dimen/tram_transport_button_gap"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/tram_button"
+                        android:onClick="highlight"
+
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="1"
+                        app:srcCompat="@drawable/button_tram"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <ImageButton
+                        android:id="@+id/bike_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+
+
+                        android:layout_alignBottom="@+id/tram_button"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginStart="200dp"
+                        android:layout_marginLeft="200dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/bike_button"
+                        android:onClick="highlight"
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="2"
+                        app:srcCompat="@drawable/button_bike"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <ImageButton
+                        android:id="@+id/walk_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@id/car_button"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginStart="280dp"
+                        android:layout_marginLeft="280dp"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/walk_button"
+                        android:onClick="highlight"
+                        android:scaleX="@dimen/button_scale"
+                        android:scaleY="@dimen/button_scale"
+                        android:tag="3"
+                        app:srcCompat="@drawable/button_walk"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <View
+                        android:id="@+id/dim_popup"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="106dp"
+                        android:layout_marginRight="106dp"
+                        android:layout_marginBottom="131dp"
+                        android:background="@color/LightGrey_Profile"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/profile_second_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/exposition_today"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical|end"
+                        android:layout_weight="2"
+                        android:gravity="start"
+                        android:maxWidth="90dp"
+                        android:paddingLeft="10dp"
+                        android:text="@string/exposure_last_travel_text"
+                        android:textColor="@color/DarkGrey_Profile"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!--<ImageView
+                        android:id="@+id/graph"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical|end"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/graph_pie"
+                        android:src="@drawable/graph_pie" />-->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/exposure_today"
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/quicksand_bold"
+                            android:text="@string/max_value_exposure"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="32sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/exposure_today"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="-8dp"
+                            android:text="@string/exposition_unit"
+                            android:textColor="@color/PrimaryLight_Profile"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/profile_third_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_bg_profile_main"
+                    android:elevation="2dp"
+                    android:outlineAmbientShadowColor="@color/colorAccent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/exposition_graph_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:text="@string/mon_exposition"
+                        android:textColor="@color/DarkGrey_Profile"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/graph_buttons_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/exposition_graph_title"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/week"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/graph_button_states"
+                            android:text="Semaine"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorDarkGrey" />
+
+                        <Button
+                            android:id="@+id/month"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/graph_button_states"
+                            android:text="Mois"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorDarkGrey" />
+
+                        <Button
+                            android:id="@+id/year"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/graph_button_states"
+                            android:text="Année"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorDarkGrey" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/slide_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/chart"
+                        android:layout_alignBottom="@id/chart"
+                        android:layout_toLeftOf="@id/chart"
+                        android:background="@color/colorPrimaryLight"
+                        android:contentDescription="TODO"
+                        android:rotation="180"
+                        android:src="@drawable/ic_chevron_right" />
+
+                    <ImageButton
+                        android:id="@+id/slide_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/chart"
+                        android:layout_alignBottom="@id/chart"
+                        android:layout_toRightOf="@id/chart"
+                        android:background="@color/colorPrimaryLight"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_chevron_right" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chart"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:layout_below="@id/graph_buttons_layout"
+                        android:layout_centerHorizontal="true" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/White_Main"
+        app:itemTextAppearance="@style/BottomStyle"
+        app:itemTextColor="#999999"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_menu"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.mint.R;
 import com.example.mint.model.PreferencesSize;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsActivity extends AppCompatActivity {
     SwitchCompat switchCompat;
@@ -28,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
+        switchCompat.setChecked(!PreferencesSize.getSize("police", this).equals("normal"));
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -40,8 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         //Bottom Menu
-        NavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
         bottomNav.setItemIconTintList(null);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);
@@ -83,5 +84,15 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("big", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
+
+        String sizeMode = PreferencesSize.getSize("police", this);
+        switchCompat.setChecked(!sizeMode.equals("normal"));
+
     }
 }

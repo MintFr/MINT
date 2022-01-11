@@ -14,14 +14,22 @@
         android:contentDescription="@string/app_logo"
         android:src="@drawable/mint_icon" />
 
-
-    <View
+  <View
         android:id="@+id/settings_separator_1"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/logo"
         android:layout_marginTop="20dp"
         android:background="@color/LightLightGrey_Settings" />
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -33,7 +41,7 @@
         android:contentDescription="Right chevron"
         android:src="@drawable/ic_chevron_right" />
 
-    <Button
+  <Button
         android:id="@+id/faq"
         android:layout_width="match_parent"
         android:layout_height="90dp"
@@ -190,6 +198,9 @@
         android:text="@string/settings_police"
         android:textColor="@color/colorBlack"
         android:textSize="30sp" />
+
+    </ScrollView>
+    </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/bottom_navigation"

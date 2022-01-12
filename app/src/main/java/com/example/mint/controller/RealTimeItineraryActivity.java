@@ -57,13 +57,17 @@ import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.PaintList;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -205,16 +209,18 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         File file = new File(resourceName);
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
-            JSONObject jsonObj = new JSONObject(content);
 
-            itinerary = new Itinerary(jsonObj);
+            InputStream inputStream = this.getResources().openRawResource(R.raw.itinerary_test);
+            String jsonString = readStream(inputStream);
+            JSONObject temp = new JSONObject(jsonString);
+            itinerary = new Itinerary(temp);
 
-
-
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
         Log.d("Json",valueOf(itinerary.getPollution()));
 
 
@@ -374,7 +380,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // add line
         map.getOverlays().add(line);
-        map.invalidate(); // this is to refresh the display
+
     }
 
     /**
@@ -435,9 +441,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             // We also need the phone's GPS to be activated. We check this here.
             if (GpsStatus) {
                 // if there's already a marker on the map it is deleted
-                if (map.getOverlays().size() != 0) {
-                    map.getOverlays().clear();
-                    map.postInvalidate();
+                for(int i=0;i<map.getOverlays().size();i++){
+                    Overlay overlay=map.getOverlays().get(i);
+                    if(overlay instanceof Marker){
+                        map.getOverlays().remove(overlay);
+                    }
                 }
                 getLocation();
                 //we put a new marker on the map where the user is
@@ -518,12 +526,12 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             getLocation();
             pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
             //Deleting the previous marker
-            if (map.getOverlays().size() != 0) {
-                map.getOverlays().clear();
-                map.postInvalidate();
-            } else {
-                // if there is no marker already we center the map on the new point
-                mapController.setCenter(pointTempo);
+            for(int i=0;i<map.getOverlays().size();i++){
+                Overlay overlay=map.getOverlays().get(i);
+                if(overlay instanceof Marker){
+                    map.getOverlays().remove(overlay);
+                }
+
             }
             System.out.println(map);
 
@@ -628,4 +636,20 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     // LOCATION END //
     /////////////////////////////////////////////////////////
 
+    /**
+     * Function to read a file.
+     *
+     * @param is
+     * @return
+     * @throws IOException
+     */
+    private String readStream(InputStream is) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader r = new BufferedReader(new InputStreamReader(is), 1000);
+        for (String line = r.readLine(); line != null; line = r.readLine()) {
+            sb.append(line);
+        }
+        is.close();
+        return sb.toString();
+    }
 }

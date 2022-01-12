@@ -1476,7 +1476,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             requestLocalisationPermission(); //line 447
         }
     }
-
+    /**
+     * temporary function for testing real time itinerary
+     */
+    public void toRealTimeItinerary(View view){
+        Intent intent = new Intent ( this,RealTimeItineraryActivity.class);
+        startActivity(intent);
+    }
 }
 
 

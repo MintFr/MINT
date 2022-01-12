@@ -190,8 +190,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);
             menu = bottomNav.getMenu();
-        }
-        else {
+        } else {
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);

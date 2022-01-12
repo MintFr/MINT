@@ -462,8 +462,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);
             menu = bottomNav.getMenu();
-        }
-        else {
+        } else {
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);

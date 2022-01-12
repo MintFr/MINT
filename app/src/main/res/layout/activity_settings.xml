@@ -100,8 +100,8 @@
         android:id="@+id/settings_separator_4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/LightLightGrey_Settings"
-        android:layout_below="@id/terms_of_use_text"/>
+        android:layout_below="@id/terms_of_use_text"
+        android:background="@color/LightLightGrey_Settings" />
 
     <TextView
         android:id="@+id/legal_notices_text"
@@ -144,8 +144,7 @@
         android:layout_above="@id/settings_separator_6"
         android:layout_below="@id/settings_separator_5"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        />
+        android:layout_marginRight="15dp" />
 
     <TextView
         android:id="@+id/dark_mode"

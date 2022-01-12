@@ -121,6 +121,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     boolean starting;
     boolean fast;
     boolean healthy;
+    /**
+     * This activity handles the input of start and end points and the itinerary options
+     *
+     * @param savedInstanceState
+     */
+
+    SwitchCompat switchCompat;
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
@@ -162,14 +169,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     private GeoPoint tmpPoint;
 
-    /**
-     * This activity handles the input of start and end points and the itinerary options
-     *
-     * @param savedInstanceState
-     */
-
-    SwitchCompat switchCompat;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         String sizePolice = PreferencesSize.getSize("police", MainActivity.this);
         if (sizePolice.equals("big")) {
             setContentView(R.layout.activity_main_big);
-            } else {
+        } else {
             setContentView(R.layout.activity_main);
         }
 
@@ -298,8 +297,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);
             menu = bottomNav.getMenu();
-        }
-        else {
+        } else {
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
             bottomNav.setItemIconTintList(null);
@@ -1161,6 +1159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
     /**
      * This method
+     *
      * @param start
      * @param end
      */
@@ -1238,7 +1237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
         }
     }
-
 
 
     /**
@@ -1326,7 +1324,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * Returns -2 if the String is "ma position" and -1 if the index isn't in the addresses
      *
      * @param start : String of the start address.
-     * @param end : String of the end address
+     * @param end   : String of the end address
      * @return res : The first value is for the start address, the second for end address.
      */
     public int[] getSameAddresses(String start, String end) {

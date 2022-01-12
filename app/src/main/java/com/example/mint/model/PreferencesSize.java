@@ -22,4 +22,6 @@ public class PreferencesSize {
         editor.remove(key);
         editor.apply();
     }
+
+
 }

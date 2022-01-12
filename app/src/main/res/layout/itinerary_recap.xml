@@ -27,13 +27,14 @@
         android:layout_height="2dp"
         android:background="#EDEDED"
         android:layout_below="@id/recap_title"/>
+
     <LinearLayout
         android:id="@+id/recap_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/recap_title">
-        tools:onClick="displayDetailButton"
+        android:layout_below="@id/recap_title"
+        android:orientation="vertical">
+
 
         <LinearLayout
             android:id="@+id/itinerary_example"
@@ -41,23 +42,25 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:focusable="false"
+
+
             android:orientation="vertical"
             android:paddingBottom="@dimen/bottom_navigation_height"
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/peek_height"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-            tools:onClick="displayDetailButton"
+
 
             <LinearLayout
                 android:id="@+id/itinerary_title"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
+                android:onClick="displayDetailButton"
                 android:background="@drawable/layout_bg_title"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/time"
+                    android:id="@+id/recapTime"
                     style="@style/bold"
                     android:layout_width="118dp"
                     android:layout_height="wrap_content"
@@ -88,7 +91,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/pollution"
+                    android:id="@+id/recap_pollution"
                     style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -191,7 +194,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/start_point"
+                            android:id="@+id/recap_start_point"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -208,7 +211,7 @@
                             android:background="@color/WhiteTwo_Detail" />
 
                         <TextView
-                            android:id="@+id/end_point"
+                            android:id="@+id/recap_end_point"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

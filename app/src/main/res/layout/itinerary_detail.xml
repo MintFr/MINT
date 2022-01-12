@@ -22,7 +22,7 @@
         android:background="@drawable/layout_bg_title">
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/recapTime"
             style="@style/bold"
             android:layout_width="118dp"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/pollution"
+            android:id="@+id/recap_pollution"
             style="@style/bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

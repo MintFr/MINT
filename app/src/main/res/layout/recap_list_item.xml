@@ -4,6 +4,7 @@
     android:layout_height="@dimen/list_recap_height"
     android:background="@color/cardview_light_background"
     android:clickable="true"
+    android:onClick="displayDetailButton"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
 

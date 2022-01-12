@@ -514,12 +514,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ArrayList<Step> STEPS = itinerary.getDetail();
         //System.out.println(STEPS);
         //start and end
-        TextView viewPoint1 = findViewById(R.id.start_point);
-        TextView viewPoint2 = findViewById(R.id.end_point);
+        TextView viewPoint1 = findViewById(R.id.recap_start_point);
+        TextView viewPoint2 = findViewById(R.id.recap_end_point);
 
         //time and pollution
-        TextView time = findViewById(R.id.time);
-        TextView pollution = findViewById(R.id.pollution);
+        TextView time = findViewById(R.id.recapTime);
+        TextView pollution = findViewById(R.id.recap_pollution);
 
         // get start and end addresses
         String start = getString(R.string.itinerary_point1) + " : " +
@@ -573,6 +573,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             viewPoint1.setText("error");
             viewPoint2.setText("error");
         }
+        /*
         // so that the sheet can be hidden
         sheetBehaviorRecap.setPeekHeight(0);
         sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -581,13 +582,17 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         changeAnchor(recapButton, R.id.itinerary_detail_layout);
         sheetBehaviorDetail.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+
+        */
     }
 
     /**
      *
      */
     public void displayDetailButton(View v){
-        Log.d(LOG_TAG,"NOM DE CE QUE JE PUTAIN DE CLIQUE"+ String.valueOf(v.getId()));
+        Log.d("Tag du bouton", (v.getTag()).toString());
+        Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
+        displayDetails(itinerary);
     }
 
 
@@ -745,6 +750,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                             (int) list.get(i).getPollution(), ItineraryActivity.this);
                 }
             });
+
+            listItem.setTag(i);
 
             // highlight itinerary when you click on an itinerary
             // this will used to find the corresponding itinerary

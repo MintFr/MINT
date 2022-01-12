@@ -29,9 +29,13 @@ public class IntrumentedTestPreferencesSize {
 
     @Test
     public void testGetSize() {
-
         assertEquals(PreferencesSize.getSize("police", context), "normal");
+    }
 
+    @Test
+    public void testSetSize() {
+        PreferencesSize.setSize("police", "big", context);
+        assertEquals(PreferencesSize.getSize("police", context), "big");
     }
 
 

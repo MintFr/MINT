@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -77,6 +78,7 @@ import java.util.List;
  */
 public class ItineraryActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String LOG_TAG = ItineraryActivity.class.getSimpleName();
     /**
      * GEOPOINT POSITIONS
      */
@@ -476,12 +478,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // show details once you click on the infowindow
         RelativeLayout layout = infoWindowView.findViewById(R.id.layout);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayDetails(itinerary);
-            }
-        });
+        //layout.setOnClickListener(new View.OnClickListener() {
+           // @Override
+           // public void onClick(View v) {
+                //displayDetails(itinerary);
+            //}
+        //});
 
         // add line
         map.getOverlays().add(line);
@@ -580,6 +582,14 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         sheetBehaviorDetail.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
+
+    /**
+     *
+     */
+    public void displayDetailButton(View v){
+        Log.d(LOG_TAG,"NOM DE CE QUE JE PUTAIN DE CLIQUE"+ String.valueOf(v.getId()));
+    }
+
 
     /**
      * DISPLAY RECAP
@@ -738,7 +748,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // highlight itinerary when you click on an itinerary
             // this will used to find the corresponding itinerary
-            listItem.setTag(i);
+            /* listItem.setTag(i);
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -747,7 +757,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     GeoPoint pos = line.getInfoWindowLocation();
                     highlightItinerary(line, map, pos, list.get(i), list.size());
                 }
-            });
+            });*/
         }
 
         // so that the sheet can be hidden
@@ -784,7 +794,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // show infowindow and details
         polyline.showInfoWindow();
         polyline.setInfoWindowLocation(eventPos);
-        displayDetails(itinerary);
+        //displayDetails(itinerary);
 
         // highlight the polyline
         polyline.getOutlinePaintLists().clear(); // reset polyline appearance

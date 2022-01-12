@@ -33,9 +33,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/recap_title">
+        tools:onClick="displayDetailButton"
 
         <LinearLayout
-
+            android:id="@+id/itinerary_example"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -45,13 +46,15 @@
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/peek_height"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            tools:onClick="displayDetailButton"
 
             <LinearLayout
                 android:id="@+id/itinerary_title"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:background="@drawable/layout_bg_title"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:id="@+id/time"

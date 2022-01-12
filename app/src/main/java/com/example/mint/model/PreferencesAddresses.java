@@ -20,7 +20,12 @@ public class PreferencesAddresses {
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
         return prefs.getString(key, null);
     }
-
+    public static void clearAddressItinerary(Context context){
+        SharedPreferences prefs = context.getSharedPreferences("startEndAddress",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
     // ADDRESSES //
 
     public static void setPrefAddresses(String arrayName, ArrayList<String> array, Context context) {

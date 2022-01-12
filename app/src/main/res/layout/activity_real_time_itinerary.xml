@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/coordinator"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/PrimaryWhite_Itinerary"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/PrimaryWhite_Itinerary"
     tools:context=".controller.RealTimeItineraryActivity">
 
     <include
@@ -13,31 +12,117 @@ android:background="@color/PrimaryWhite_Itinerary"
         layout="@layout/itinerary_map" />
 
     <!-- Adding bottom sheet after main content -->
-    <include
-        android:id="@+id/itinerary_detail_layout"
-        layout="@layout/itinerary_detail" />
-    <include
-        android:id="@+id/itinerary_recap_layout"
-        layout="@layout/itinerary_recap" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itinerary_real_time_step_layout"
+        android:background="@color/PrimaryWhite_Itinerary"
+        >
+
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:text="00"
+            android:textSize="22dp"/>
+
+
+
+
+        <TextView
+            android:id="@+id/step_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="5dp"
+            android:layout_toLeftOf="@id/metres"
+            android:text="00"
+            android:textSize="22dp"/>
+
+        <TextView
+            android:id="@+id/metres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="20dp"
+            android:layout_alignParentRight="true"
+            android:text="m"
+            android:textSize="22dp"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/itinerary_real_time_step_layout_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/PrimaryWhite_Itinerary"
+        android:layout_below="@id/itinerary_real_time_step_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+
+        <TextView
+            android:id="@+id/address_2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="00"
+            android:textSize="17dp" />
+
+
+        <TextView
+            android:id="@+id/step_distance_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/metres_2"
+            android:paddingTop="10dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:text="00"
+            android:textSize="17dp" />
+
+
+        <TextView
+            android:id="@+id/metres_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="m"
+            android:textSize="17dp" />
+
+
+
+    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/zoom_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/zoom_out"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="TODO"
+        android:onClick="zoomIn"
         android:src="@drawable/ic_zoom_in"
         app:backgroundTint="@color/PrimaryWhite_Itinerary"
-        app:fabSize="mini"
-        app:layout_anchor="@+id/spacer1"
-        app:layout_anchorGravity="top|end"
-        android:contentDescription="" />
+        app:fabSize="mini" />
 
-    <View
-        android:id="@+id/spacer1"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        app:layout_anchor="@id/zoom_out"
-        app:layout_anchorGravity="top|end"/>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/zoom_out"
@@ -47,45 +132,28 @@ android:background="@color/PrimaryWhite_Itinerary"
         android:src="@drawable/ic_zoom_out"
         app:backgroundTint="@color/PrimaryWhite_Itinerary"
         app:fabSize="mini"
-        app:layout_anchor="@+id/spacer2"
-        app:layout_anchorGravity="top|end"
-        android:contentDescription="TODO" />
-    <View
-        android:id="@+id/spacer2"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        app:layout_anchor="@id/locate"
-        app:layout_anchorGravity="top|end"/>
+        android:layout_alignParentRight="true"
+        android:contentDescription="TODO"
+        android:layout_above="@id/locate"
+        android:layout_marginBottom="10dp"
+        android:onClick="zoomOut"/>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/locate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/ic_locate"
         android:backgroundTint="@color/PrimaryWhite_Itinerary"
         app:borderWidth="0dp"
         app:fabSize="mini"
-        app:layout_anchor="@+id/spacer3"
-        app:layout_anchorGravity="top|end"
-        android:contentDescription="TODO" />
-    <View
-        android:id="@+id/spacer3"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        app:layout_anchor="@id/recap_fab"
-        app:layout_anchorGravity="top|end"/>
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/bottom_navigation"
+        android:contentDescription="TODO"
+        android:onClick="positionCentering"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/recap_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_recap"
-        app:layout_anchor="@id/itinerary_recap_layout"
-        app:layout_anchorGravity="top|end"
-        android:contentDescription="TODO" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemTextAppearance="@style/BottomStyle"
@@ -94,10 +162,10 @@ android:background="@color/PrimaryWhite_Itinerary"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="@color/DarkGrey_Itinerary"
-        android:background="@color/White_Itinerary"
+        app:itemTextColor="#999999"
+        android:background="@color/White_Main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

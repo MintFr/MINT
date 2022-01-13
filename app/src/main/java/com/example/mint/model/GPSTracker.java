@@ -1,5 +1,6 @@
 package com.example.mint.model;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,6 +41,7 @@ public final class GPSTracker implements LocationListener {
      *
      * @return
      */
+    @SuppressLint("MissingPermission")
     public Location getLocation() {
         try {
             locationManager = (LocationManager) mContext

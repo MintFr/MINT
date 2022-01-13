@@ -1,9 +1,12 @@
 package com.example.mint.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
 import com.example.mint.R;
@@ -506,13 +511,15 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     //TODO fix this display so that is stays nicely
     private void displayDetails(Itinerary itinerary) {
-//        // hide recap
-//        recapView.setVisibility(View.GONE);
-//        // show details layout
-//        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-//        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+//      hide recap
+//      recapView.setVisibility(View.GONE);
+//      show details layout
+//      LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
+//      detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+//      System.out.println(STEPS);
+
         ArrayList<Step> STEPS = itinerary.getDetail();
-        //System.out.println(STEPS);
+
         //start and end
 
         TextView viewPoint1 = findViewById(R.id.start_point);
@@ -591,11 +598,23 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      *
      */
     public void displayDetailButton(View v){
-        Log.d("Tag du bouton", (v.getTag()).toString());
-        Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
-        displayDetails(itinerary);
 
-        //Log.d(LOG_TAG,"test view = null ?" + viewPoint2 );
+        RelativeLayout recap_item = findViewById(R.id.recap_item);
+        if(!recap_item.isActivated()) {
+            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+            recap_item.setActivated(true);
+        }else{
+            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
+            recap_item.setActivated(false);
+        }
+
+
+        LinearLayout detail = findViewById(R.id.itinerary_example);
+        detail.setVisibility(View.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
+        // Log.d(LOG_TAG, "Is the Detail visible ? : " + detail.getVisibility() + " || (0 = yes , 4 & 8 = no)" );
+        Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
+        //displayDetails(itinerary);
+
     }
 
 

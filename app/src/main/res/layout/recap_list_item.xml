@@ -2,19 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_recap_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/cardview_light_background"
     android:clickable="true"
     android:focusable="true"
-    android:onClick="displayDetailButton"
     android:foreground="?android:attr/selectableItemBackground"
+    android:onClick="displayDetailButton"
     tools:ignore="DuplicateClickableBoundsCheck">
 
     <RelativeLayout
         android:id="@+id/recap_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_recap_height"
+
         >
 
         <ImageView
@@ -150,11 +152,11 @@
             android:id="@+id/timeEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/timeStart"
+            android:layout_alignTop="@+id/timeStart"
             android:layout_alignParentTop="true"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="13dp"
             android:layout_marginBottom="1dp"
             android:layout_toEndOf="@+id/textView3"
             android:layout_toRightOf="@+id/textView3"
@@ -175,7 +177,6 @@
             android:text="-" />
 
 
-
     </RelativeLayout>
 
 
@@ -184,15 +185,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recap_item"
-        android:layout_gravity="bottom"
-        android:focusable="false"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/bottom_navigation_height"
-        android:visibility="visible"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/peek_height"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+
+        android:layout_gravity="bottom"
+
+        android:orientation="vertical"
+
+        android:visibility="visible"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_hideable="false"
+        android:focusable="false"
+        app:behavior_peekHeight="@dimen/peek_height"
+        android:paddingBottom="@dimen/bottom_navigation_height"
+        >
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bonjour j'adore la soupe au pain"
+            android:textSize="20sp"
+            android:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/itinerary_title"
@@ -369,6 +383,7 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

@@ -13,9 +13,7 @@
         layout="@layout/itinerary_map" />
 
     <!-- Adding bottom sheet after main content -->
-    <include
-        android:id="@+id/itinerary_detail_layout"
-        layout="@layout/itinerary_detail" />
+
     <include
         android:id="@+id/itinerary_recap_layout"
         layout="@layout/itinerary_recap" />

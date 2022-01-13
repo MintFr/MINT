@@ -102,7 +102,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     /**
      * LAYOUT AND MENU
      */
-    private BottomSheetBehavior sheetBehaviorDetail;
+
     private BottomSheetBehavior sheetBehaviorRecap;
     private RelativeLayout recapLayout;
     private FloatingActionButton recapButton;
@@ -176,9 +176,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // LAYOUTS
 
         // get the bottom sheets and their behaviors
-        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout);
+
         recapLayout = findViewById(R.id.itinerary_recap_layout);
-        sheetBehaviorDetail = BottomSheetBehavior.from(detailLayout);
+
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
 
         recapButton = findViewById(R.id.recap_fab);
@@ -514,12 +514,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ArrayList<Step> STEPS = itinerary.getDetail();
         //System.out.println(STEPS);
         //start and end
-        TextView viewPoint1 = findViewById(R.id.recap_start_point);
-        TextView viewPoint2 = findViewById(R.id.recap_end_point);
+
+        TextView viewPoint1 = findViewById(R.id.start_point);
+        TextView viewPoint2 = findViewById(R.id.end_point);
 
         //time and pollution
-        TextView time = findViewById(R.id.recapTime);
-        TextView pollution = findViewById(R.id.recap_pollution);
+        TextView time = findViewById(R.id.time);
+        TextView pollution = findViewById(R.id.pollution);
 
         // get start and end addresses
         String start = getString(R.string.itinerary_point1) + " : " +
@@ -593,6 +594,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Log.d("Tag du bouton", (v.getTag()).toString());
         Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
         displayDetails(itinerary);
+
+        //Log.d(LOG_TAG,"test view = null ?" + viewPoint2 );
     }
 
 
@@ -766,10 +769,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 }
             });*/
         }
-
-        // so that the sheet can be hidden
-        sheetBehaviorDetail.setPeekHeight(0);
-        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // this attaches the control buttons to the new bottom sheet (in this case recap)
         changeAnchor(recapButton, R.id.itinerary_recap_layout);

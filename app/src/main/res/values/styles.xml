@@ -28,12 +28,11 @@
         <item name="fontFamily">@font/quicksand_bold</item>
     </style>
 
-
-
-
-
-
-
+    <style name="BottomStyleBig">BottomStyleBig
+        <item name="fontFamily">@font/quicksand_regular</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 
 
 </resources>

@@ -71,6 +71,7 @@
             android:id="@+id/terms_of_use_text"
             android:layout_width="match_parent"
             android:layout_height="90dp"
+            android:layout_below="@id/language"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -79,8 +80,7 @@
             android:paddingLeft="30dp"
             android:text="@string/terms_of_use"
             android:textColor="@color/colorBlack"
-            android:textSize="30sp"
-            android:layout_below="@id/language"/>
+            android:textSize="30sp" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -96,6 +96,7 @@
             android:id="@+id/legal_notices_text"
             android:layout_width="match_parent"
             android:layout_height="90dp"
+            android:layout_below="@id/terms_of_use_text"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -104,8 +105,7 @@
             android:paddingLeft="30dp"
             android:text="@string/mentions_l_gales"
             android:textColor="@color/colorBlack"
-            android:textSize="30sp"
-            android:layout_below="@id/terms_of_use_text"/>
+            android:textSize="30sp" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -152,7 +152,6 @@
             android:layout_width="340dp"
             android:layout_height="90dp"
             android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
             android:paddingLeft="30dp"
@@ -172,17 +171,16 @@
   </ScrollView>
 
   <com.google.android.material.navigation.NavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="@color/White_Settings"
-        android:fontFamily="@font/quicksand_regular"
-        app:itemTextColor="@color/colorBlack"
-        app:itemTextAppearance="@style/BottomStyle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu"
-        tools:ignore="MissingConstraints" />
+      android:id="@+id/bottom_navigation"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_gravity="bottom"
+      android:background="@color/White_Main"
+      app:itemTextAppearance="@style/BottomStyleBig"
+      app:itemTextColor="@color/colorBlack"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:menu="@menu/bottom_menu_big"
+      tools:ignore="MissingConstraints" />
 
 </RelativeLayout>

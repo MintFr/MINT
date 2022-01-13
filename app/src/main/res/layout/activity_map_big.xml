@@ -75,12 +75,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@color/White_Map"
-        android:fontFamily="@font/quicksand_regular"
-        app:itemTextAppearance="@style/BottomStyle"
+        android:background="@color/White_Main"
+        app:itemTextAppearance="@style/BottomStyleBig"
         app:itemTextColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu"
+        app:menu="@menu/bottom_menu_big"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

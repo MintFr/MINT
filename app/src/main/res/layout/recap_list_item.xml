@@ -16,6 +16,7 @@
         android:id="@+id/recap_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_recap_height"
+        android:layout_below="@+id/soupe"
 
         >
 
@@ -179,34 +180,36 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/soupe"
+        style="@style/bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bonjour est ce qu'on peut me voir ?"
+        android:textSize="20sp"
+        android:visibility="visible"
+
+        />
 
     <LinearLayout
         android:id="@+id/itinerary_example"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recap_item"
-
-
         android:layout_gravity="bottom"
-
         android:orientation="vertical"
-
         android:visibility="visible"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_hideable="false"
         android:focusable="false"
-        app:behavior_peekHeight="@dimen/peek_height"
-        android:paddingBottom="@dimen/bottom_navigation_height"
-        >
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bonjour j'adore la soupe au pain"
-            android:textSize="20sp"
-            android:visibility="visible" />
+
+        >
+        <!-- app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_hideable="false"
+        android:paddingBottom="@dimen/bottom_navigation_height"
+        app:behavior_peekHeight="@dimen/peek_height"-->
+
+
+
 
         <LinearLayout
             android:id="@+id/itinerary_title"

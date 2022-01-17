@@ -183,7 +183,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // get the bottom sheets and their behaviors
 
         recapLayout = findViewById(R.id.itinerary_recap_layout);
-
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
 
         recapButton = findViewById(R.id.recap_fab);
@@ -518,16 +517,16 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 //      detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
 //      System.out.println(STEPS);
 
+        View listItem = inflater.inflate(R.layout.recap_list_item, null);
         ArrayList<Step> STEPS = itinerary.getDetail();
 
         //start and end
-
-        TextView viewPoint1 = findViewById(R.id.start_point);
-        TextView viewPoint2 = findViewById(R.id.end_point);
+        TextView viewPoint1 = listItem.findViewById(R.id.start_point);
+        TextView viewPoint2 = listItem.findViewById(R.id.end_point);
 
         //time and pollution
-        TextView time = findViewById(R.id.time);
-        TextView pollution = findViewById(R.id.pollution);
+        TextView time = listItem.findViewById(R.id.time);
+        TextView pollution = listItem.findViewById(R.id.pollution);
 
         // get start and end addresses
         String start = getString(R.string.itinerary_point1) + " : " +
@@ -599,19 +598,30 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     public void displayDetailButton(View v){
 
-        RelativeLayout recap_item = findViewById(R.id.recap_item);
-        if(!recap_item.isActivated()) {
-            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
-            recap_item.setActivated(true);
+        //Highlighting the selected itinerary
+        if(!v.isActivated()) {
+            v.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
+            v.setActivated(true);
         }else{
-            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
-            recap_item.setActivated(false);
+            v.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
+            v.setActivated(false);
         }
 
+        //filling the parameters of the detail itinerary
+        View listItem = inflater.inflate(R.layout.recap_list_item, null);
+        LinearLayout detail = listItem.findViewById(R.id.itinerary_example);
+        detail.setTag("itinerary_example");
+        Log.d(LOG_TAG,"le bon tag de itinerary_example " + detail.getTag());
+        TextView soupeAuPain = listItem.findViewById(R.id.soupe);
+        Log.d(LOG_TAG, "bon tag du text view " + soupeAuPain.getText());
+        soupeAuPain.setText("j'adore la soupe au pain");
+        Log.d(LOG_TAG, "bon tag du text view " + soupeAuPain.getText());
+        soupeAuPain.setVisibility(View.VISIBLE);
 
-        LinearLayout detail = findViewById(R.id.itinerary_example);
+
         detail.setVisibility(View.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
-        // Log.d(LOG_TAG, "Is the Detail visible ? : " + detail.getVisibility() + " || (0 = yes , 4 & 8 = no)" );
+
+
         Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
         //displayDetails(itinerary);
 
@@ -641,6 +651,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             TextView timeStart = listItem.findViewById(R.id.timeStart);
             TextView timeEnd = listItem.findViewById(R.id.timeEnd);
 
+            TextView soupeAuPain = listItem.findViewById(R.id.soupe);
+            soupeAuPain.setText("Bonjour est ce qu'on peut me voir ?");
+            soupeAuPain.setVisibility(View.INVISIBLE);
 
             // set time
             String timeStr = convertIntToHour((int) list.get(i).getDuration());
@@ -792,7 +805,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // this attaches the control buttons to the new bottom sheet (in this case recap)
         changeAnchor(recapButton, R.id.itinerary_recap_layout);
 
-        // reassign the original peekheight so we can get the top of the view
+
+        // reassign the original peek height so we can get the top of the view
         sheetBehaviorRecap.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
         // we have to do it this way because of a bug from the google bottom sheet behavior
         recapLayout.post(new Runnable() {
@@ -804,6 +818,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                                 BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
+
+        Log.d(LOG_TAG,"Display Recap is called");
     }
 
     /**

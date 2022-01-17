@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,6 +37,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
 import com.example.mint.R;
+import com.example.mint.model.Coordinates;
 import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollution;
@@ -132,6 +134,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_time_itinerary);
+
         //Map display
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK); //render
@@ -141,6 +144,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         mapController.setZoom(15.0);
         mapController.setCenter(defaultPoint);
         map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
+
         //Bottom Menu
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
@@ -321,6 +325,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         // this is to be able to identify the line later on
         line.setId(valueOf(0));
 
+        //Display the first step
+        displayStep(0);
+
+
+
         // SETUP INFO WINDOW
 //        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow, null);
 
@@ -380,6 +389,27 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // add line
         map.getOverlays().add(line);
+
+    }
+
+    /**
+     * Display the step on top of the layout
+     *
+     * @param n : number of the step to display
+     */
+    private void displayStep(int n){
+
+        ArrayList<Step> STEPS = itinerary.getDetail();
+        //Name
+        TextView currentStepName = findViewById(R.id.address);
+        currentStepName.setText(STEPS.get(n).getAddress());
+        //
+        TextView currentStepDist = findViewById(R.id.step_distance);
+        currentStepDist.setText(Integer.toString(STEPS.get(n).getDistance()));
+
+        double[] point = itinerary.getPoints().get(n);
+        Coordinates geoPoint = new Coordinates(point[0],point[1]);
+        double dist = 0;
 
     }
 

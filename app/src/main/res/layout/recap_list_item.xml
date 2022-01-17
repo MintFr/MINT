@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_recap_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_recap_height"
+    android:layout_height="wrap_content"
     android:background="@color/cardview_light_background"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:onClick="displayDetailButton"
+    tools:ignore="DuplicateClickableBoundsCheck">
 
-    <ImageView
-        android:id="@+id/transportation_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:src="@drawable/ic_car_activated"
-        android:contentDescription="TODO" />
+    <RelativeLayout
+        android:id="@+id/recap_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_recap_height"
 
-    <View
-        android:id="@+id/line_seperator"
-        android:layout_width="2dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@id/transportation_icon"
-        android:background="@color/LightLightGrey_RecapList" />
+        >
 
-    <!--<ImageView
+        <ImageView
+            android:id="@+id/transportation_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="TODO"
+            android:src="@drawable/ic_car_activated" />
+
+        <View
+            android:id="@+id/line_seperator"
+            android:layout_width="2dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/transportation_icon"
+            android:background="@color/LightLightGrey_RecapList" />
+
+        <!--<ImageView
         android:id="@+id/recap_time_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,45 +46,45 @@
         android:layout_toRightOf="@id/line_seperator"
         android:src="@drawable/ic_time" />-->
 
-    <!--        android:layout_toRightOf="@id/recap_time_icon"-->
+        <!--        android:layout_toRightOf="@id/recap_time_icon"-->
 
-    <TextView
-        android:id="@+id/recap_time"
-        style="@style/bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/timeStart"
-        android:layout_alignStart="@+id/timeStart"
-        android:layout_alignLeft="@+id/timeStart"
-        android:layout_alignEnd="@+id/timeEnd"
-        android:layout_alignRight="@+id/timeEnd"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:text="@string/_0h_08min" />
+        <TextView
+            android:id="@+id/recap_time"
+            style="@style/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timeStart"
+            android:layout_alignStart="@+id/timeStart"
+            android:layout_alignLeft="@+id/timeStart"
+            android:layout_alignEnd="@+id/timeEnd"
+            android:layout_alignRight="@+id/timeEnd"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:text="@string/_0h_08min" />
 
-    <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:layout_toStartOf="@+id/exposition_value"
-        android:layout_toLeftOf="@+id/exposition_value"
-        android:text="340 m" />
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="21dp"
+            android:layout_marginRight="21dp"
+            android:layout_toStartOf="@+id/exposition_value"
+            android:layout_toLeftOf="@+id/exposition_value"
+            android:text="340 m" />
 
-    <TextView
-        android:id="@+id/seperator_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/recap_time"
-        android:layout_marginLeft="10dp"
-        android:text="|"/>
-    <!--<TextView
+        <TextView
+            android:id="@+id/seperator_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/recap_time"
+            android:text="|" />
+        <!--<TextView
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,94 +92,301 @@
         android:layout_toRightOf="@id/seperator_2"
         android:layout_marginLeft="10dp"
         android:text="340 m"/>-->
-    <TextView
-        android:id="@+id/exposition_value"
-        style="@style/bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="2dp"
-        android:layout_toLeftOf="@id/save"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="60"
-        android:textColor="@color/colorAccent" />
+        <TextView
+            android:id="@+id/exposition_value"
+            style="@style/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="2dp"
+            android:layout_toLeftOf="@id/save"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="60"
+            android:textColor="@color/colorAccent" />
 
-    <TextView
-        android:id="@+id/exposition_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/exposition_value"
-        android:layout_alignStart="@id/exposition_value"
-        android:layout_alignLeft="@id/exposition_value"
-        android:layout_alignEnd="@id/exposition_value"
-        android:layout_alignRight="@id/exposition_value"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:gravity="center"
-        android:text="@string/exposition_unit"
-        android:textColor="@color/colorPrimaryLight"
-        android:textSize="8sp" />
+        <TextView
+            android:id="@+id/exposition_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exposition_value"
+            android:layout_alignStart="@id/exposition_value"
+            android:layout_alignLeft="@id/exposition_value"
+            android:layout_alignEnd="@id/exposition_value"
+            android:layout_alignRight="@id/exposition_value"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:gravity="center"
+            android:text="@string/exposition_unit"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="8sp" />
 
-    <ImageButton
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/round_button_shadow_background"
+            android:contentDescription="TODO"
+            android:src="@drawable/ic_save" />
+
+        <TextView
+            android:id="@+id/timeStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="107dp"
+            android:layout_marginLeft="107dp"
+            android:layout_marginTop="13dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/timeEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/timeStart"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="1dp"
+            android:layout_toEndOf="@+id/textView3"
+            android:layout_toRightOf="@+id/textView3"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/timeStart"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="1dp"
+            android:layout_toEndOf="@+id/timeStart"
+            android:layout_toRightOf="@+id/timeStart"
+            android:text="-" />
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/itinerary_example"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/round_button_shadow_background"
-        android:src="@drawable/ic_save"
-        android:contentDescription="TODO" />
+        android:layout_below="@+id/recap_item"
+
+
+        android:layout_gravity="bottom"
+
+        android:orientation="vertical"
+
+        android:visibility="visible"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_hideable="false"
+        android:focusable="false"
+        app:behavior_peekHeight="@dimen/peek_height"
+        android:paddingBottom="@dimen/bottom_navigation_height"
+        >
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bonjour j'adore la soupe au pain"
+            android:textSize="20sp"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/itinerary_title"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:background="@drawable/layout_bg_title"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/bold"
+                android:layout_width="118dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:text="@string/itinerary_default_time"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/vertical_separator"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/WhiteTwo_Detail" />
+
+            <TextView
+                android:id="@+id/exposition_prompt"
+                android:layout_width="145dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:text="@string/itinerary_exposition"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/pollution"
+                style="@style/bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:text="@string/default_exposition"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/title_separator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/WhiteTwo_Detail" />
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/itinerary_steps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/PrimaryWhite_Detail"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itinerary_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <View
+                        android:id="@+id/line_shadow"
+                        android:layout_width="10dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/gradient_shadow"
+                        android:translationX="3dp"
+                        app:layout_constraintBottom_toBottomOf="@id/end_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/start_icon" />
+
+                    <View
+                        android:id="@+id/line_border"
+                        android:layout_width="6dp"
+                        android:layout_height="0dp"
+                        android:background="@color/PrimaryWhite_Detail"
+                        app:layout_constraintBottom_toBottomOf="@id/end_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/start_icon" />
+
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="3dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="7dp"
+                        android:background="@color/LightGreen_Detail"
+                        app:layout_constraintBottom_toBottomOf="@id/end_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/start_icon" />
+
+                    <ImageView
+                        android:id="@+id/start_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/marker"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/end_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/marker"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/steps_linear_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/start_point"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:onClick="onClickP1"
+                        android:padding="10dp"
+                        android:text="Départ"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:id="@+id/steps_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/WhiteTwo_Detail" />
+
+                    <TextView
+                        android:id="@+id/end_point"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:onClick="onClickP2"
+                        android:padding="10dp"
+                        android:text="Arrivée"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/itinerary_example"
         android:background="@color/LightLightGrey_RecapList" />
-
-    <TextView
-        android:id="@+id/timeStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="107dp"
-        android:layout_marginLeft="107dp"
-        android:layout_marginTop="13dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/timeEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/timeStart"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="1dp"
-        android:layout_toEndOf="@+id/textView3"
-        android:layout_toRightOf="@+id/textView3"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/timeStart"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="1dp"
-        android:layout_toEndOf="@+id/timeStart"
-        android:layout_toRightOf="@+id/timeStart"
-        android:text="-" />
-
 </RelativeLayout>

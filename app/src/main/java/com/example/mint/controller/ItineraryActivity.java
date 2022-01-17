@@ -1,9 +1,12 @@
 package com.example.mint.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
 import com.example.mint.R;
@@ -102,7 +107,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     /**
      * LAYOUT AND MENU
      */
-    private BottomSheetBehavior sheetBehaviorDetail;
+
     private BottomSheetBehavior sheetBehaviorRecap;
     private RelativeLayout recapLayout;
     private FloatingActionButton recapButton;
@@ -176,9 +181,9 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // LAYOUTS
 
         // get the bottom sheets and their behaviors
-        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout);
+
         recapLayout = findViewById(R.id.itinerary_recap_layout);
-        sheetBehaviorDetail = BottomSheetBehavior.from(detailLayout);
+
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
 
         recapButton = findViewById(R.id.recap_fab);
@@ -506,14 +511,17 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     //TODO fix this display so that is stays nicely
     private void displayDetails(Itinerary itinerary) {
-//        // hide recap
-//        recapView.setVisibility(View.GONE);
-//        // show details layout
-//        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-//        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+//      hide recap
+//      recapView.setVisibility(View.GONE);
+//      show details layout
+//      LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
+//      detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+//      System.out.println(STEPS);
+
         ArrayList<Step> STEPS = itinerary.getDetail();
-        //System.out.println(STEPS);
+
         //start and end
+
         TextView viewPoint1 = findViewById(R.id.start_point);
         TextView viewPoint2 = findViewById(R.id.end_point);
 
@@ -573,6 +581,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             viewPoint1.setText("error");
             viewPoint2.setText("error");
         }
+        /*
         // so that the sheet can be hidden
         sheetBehaviorRecap.setPeekHeight(0);
         sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -581,13 +590,31 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         changeAnchor(recapButton, R.id.itinerary_detail_layout);
         sheetBehaviorDetail.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+
+        */
     }
 
     /**
      *
      */
     public void displayDetailButton(View v){
-        Log.d(LOG_TAG,"NOM DE CE QUE JE PUTAIN DE CLIQUE"+ String.valueOf(v.getId()));
+
+        RelativeLayout recap_item = findViewById(R.id.recap_item);
+        if(!recap_item.isActivated()) {
+            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+            recap_item.setActivated(true);
+        }else{
+            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
+            recap_item.setActivated(false);
+        }
+
+
+        LinearLayout detail = findViewById(R.id.itinerary_example);
+        detail.setVisibility(View.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
+        // Log.d(LOG_TAG, "Is the Detail visible ? : " + detail.getVisibility() + " || (0 = yes , 4 & 8 = no)" );
+        Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
+        //displayDetails(itinerary);
+
     }
 
 
@@ -746,6 +773,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 }
             });
 
+            listItem.setTag(i);
+
             // highlight itinerary when you click on an itinerary
             // this will used to find the corresponding itinerary
             /* listItem.setTag(i);
@@ -759,10 +788,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 }
             });*/
         }
-
-        // so that the sheet can be hidden
-        sheetBehaviorDetail.setPeekHeight(0);
-        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // this attaches the control buttons to the new bottom sheet (in this case recap)
         changeAnchor(recapButton, R.id.itinerary_recap_layout);

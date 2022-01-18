@@ -509,6 +509,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * @param itinerary Selected itinerary
      */
     //TODO fix this display so that is stays nicely
+    /*
     private void displayDetails(Itinerary itinerary) {
 //      hide recap
 //      recapView.setVisibility(View.GONE);
@@ -591,39 +592,32 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
 
         */
-    }
+    //}
 
     /**
      *
      */
     public void displayDetailButton(View v){
-
+        LinearLayout detail = v.findViewById(R.id.itinerary_example);
         //Highlighting the selected itinerary
         if(!v.isActivated()) {
             v.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
+            detail.setVisibility(detail.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
             v.setActivated(true);
         }else{
             v.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
             v.setActivated(false);
+            detail.setVisibility(detail.GONE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
         }
 
-        //filling the parameters of the detail itinerary
-        View listItem = inflater.inflate(R.layout.recap_list_item, null);
-        LinearLayout detail = listItem.findViewById(R.id.itinerary_example);
-        detail.setTag("itinerary_example");
-        Log.d(LOG_TAG,"le bon tag de itinerary_example " + detail.getTag());
-        TextView soupeAuPain = listItem.findViewById(R.id.soupe);
-        Log.d(LOG_TAG, "bon tag du text view " + soupeAuPain.getText());
-        soupeAuPain.setText("j'adore la soupe au pain");
-        Log.d(LOG_TAG, "bon tag du text view " + soupeAuPain.getText());
-        soupeAuPain.setVisibility(View.VISIBLE);
 
 
-        detail.setVisibility(View.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
+        Log.d("Visibiliy of detail", String.valueOf((detail.getVisibility())));
+        TextView test = detail.findViewById(R.id.time);
+        Log.d("detail",test.getText().toString());
 
 
-        Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
-        //displayDetails(itinerary);
+
 
     }
 
@@ -650,10 +644,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             ImageButton save = listItem.findViewById(R.id.save);
             TextView timeStart = listItem.findViewById(R.id.timeStart);
             TextView timeEnd = listItem.findViewById(R.id.timeEnd);
-
-            TextView soupeAuPain = listItem.findViewById(R.id.soupe);
-            soupeAuPain.setText("Bonjour est ce qu'on peut me voir ?");
-            soupeAuPain.setVisibility(View.INVISIBLE);
 
             // set time
             String timeStr = convertIntToHour((int) list.get(i).getDuration());
@@ -800,6 +790,69 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     highlightItinerary(line, map, pos, list.get(i), list.size());
                 }
             });*/
+            View itinerary_detail = listItem.findViewById(R.id.itinerary_example);
+            ArrayList<Step> STEPS = list.get(i).getDetail();
+
+            //start and end
+            TextView viewPoint1 = itinerary_detail.findViewById(R.id.start_point);
+            TextView viewPoint2 = itinerary_detail.findViewById(R.id.end_point);
+
+            //time and pollution
+            TextView time_detail = itinerary_detail.findViewById(R.id.time);
+            TextView pollution = itinerary_detail.findViewById(R.id.pollution);
+
+            // get start and end addresses
+            String start = getString(R.string.itinerary_point1) + " : " +
+                    (PreferencesAddresses.getAddress("startAddress", ItineraryActivity.this));
+            String end = getString(R.string.itinerary_point2) + " : " +
+                    (PreferencesAddresses.getAddress("endAddress", ItineraryActivity.this));
+
+            if (list.get(i).getPointSize() > 0) {
+                // start and end
+                viewPoint1.setText(start);
+                viewPoint2.setText(end);
+
+                // time
+                time_detail.setText(timeStr);
+
+                //pollution
+                String str = "3";
+                str = str.replaceAll("3", "³"); // set the 3 to superscript
+                String polStr = list.get(i).getPollution() + "µg/m" + str;
+                pollution.setText(polStr);
+
+                //between start and end
+                if (list.get(i).getPointSize() > 2) {
+
+                    // first we want to clear all previous steps that might already be displayed in itinerary detail
+                    //it's a container for the views for each step that will be created with itinerary_step_layout
+                    LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
+
+                    // this is the number of steps from the previously displayed itinerary
+                    int index = stepsLayout.indexOfChild(viewPoint2);
+
+                    if (index > 2) { // <=> if there is already something displayed in the stepsLayout
+                        stepsLayout.removeViews(2, index - 2);
+                    }
+                    System.out.println(STEPS.size());
+                    for (int k = 1; k <= STEPS.size(); k++) {
+                        // k is going to be the index at which we add the stepView
+                        final View stepView = inflater.inflate(R.layout.itinerary_step_layout, null); // get the view from layout
+                        TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
+                        TextView stepDist = stepView.findViewById(R.id.step_distance);
+                        String streetName = STEPS.get(k - 1).getAddress();
+                        int dist = STEPS.get(k - 1).getDistance();
+                        stepTimeMin.setText(streetName);
+                        stepDist.setText(String.format("%d", dist));
+                        // add the textView to the linearlayout which contains the steps
+                        stepsLayout.addView(stepView, k + 1);
+                    }
+                }
+            } else {
+                viewPoint1.setText("error");
+                viewPoint2.setText("error");
+            }
+            itinerary_detail.setVisibility(itinerary_detail.GONE);
         }
 
         // this attaches the control buttons to the new bottom sheet (in this case recap)

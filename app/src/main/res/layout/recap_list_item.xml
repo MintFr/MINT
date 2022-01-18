@@ -16,8 +16,6 @@
         android:id="@+id/recap_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_recap_height"
-        android:layout_below="@+id/soupe"
-
         >
 
         <ImageView
@@ -38,16 +36,6 @@
             android:layout_toRightOf="@id/transportation_icon"
             android:background="@color/LightLightGrey_RecapList" />
 
-        <!--<ImageView
-        android:id="@+id/recap_time_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/line_seperator"
-        android:src="@drawable/ic_time" />-->
-
-        <!--        android:layout_toRightOf="@id/recap_time_icon"-->
 
         <TextView
             android:id="@+id/recap_time"
@@ -85,14 +73,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/recap_time"
             android:text="|" />
-        <!--<TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/seperator_2"
-        android:layout_marginLeft="10dp"
-        android:text="340 m"/>-->
+
         <TextView
             android:id="@+id/exposition_value"
             style="@style/bold"
@@ -180,16 +161,6 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/soupe"
-        style="@style/bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bonjour est ce qu'on peut me voir ?"
-        android:textSize="20sp"
-        android:visibility="visible"
-
-        />
 
     <LinearLayout
         android:id="@+id/itinerary_example"
@@ -200,8 +171,6 @@
         android:orientation="vertical"
         android:visibility="visible"
         android:focusable="false"
-
-
         >
         <!-- app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable="false"

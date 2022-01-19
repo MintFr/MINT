@@ -85,6 +85,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     GeoPoint endPosition;
     List<GeoPoint> markers;
     GeoPoint stepPosition;
+
+    int nbActualStep;
     /**
      * Temporary point for location changes
      */
@@ -210,6 +212,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         //Temporary Itinerary
         String resourceName = "src/main/res/raw/itinerary_test.json";
+
         File file = new File(resourceName);
 
         try {
@@ -227,10 +230,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         Log.d("Json",valueOf(itinerary.getPollution()));
 
-
-
-
+        nbActualStep = 1;
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -326,7 +328,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         line.setId(valueOf(0));
 
         //Display the first step
-        displayStep(0);
+        displayStep(1);
 
 
 
@@ -392,6 +394,34 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
     }
 
+    public void nextStep(View view){
+        nextStep();
+    }
+
+    public void nextStep(){
+        nbActualStep += 1;
+        displayStep(nbActualStep);
+    }
+
+    public int distanceToStep(int n){
+
+        //calculate the distance to the current step
+        double[] point = itinerary.getPoints().get(n);
+        Location targetLocation = new Location("");//provider name is unnecessary
+        targetLocation.setLatitude(point[0]);
+        targetLocation.setLongitude(point[1]);
+        return((int)targetLocation.distanceTo(locationUser));
+    }
+
+    public void updateDist(){
+        //calculate the distance to the current step
+        int dist = distanceToStep(nbActualStep);
+
+        //display the distance to the current step
+        TextView currentStepDist = findViewById(R.id.step_distance);
+        currentStepDist.setText(Integer.toString(dist));
+    }
+
     /**
      * Display the step on top of the layout
      *
@@ -399,18 +429,32 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      */
     private void displayStep(int n){
 
+        //Saving Steps
         ArrayList<Step> STEPS = itinerary.getDetail();
-        //Name
+        int len = STEPS.size();
+
+        //display the name of the current step
         TextView currentStepName = findViewById(R.id.address);
         currentStepName.setText(STEPS.get(n).getAddress());
-        //
-        TextView currentStepDist = findViewById(R.id.step_distance);
-        currentStepDist.setText(Integer.toString(STEPS.get(n).getDistance()));
 
-        double[] point = itinerary.getPoints().get(n);
-        Coordinates geoPoint = new Coordinates(point[0],point[1]);
-        double dist = 0;
+        //display the distance to the current step
+        updateDist();
 
+        //Displaying or not the next step
+        if (n<len-1){
+            //display the name of the next step
+            TextView nextStepName = findViewById(R.id.address_2);
+            nextStepName.setText(STEPS.get(n+1).getAddress());
+
+            //display the distance to the next step
+            TextView nextStepDist = findViewById(R.id.step_distance_2);
+            nextStepDist.setText(Integer.toString(STEPS.get(n+1).getDistance()));
+        }
+        else{
+            //Hide the next step (for there is none)
+            View nextStepLayout = findViewById(R.id.itinerary_real_time_step_layout_second);
+            nextStepLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
@@ -573,6 +617,14 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                 positionMarker.setFlat(true);
                 positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
                 map.getOverlays().add(positionMarker);
+            }
+
+            int dist = distanceToStep(nbActualStep);
+
+            updateDist();
+
+            if (dist < 5){
+                nextStep();
             }
         }
     }

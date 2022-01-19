@@ -11,7 +11,15 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" >
+
+        <View
+            android:id="@+id/dim_popup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#73000000"
+            android:visibility="invisible" />
+    </org.osmdroid.views.MapView>
 
 
     <ImageView
@@ -222,6 +230,7 @@
         android:layout_marginTop="6dp"
         android:fontFamily="@font/quicksand_regular"
         android:gravity="center"
+        android:onClick="toRealTimeItinerary"
         android:padding="0dp"
         android:text="@string/testRealTimeItinerary"
         android:textAlignment="center"
@@ -230,8 +239,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endPoint"
-        android:onClick="toRealTimeItinerary"/>
+        app:layout_constraintTop_toBottomOf="@+id/endPoint" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -245,12 +253,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
-
-    <View
-        android:id="@+id/dim_popup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#73000000"
-        android:visibility="invisible" />
 
 </RelativeLayout>

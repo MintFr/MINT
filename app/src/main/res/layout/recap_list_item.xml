@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_recap_height"
         android:layout_below="@+id/soupe"
-
         >
 
         <ImageView
@@ -181,11 +180,11 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/soupe"
+        android:id="@+id/messagedetest"
         style="@style/bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bonjour est ce qu'on peut me voir ?"
+        android:text="Coucou"
         android:textSize="20sp"
         android:visibility="visible"
 

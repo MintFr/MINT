@@ -104,10 +104,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     private MapView map = null;
     private IMapController mapController = null;
+
     /**
      * LAYOUT AND MENU
      */
-
     private BottomSheetBehavior sheetBehaviorRecap;
     private RelativeLayout recapLayout;
     private FloatingActionButton recapButton;
@@ -122,6 +122,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private PaintList plBorder;
     private PaintList plBorderSelected;
     private int threshold;
+
+    //All attributes needed for displaying itineraries
+    private ArrayList<Polyline> lines;
+    private View infoWindowView;
+    private TextView timeInfo;
+    private ImageView transportationInfo;
+    private ImageView pollutionInfo;
 
     /**
      * On create of this activity, display itineraries and the recap of all the itineraries
@@ -170,20 +177,15 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         final CoordinatorLayout coordinator = findViewById(R.id.coordinator);
+
         // i don't really know what this does but it fixed some bugs so don't touch
-        ViewCompat.postOnAnimation(coordinator, new Runnable() {
-            @Override
-            public void run() {
-                ViewCompat.postInvalidateOnAnimation(coordinator);
-            }
-        });
+        ViewCompat.postOnAnimation(coordinator, () -> ViewCompat.postInvalidateOnAnimation(coordinator));
 
         // LAYOUTS
 
         // get the bottom sheets and their behaviors
 
         recapLayout = findViewById(R.id.itinerary_recap_layout);
-
         sheetBehaviorRecap = BottomSheetBehavior.from(recapLayout);
 
         recapButton = findViewById(R.id.recap_fab);
@@ -282,55 +284,23 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         paintInsideSelectedB = new Paint(paintInsideB);
         paintInsideSelectedB.setStrokeWidth(20);
 
-        // paintlists are useful for having several colors inside the polyline,
+        // paintLists are useful for having several colors inside the polyline,
         // we will store the paints we created in them, that way we can change their appearance according to the pollution
         plInside = new MonochromaticPaintList(paintInsideB);
         plInsideSelected = new MonochromaticPaintList(paintInsideSelectedB);
         plBorder = new MonochromaticPaintList(paintBorder);
         plBorderSelected = new MonochromaticPaintList(paintBorderSelected);
 
-        // display each itinerary we just got from the Async task
-        for (int j = 0; j < itineraries.size(); j++) {
-            displayItinerary(itineraries.get(j), itineraries, j);
-        }
-
-        // display recap
-        displayRecap(itineraries);
-
-        // behaviour when you click outside the line on the map
-        MapEventsReceiver mReceive = new MapEventsReceiver() {
-            @Override
-            public boolean singleTapConfirmedHelper(GeoPoint p) {
-                // behaviour when you click anywhere on the map : we want to reset everything back to normal
-                InfoWindow.closeAllInfoWindowsOn(map);
-                for (int i = 1; i < itineraries.size(); i++) { // we go through all the polylines that are displayed
-                    Polyline selectedLine = (Polyline) map.getOverlays().get(i);
-                    resetPolylineAppearance(selectedLine);
-                }
-                // if a line is selected, display recap, else, do nothing
-//                boolean lineSelected = false;
-//                int i=1;
-//                while (!lineSelected&&i<finalItineraries.size()){
-//                    Polyline l = (Polyline) map.getOverlays().get(i);
-//                    if (l.getOutlinePaintLists().contains(paintBorderSelected)){
-//                        lineSelected=true;
-//                        displayRecap(finalItineraries);
-//                    }
-//                    i++;
-//                }
-                displayRecap(itineraries);
-                return true;
-            }
-
-            @Override
-            public boolean longPressHelper(GeoPoint p) {
-                return false;
-            }
-        };
-
+        /*
         // add an overlay that will detect the taps on the map
         MapEventsOverlay mOverlay = new MapEventsOverlay(mReceive);
         map.getOverlays().add(0, mOverlay);
+*/
+        // display recap
+        displayRecap(itineraries);
+
+
+
 
         // start and end markers (we only need to draw them once)
         Marker startMarker = new Marker(map);
@@ -382,6 +352,24 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
+        //Creations of the itineraries
+        lines = new ArrayList<>();
+        infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
+        timeInfo = infoWindowView.findViewById(R.id.time_info);
+        transportationInfo = infoWindowView.findViewById(R.id.transportation);
+        pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
+
+
+
+        // display each itinerary we just got from the Async task
+        for (int j = 0; j < itineraries.size(); j++) {
+            Polyline line = new Polyline(map);
+            lines.add(j,line);
+            displayItinerary(itineraries.get(j), j);
+            Log.d(LOG_TAG, "Id line OnCreate : '" + line.getId() + "'");
+        }
+
     }
 
     /**
@@ -399,48 +387,32 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * Is called on each itinerary
      *
      * @param itinerary Itinerary :  Current itinerary to display
-     * @param list      ArrayList<Itinerary> : List of all itineraries to display
      * @param i         int : index of the  current itineray
      */
+    private void displayItinerary(final Itinerary itinerary, int i) {
 
-
-    //DISPLAY ITINERARY
-    private void displayItinerary(final Itinerary itinerary, final ArrayList<Itinerary> list, int i) {
-        // polyline for itinerary
         // first we create a list of geopoints for the geometry of the polyline
         List<GeoPoint> geoPoints = new ArrayList<>();
         for (int j = 0; j < itinerary.getPointSize(); j++) {
             geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]));
         }
 
-        // then we attribute it to the new polyline
-        final Polyline line = new Polyline(map);
-        line.setPoints(geoPoints);
+        // then we attribute it to the polyline
+        lines.get(i).setPoints(geoPoints);
 
         // then we handle the color :
         setColorForPolyline(itinerary);
-
-        line.getOutlinePaintLists().add(plBorder);
-        line.getOutlinePaintLists().add(plInside);
+        lines.get(i).getOutlinePaintLists().add(plBorder);
+        lines.get(i).getOutlinePaintLists().add(plInside);
 
         // this is to be able to identify the line later on
-        line.setId(String.valueOf(i));
-
-        // SETUP INFO WINDOW
-        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow, null);
-
-
-        // find all the corresponding views in the infowindow
-        TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
-        ImageView transportationInfo = infoWindowView.findViewById(R.id.transportation);
-        final ImageView pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
+        lines.get(i).setId(String.valueOf(i));
+        Log.d(LOG_TAG, "Id line displayIti : '" + lines.get(i).getId() + "'");
 
         // set values for time, transportation and pollution
-
         //time
         int t = Double.valueOf(itinerary.getDuration()).intValue();
         String s = convertIntToHour(t);
-        System.out.println(s);
         timeInfo.setText(s);
 
         //transportation
@@ -468,152 +440,42 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         else if((itinerary.getPollution()>=66)&&(itinerary.getPollution()<=1000)){
             pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
         }
+
+        // add infoWindow to the polyline
         final InfoWindow infoWindow = new InfoWindow(infoWindowView, map) {
-            @Override
-            public void onOpen(Object item) {
-            }
-
-            @Override
-            public void onClose() {
-            }
-        };
-
-        // add infowindow to the polyline
-        line.setInfoWindow(infoWindow);
-
-        // show details once you click on the infowindow
-        RelativeLayout layout = infoWindowView.findViewById(R.id.layout);
-        //layout.setOnClickListener(new View.OnClickListener() {
-           // @Override
-           // public void onClick(View v) {
-                //displayDetails(itinerary);
-            //}
-        //});
+            @Override public void onOpen(Object item) {}
+            @Override public void onClose() {}};
+        lines.get(i).setInfoWindow(infoWindow);
 
         // add line
-        map.getOverlays().add(line);
+        map.getOverlays().add(lines.get(i));
         map.invalidate(); // this is to refresh the display
 
         // on click behaviour of line (highlight it, show details, show infowindow)
-        line.setOnClickListener(new Polyline.OnClickListener() {
-            @Override
-            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                highlightItinerary(polyline, mapView, eventPos, itinerary, list.size()); // function that highlights an itinerary
-                return true;
-            }
+        lines.get(i).setOnClickListener((polyline, mapView, eventPos) -> {
+            highlightItinerary(polyline, mapView, eventPos, itinerary, itineraries.size()); // function that highlights an itinerary
+            return true;
         });
     }
 
-    /**
-     * DISPLAY DETAILS OF THE SELECTED ITINERARY UNDER MAP INSTEAD OF THE RECAP
-     *
-     * @param itinerary Selected itinerary
-     */
-    //TODO fix this display so that is stays nicely
-    private void displayDetails(Itinerary itinerary) {
-//      hide recap
-//      recapView.setVisibility(View.GONE);
-//      show details layout
-//      LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-//      detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
-//      System.out.println(STEPS);
-
-        ArrayList<Step> STEPS = itinerary.getDetail();
-
-        //start and end
-
-        TextView viewPoint1 = findViewById(R.id.start_point);
-        TextView viewPoint2 = findViewById(R.id.end_point);
-
-        //time and pollution
-        TextView time = findViewById(R.id.time);
-        TextView pollution = findViewById(R.id.pollution);
-
-        // get start and end addresses
-        String start = getString(R.string.itinerary_point1) + " : " +
-                (PreferencesAddresses.getAddress("startAddress", ItineraryActivity.this));
-        String end = getString(R.string.itinerary_point2) + " : " +
-                (PreferencesAddresses.getAddress("endAddress", ItineraryActivity.this));
-
-        if (itinerary.getPointSize() > 0) {
-            // start and end
-            viewPoint1.setText(start);
-            viewPoint2.setText(end);
-
-            // time
-            String timeStr = convertIntToHour((int) itinerary.getDuration());
-            time.setText(timeStr);
-
-            //pollution
-            String str = "3";
-            str = str.replaceAll("3", "³"); // set the 3 to superscript
-            String polStr = itinerary.getPollution() + "µg/m" + str;
-            pollution.setText(polStr);
-
-            //between start and end
-            if (itinerary.getPointSize() > 2) {
-
-                // first we want to clear all previous steps that might already be displayed in itinerary detail
-                //it's a container for the views for each step that will be created with itinerary_step_layout
-                LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
-
-                // this is the number of steps from the previously displayed itinerary
-                int index = stepsLayout.indexOfChild(viewPoint2);
-
-                if (index > 2) { // <=> if there is already something displayed in the stepsLayout
-                    stepsLayout.removeViews(2, index - 2);
-                }
-                System.out.println(STEPS.size());
-                for (int k = 1; k <= STEPS.size(); k++) {
-                    // k is going to be the index at which we add the stepView
-                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout, null); // get the view from layout
-                    TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
-                    TextView stepDist = stepView.findViewById(R.id.step_distance);
-                    String streetName = STEPS.get(k - 1).getAddress();
-                    int dist = STEPS.get(k - 1).getDistance();
-                    stepTimeMin.setText(streetName);
-                    stepDist.setText(String.format("%d", dist));
-                    // add the textView to the linearlayout which contains the steps
-                    stepsLayout.addView(stepView, k + 1);
-                }
-            }
-        } else {
-            viewPoint1.setText("error");
-            viewPoint2.setText("error");
-        }
-        /*
-        // so that the sheet can be hidden
-        sheetBehaviorRecap.setPeekHeight(0);
-        sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        // this attaches the map control buttons to the new bottom sheet (in this case details)
-        changeAnchor(recapButton, R.id.itinerary_detail_layout);
-        sheetBehaviorDetail.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
-        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
-
-        */
-    }
 
     /**
      *
      */
     public void displayDetailButton(View v){
+        LinearLayout detail = v.findViewById(R.id.itinerary_example);
 
-        RelativeLayout recap_item = findViewById(R.id.recap_item);
-        if(!recap_item.isActivated()) {
-            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
-            recap_item.setActivated(true);
-        }else{
-            recap_item.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
-            recap_item.setActivated(false);
+        //Highlighting the selected itinerary
+        if(!v.isActivated()) {
+            v.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
+            detail.setVisibility(detail.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
+            v.setActivated(true);
+        }else {
+            v.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.cardview_light_background, null));
+            v.setActivated(false);
+            detail.setVisibility(detail.GONE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
         }
 
-
-        LinearLayout detail = findViewById(R.id.itinerary_example);
-        detail.setVisibility(View.VISIBLE);//Keys for Visible Invisible & Gone are respectively 0,4 & 8
-        // Log.d(LOG_TAG, "Is the Detail visible ? : " + detail.getVisibility() + " || (0 = yes , 4 & 8 = no)" );
-        Itinerary itinerary = new Itinerary(itineraries.get((int) v.getTag()));
-        //displayDetails(itinerary);
 
     }
 
@@ -749,14 +611,10 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // set the height and width of the list item
             int height = getResources().getDimensionPixelSize(R.dimen.list_recap_height);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    height);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             listItem.setLayoutParams(params);
 
             // add the view to the layout
-            recapList.addView(listItem, i);
-
             // save pollution button
             save.setTag(100 + i); // we add 100 because otherwise we will override the tag for "listItem"
             save.setOnClickListener(new View.OnClickListener() {
@@ -777,16 +635,72 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             // highlight itinerary when you click on an itinerary
             // this will used to find the corresponding itinerary
-            /* listItem.setTag(i);
-            listItem.setOnClickListener(new View.OnClickListener() {
+    /*        listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int i = (int) v.getTag();
-                    Polyline line = findPolylineFromId(String.valueOf(i));
-                    GeoPoint pos = line.getInfoWindowLocation();
-                    highlightItinerary(line, map, pos, list.get(i), list.size());
+                    GeoPoint pos = lines.get(i).getInfoWindowLocation();
+                    highlightItinerary(lines.get(i), map, pos, list.get(i), list.size());
                 }
             });*/
+
+            View itinerary_detail = listItem.findViewById(R.id.itinerary_example);
+        ArrayList<Step> STEPS = list.get(i).getDetail();
+
+        //start and end
+        TextView viewPoint1 = listItem.findViewById(R.id.start_point);
+        TextView viewPoint2 = listItem.findViewById(R.id.end_point);
+
+        //time and pollution
+        TextView time_detail = itinerary_detail.findViewById(R.id.time);
+        TextView pollution = itinerary_detail.findViewById(R.id.pollution);
+
+        // get start and end addresses
+        String start = getString(R.string.itinerary_point1) + " : " +
+                (PreferencesAddresses.getAddress("startAddress", ItineraryActivity.this));
+        String end = getString(R.string.itinerary_point2) + " : " +
+                (PreferencesAddresses.getAddress("endAddress", ItineraryActivity.this));
+
+        if (list.get(i).getPointSize() > 0) {
+            // start and end
+            viewPoint1.setText(start);
+            viewPoint2.setText(end);
+
+            // time
+            time.setText(timeStr);
+
+            //pollution
+            String str = "3";
+            str = str.replaceAll("3", "³"); // set the 3 to superscript
+            String polStr = list.get(i).getPollution() + "µg/m" + str;
+            pollution.setText(polStr);
+
+            //between start and end
+            if (list.get(i).getPointSize() > 2) {
+
+                // first we want to clear all previous steps that might already be displayed in itinerary detail
+                //it's a container for the views for each step that will be created with itinerary_step_layout
+                LinearLayout stepsLayout = listItem.findViewById(R.id.steps_linear_layout);
+                for (int k = 1; k <= STEPS.size(); k++) {
+                    // k is going to be the index at which we add the stepView
+                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout, null); // get the view from layout
+                    TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
+                    TextView stepDist = stepView.findViewById(R.id.step_distance);
+                    String streetName = STEPS.get(k - 1).getAddress();
+                    int dist = STEPS.get(k - 1).getDistance();
+                    stepTimeMin.setText(streetName);
+                    stepDist.setText(String.format("%d", dist));
+                    // add the textView to the linearlayout which contains the steps
+                    stepsLayout.addView(stepView, k + 1);
+                }
+            }
+        } else {
+            viewPoint1.setText("error");
+            viewPoint2.setText("error");
+        }
+            itinerary_detail.setVisibility(itinerary_detail.GONE);
+            recapList.addView(listItem, i);
+
         }
 
         // this attaches the control buttons to the new bottom sheet (in this case recap)
@@ -816,30 +730,31 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * @param size      : the size of the itinerary ArrayList
      */
     private void highlightItinerary(Polyline polyline, MapView mapView, GeoPoint eventPos, Itinerary itinerary, int size) {
-        // show infowindow and details
+
+
+        // reset all other lines to original appearance
+        // we know that the PolyLines have indexes ranging from 1 to list.size()-1 because of the order in which we drew them
+        for (int i = 0; i < size; i++) {
+            resetPolylineAppearance(lines.get(i));
+            lines.get(i).closeInfoWindow();
+        }
+
+        // show infoWindow and details
         polyline.showInfoWindow();
         polyline.setInfoWindowLocation(eventPos);
-        //displayDetails(itinerary);
 
         // highlight the polyline
         polyline.getOutlinePaintLists().clear(); // reset polyline appearance
-        setColorForPolyline(itinerary); // this will set the color for plInsideSelected
+        setColorForPolyline(itinerary); //this will set the color for plInsideSelected
         polyline.getOutlinePaintLists().add(plBorderSelected);
         polyline.getOutlinePaintLists().add(plInsideSelected);
 
         // we remove it from the list of overlays and then add it again on top of all the other lines so it's in front
         mapView.getOverlays().remove(polyline);
-        mapView.getOverlays().add(size - 1, polyline);
+        mapView.getOverlays().add(0, polyline);
 
-        // reset all other lines to original appearance
-        // we know that the polylines have indexes ranging from 1 to list.size()-1 because of the order in which we drew them
-        for (int i = 1; i < size; i++) {
-            Polyline selectedLine = (Polyline) map.getOverlays().get(i);
-            if (selectedLine != polyline) {
-                resetPolylineAppearance(selectedLine);
-                selectedLine.closeInfoWindow();
-            }
-        }
+
+
     }
 
     /**
@@ -966,8 +881,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 // reset everything back to normal and display recap
                 InfoWindow.closeAllInfoWindowsOn(map);
                 for (int j = 1; j < itineraries.size(); j++) { // we go through all the polylines that are displayed
-                    Polyline selectedLine = (Polyline) map.getOverlays().get(j);
-                    resetPolylineAppearance(selectedLine);
+                    resetPolylineAppearance(lines.get(j));
                 }
                 displayRecap(itineraries);
                 break;
@@ -1015,4 +929,171 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             plInsideSelected = new MonochromaticPaintList(paintInsideSelectedB);
         }
     }
+
+
+/*
+    // behaviour when you click outside the line on the map
+    MapEventsReceiver mReceive = new MapEventsReceiver() {
+        @Override
+        public boolean singleTapConfirmedHelper(GeoPoint p) {
+            // behaviour when you click anywhere on the map : we want to reset everything back to normal
+            InfoWindow.closeAllInfoWindowsOn(map);
+            for (int i = 1; i < itineraries.size(); i++) { // we go through all the polylines that are displayed
+                resetPolylineAppearance(lines.get(i));
+            }
+            return true;
+        }
+
+        @Override
+        public boolean longPressHelper(GeoPoint p) {
+            return false;
+        }
+    };
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * DISPLAY DETAILS OF THE SELECTED ITINERARY UNDER MAP INSTEAD OF THE RECAP
+     *
+     * @param itinerary Selected itinerary
+     */
+    //TODO fix this display so that is stays nicely
+    private void displayDetails(Itinerary itinerary) {
+//      hide recap
+//      recapView.setVisibility(View.GONE);
+//      show details layout
+//      LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
+//      detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+//      System.out.println(STEPS);
+
+        View listItem = inflater.inflate(R.layout.recap_list_item, null);
+        ArrayList<Step> STEPS = itinerary.getDetail();
+
+        //start and end
+        TextView viewPoint1 = listItem.findViewById(R.id.start_point);
+        TextView viewPoint2 = listItem.findViewById(R.id.end_point);
+
+        //time and pollution
+        TextView time = listItem.findViewById(R.id.time);
+        TextView pollution = listItem.findViewById(R.id.pollution);
+
+        // get start and end addresses
+        String start = getString(R.string.itinerary_point1) + " : " +
+                (PreferencesAddresses.getAddress("startAddress", ItineraryActivity.this));
+        String end = getString(R.string.itinerary_point2) + " : " +
+                (PreferencesAddresses.getAddress("endAddress", ItineraryActivity.this));
+
+        if (itinerary.getPointSize() > 0) {
+            // start and end
+            viewPoint1.setText(start);
+            viewPoint2.setText(end);
+
+            // time
+            String timeStr = convertIntToHour((int) itinerary.getDuration());
+            time.setText(timeStr);
+
+            //pollution
+            String str = "3";
+            str = str.replaceAll("3", "³"); // set the 3 to superscript
+            String polStr = itinerary.getPollution() + "µg/m" + str;
+            pollution.setText(polStr);
+
+            //between start and end
+            if (itinerary.getPointSize() > 2) {
+
+                // first we want to clear all previous steps that might already be displayed in itinerary detail
+                //it's a container for the views for each step that will be created with itinerary_step_layout
+                LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
+
+                // this is the number of steps from the previously displayed itinerary
+                int index = stepsLayout.indexOfChild(viewPoint2);
+
+                if (index > 2) { // <=> if there is already something displayed in the stepsLayout
+                    stepsLayout.removeViews(2, index - 2);
+                }
+                System.out.println(STEPS.size());
+                for (int k = 1; k <= STEPS.size(); k++) {
+                    // k is going to be the index at which we add the stepView
+                    final View stepView = inflater.inflate(R.layout.itinerary_step_layout, null); // get the view from layout
+                    TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
+                    TextView stepDist = stepView.findViewById(R.id.step_distance);
+                    String streetName = STEPS.get(k - 1).getAddress();
+                    int dist = STEPS.get(k - 1).getDistance();
+                    stepTimeMin.setText(streetName);
+                    stepDist.setText(String.format("%d", dist));
+                    // add the textView to the linearlayout which contains the steps
+                    stepsLayout.addView(stepView, k + 1);
+                }
+            }
+        } else {
+            viewPoint1.setText("error");
+            viewPoint2.setText("error");
+        }
+        /*
+        // so that the sheet can be hidden
+        sheetBehaviorRecap.setPeekHeight(0);
+        sheetBehaviorRecap.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        // this attaches the map control buttons to the new bottom sheet (in this case details)
+        changeAnchor(recapButton, R.id.itinerary_detail_layout);
+        sheetBehaviorDetail.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
+        sheetBehaviorDetail.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+
+        */
+    }
+
+
+
+
 }

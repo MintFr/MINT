@@ -16,7 +16,6 @@
         android:id="@+id/recap_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_recap_height"
-        android:layout_below="@+id/soupe"
         >
 
         <ImageView
@@ -179,16 +178,6 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/messagedetest"
-        style="@style/bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Coucou"
-        android:textSize="20sp"
-        android:visibility="visible"
-
-        />
 
     <LinearLayout
         android:id="@+id/itinerary_example"
@@ -266,7 +255,7 @@
             android:layout_height="2dp"
             android:background="@color/WhiteTwo_Detail" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -383,7 +372,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
     <View

@@ -80,4 +80,22 @@
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
 
+    <ImageButton
+        android:id="@+id/pollen_button_map"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="50dp"
+        android:padding="70dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintBottom_toTopOf="@+id/zoom_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/pollen_alert"
+        tools:adjustViewBounds="true"
+        tools:background="@color/Transparent_Map"
+        tools:baselineAlignBottom="false"
+        tools:flow_verticalAlign="baseline" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

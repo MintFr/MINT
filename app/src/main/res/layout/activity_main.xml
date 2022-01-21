@@ -11,7 +11,15 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" >
+
+        <View
+            android:id="@+id/dim_popup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#73000000"
+            android:visibility="invisible" />
+    </org.osmdroid.views.MapView>
 
 
     <ImageView
@@ -208,7 +216,7 @@
         android:layout_marginRight="30dp"
         android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
-        android:background="#00ffffff"
+        android:background="@color/Transparent_Main"
         android:gravity="center"
         android:onClick="onClickLocationButton"
         android:padding="70dp"
@@ -227,11 +235,21 @@
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
 
-    <View
-        android:id="@+id/dim_popup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#73000000"
-        android:visibility="invisible" />
+    <ImageButton
+        android:id="@+id/pollen_button_main"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/myPosition"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="50dp"
+        android:adjustViewBounds="true"
+        android:background="@color/Transparent_Main"
+        android:padding="70dp"
+        android:scaleX="2"
+        app:srcCompat="@drawable/pollen_alert"
+        tools:foregroundGravity="center"
+        tools:scaleY="2" />
 
 </RelativeLayout>

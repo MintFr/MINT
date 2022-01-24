@@ -94,13 +94,14 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * POPUP POLLEN
      */
     private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
+    private AlertDialog alertDialog;
 
     public void DisplayPollen() {
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialog.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
     }
 
     /**

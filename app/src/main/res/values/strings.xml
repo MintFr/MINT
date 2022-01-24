@@ -123,5 +123,7 @@ Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermen
     <string name="terms_of_use">Conditions d\'utilisation</string>
     <string name="mentions_l_gales">Mentions légales</string>
     <string name="mentions_l_gales2">Mentions Légales</string>
-
+    <string name="close_popup_pollen">Fermer</string>
+    <string name="message_pollen_alert">Alerte pollen au niveau 4</string>
+    <string name="title_pollen_alert">Alerte Pollen</string>
 </resources>

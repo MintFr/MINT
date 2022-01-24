@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
@@ -94,15 +95,18 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * POPUP POLLEN
      */
     private AlertDialog.Builder dialogBuilder;
-    private AlertDialog alertDialog;
+    private AlertDialog dialog;
 
-    public void DisplayPollen() {
+    public void displayPollen() {
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+
+
     }
+
 
     /**
      * GEOLOC
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
 
         // Popup Pollen
-        DisplayPollen();
+        displayPollen();
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")

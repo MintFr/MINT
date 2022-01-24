@@ -101,12 +101,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
-
-
     }
-
 
     /**
      * GEOLOC

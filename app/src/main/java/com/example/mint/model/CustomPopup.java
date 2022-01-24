@@ -22,7 +22,6 @@ public class CustomPopup extends Dialog {
        setContentView(R.layout.popup_pollen);
        this.title = "Alerte Pollen";
        this.subTitle = "Alerte pollen au niveau 4";
-       this.closeButton = findViewById(R.id.close_pollen);
        this.titleView = findViewById(R.id.pollen_alert1);
        this.titleView = findViewById(R.id.pollen_alert2);
 

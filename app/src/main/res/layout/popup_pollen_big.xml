@@ -19,11 +19,5 @@
         android:textSize="20dp"
         android:text="@string/message_pollen_alert" />
 
-    <Button
-        android:id="@+id/close_pollen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/close_popup_pollen"
-        android:textSize="20dp"
-        android:layout_gravity="center"></Button>
+
 </LinearLayout>

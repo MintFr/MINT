@@ -26,8 +26,9 @@
     <string name="enter_address">Entrer une nouvelle adresse</string>
     <string name="favorite_addresses_button"><u>Mes adresses favorites</u></string>
     <string name="favorite_transportation_button"><u>Mes modes de transport favoris</u></string>
-    <string name="sensibility_button"><u>Sensibilité</u></string>
+    <string name="sensibility_button"><u>Sensibilité aux polluants</u></string>
     <string name="add">ajouter</string>
+    <string name="sensibility_pollen_button"><u>Sensibilité aux pollens</u></string>
     <string name="address1">première adresse favorite</string>
     <string name="address2">deuxième adresse favorite</string>
     <string name="address3">troisième adresse favorite</string>
@@ -47,6 +48,8 @@
     <string name="user_image">user_image</string>
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
+    <string name="low_sensibility_pollen">Indifférent</string>
+    <string name="high_sensibility_pollen">Sensible</string>
     <string name="user_name">"Mon Profil"</string>
     <string name="favorite_transportation_message">Sélectionnez vos modes de transports favoris</string>
     <string name="walk_button">walk_button</string>

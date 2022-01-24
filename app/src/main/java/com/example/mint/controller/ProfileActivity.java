@@ -572,6 +572,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    public void highlightPollen(View PollenButton) {
+        //check if the button is already activated or not
+    }
+
 
     /**
      * This adds the pollution from the last itinerary to today's pollution

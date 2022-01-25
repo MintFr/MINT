@@ -140,7 +140,7 @@
                         android:onClick="onClickDisplayPollenSensibility"
                         android:paddingTop="10dp"
                         android:paddingBottom="5dp"
-                        android:text="@string/sensibility_button"
+                        android:text="@string/sensibility_pollen_button"
                         android:textAllCaps="false"
                         android:textColor="@color/Charcoal_Profile"
                         android:textSize="16sp"

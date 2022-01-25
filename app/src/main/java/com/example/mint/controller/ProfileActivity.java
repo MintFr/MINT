@@ -536,6 +536,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         PopupWindow pollenPopupWindow = new PopupWindow(this);
         pollenPopupWindow.setContentView(popup_pollen);
         pollenPopupWindow.setBackgroundDrawable(null);
+        pollenPopupWindow.setFocusable(true);
 
         //Highlight the sensibility when you click
         Button noSensibility = popup_pollen.findViewById(R.id.no_sensibility_btn);

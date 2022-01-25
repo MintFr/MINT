@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     /**
      * POPUP POLLEN
      */
+    
     private AlertDialog.Builder dialogBuilder;
 
 

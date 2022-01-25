@@ -16,8 +16,10 @@
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
     <color name="colorTransparentWhite">#11ffffff</color>
 
-    <!-- Colors for  layout activity_itinerary -->
+
+    <!-- Colors for  layout activity_main -->
     <color name="White_Main">#F8F8F8</color>
+    <color name="Transparent_Main">#11ffffff</color>
 
     <!-- Colors for  layout activity_itinerary -->
     <color name="PrimaryWhite_Itinerary">#ffffff</color>
@@ -32,6 +34,8 @@
     <color name="PrimaryGreen_Map">#084528</color>
     <color name="White_Map">#F8F8F8</color>
     <color name="DarkGrey_Map">#999999</color>
+    <color name="Transparent_Map">#F8F8F8</color>
+
 
     <!-- Colors for  activity_profile -->
     <color name="GreenKaki_Profile">#1a89be89</color>

@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
@@ -53,7 +54,6 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
-import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -90,6 +90,21 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LONGITUDE_MIN = -1.8;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
+
+    /**
+     * POPUP POLLEN
+     */
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    public void displayPollen() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
 
     /**
      * GEOLOC
@@ -187,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
 
         // Popup Pollen
-        //DisplayPollen(findViewById(R.layout.popup_pollen));
+        displayPollen();
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -1087,11 +1102,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     intent.putExtra("starting", starting);
                     //intent.putExtra("date", dateText);
                     intent.putExtra("time", timeText);
-                    intent.putExtra("param1", startAddress.getCoordinates().getLatitude());
-                    intent.putExtra("param2", startAddress.getCoordinates().getLongitude());
-                    intent.putExtra("param3", endAddress.getCoordinates().getLatitude());
-                    intent.putExtra("param4", endAddress.getCoordinates().getLongitude());
-                    intent.putExtra("param5", stepBool && stepPoint.isShown()); // to know if there is a stepPoint or not
+                    intent.putExtra("latitudeStart", startAddress.getCoordinates().getLatitude());
+                    intent.putExtra("longitudeStart", startAddress.getCoordinates().getLongitude());
+                    intent.putExtra("latitudeEnd", endAddress.getCoordinates().getLatitude());
+                    intent.putExtra("longitudeEnd", endAddress.getCoordinates().getLongitude());
+                    intent.putExtra("stepInItinerary", stepBool && stepPoint.isShown()); // to know if there is a stepPoint or not
 
                     // Add stepPoint parameters if needed
                     if (stepBool && stepPoint.isShown()) {
@@ -1108,11 +1123,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     Intent intent1 = new Intent(getApplicationContext(), LoadingPageActivity.class);
                     intent1.putExtra("starting", starting);
                     intent1.putExtra("time", timeText);
-                    intent1.putExtra("param1", 47.2484039066116);
-                    intent1.putExtra("param2", -1.549636963829987);
-                    intent1.putExtra("param3", 47.212191574506164);
-                    intent1.putExtra("param4", -1.5535549386503666);
-                    intent1.putExtra("param5", stepBool); // to know if there is a stepPoint or not
+                    intent1.putExtra("latitudeStart", 47.2484039066116);
+                    intent1.putExtra("longitudeStart", -1.549636963829987);
+                    intent1.putExtra("latitudeEnd", 47.212191574506164);
+                    intent1.putExtra("longitudeEnd", -1.5535549386503666);
+                    intent1.putExtra("stepInItinerary", stepBool); // to know if there is a stepPoint or not
 
                     // Add stepPoint parameters if needed
                     if (stepBool) {
@@ -1498,7 +1513,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             requestLocalisationPermission(); //line 447
         }
     }
+    // OnClick method to open the pollen popup
 
+    public void onClickpollen(View view) {
+
+        displayPollen();
+
+    }
 }
 
 

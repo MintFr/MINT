@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
@@ -603,6 +604,19 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
+    // OnClick method to open the pollen popup
 
-}
+    public void onClickPollen(View view) {
+
+            dialogBuilder = new AlertDialog.Builder(this);
+            final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+            dialogBuilder = dialogBuilder.setView(pollenPopupView);
+            dialogBuilder.setNegativeButton("FERMER", null);
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
+        }
+
+    }

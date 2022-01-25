@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -36,7 +37,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
@@ -200,9 +200,19 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         } else {
             setContentView(R.layout.activity_main);
         }
+        Context contextStart = this.getApplicationContext();
+        SharedPreferences pref = contextStart.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
+        boolean isStarting = pref.getBoolean("isStarting", true);
 
-        // Popup Pollen
-        displayPollen();
+        if (isStarting){
+            // Popup Pollen
+            displayPollen();
+        }
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("isStarting", false);
+        editor.apply();
+
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")

@@ -1494,6 +1494,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
     }
 
+    public void onClickpollen(View view) {
+
+    }
 }
 
 

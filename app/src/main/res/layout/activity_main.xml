@@ -251,6 +251,7 @@
         android:scaleX="2"
         app:srcCompat="@drawable/pollen_alert"
         tools:foregroundGravity="center"
+        android:onClick="onClickpollen"
         tools:scaleY="2" />
 
 </RelativeLayout>

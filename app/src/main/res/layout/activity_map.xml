@@ -87,6 +87,7 @@
         android:layout_marginEnd="35dp"
         android:layout_marginRight="35dp"
         android:layout_marginBottom="50dp"
+        android:onClick="onClickPollen"
         android:padding="70dp"
         android:scaleX="2"
         android:scaleY="2"

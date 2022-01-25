@@ -1513,8 +1513,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             requestLocalisationPermission(); //line 447
         }
     }
+    // OnClick method to open the pollen popup
 
     public void onClickpollen(View view) {
+
+        displayPollen();
 
     }
 }

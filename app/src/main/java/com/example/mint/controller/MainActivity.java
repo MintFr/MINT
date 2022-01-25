@@ -95,16 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * POPUP POLLEN
      */
     private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
 
-    public void displayPollen() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
-    }
 
     /**
      * GEOLOC
@@ -202,15 +193,15 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
         Context contextStart = this.getApplicationContext();
         SharedPreferences pref = contextStart.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
-        boolean isStarting = pref.getBoolean("isStarting", true);
+        boolean isStartingPollen = pref.getBoolean("isStartingPollen", true);
 
-        if (isStarting){
+        if (isStartingPollen){
             // Popup Pollen
             displayPollen();
         }
 
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isStarting", false);
+        editor.putBoolean("isStartingPollen", false);
         editor.apply();
 
 
@@ -444,6 +435,20 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     /////////////////////////////////////////////////////////
     // BACK BUTTON END //
     /////////////////////////////////////////////////////////
+
+
+    /**
+     * Method that displays a pop up alert for pollen when the app starts
+     */
+    public void displayPollen() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
 
 
     /**

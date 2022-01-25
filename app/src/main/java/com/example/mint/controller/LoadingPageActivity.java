@@ -44,23 +44,23 @@ public class LoadingPageActivity extends AppCompatActivity {
         // verification : is there a stepPoint?
         if (stepInItinerary) {
             // Yes, there is a stepPoint
-            double param6 = intent.getDoubleExtra("param6", 0.0);
-            double param7 = intent.getDoubleExtra("param7", 0.0);
+            double latitudeStep = intent.getDoubleExtra("latitudeStep", 0.0);
+            double longitudeStep = intent.getDoubleExtra("longitudeStep", 0.0);
 
-            if (latitudeStart == 0.0 && longitudeStart == 0.0 && latitudeEnd == 0.0 && longitudeEnd == 0.0 && param6 == 0.0 && param7 == 0.0) {
+            if (latitudeStart == 0.0 && longitudeStart == 0.0 && latitudeEnd == 0.0 && longitudeEnd == 0.0 && latitudeStep == 0.0 && longitudeStep == 0.0) {
                 latitudeStart = 47.2484039066116;
                 longitudeStart = -1.549636963829987;
                 latitudeEnd = 47.212191574506164;
                 longitudeEnd = -1.5535549386503666;
-                param6 = 47.212191574506164;
-                param7 = -1.5535549386503666;
+                latitudeStep = 47.212191574506164;
+                longitudeStep = -1.5535549386503666;
             }
 
             // build the URL for the request to the server
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
-                    latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, param6, param7, options[0], options[1], options[2], options[3], start, time);
+                    latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, latitudeStep, longitudeStep, options[0], options[1], options[2], options[3], start, time);
 
             System.out.println(url);
             AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);

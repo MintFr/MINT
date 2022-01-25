@@ -27,6 +27,7 @@ import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesDate;
 import com.example.mint.model.PreferencesPollution;
 import com.example.mint.model.PreferencesSensibility;
+import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -37,6 +38,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -109,7 +111,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Log.d(LOG_TAG, "------");
         Log.d(LOG_TAG, "Save State Profile OnCreate");
 
-        setContentView(R.layout.activity_profile);
+        String sizePolice = PreferencesSize.getSize("police", ProfileActivity.this);
+        if (sizePolice.equals("big")) {
+            setContentView(R.layout.activity_profile_big);
+        } else {
+            setContentView(R.layout.activity_profile);
+        }
+
 
         //link layout elements to activity
         parameters = findViewById(R.id.parameters);
@@ -448,12 +456,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // BOTTOM MENU //
         /////////////////////////////////////////////////////////
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
+        Menu menu;
+        if (sizePolice.equals("big")) {
+            NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        } else {
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
+
 
         /////////////////////////////////////////////////////////
         // BOTTOM MENU END //
@@ -462,7 +480,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SLIDE ANIMATION //
         /////////////////////////////////////////////////////////
 
-        bottomNav.setSelectedItemId(R.id.profile);
+        /*bottomNav.setSelectedItemId(R.id.profile);*/
 
         //TODO This is redundant with MenuSwitcherActivity
         //Slide animation
@@ -542,7 +560,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         int buttonClicked = (int) v.getTag();
         // dim background of popup
-        dim_popup.setVisibility(View.VISIBLE);
+        // dim_popup.setVisibility(View.VISIBLE);
         switch (buttonClicked) {
             case 0:
                 // show the sensibility popup window

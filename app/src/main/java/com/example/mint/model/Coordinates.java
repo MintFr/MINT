@@ -25,6 +25,14 @@ public class Coordinates implements Serializable {
         this.longitude = longitude;
     }
 
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
+
     /**
      * Access latitude
      *
@@ -70,3 +78,4 @@ public class Coordinates implements Serializable {
         return this.latitude == 0 && this.longitude == 0;
     }
 }
+

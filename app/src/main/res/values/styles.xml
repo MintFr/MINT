@@ -11,6 +11,8 @@
 
     <style name="BottomStyle" parent="@android:style/TextAppearance.Small">
         <item name="fontFamily">@font/quicksand_regular</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="Button" parent="@android:style/Widget.Button">
@@ -26,12 +28,11 @@
         <item name="fontFamily">@font/quicksand_bold</item>
     </style>
 
-
-
-
-
-
-
+    <style name="BottomStyleBig">BottomStyleBig
+        <item name="fontFamily">@font/quicksand_regular</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 
 
 </resources>

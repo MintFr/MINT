@@ -71,7 +71,8 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
 
     /**
      * Method to get the index of the corresponding button clicked with the id
-     * @param buttonId: Id of the corresponding button
+     *
+     * @param buttonId:     Id of the corresponding button
      * @param imageButtons: List of all buttons
      * @return: index of the button in the list
      */

@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
@@ -89,6 +90,22 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LONGITUDE_MIN = -1.8;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
+
+    /**
+     * POPUP POLLEN
+     */
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    public void displayPollen() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
     /**
      * GEOLOC
      */
@@ -183,6 +200,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         } else {
             setContentView(R.layout.activity_main);
         }
+
+        // Popup Pollen
+        displayPollen();
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")

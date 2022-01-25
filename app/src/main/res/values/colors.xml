@@ -19,7 +19,7 @@
 
     <!-- Colors for  layout activity_main -->
     <color name="White_Main">#F8F8F8</color>
-    <color name="Transparent_Main">#F8F8F8</color>
+    <color name="Transparent_Main">#11ffffff</color>
 
     <!-- Colors for  layout activity_itinerary -->
     <color name="PrimaryWhite_Itinerary">#ffffff</color>

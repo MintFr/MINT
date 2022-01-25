@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg_popup"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="50dp"
+    android:paddingLeft="50dp"
+    tools:context=".controller.ProfileActivity">
+
+    <TextView
+        android:id="@+id/message_sensibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_sensibility_pollen"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_marginBottom="20dp"/>
+    <View
+        android:id="@+id/line_sensibility"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_alignLeft="@id/message_sensibility"
+        android:layout_alignRight="@id/message_sensibility"
+        android:background="@color/VeryLightGrey_Profile_PopupMain"
+        android:layout_below="@id/message_sensibility"
+        android:layout_marginBottom="20dp"
+        android:layout_alignStart="@id/message_sensibility"
+        android:layout_alignEnd="@id/message_sensibility" />
+
+    <Button
+        android:id="@+id/high_sensibility_btn"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_sensibility"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/high_sensibility_pollen"
+        android:textAppearance="@style/ButtonText"
+        android:textColor="@null"
+        android:textSize="@null" />
+
+    <Button
+        android:id="@+id/low_sensibility_btn"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/high_sensibility_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/low_sensibility_pollen"
+        android:textAppearance="@style/ButtonText"
+        android:textColor="@null"
+        android:textSize="@null" />
+
+    <Button
+        android:id="@+id/no_sensibility_btn"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/low_sensibility_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/no_sensibility_pollen"
+        android:textAppearance="@style/ButtonText"
+        android:textColor="@null"
+        android:textSize="@null" />
+
+</RelativeLayout>

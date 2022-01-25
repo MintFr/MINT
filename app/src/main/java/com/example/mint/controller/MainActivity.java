@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -181,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
+    private ImageButton pollen_button;
     /**
      * Temporary point for location changes
      */
@@ -200,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         } else {
             setContentView(R.layout.activity_main);
         }
+
 
         // Popup Pollen
         displayPollen();
@@ -252,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
+        this.pollen_button=findViewById(R.id.pollen_button_main);
 
 
         // Initializing Adresses with Adress Class
@@ -385,6 +389,27 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
         Log.d(LOG_TAG, "onStart: finished ");
+
+        //pollen_alert button color
+        int pollen_alert_count = 1;
+        int colorZero = Color.parseColor("#89BE89");
+        int colorOne = Color.parseColor("#FF9800");
+        int colorTwo = Color.parseColor("#F00020");
+
+        if (pollen_alert_count==0){
+
+            pollen_button.setColorFilter(colorZero);
+        }
+
+            else if (pollen_alert_count==1){
+                pollen_button.setColorFilter(colorOne);
+
+            }
+            else if (pollen_alert_count==2){
+                pollen_button.setColorFilter(colorTwo);
+
+
+        }
 
     }
 

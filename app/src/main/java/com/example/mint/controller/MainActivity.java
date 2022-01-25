@@ -53,6 +53,7 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -89,19 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LONGITUDE_MIN = -1.8;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
-
-    /**
-     * POPUP POLLEN
-     */
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
-    public void DisplayPollen() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialog.show();
-    }
 
     /**
      * GEOLOC
@@ -199,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
 
         // Popup Pollen
-        DisplayPollen();
+        //DisplayPollen(findViewById(R.layout.popup_pollen));
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")

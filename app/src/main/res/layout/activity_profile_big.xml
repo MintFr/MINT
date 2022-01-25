@@ -35,7 +35,7 @@
                 <RelativeLayout
                     android:id="@+id/profile_main_box"
                     android:layout_width="match_parent"
-                    android:layout_height="475dp"
+                    android:layout_height="530dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="12dp"
@@ -126,10 +126,44 @@
                         android:textSize="21sp" />
 
                     <Button
-                        android:id="@+id/favorite_addresses"
+                        android:id="@+id/sensibility_pollen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/sensibility"
+                        android:layout_alignStart="@id/user_image"
+                        android:layout_alignLeft="@id/user_image"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:background="@color/Transparent_Profile"
+                        android:gravity="start"
+                        android:minHeight="0dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="30dp"
+                        android:text="@string/sensibility_pollen_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/Charcoal_Profile"
+                        android:textSize="24sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <TextView
+                        android:id="@+id/set_sensibility_pollen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/sensibility"
+                        android:layout_marginStart="30dp"
+                        android:layout_toEndOf="@id/sensibility"
+                        android:gravity="end"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="30dp"
+                        android:text="@string/set_sensibility"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="21sp" />
+
+                    <Button
+                        android:id="@+id/favorite_addresses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/sensibility_pollen"
                         android:layout_alignStart="@id/user_image"
                         android:layout_alignLeft="@id/user_image"
                         android:layout_marginStart="11dp"

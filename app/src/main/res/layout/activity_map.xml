@@ -97,6 +97,7 @@
         tools:background="@color/Transparent_Map"
         android:background="@android:color/transparent"
         tools:baselineAlignBottom="false"
-        tools:flow_verticalAlign="baseline" />
+        tools:flow_verticalAlign="baseline"
+        tools:ignore="VectorDrawableCompat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

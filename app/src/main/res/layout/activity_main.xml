@@ -11,7 +11,7 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints" >
+        tools:ignore="MissingConstraints">
 
         <View
             android:id="@+id/dim_popup"
@@ -238,20 +238,20 @@
 
     <ImageButton
         android:id="@+id/pollen_button_main"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_above="@id/myPosition"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="45dp"
-        android:layout_marginRight="45dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
         android:background="@color/Transparent_Main"
+        android:onClick="onClickpollen"
         android:padding="70dp"
-        android:scaleX="2"
+        android:scaleX="1"
         app:srcCompat="@drawable/pollen_alert"
         tools:foregroundGravity="center"
-        android:onClick="onClickpollen"
-        tools:scaleY="2" />
+        tools:scaleY="1" />
 
 </RelativeLayout>

@@ -124,6 +124,13 @@ Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermen
     <string name="mentions_l_gales">Mentions légales</string>
     <string name="mentions_l_gales2">Mentions Légales</string>
     <string name="close_popup_pollen">Fermer</string>
-    <string name="message_pollen_alert">Alerte pollen au niveau 4</string>
+    <string name="message_pollen_alert">Le risque allergique prévisionnel (RAEP) pour chaque pollen est de : <br/>
+        Graminees : 2 <br/>
+        Plantain, Urticacees, Armoises : 1 <br/>
+        Cypres, Noisetier, Aulne, Peuplier, Saule, Frene, Charme, Bouleau, Platane, Chene, Olivier, Tilleul, Chataignier, Rumex, Ambroisies : 0 <br/>
+        <br/>
+
+        Les données sont fournies par le RNSA et le RAEP est calculé grâce au risque allergique théorique, à un index clinique provenant des bulletins de médécins, d'un index phénologique appuyé sur des observations réalisées sur la croissance et la floraison des espèces et enfin sur un index météorologique
+    </string>
     <string name="title_pollen_alert">Alerte Pollen</string>
 </resources>

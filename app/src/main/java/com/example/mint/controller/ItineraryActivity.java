@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
@@ -86,6 +87,7 @@ import java.util.List;
 public class ItineraryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String LOG_TAG = ItineraryActivity.class.getSimpleName();
+
     /**
      * GEOPOINT POSITIONS
      */
@@ -470,6 +472,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      *
      */
     public void displayDetailButton(View v){
+
         LinearLayout detail = v.findViewById(R.id.itinerary_example);
         TextView exposition = v.findViewById(R.id.exposition_value);
         TextView time = v.findViewById(R.id.recap_time);
@@ -647,16 +650,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             Button followItineraryButton = listItem.findViewById(R.id.followItineraryButton);
             followItineraryButton.setTag(i);
 
-            // highlight itinerary when you click on an itinerary
-            // this will used to find the corresponding itinerary
-    /*        listItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int i = (int) v.getTag();
-                    GeoPoint pos = lines.get(i).getInfoWindowLocation();
-                    highlightItinerary(lines.get(i), map, pos, list.get(i), list.size());
-                }
-            });*/
+
             View itinerary_detail = listItem.findViewById(R.id.itinerary_example);
             ArrayList<Step> STEPS = list.get(i).getDetail();
 

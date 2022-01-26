@@ -34,7 +34,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/recap_title"
         android:orientation="vertical">
-
-
     </LinearLayout>
 </RelativeLayout>

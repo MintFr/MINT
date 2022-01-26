@@ -224,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
-        this.temporaryItineraryRealTime = findViewById(R.id.tempRealTimeItinerary);
 
         // Initializing Adresses with Adress Class
         this.endAddress = new com.example.mint.model.Address();

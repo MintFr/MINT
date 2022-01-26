@@ -1111,8 +1111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
                     // Add stepPoint parameters if needed
                     if (stepBool && stepPoint.isShown()) {
-                        intent.putExtra("param6", stepAddress.getCoordinates().getLatitude());
-                        intent.putExtra("param7", stepAddress.getCoordinates().getLongitude());
+                        intent.putExtra("latitudeStep", stepAddress.getCoordinates().getLatitude());
+                        intent.putExtra("longitudeStep", stepAddress.getCoordinates().getLongitude());
                     }
                     System.out.println("recherche");
                     startActivity(intent);
@@ -1132,8 +1132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
                     // Add stepPoint parameters if needed
                     if (stepBool) {
-                        intent1.putExtra("param6", 47.212191574506164);
-                        intent1.putExtra("param7", -1.5535549386503666);
+                        intent1.putExtra("latitudeStep", 47.212191574506164);
+                        intent1.putExtra("longitudeStep", -1.5535549386503666);
                     }
 
                     startActivity(intent1);

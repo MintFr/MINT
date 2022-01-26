@@ -210,6 +210,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         plBorderSelected = new MonochromaticPaintList(paintBorderSelected);
 
 
+        //Getting the Itinerary from the intend clicked
+
+        itinerary = (Itinerary) getIntent().getSerializableExtra("itinerary");
+        /*
         //Temporary Itinerary
         String resourceName = "src/main/res/raw/itinerary_test.json";
 
@@ -230,7 +234,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         Log.d("Json",valueOf(itinerary.getPollution()));
 
-        nbActualStep = 1;
+        nbActualStep = 1;*/
     }
 
     @Override

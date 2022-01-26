@@ -65,7 +65,6 @@
     <color name="Transparent_FavAdresses">#00ffffff</color>
     <color name="PrimaryWhite_FavAdresses">#FFFFFF</color>
 
-
     <!-- Colors for popup_activity_main_options -->
     <color name="Transparent_Profile_PopupMain">#00ffffff</color>
     <color name="WhiteGrey_Profile_PopupMain">#e0e0e0</color>

@@ -1479,10 +1479,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     /**
      * temporary function for testing real time itinerary
      */
-    public void toRealTimeItinerary(View view){
-        Intent intent = new Intent ( this,RealTimeItineraryActivity.class);
-        startActivity(intent);
-    }
+
 }
 
 

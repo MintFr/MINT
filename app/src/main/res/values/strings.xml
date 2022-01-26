@@ -2,7 +2,6 @@
     <string name="app_name">Mint</string>
     <!-- Bottom Menu -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="itinerary">Itinéraire</string>
     <string name="maps">Cartes</string>
     <string name="profile">Profil</string>
@@ -122,5 +121,5 @@ Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermen
     <string name="mentions_l_gales">Mentions légales</string>
     <string name="mentions_l_gales2">Mentions Légales</string>
     <string name="testRealTimeItinerary">test</string>
-
+    <string name="followItineraryButton">Suivre cet Itinéraire</string>
 </resources>

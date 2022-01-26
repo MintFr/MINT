@@ -23,7 +23,7 @@ public class CustomPopup extends Dialog {
        this.title = "Alerte Pollen";
        this.subTitle = "Alerte pollen au niveau 4";
        this.titleView = findViewById(R.id.pollen_alert1);
-       this.titleView = findViewById(R.id.pollen_alert2);
+       //this.titleView = findViewById(R.id.pollen_alert2);
 
    }
    public void setTitle(String title)

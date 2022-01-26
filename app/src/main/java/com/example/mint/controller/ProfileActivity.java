@@ -568,8 +568,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        Button veryHighSensibility = popup_pollen.findViewById(R.id.very_high_sensibility_btn);
+        veryHighSensibility.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Button selectedButton = (Button) v;
+                saveSensibilityPollen(selectedButton,pollenPopupWindow);
+            }
+        });
+
         //Highlight the sensibility when you click
-        noSensibility.setActivated(true);
+        String actualSensibility = PreferencesPollen.getPollen("Pollen",ProfileActivity.this);
+        if (actualSensibility.equals(noSensibility.getText().toString())){
+            noSensibility.setActivated(true);
+        }
+        if (actualSensibility.equals(lowSensibility.getText())){
+            lowSensibility.setActivated(true);
+        }
+        if (actualSensibility.equals(highSensibility.getText())){
+            highSensibility.setActivated(true);
+        }
+        if (actualSensibility.equals(veryHighSensibility.getText())){
+            veryHighSensibility.setActivated(true);
+        }
 
         //display popup
         pollenPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);

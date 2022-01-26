@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ import java.util.List;
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
  * MapActivity is a inherited class from AppCompatActivity which is a base class of Andorid Studio
  */
-public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     LayoutInflater inflaterMap;
     ////////////////////////
@@ -84,6 +85,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private Paint paintInside;
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
+    private ImageButton pollen_button;
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -161,6 +163,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
+        this.pollen_button=findViewById(R.id.pollen_button_main);
 
 
         /////////////////////////////////////////////////////////
@@ -210,6 +213,15 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     /////////////////////////////////////////////////////////
     //                   BACK BUTTON                       //
     /////////////////////////////////////////////////////////
+
+            //pollen_alert button
+
+        int pollen_count=0;
+        int colorZero = Color.parseColor("#89BE89");
+        int colorOne = Color.parseColor("#FF9800");
+        int colorTwo = Color.parseColor("#F00020");
+
+
 
 
     @Override

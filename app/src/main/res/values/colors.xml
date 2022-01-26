@@ -92,4 +92,11 @@
     <!-- Colors ic_position -->
     <color name="FlashRed_position">#F00020</color>
 
+    <!-- Colors for pollen_alert button actity -->
+    <color name="LightGreen_pollen">#89BE89</color> // when it is 0
+    <color name="Orange_pollen">#FF9800</color> // when it is 1
+    <color name="FlashRed_pollen">#F00020</color> // when it is 2
+
+
+
 </resources>

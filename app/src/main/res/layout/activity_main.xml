@@ -247,7 +247,7 @@
         android:layout_marginRight="30dp"
         android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
-        android:background="@color/Transparent_Main"
+        android:background="@android:color/transparent"
         android:onClick="onClickpollen"
         android:padding="70dp"
         android:scaleX="1"

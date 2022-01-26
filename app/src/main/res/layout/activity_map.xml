@@ -84,8 +84,7 @@
         android:id="@+id/pollen_button_map"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
         android:onClick="onClickPollen"
         android:padding="70dp"
@@ -96,7 +95,9 @@
         app:srcCompat="@drawable/pollen_alert"
         tools:adjustViewBounds="true"
         tools:background="@color/Transparent_Map"
+        android:background="@android:color/transparent"
         tools:baselineAlignBottom="false"
-        tools:flow_verticalAlign="baseline" />
+        tools:flow_verticalAlign="baseline"
+        tools:ignore="VectorDrawableCompat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

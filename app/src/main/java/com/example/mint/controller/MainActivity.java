@@ -399,24 +399,19 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         Log.d(LOG_TAG, "onStart: finished ");
 
         //pollen_alert button color
-        int pollen_alert_count = 1;
+        int pollen_alert_count = 2;
         int colorZero = Color.parseColor("#89BE89");
         int colorOne = Color.parseColor("#FF9800");
         int colorTwo = Color.parseColor("#F00020");
 
         if (pollen_alert_count==0){
-
             pollen_button.setColorFilter(colorZero);
         }
-
-            else if (pollen_alert_count==1){
-                pollen_button.setColorFilter(colorOne);
-
-            }
-            else if (pollen_alert_count==2){
-                pollen_button.setColorFilter(colorTwo);
-
-
+        else if (pollen_alert_count==1){
+            pollen_button.setColorFilter(colorOne);
+        }
+        else if (pollen_alert_count==2){
+            pollen_button.setColorFilter(colorTwo);
         }
 
     }

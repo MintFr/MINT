@@ -87,4 +87,9 @@
     <!-- Colors ic_position -->
     <color name="FlashRed_position">#F00020</color>
 
+    <!-- Colors actitivity_real_time_itinerary -->
+    <color name="White_Backgroung_Step">#FFFFFF</color>
+    <color name="White_Background_End_Itinerary_Button">#FFFFFF</color>
+    <color name="Transparant_Background_End_Itinerary_Button">#00ffffff</color>
+
 </resources>

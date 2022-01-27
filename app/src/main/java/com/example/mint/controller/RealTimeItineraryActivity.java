@@ -738,4 +738,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         is.close();
         return sb.toString();
     }
+
+    public void toMain(View view){
+        Intent intent = new Intent ( this,MainActivity.class);
+        startActivity(intent);
+    }
+
 }

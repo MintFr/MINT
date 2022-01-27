@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/PrimaryWhite_Itinerary"
+    android:background="@color/Transparant_Background_End_Itinerary_Button"
     tools:context=".controller.RealTimeItineraryActivity">
 
     <include
@@ -13,11 +13,15 @@
 
     <!-- Adding bottom sheet after main content -->
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
+        android:id="@+id/itinerary_real_time_step_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itinerary_real_time_step_layout"
-        android:background="@color/PrimaryWhite_Itinerary"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
         >
 
 
@@ -47,12 +51,12 @@
             android:id="@+id/metres"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="20dp"
             android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
             android:text="m"
-            android:textSize="22dp"/>
+            android:textSize="22dp" />
 
     </RelativeLayout>
 
@@ -61,10 +65,12 @@
         android:id="@+id/itinerary_real_time_step_layout_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/PrimaryWhite_Itinerary"
+
         android:layout_below="@id/itinerary_real_time_step_layout"
+        android:layout_marginTop="1dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button_shape_end_itinerary">
 
 
         <TextView
@@ -102,7 +108,6 @@
             android:textSize="17dp" />
 
 
-
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -120,21 +125,19 @@
         app:fabSize="mini" />
 
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/zoom_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/locate"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="TODO"
+        android:onClick="zoomOut"
         android:src="@drawable/ic_zoom_out"
         app:backgroundTint="@color/PrimaryWhite_Itinerary"
-        app:fabSize="mini"
-        android:layout_alignParentRight="true"
-        android:contentDescription="TODO"
-        android:layout_above="@id/locate"
-        android:layout_marginBottom="10dp"
-        android:onClick="zoomOut"/>
+        app:fabSize="mini" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -164,22 +167,35 @@
         android:contentDescription="TODO"
         android:onClick="nextStep"
         android:src="@drawable/ic_locate"
+        android:visibility="invisible"
         app:borderWidth="0dp"
-        app:fabSize="mini"
-        android:visibility="invisible"/>
+        app:fabSize="mini" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        app:itemTextAppearance="@style/BottomStyle"
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemTextColor="#999999"
         android:background="@color/White_Main"
+        app:itemTextAppearance="@style/BottomStyle"
+        app:itemTextColor="#999999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/imageButton"
+        style="@style/bold"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/itinerary_real_time_step_layout_second"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:text="Fin Itinéraire"
+        android:onClick="toMain"/>
 
 </RelativeLayout>

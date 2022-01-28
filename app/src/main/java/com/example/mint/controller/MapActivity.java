@@ -163,7 +163,7 @@ public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCo
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
-        this.pollen_button=findViewById(R.id.pollen_button_main);
+        this.pollen_button=findViewById(R.id.pollen_main);
 
 
         /////////////////////////////////////////////////////////

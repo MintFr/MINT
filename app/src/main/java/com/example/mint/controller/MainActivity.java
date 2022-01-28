@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
-        this.pollen_button=findViewById(R.id.pollen_button_main);
+        this.pollen_button=findViewById(R.id.pollen_main);
 
 
         // Initializing Adresses with Adress Class

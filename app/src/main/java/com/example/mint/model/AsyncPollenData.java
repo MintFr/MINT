@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import com.example.mint.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,14 +17,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
 public class AsyncPollenData extends AsyncTask<String , String , String> {
-    String LOG_TAG ="";
     TextView textView;
-    //text = (TextView)findViewById(R.id.pollen_alert_text);
 
     @Override
     protected void onPreExecute() {
         textView.append("Get data ...\n\n");
+        textView = (TextView) textView.findViewById(R.id.pollen_alert_text);
     }
 
     @Override

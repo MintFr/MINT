@@ -306,10 +306,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         //Get data from RNSA data
         final String SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-
         findViewById(R.id.pollen_alert_text).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 new AsyncPollenData().execute(SAMPLE_URL);
             }
         });

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_recap_layout"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="wrap_content"
     android:background="@color/cardview_light_background"
     android:clickable="true"
     android:focusable="true"
@@ -197,7 +197,11 @@
                     android:onClick="toRealTimeItinerary"
                     android:text="@string/followItineraryButton"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"/>
 
             </LinearLayout>
 
@@ -208,12 +212,6 @@
                 android:layout_below="@+id/itinerary_title"
                 android:background="@color/WhiteTwo_Detail" />
 
-            <ScrollView
-                android:id="@+id/scroll_view"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_below="@+id/title_separator"
-                android:fillViewport="true">
 
                 <LinearLayout
                     android:id="@+id/itinerary_steps"
@@ -326,7 +324,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </ScrollView>
         </LinearLayout>
     </RelativeLayout>
 

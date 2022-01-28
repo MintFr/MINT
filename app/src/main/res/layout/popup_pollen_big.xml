@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/pollen_alert1"
+        android:id="@+id/pollen_alert_title"
         android:layout_gravity="center_horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/terms_of_use_text"
+            android:id="@+id/pollen_alert_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/message_pollen_alert"

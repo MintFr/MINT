@@ -40,8 +40,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -52,6 +57,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.mint.R;
+import com.example.mint.model.AsyncPollenData;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
@@ -67,7 +73,11 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -106,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+
+
+
+
 
     /**
      * GEOLOC
@@ -188,6 +202,23 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     private GeoPoint tmpPoint;
 
+
+    /**
+     * Method to read server response, which is as text file, and put it in a String object.
+     *
+     * @param is InputStream
+     * @return String
+     */
+    private String readStream(InputStream is) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader r = new BufferedReader(new InputStreamReader(is), 1000);
+        for (String line = r.readLine(); line != null; line = r.readLine()) {
+            sb.append(line);
+        }
+        is.close();
+        return sb.toString();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -202,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         } else {
             setContentView(R.layout.activity_main);
         }
-
 
         Context contextPollen = getApplicationContext();
         SharedPreferences prefs = contextPollen.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
@@ -274,6 +304,15 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         // startPoint/endPoint inversion
         ImageButton inversionButton = findViewById(R.id.inversion);
 
+        //Get data from RNSA data
+        final String SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
+
+        findViewById(R.id.pollen_alert_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncPollenData().execute(SAMPLE_URL);
+            }
+        });
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {

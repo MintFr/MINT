@@ -12,39 +12,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        android:layout_centerVertical="true"
+        />
 
 
     <View
         android:id="@+id/line"
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:background="@color/Grey_itinerary_info"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@id/time_info"
         android:layout_alignTop="@id/time_info"
         android:layout_alignBottom="@id/time_info"
-        />
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/time_info"
+        android:background="@color/Grey_itinerary_info" />
+
     <ImageView
         android:id="@+id/transportation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_car_activated"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="-3dp"
+        android:layout_marginRight="3dp"
+        android:layout_toRightOf="@id/line"
+        android:contentDescription="TODO"
         android:scaleX="0.8"
         android:scaleY="0.8"
-        android:layout_marginTop="-3dp"
-        android:layout_toRightOf="@id/line"
-        android:layout_marginRight="3dp"
-        android:contentDescription="TODO" />
+        android:src="@drawable/ic_car_activated" />
+
     <ImageView
         android:id="@+id/pollution_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_pollution_good"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/transportation"
+        android:contentDescription="TODO"
         android:scaleX="0.8"
         android:scaleY="0.8"
-        android:layout_marginTop="-3dp"
-        android:layout_toRightOf="@id/transportation"
-        android:contentDescription="TODO" />
+        android:src="@drawable/ic_pollution_good" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/pollution_icon"
+        android:text=" Afficher l'itinéraire "
+        android:textSize="10sp"
+        android:onClick="displayItineraryPopUp"/>
 
 </RelativeLayout>

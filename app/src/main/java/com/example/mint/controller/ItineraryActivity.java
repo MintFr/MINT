@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
@@ -127,6 +128,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private TextView timeInfo;
     private ImageView transportationInfo;
     private ImageView pollutionInfo;
+
+    private int itineraryToDisplay;
 
     /**
      * On create of this activity, display itineraries and the recap of all the itineraries
@@ -381,6 +384,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         for (int i=0; i<itineraries.size(); i++){
         // on click behaviour of line (highlight it, show details, show infowindow)
             int finalI = i;
+            this.itineraryToDisplay = i;
             lines.get(i).setOnClickListener(new Polyline.OnClickListener() {
                 @Override
                 public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
@@ -863,5 +867,19 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent ( this,RealTimeItineraryActivity.class);
         intent.putExtra("itinerary", itineraries.get((int) view.getTag()));
         startActivity(intent);
+    }
+
+    public void displayItineraryPopUp(View view) {
+        Itinerary itinerary = itineraries.get(this.itineraryToDisplay);
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View stepsPopUp = getLayoutInflater().inflate(R.layout.recap_list_item, null);
+        dialogBuilder.setTitle("Itinéraire")
+                .setView(stepsPopUp)
+                .setNegativeButton("FERMER", null)
+                .create()
+                .show();
+
+
     }
 }

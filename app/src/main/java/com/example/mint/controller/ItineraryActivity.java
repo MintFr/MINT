@@ -1,13 +1,10 @@
 package com.example.mint.controller;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.renderscript.Sampler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,14 +14,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
@@ -319,7 +313,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
         startMarker.setFlat(true);
         startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-        map.getOverlays().add(startMarker);
 
         int indexEnd = itineraries.get(0).getPointSize() - 1;
         Marker endMarker = new Marker(map);
@@ -327,7 +320,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         endMarker.setPosition(endPosition);
         endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         endMarker.setIcon(getResources().getDrawable(R.drawable.ic_end_marker));
-        map.getOverlays().add(endMarker);
 
         // center the map on the itineraries
         markers = new ArrayList<>();
@@ -351,7 +343,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             stepMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
             stepMarker.setFlat(true);
             stepMarker.setIcon(getResources().getDrawable(R.drawable.ic_step_marker));
-            map.getOverlays().add(stepMarker);
+
         }
 
         //Bottom Menu
@@ -364,10 +356,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         //Creations of the itineraries
         lines = new ArrayList<>();
-        infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
-        timeInfo = infoWindowView.findViewById(R.id.time_info);
-        transportationInfo = infoWindowView.findViewById(R.id.transportation);
-        pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
 
         // display recap
         displayRecap(itineraries);
@@ -379,6 +367,11 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             displayItinerary(itineraries.get(j), j);
             Log.d(LOG_TAG, "Id line OnCreate : '" + line.getId() + "'");
         }
+
+        // Draw start and end point above itineraries
+        map.getOverlays().add(startMarker);
+        map.getOverlays().add(endMarker);
+
         map.invalidate(); // this refreshes the display
     }
 
@@ -400,6 +393,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     private void displayItinerary(final Itinerary itinerary, int i) {
         Log.d(LOG_TAG,"displayItinerary is called");
+
+        infoWindowView = inflater.inflate(R.layout.itinerary_infowindow,null);
+        timeInfo = infoWindowView.findViewById(R.id.time_info);
+        transportationInfo = infoWindowView.findViewById(R.id.transportation);
+        pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
+
         // first we create a list of geopoints for the geometry of the polyline
         List<GeoPoint> geoPoints = new ArrayList<>();
         for (int j = 0; j < itinerary.getPointSize(); j++) {

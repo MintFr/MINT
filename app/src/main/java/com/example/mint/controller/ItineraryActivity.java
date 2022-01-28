@@ -375,6 +375,22 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         map.invalidate(); // this refreshes the display
     }
 
+    public void onStart(){
+        super.onStart();
+
+        for (int i=0; i<itineraries.size(); i++){
+        // on click behaviour of line (highlight it, show details, show infowindow)
+            int finalI = i;
+            lines.get(i).setOnClickListener(new Polyline.OnClickListener() {
+                @Override
+                public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                    ItineraryActivity.this.highlightItinerary(polyline, mapView, eventPos, itineraries.get(finalI), itineraries.size()); // function that highlights an itinerary
+                    return true;
+                }
+            });
+        }
+    }
+
     /**
      * Overrides method (when the activity has detected the user's press of the back key) to return to MainActivity
      */
@@ -457,13 +473,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // add line
         map.getOverlays().add(lines.get(i));
-
-
-        // on click behaviour of line (highlight it, show details, show infowindow)
-        lines.get(i).setOnClickListener((polyline, mapView, eventPos) -> {
-            highlightItinerary(polyline, mapView, eventPos, itinerary, itineraries.size()); // function that highlights an itinerary
-            return true;
-        });
     }
 
 
@@ -746,7 +755,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
         // we remove it from the list of overlays and then add it again on top of all the other lines so it's in front
         mapView.getOverlays().remove(polyline);
-        mapView.getOverlays().add(0, polyline);
+        mapView.getOverlays().add(size, polyline);
         map.invalidate();
     }
 

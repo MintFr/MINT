@@ -6,7 +6,9 @@ import static android.graphics.Color.rgb;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -60,7 +62,7 @@ import java.util.List;
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
  * MapActivity is a inherited class from AppCompatActivity which is a base class of Andorid Studio
  */
-public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class MapActivity<pollen_count> extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     LayoutInflater inflaterMap;
     ////////////////////////
@@ -86,6 +88,10 @@ public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCo
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
     private ImageButton pollen_button;
+
+
+    public MapActivity() {
+    }
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -214,13 +220,15 @@ public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCo
     //                   BACK BUTTON                       //
     /////////////////////////////////////////////////////////
 
-            //pollen_alert button
+        private int pollen_count;
 
-        int pollen_count=0;
-        int colorZero = Color.parseColor("#89BE89");
-        int colorOne = Color.parseColor("#FF9800");
-        int colorTwo = Color.parseColor("#F00020");
-
+        if (pollen_count==1){
+                pollen_button.setColorFilter(Integer.parseInt("#89BE89"), PorterDuff.Mode.MULTIPLY);
+            } else if (pollen_count==2){
+                pollen_button.setColorFilter(Integer.parseInt("#FF9800"),PorterDuff.Mode.MULTIPLY);
+            } else if (pollen_count==3){
+        pollen_button.setColorFilter(Integer.parseInt("#F0002"),PorterDuff.Mode.MULTIPLY);
+            }
 
 
 
@@ -631,4 +639,11 @@ public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCo
             dialog.show();
         }
 
+    public int getPollen_count() {
+        return pollen_count;
     }
+
+    public void setPollen_count(int pollen_count) {
+        this.pollen_count = pollen_count;
+    }
+}

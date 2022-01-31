@@ -84,16 +84,14 @@
         android:id="@+id/pollen_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/Transparent_Map"
+        android:background="@android:color/transparent"
         android:scaleX="0.6"
         android:scaleY="0.6"
         app:layout_constraintBottom_toTopOf="@+id/zoom_in"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_pollen_modified_1"
-        tools:flow_verticalAlign="baseline"
-        tools:onClick="onClickPollen" />
+        app:srcCompat="@drawable/ic_pollen_modified_1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

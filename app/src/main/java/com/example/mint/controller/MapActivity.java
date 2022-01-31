@@ -62,7 +62,7 @@ import java.util.List;
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
  * MapActivity is a inherited class from AppCompatActivity which is a base class of Andorid Studio
  */
-public class MapActivity<pollen_count> extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     LayoutInflater inflaterMap;
     ////////////////////////
@@ -106,6 +106,21 @@ public class MapActivity<pollen_count> extends AppCompatActivity implements Adap
             setContentView(R.layout.activity_map_big);
         } else {
             setContentView(R.layout.activity_map);
+        }
+
+        // for pollen_button to change color according to the level of pollen alert
+
+        int pollen_count = 0;
+
+        if (pollen_count==0){
+            pollen_button.setColorFilter(Integer.parseInt("#b0bb3a"), PorterDuff.Mode.MULTIPLY);
+        } else if (pollen_count==1){
+            pollen_button.setColorFilter(Integer.parseInt("FFC56969"),PorterDuff.Mode.MULTIPLY);
+        } else if (pollen_count==2){
+            pollen_button.setColorFilter(Integer.parseInt("FFB12222"),PorterDuff.Mode.MULTIPLY);
+        } else if (pollen_count==3){
+            pollen_button.setColorFilter(Integer.parseInt("FFA80303"),PorterDuff.Mode.MULTIPLY);
+
         }
 
 
@@ -169,7 +184,7 @@ public class MapActivity<pollen_count> extends AppCompatActivity implements Adap
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
-        this.pollen_button=findViewById(R.id.pollen_main);
+        this.pollen_button=findViewById(R.id.pollen_map);
 
 
         /////////////////////////////////////////////////////////
@@ -219,16 +234,6 @@ public class MapActivity<pollen_count> extends AppCompatActivity implements Adap
     /////////////////////////////////////////////////////////
     //                   BACK BUTTON                       //
     /////////////////////////////////////////////////////////
-
-        private int pollen_count;
-
-        if (pollen_count==1){
-                pollen_button.setColorFilter(Integer.parseInt("#89BE89"), PorterDuff.Mode.MULTIPLY);
-            } else if (pollen_count==2){
-                pollen_button.setColorFilter(Integer.parseInt("#FF9800"),PorterDuff.Mode.MULTIPLY);
-            } else if (pollen_count==3){
-        pollen_button.setColorFilter(Integer.parseInt("#F0002"),PorterDuff.Mode.MULTIPLY);
-            }
 
 
 
@@ -639,11 +644,5 @@ public class MapActivity<pollen_count> extends AppCompatActivity implements Adap
             dialog.show();
         }
 
-    public int getPollen_count() {
-        return pollen_count;
-    }
 
-    public void setPollen_count(int pollen_count) {
-        this.pollen_count = pollen_count;
-    }
 }

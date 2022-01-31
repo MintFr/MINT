@@ -51,6 +51,7 @@
     <string name="set_sensibility">-</string>
     <string name="low_sensibility_pollen">Peu sensible</string>
     <string name="high_sensibility_pollen">Sensible</string>
+    <string name="very_high_sensibility_pollen">Très sensible</string>
     <string name="no_sensibility_pollen">Pas sensible</string>
     <string name="user_name">"Mon Profil"</string>
     <string name="favorite_transportation_message">Sélectionnez vos modes de transports favoris</string>

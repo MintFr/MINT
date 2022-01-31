@@ -855,5 +855,39 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent ( this,RealTimeItineraryActivity.class);
         intent.putExtra("itinerary", itineraries.get((int) view.getTag()));
         startActivity(intent);
+        onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "Save State Itinerary OnPause");
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG, "Save State Itinerary OnRestart");
+        for (int i = 0; i < 4; i++) {
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "Save State Itinerary OnResume");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "Save State Itinerary OnStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "Save State Itinerary OnDestroy");
     }
 }

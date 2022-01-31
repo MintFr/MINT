@@ -373,7 +373,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             newIntent = new Intent(this, Class.forName(targetActivity));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
+
         intent.putExtra("previousActivity", this.getClass());
 
         this.startActivity(newIntent);

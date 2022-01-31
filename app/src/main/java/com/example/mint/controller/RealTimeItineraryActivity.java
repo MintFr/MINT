@@ -211,30 +211,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
 
         //Getting the Itinerary from the intend clicked
-
         itinerary = (Itinerary) getIntent().getSerializableExtra("itinerary");
-        /*
-        //Temporary Itinerary
-        String resourceName = "src/main/res/raw/itinerary_test.json";
 
-        File file = new File(resourceName);
-
-        try {
-
-            InputStream inputStream = this.getResources().openRawResource(R.raw.itinerary_test);
-            String jsonString = readStream(inputStream);
-            JSONObject temp = new JSONObject(jsonString);
-            itinerary = new Itinerary(temp);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("Json",valueOf(itinerary.getPollution()));
-
-        nbActualStep = 1;*/
     }
 
     @Override
@@ -287,6 +265,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             }
             displayItinerary(itinerary);
         }
+        map.invalidate();
         Log.d(LOG_TAG, "onStart: finished ");
 
     }
@@ -740,8 +719,42 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     }
 
     public void toMain(View view){
-        Intent intent = new Intent ( this,MainActivity.class);
+        Intent intent = new Intent ( this, MainActivity.class);
         startActivity(intent);
     }
 
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "Save State RealTimeItinerary OnPause");
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG, "Save State RealTimeItinerary OnRestart");
+        for (int i = 0; i < 4; i++) {
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "Save State RealTimeItinerary OnResume");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "Save State RealTimeItinerary OnStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "Save State RealTimeItinerary OnDestroy");
+    }
 }

@@ -396,6 +396,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                                         colorThree
         );
 
+        // Change color to the button
         VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
 
         VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
@@ -409,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
         path5.setFillColor(color);
 
+        // apply changes of colors
         pollen_button.invalidate();
     }
 

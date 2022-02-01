@@ -1,15 +1,15 @@
 package com.example.mint.controller;
 
+import static android.graphics.Color.parseColor;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -19,7 +19,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -46,10 +45,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -58,6 +53,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.devs.vectorchildfinder.VectorChildFinder;
+import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
@@ -74,13 +71,11 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -145,6 +140,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
 
     SwitchCompat switchCompat;
+    Button click;
+    /**
+     * POPUP POLLEN
+     */
+    TextView donneesPollen;
+    String SAMPLE_URL;
+    View test; // view in which to search the text view for the pollen
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
@@ -186,8 +188,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * Temporary point for location changes
      */
     private GeoPoint tmpPoint;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
-    Button click;
     /**
      * Method to read server response, which is as text file, and put it in a String object.
      *
@@ -204,21 +207,22 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         return sb.toString();
     }
 
-    /**
-     * POPUP POLLEN
-     */
-    TextView donneesPollen;
-    String SAMPLE_URL;
-    View test; // view in which to search the text view for the pollen
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
     public void displayPollen() {
         //creation of the popup
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        this.test = pollenPopupView; //initialisation of the view for the textView
+
+        //Fetch data from RNSA url
+        this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
+        this.donneesPollen = test.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
+        Log.d("test donneesPollen", "msg: " + donneesPollen.getText());
+
+        //Fetch RNSA data
+        new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
+        Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
+
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        this.test=pollenPopupView; //initialisation of the view for the textView
         dialogBuilder.setNegativeButton("FERMER", null);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
@@ -250,11 +254,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isStartingPollen", false);
         editor.apply();
-
-        //Fetch data from RNSA url
-        this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-        this.donneesPollen = test.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
-        Log.d("test donneesPollen","msg: " +donneesPollen.getText());
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -304,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
-        this.pollen_button=findViewById(R.id.pollen_button_main);
+        this.pollen_button = findViewById(R.id.pollen_button);
 
 
         // Initializing Adresses with Adress Class
@@ -378,6 +377,43 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
+
+        //pollen_alert button color
+        int pollen_count = getPollenIntensity();
+        int colorZero = parseColor("#b0bb3a");
+        int colorOne = parseColor("#387D22");
+        int colorTwo = parseColor("#F1E952");
+        int colorThree = parseColor("#EB3323");
+
+        int color = (
+                (pollen_count == 0) ?
+                        colorZero :
+                        (pollen_count == 1) ?
+                                colorOne :
+                                (pollen_count == 2) ?
+                                        colorTwo :
+                                        colorThree
+        );
+
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+        path1.setFillColor(color);
+        VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+        path2.setFillColor(color);
+        VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+        path3.setFillColor(color);
+        VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+        path4.setFillColor(color);
+        VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+        path5.setFillColor(color);
+
+        pollen_button.invalidate();
+    }
+
+    private int getPollenIntensity() {
+        return 1;
     }
 
 
@@ -390,9 +426,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
 
-        //Fetch RNSA data
-        new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
-        Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
@@ -441,22 +474,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
         Log.d(LOG_TAG, "onStart: finished ");
-
-        //pollen_alert button color
-        int pollen_alert_count = 2;
-        int colorZero = Color.parseColor("#89BE89");
-        int colorOne = Color.parseColor("#FF9800");
-        int colorTwo = Color.parseColor("#F00020");
-
-        if (pollen_alert_count==0){
-            pollen_button.setColorFilter(colorZero);
-        }
-        else if (pollen_alert_count==1){
-            pollen_button.setColorFilter(colorOne);
-        }
-        else if (pollen_alert_count==2){
-            pollen_button.setColorFilter(colorTwo);
-        }
 
     }
 
@@ -1586,6 +1603,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
     }
 
+    public void onClickPollen(View view) {
+        displayPollen();
+    }
 }
 
 

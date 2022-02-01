@@ -108,20 +108,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             setContentView(R.layout.activity_map);
         }
 
-        // for pollen_button to change color according to the level of pollen alert
 
-        int pollen_count = 0;
-
-        if (pollen_count==0){
-            pollen_button.setColorFilter(Integer.parseInt("#b0bb3a"), PorterDuff.Mode.MULTIPLY);
-        } else if (pollen_count==1){
-            pollen_button.setColorFilter(Integer.parseInt("FFC56969"),PorterDuff.Mode.MULTIPLY);
-        } else if (pollen_count==2){
-            pollen_button.setColorFilter(Integer.parseInt("FFB12222"),PorterDuff.Mode.MULTIPLY);
-        } else if (pollen_count==3){
-            pollen_button.setColorFilter(Integer.parseInt("FFA80303"),PorterDuff.Mode.MULTIPLY);
-
-        }
 
 
         // inflater used to display different views
@@ -245,6 +232,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+        // for pollen_button to change color according to the level of pollen alert
+
+
     }
 
     @Override

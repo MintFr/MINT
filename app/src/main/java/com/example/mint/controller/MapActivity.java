@@ -6,9 +6,7 @@ import static android.graphics.Color.rgb;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -24,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
@@ -87,11 +84,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private Paint paintInside;
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
-    private ImageButton pollen_button;
 
-
-    public MapActivity() {
-    }
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -107,8 +100,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         } else {
             setContentView(R.layout.activity_map);
         }
-
-
 
 
         // inflater used to display different views
@@ -171,7 +162,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
-        this.pollen_button=findViewById(R.id.pollen_map);
 
 
         /////////////////////////////////////////////////////////
@@ -223,7 +213,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     /////////////////////////////////////////////////////////
 
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -232,9 +221,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
-        // for pollen_button to change color according to the level of pollen alert
-
-
     }
 
     @Override
@@ -619,20 +605,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
-    // OnClick method to open the pollen popup
-
-    public void onClickPollen(View view) {
-
-            dialogBuilder = new AlertDialog.Builder(this);
-            final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-            dialogBuilder = dialogBuilder.setView(pollenPopupView);
-            dialogBuilder.setNegativeButton("FERMER", null);
-            AlertDialog dialog = dialogBuilder.create();
-            dialog.show();
-        }
 
 
 }

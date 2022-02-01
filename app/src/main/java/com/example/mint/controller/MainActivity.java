@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
-    private ImageButton pollen_button;
+
     /**
      * Temporary point for location changes
      */
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
-        this.pollen_button=findViewById(R.id.pollen_main);
+
 
 
         // Initializing Adresses with Adress Class

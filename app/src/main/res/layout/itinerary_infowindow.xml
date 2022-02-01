@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -11,10 +12,10 @@
         android:id="@+id/time_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:paddingLeft="10dp"
         android:layout_centerVertical="true"
-        />
+        android:layout_marginEnd="10dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
 
     <View
@@ -24,8 +25,8 @@
         android:layout_alignTop="@id/time_info"
         android:layout_alignBottom="@id/time_info"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@id/time_info"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/time_info"
         android:background="@color/Grey_itinerary_info" />
 
     <ImageView
@@ -34,9 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginTop="-3dp"
-        android:layout_marginRight="3dp"
-        android:layout_toRightOf="@id/line"
-        android:contentDescription="TODO"
+        android:layout_marginEnd="3dp"
+        android:layout_toEndOf="@id/line"
+        android:contentDescription="@string/transportation_icon_description"
         android:scaleX="0.8"
         android:scaleY="0.8"
         android:src="@drawable/ic_car_activated" />
@@ -46,23 +47,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/transportation"
-        android:contentDescription="TODO"
+        android:layout_toEndOf="@id/transportation"
+        android:contentDescription="@string/pollution_icon_description"
         android:scaleX="0.8"
         android:scaleY="0.8"
         android:src="@drawable/ic_pollution_good" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/display_itinerary_button"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_toEndOf="@+id/pollution_icon"
-        android:text=" Afficher l'itinéraire "
-        android:textSize="10sp"
-        android:onClick="displayItineraryPopUp"/>
+        android:background="@color/colorAccent"
+        android:onClick="displayItineraryPopUp"
+        android:text="@string/display_itinerary"
+        android:textColor="@color/PrimaryWhite_Itinerary"
+        android:textSize="11sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

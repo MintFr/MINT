@@ -122,4 +122,7 @@ Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermen
     <string name="mentions_l_gales2">Mentions Légales</string>
     <string name="testRealTimeItinerary">test</string>
     <string name="followItineraryButton">Suivre cet Itinéraire</string>
+    <string name="display_itinerary">\t  Afficher l\'itinéraire \t</string>
+    <string name="pollution_icon_description">Pollution icon</string>
+    <string name="transportation_icon_description">transportation icon</string>
 </resources>

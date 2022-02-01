@@ -901,8 +901,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         View itinerary_detail = listItem.findViewById(R.id.itinerary_example);
         itinerary_detail.setVisibility(View.VISIBLE);
 
-        dialogBuilder.setTitle("Itinéraire")
-                .setView(listItem)
+        dialogBuilder.setView(listItem)
                 .setNegativeButton("FERMER", null)
                 .create()
                 .show();

@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
@@ -84,6 +85,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private Paint paintInside;
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
+    private ImageButton pollen_button;
 
 
     //private static final String TAG = "MapActivity"; //--> for debugging
@@ -205,6 +207,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         /////////////////////////////////////////////////////////
         //                   BOTTOM MENU END                   //
         /////////////////////////////////////////////////////////
+
+        this.pollen_button=findViewById(R.id.pollen_map);
     }
 
 
@@ -605,6 +609,17 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
+    public void onClickPollenMap(View view) {
+
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
 
 }

@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+    private ImageButton pollen_button;
 
     /**
      * GEOLOC
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
+
 
     /**
      * Temporary point for location changes
@@ -266,6 +268,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         // startPoint/endPoint inversion
         ImageButton inversionButton = findViewById(R.id.inversion);
+
+        // pollen button
+
+        this.pollen_button= findViewById(R.id.pollen_main);
+
+
+
 
 
         // check if the editText is empty and if so disable add button
@@ -1519,9 +1528,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
     }
     // OnClick method to open the pollen popup
-
-    public void onClickpollen(View view) {
-
+    public void onClickPollen(View view) {
         displayPollen();
 
     }

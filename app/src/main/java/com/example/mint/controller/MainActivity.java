@@ -250,8 +250,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         editor.apply();
 
         //Fetch data from RNSA url
-        String SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-        TextView donneesPollen = findViewById(R.id.pollen_alert_text);
+        this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
+        this.donneesPollen = findViewById(R.id.pollen_alert_text);
+        Log.d("test donneesPollen","msg: " +donneesPollen.getText());
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -388,8 +389,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         Log.d(LOG_TAG, "Save State Main OnStart");
 
         //Fetch RNSA data
-        new fetchData(donneesPollen).execute(SAMPLE_URL);
-        Log.d(LOG_TAG, "msg" + donneesPollen.getText());
+        //new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
+        Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////

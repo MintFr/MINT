@@ -191,9 +191,27 @@
         android:adjustViewBounds="true"
         android:background="#00ffffff"
         android:gravity="center"
+        android:onClick="onClickLocationButton"
         android:padding="70dp"
-        android:src="@drawable/button_location"
-        android:onClick="onClickLocationButton"/>
+        android:src="@drawable/button_location" />
+
+    <ImageButton
+        android:id="@+id/pollen_button_main"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_above="@id/myPosition"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:onClick="onClickpollen"
+        android:padding="70dp"
+        android:scaleX="1"
+        app:srcCompat="@drawable/pollen_alert"
+        tools:foregroundGravity="center"
+        tools:scaleY="1" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/bottom_navigation"

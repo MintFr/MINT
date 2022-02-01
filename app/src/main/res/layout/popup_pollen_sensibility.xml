@@ -32,11 +32,26 @@
         android:layout_alignEnd="@id/message_sensibility" />
 
     <Button
-        android:id="@+id/high_sensibility_btn"
+        android:id="@+id/very_high_sensibility_btn"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/line_sensibility"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/very_high_sensibility_pollen"
+        android:textAppearance="@style/ButtonText"
+        android:textColor="@null"
+        android:textSize="@null" />
+
+    <Button
+        android:id="@+id/high_sensibility_btn"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/very_high_sensibility_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:paddingLeft="50dp"

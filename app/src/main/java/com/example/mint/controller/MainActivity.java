@@ -3,12 +3,13 @@ package com.example.mint.controller;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -18,6 +19,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -38,11 +40,15 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -58,6 +64,7 @@ import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
+import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -67,8 +74,13 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -93,21 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
 
-    /**
-     * POPUP POLLEN
-     */
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
-    public void displayPollen() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
-    }
-    private ImageButton pollen_button;
 
     /**
      * GEOLOC
@@ -184,12 +181,49 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
-
-
+    private ImageButton pollen_button;
     /**
      * Temporary point for location changes
      */
     private GeoPoint tmpPoint;
+
+    Button click;
+    /**
+     * Method to read server response, which is as text file, and put it in a String object.
+     *
+     * @param is InputStream
+     * @return String
+     */
+    private String readStream(InputStream is) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader r = new BufferedReader(new InputStreamReader(is), 1000);
+        for (String line = r.readLine(); line != null; line = r.readLine()) {
+            sb.append(line);
+        }
+        is.close();
+        return sb.toString();
+    }
+
+    /**
+     * POPUP POLLEN
+     */
+    TextView donneesPollen;
+    String SAMPLE_URL;
+    View test; // view in which to search the text view for the pollen
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    public void displayPollen() {
+        //creation of the popup
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        this.test=pollenPopupView; //initialisation of the view for the textView
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,9 +240,21 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             setContentView(R.layout.activity_main);
         }
 
+        //Popup Pollen when app starts
+        Context contextPollen = getApplicationContext();
+        SharedPreferences prefs = contextPollen.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
+        boolean isStartingPollen = prefs.getBoolean("isStartingPollen", true);
+        if (isStartingPollen) {
+            displayPollen();
+        }
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isStartingPollen", false);
+        editor.apply();
 
-        // Popup Pollen
-        displayPollen();
+        //Fetch data from RNSA url
+        this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
+        this.donneesPollen = test.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
+        Log.d("test donneesPollen","msg: " +donneesPollen.getText());
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -258,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
-
+        this.pollen_button=findViewById(R.id.pollen_button_main);
 
 
         // Initializing Adresses with Adress Class
@@ -268,14 +314,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         // startPoint/endPoint inversion
         ImageButton inversionButton = findViewById(R.id.inversion);
-
-        // pollen button
-
-        this.pollen_button= findViewById(R.id.pollen_main);
-
-
-
-
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -352,6 +390,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
 
+        //Fetch RNSA data
+        new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
+        Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
+
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -399,6 +441,22 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
         Log.d(LOG_TAG, "onStart: finished ");
+
+        //pollen_alert button color
+        int pollen_alert_count = 2;
+        int colorZero = Color.parseColor("#89BE89");
+        int colorOne = Color.parseColor("#FF9800");
+        int colorTwo = Color.parseColor("#F00020");
+
+        if (pollen_alert_count==0){
+            pollen_button.setColorFilter(colorZero);
+        }
+        else if (pollen_alert_count==1){
+            pollen_button.setColorFilter(colorOne);
+        }
+        else if (pollen_alert_count==2){
+            pollen_button.setColorFilter(colorTwo);
+        }
 
     }
 
@@ -1527,12 +1585,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             requestLocalisationPermission(); //line 447
         }
     }
-    // OnClick method to open the pollen popup
-    public void onClickPollen(View view) {
-        displayPollen();
 
-    }
 }
+
 
 
 

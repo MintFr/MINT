@@ -278,7 +278,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 // behaviour when you click anywhere on the map : we want to reset everything back to normal
                 InfoWindow.closeAllInfoWindowsOn(map);
-                for (int i = 1; i < itineraries.size(); i++) { // we go through all the polylines that are displayed
+                for (int i = 0; i < itineraries.size(); i++) { // we go through all the polylines that are displayed
                     resetPolylineAppearance(lines.get(i));
                 }
                 return true;
@@ -498,6 +498,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ImageButton save = v.findViewById(R.id.save);
         TextView timeStart = v.findViewById(R.id.timeStart);
         TextView timeEnd = v.findViewById(R.id.timeEnd);
+
 
         //Highlighting the selected itinerary
         if (!v.isActivated()) {
@@ -779,6 +780,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // we remove it from the list of overlays and then add it again on top of all the other lines so it's in front
         mapView.getOverlays().remove(polyline);
         mapView.getOverlays().add(size, polyline);
+
         map.invalidate();
     }
 

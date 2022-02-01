@@ -15,7 +15,7 @@
     <!-- Adding bottom sheet after main content -->
     <include
         android:id="@+id/itinerary_recap_layout"
-        layout="@layout/itinerary_recap" />
+        layout="@layout/itinerary_recap_big" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/zoom_in"

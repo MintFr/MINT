@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/PrimaryWhite_Itinerary"
+    tools:context=".controller.ItineraryActivity">
+
+    <include
+        android:id="@+id/map_layout"
+        layout="@layout/itinerary_map" />
+
+    <!-- Adding bottom sheet after main content -->
+    <include
+        android:id="@+id/itinerary_recap_layout"
+        layout="@layout/itinerary_recap" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/ic_zoom_in"
+        app:backgroundTint="@color/PrimaryWhite_Itinerary"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/spacer1"
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="" />
+
+    <View
+        android:id="@+id/spacer1"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        app:layout_anchor="@id/zoom_out"
+        app:layout_anchorGravity="top|end"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/ic_zoom_out"
+        app:backgroundTint="@color/PrimaryWhite_Itinerary"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/spacer2"
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="TODO" />
+    <View
+        android:id="@+id/spacer2"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        app:layout_anchor="@id/locate"
+        app:layout_anchorGravity="top|end"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/locate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/ic_locate"
+         android:backgroundTint="@color/PrimaryWhite_Itinerary"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/spacer3"
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="TODO" />
+    <View
+        android:id="@+id/spacer3"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_above="@id/bottom_navigation"
+        app:layout_anchor="@id/recap_fab"
+        app:layout_anchorGravity="top|end"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/recap_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="170dp"
+        android:src="@drawable/ic_recap"
+        app:layout_anchor="@id/itinerary_recap_layout"
+        app:layout_anchorGravity="top|end"
+        android:contentDescription="TODO" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/White_Main"
+        app:itemTextAppearance="@style/BottomStyleBig"
+        app:itemTextColor="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_menu_big"
+        tools:ignore="MissingConstraints" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

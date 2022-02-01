@@ -45,6 +45,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -52,8 +53,10 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -118,6 +121,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     boolean starting;
     boolean fast;
     boolean healthy;
+    /**
+     * This activity handles the input of start and end points and the itinerary options
+     *
+     * @param savedInstanceState
+     */
+
+    SwitchCompat switchCompat;
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
@@ -160,11 +170,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     private GeoPoint tmpPoint;
 
-    /**
-     * This activity handles the input of start and end points and the itinerary options
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -173,8 +178,12 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         // Check for localisation permission
         requestLocalisationPermission();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        String sizePolice = PreferencesSize.getSize("police", MainActivity.this);
+        if (sizePolice.equals("big")) {
+            setContentView(R.layout.activity_main_big);
+        } else {
+            setContentView(R.layout.activity_main);
+        }
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -282,10 +291,19 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         mapController.setCenter(startPoint);
 
         //Bottom Menu
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
-        bottomNav.setItemIconTintList(null);
-        Menu menu = bottomNav.getMenu();
+        Menu menu;
+        if (sizePolice.equals("big")) {
+            NavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        } else {
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(new MenuSwitcherActivity(this));
+            bottomNav.setItemIconTintList(null);
+            menu = bottomNav.getMenu();
+        }
+
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
     }
@@ -1064,16 +1082,16 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     intent.putExtra("starting", starting);
                     //intent.putExtra("date", dateText);
                     intent.putExtra("time", timeText);
-                    intent.putExtra("param1", startAddress.getCoordinates().getLatitude());
-                    intent.putExtra("param2", startAddress.getCoordinates().getLongitude());
-                    intent.putExtra("param3", endAddress.getCoordinates().getLatitude());
-                    intent.putExtra("param4", endAddress.getCoordinates().getLongitude());
-                    intent.putExtra("param5", stepBool && stepPoint.isShown()); // to know if there is a stepPoint or not
+                    intent.putExtra("latitudeStart", startAddress.getCoordinates().getLatitude());
+                    intent.putExtra("longitudeStart", startAddress.getCoordinates().getLongitude());
+                    intent.putExtra("latitudeEnd", endAddress.getCoordinates().getLatitude());
+                    intent.putExtra("longitudeEnd", endAddress.getCoordinates().getLongitude());
+                    intent.putExtra("stepInItinerary", stepBool && stepPoint.isShown()); // to know if there is a stepPoint or not
 
                     // Add stepPoint parameters if needed
                     if (stepBool && stepPoint.isShown()) {
-                        intent.putExtra("param6", stepAddress.getCoordinates().getLatitude());
-                        intent.putExtra("param7", stepAddress.getCoordinates().getLongitude());
+                        intent.putExtra("latitudeStep", stepAddress.getCoordinates().getLatitude());
+                        intent.putExtra("longitudeStep", stepAddress.getCoordinates().getLongitude());
                     }
                     System.out.println("recherche");
                     startActivity(intent);
@@ -1085,16 +1103,16 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                     Intent intent1 = new Intent(getApplicationContext(), LoadingPageActivity.class);
                     intent1.putExtra("starting", starting);
                     intent1.putExtra("time", timeText);
-                    intent1.putExtra("param1", 47.2484039066116);
-                    intent1.putExtra("param2", -1.549636963829987);
-                    intent1.putExtra("param3", 47.212191574506164);
-                    intent1.putExtra("param4", -1.5535549386503666);
-                    intent1.putExtra("param5", stepBool); // to know if there is a stepPoint or not
+                    intent1.putExtra("latitudeStart", 47.2484039066116);
+                    intent1.putExtra("longitudeStart", -1.549636963829987);
+                    intent1.putExtra("latitudeEnd", 47.212191574506164);
+                    intent1.putExtra("longitudeEnd", -1.5535549386503666);
+                    intent1.putExtra("stepInItinerary", stepBool); // to know if there is a stepPoint or not
 
                     // Add stepPoint parameters if needed
                     if (stepBool) {
-                        intent1.putExtra("param6", 47.212191574506164);
-                        intent1.putExtra("param7", -1.5535549386503666);
+                        intent1.putExtra("latitudeStep", 47.212191574506164);
+                        intent1.putExtra("longitudeStep", -1.5535549386503666);
                     }
 
                     startActivity(intent1);
@@ -1141,6 +1159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
     /**
      * This method
+     *
      * @param start
      * @param end
      */
@@ -1218,7 +1237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             PreferencesAddresses.removeLastAddress("lastAddress", nbLastAdd, MainActivity.this);
         }
     }
-
 
 
     /**
@@ -1306,7 +1324,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * Returns -2 if the String is "ma position" and -1 if the index isn't in the addresses
      *
      * @param start : String of the start address.
-     * @param end : String of the end address
+     * @param end   : String of the end address
      * @return res : The first value is for the start address, the second for end address.
      */
     public int[] getSameAddresses(String start, String end) {

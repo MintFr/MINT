@@ -85,7 +85,9 @@
     <string name="settings_faq">F.A.Q.</string>
     <string name="settings_language">Langue</string>
     <string name="settings_legal">Mentions légales</string>
+    <string name="settings_police">Agrandir la police</string>
     <string name="settings_dark_mode">Mode nuit</string>
+    <string name="settings_big_mode">Aggrandissement</string>
     <string name="mon_exposition">Mon exposition</string>
     <string name="_0h_08min">0h 08min</string>
     <string name="criteria_choice">Choix du critère</string>

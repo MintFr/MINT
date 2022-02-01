@@ -25,11 +25,11 @@ public class LoadingPageActivity extends AppCompatActivity {
         boolean start = intent.getBooleanExtra("starting", true);
         String time = intent.getStringExtra("time");
         System.out.println(time);
-        double param1 = intent.getDoubleExtra("param1", 0.0);
-        double param2 = intent.getDoubleExtra("param2", 0.0);
-        double param3 = intent.getDoubleExtra("param3", 0.0);
-        double param4 = intent.getDoubleExtra("param4", 0.0);
-        boolean param5 = intent.getBooleanExtra("param5", false);
+        double latitudeStart = intent.getDoubleExtra("latitudeStart", 0.0);
+        double longitudeStart = intent.getDoubleExtra("longitudeStart", 0.0);
+        double latitudeEnd = intent.getDoubleExtra("latitudeEnd", 0.0);
+        double longitudeEnd = intent.getDoubleExtra("longitudeEnd", 0.0);
+        boolean stepInItinerary = intent.getBooleanExtra("stepInItinerary", false);
 
         // options' management
         int[] options = PreferencesTransport.getOptionTransportation(this);
@@ -42,25 +42,25 @@ public class LoadingPageActivity extends AppCompatActivity {
         }
 
         // verification : is there a stepPoint?
-        if (param5) {
+        if (stepInItinerary) {
             // Yes, there is a stepPoint
-            double param6 = intent.getDoubleExtra("param6", 0.0);
-            double param7 = intent.getDoubleExtra("param7", 0.0);
+            double latitudeStep = intent.getDoubleExtra("latitudeStep", 0.0);
+            double longitudeStep = intent.getDoubleExtra("longitudeStep", 0.0);
 
-            if (param1 == 0.0 && param2 == 0.0 && param3 == 0.0 && param4 == 0.0 && param6 == 0.0 && param7 == 0.0) {
-                param1 = 47.2484039066116;
-                param2 = -1.549636963829987;
-                param3 = 47.212191574506164;
-                param4 = -1.5535549386503666;
-                param6 = 47.212191574506164;
-                param7 = -1.5535549386503666;
+            if (latitudeStart == 0.0 && longitudeStart == 0.0 && latitudeEnd == 0.0 && longitudeEnd == 0.0 && latitudeStep == 0.0 && longitudeStep == 0.0) {
+                latitudeStart = 47.2484039066116;
+                longitudeStart = -1.549636963829987;
+                latitudeEnd = 47.212191574506164;
+                longitudeEnd = -1.5535549386503666;
+                latitudeStep = 47.212191574506164;
+                longitudeStep = -1.5535549386503666;
             }
 
             // build the URL for the request to the server
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
-                    param1, param2, param3, param4, param5, param6, param7, options[0], options[1], options[2], options[3], start, time);
+                    latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, latitudeStep, longitudeStep, options[0], options[1], options[2], options[3], start, time);
 
             System.out.println(url);
             AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
@@ -68,16 +68,16 @@ public class LoadingPageActivity extends AppCompatActivity {
 
         } else {
             // No, there is no stepPoint
-            if (param1 == 0.0 && param2 == 0.0 && param3 == 0.0 && param4 == 0.0) {
-                param1 = 47.2484039066116;
-                param2 = -1.549636963829987;
-                param3 = 47.212191574506164;
-                param4 = -1.5535549386503666;
+            if (latitudeStart == 0.0 && longitudeStart == 0.0 && latitudeEnd == 0.0 && longitudeEnd == 0.0) {
+                latitudeStart = 47.2484039066116;
+                longitudeStart = -1.549636963829987;
+                latitudeEnd = 47.212191574506164;
+                longitudeEnd = -1.5535549386503666;
             }
 
             String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
-                    param1, param2, param3, param4, param5, options[0], options[1], options[2], options[3], start, time);
+                    latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, options[0], options[1], options[2], options[3], start, time);
 
             // activity launch
             System.out.println(url);

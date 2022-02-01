@@ -631,4 +631,4 @@ public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCo
             dialog.show();
         }
 
-    }
+}

@@ -3,6 +3,7 @@ package com.example.mint.controller;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -57,12 +59,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.mint.R;
-import com.example.mint.model.AsyncPollenData;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
+import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -72,6 +74,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -101,24 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LONGITUDE_MIN = -1.8;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
-
-    /**
-     * POPUP POLLEN
-     */
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
-    public void displayPollen() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
-    }
-
-
-
 
 
     /**
@@ -202,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     private GeoPoint tmpPoint;
 
-
+    Button click;
     /**
      * Method to read server response, which is as text file, and put it in a String object.
      *
@@ -219,6 +204,25 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         return sb.toString();
     }
 
+    /**
+     * POPUP POLLEN
+     */
+    TextView donneesPollen;
+    String SAMPLE_URL;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    public void displayPollen() {
+        //creation of the popup
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -234,16 +238,20 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             setContentView(R.layout.activity_main);
         }
 
+        //Popup Pollen when app starts
         Context contextPollen = getApplicationContext();
         SharedPreferences prefs = contextPollen.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
         boolean isStartingPollen = prefs.getBoolean("isStartingPollen", true);
         if (isStartingPollen) {
-            // Popup Pollen
             displayPollen();
         }
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isStartingPollen", false);
         editor.apply();
+
+        //Fetch data from RNSA url
+        String SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
+        TextView donneesPollen = findViewById(R.id.pollen_alert_text);
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -303,15 +311,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         // startPoint/endPoint inversion
         ImageButton inversionButton = findViewById(R.id.inversion);
-
-        //Get data from RNSA data
-        final String SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-        findViewById(R.id.pollen_alert_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AsyncPollenData().execute(SAMPLE_URL);
-            }
-        });
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -387,6 +386,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     protected void onStart() {
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
+
+        //Fetch RNSA data
+        new fetchData(donneesPollen).execute(SAMPLE_URL);
+        Log.d(LOG_TAG, "msg" + donneesPollen.getText());
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
@@ -1579,14 +1582,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             requestLocalisationPermission(); //line 447
         }
     }
-    // OnClick method to open the pollen popup
 
-    public void onClickpollen(View view) {
-
-        displayPollen();
-
-    }
 }
+
 
 
 

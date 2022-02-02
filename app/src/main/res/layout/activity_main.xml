@@ -239,7 +239,7 @@
 
 
     <ImageButton
-        android:id="@+id/pollen_main"
+        android:id="@+id/pollen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/myPosition"
@@ -251,7 +251,7 @@
         android:scaleY="0.6"
         tools:background="@android:color/transparent"
         tools:layout_alignParentRight="true"
-        tools:srcCompat="@drawable/ic_pollen_modified_1" />
+        tools:srcCompat="@drawable/ic_pollen_modified" />
 
 
 </RelativeLayout>

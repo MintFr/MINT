@@ -91,9 +91,9 @@
         android:scaleY="0.6"
         app:layout_constraintBottom_toTopOf="@+id/zoom_in"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_pollen_modified_1"
-        tools:onClick="onClickPollenMap"
-        tools:ignore="VectorDrawableCompat" />
+        app:srcCompat="@drawable/ic_pollen_modified"
+        tools:ignore="VectorDrawableCompat"
+        tools:onClick="onClickPollen" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

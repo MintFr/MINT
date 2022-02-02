@@ -196,7 +196,7 @@
         android:src="@drawable/button_location" />
 
     <ImageButton
-        android:id="@+id/pollen_button_main"
+        android:id="@+id/pollen_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_above="@id/myPosition"
@@ -206,12 +206,13 @@
         android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
-        android:onClick="onClickpollen"
+        android:onClick="onClickPollen"
         android:padding="70dp"
         android:scaleX="1"
-        app:srcCompat="@drawable/pollen_alert"
+        app:srcCompat="@drawable/ic_pollen_modified_1"
         tools:foregroundGravity="center"
-        tools:scaleY="1" />
+        tools:scaleY="1"
+        tools:ignore="VectorDrawableCompat" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/bottom_navigation"

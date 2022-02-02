@@ -67,6 +67,23 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
+    <ImageButton
+        android:id="@+id/pollen_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:adjustViewBounds="true"
+        android:onClick="onClickPollen"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/zoom_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_pollen_modified_1"
+        tools:background="@color/PrimaryWhite_Map"
+        tools:ignore="VectorDrawableCompat"
+        tools:layout_alignParentRight="true" />
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -80,24 +97,6 @@
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints" />
 
-    <ImageButton
-        android:id="@+id/pollen_button_map"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="20dp"
-        android:onClick="onClickPollen"
-        android:padding="70dp"
-        android:scaleX="1"
-        android:scaleY="1"
-        app:layout_constraintBottom_toTopOf="@+id/zoom_in"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/pollen_alert"
-        tools:adjustViewBounds="true"
-        tools:background="@color/Transparent_Map"
-        android:background="@android:color/transparent"
-        tools:baselineAlignBottom="false"
-        tools:flow_verticalAlign="baseline"
-        tools:ignore="VectorDrawableCompat" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

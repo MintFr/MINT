@@ -24,6 +24,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
 import com.example.mint.R;
+import com.example.mint.model.AsyncItineraryCompute;
 import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollution;
@@ -69,7 +70,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     /**
      * ITINERARY
      */
-    ArrayList<Itinerary> itineraries;
+    private ArrayList<Itinerary> itineraries;
     /**
      * INFLATER : brings up necessary views
      */
@@ -115,6 +116,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "Save State Itinerary OnCreate");
+
         //  charger le bouton puis activer ou pas
         String sizePolice = PreferencesSize.getSize("police", ItineraryActivity.this);
         if (sizePolice.equals("big")) {
@@ -215,8 +218,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         //Get itineraries from the Async task
+        ArrayList<Itinerary> itineraries_main;
         Intent intent = getIntent();
-        itineraries = new ArrayList<>();
         itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
 
 
@@ -390,6 +393,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 }
             });
         }
+        map.invalidate();
     }
 
     /**
@@ -894,6 +898,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     public void toRealTimeItinerary(View view) {
         Intent intent = new Intent(this, RealTimeItineraryActivity.class);
         intent.putExtra("itinerary", itineraries.get((int) view.getTag()));
+        intent.putExtra("itineraries",itineraries);
+        Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null)  + "'"));
         startActivity(intent);
         onStop();
     }
@@ -908,9 +914,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     public void onRestart() {
         super.onRestart();
         Log.d(LOG_TAG, "Save State Itinerary OnRestart");
-        for (int i = 0; i < 4; i++) {
-
-        }
     }
 
     @Override

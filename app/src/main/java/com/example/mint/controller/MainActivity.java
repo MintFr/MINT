@@ -52,6 +52,7 @@ import androidx.core.content.ContextCompat;
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
+import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
@@ -70,6 +71,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
@@ -170,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     private GeoPoint tmpPoint;
 
+    private ArrayList<Itinerary> itineraries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -205,7 +209,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         }
 
-        System.out.println("{" + fav[0] + "," + fav[1] + "," + fav[2] + "," + fav[3] + "}");
         PreferencesTransport.setOptionTransportation(fav, this);
 
         // get current date and time
@@ -396,22 +399,17 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
 
         intent.putExtra("previousActivity", this.getClass());
-
         this.startActivity(newIntent);
 
         //---------TRANSITIONS-----------
         //For Left-To-Right transitions
-        if (
-                targetActivity.equals("com.example.mint.MapsActivity")
-                        || targetActivity.equals("com.example.mint.controller.ProfileActivity")
+        if (targetActivity.equals("com.example.mint.MapsActivity")||targetActivity.equals("com.example.mint.controller.ProfileActivity")
         ) {
-
-            // hide/show stepPoint when the user clicks on the addStepPoint button
-
             //override the transition and finish the current activity
             this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             this.finish();
         }
+
     }
 
     /////////////////////////////////////////////////////////
@@ -877,7 +875,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 // if there is no marker already we center the map on the new point
                 mapController.setCenter(tmpPoint);
             }
-            System.out.println(map);
 
             //printing a new position marker on the map
             if (map != null) {
@@ -1096,7 +1093,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                         intent.putExtra("latitudeStep", stepAddress.getCoordinates().getLatitude());
                         intent.putExtra("longitudeStep", stepAddress.getCoordinates().getLongitude());
                     }
-                    System.out.println("recherche");
                     startActivity(intent);
                     finish();
                     break;
@@ -1371,9 +1367,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     public void onRestart() {
         super.onRestart();
         Log.d(LOG_TAG, "Save State Main OnRestart");
-        for (int i = 0; i < 4; i++) {
-
-        }
     }
 
     @Override

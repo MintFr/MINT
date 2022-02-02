@@ -129,7 +129,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      */
     LayoutInflater inflater;
 
-
+    private ArrayList<Itinerary> itineraries;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -212,13 +212,16 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         //Getting the Itinerary from the intend clicked
         itinerary = (Itinerary) getIntent().getSerializableExtra("itinerary");
+        //Getting the array of itineraries to handle the intent to main
+        itineraries = (ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries");
+        Log.d(LOG_TAG, (" Save State itineraries from OnCreate Realtimeiti is null ? : '" + String.valueOf(itineraries == null)  + "'"));
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(LOG_TAG, "Save State Main OnStart");
+        Log.d(LOG_TAG, "Save State RealTImeItinerary OnStart");
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on lauch on the user's position ///////////
@@ -720,7 +723,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
     public void toMain(View view){
         Intent intent = new Intent ( this, MainActivity.class);
+        intent.putExtra("itineraries",itineraries);
+        Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null)  + "'"));
         startActivity(intent);
+        finish();
     }
 
 
@@ -735,9 +741,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     public void onRestart() {
         super.onRestart();
         Log.d(LOG_TAG, "Save State RealTimeItinerary OnRestart");
-        for (int i = 0; i < 4; i++) {
-
-        }
     }
 
     @Override

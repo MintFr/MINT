@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     Location locationUser;
     IMapController mapController;
     /**
-     * Adress suggestions
+     * Address suggestions
      */
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;

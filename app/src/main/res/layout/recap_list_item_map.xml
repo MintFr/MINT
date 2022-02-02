@@ -6,10 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/cardview_light_background"
-    android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:onClick="displayDetailButton"
     tools:ignore="DuplicateClickableBoundsCheck">
 
     <RelativeLayout
@@ -213,6 +211,9 @@
                 android:background="@color/WhiteTwo_Detail" />
 
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
                 <LinearLayout
                     android:id="@+id/itinerary_steps"
                     android:layout_width="match_parent"
@@ -324,6 +325,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </RelativeLayout>
 

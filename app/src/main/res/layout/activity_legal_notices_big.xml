@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.TermsOfUseActivity">
-
+    tools:context=".controller.LegalNoticesActivity">
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
@@ -31,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lorem_ipsum"
-                android:textSize="15dp" />
+                android:textSize="20sp" />
         </ScrollView>
     </LinearLayout>
 
@@ -55,18 +54,18 @@
             android:id="@+id/back_button_legal_notices"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:onClick="onClickBackButton"
             android:paddingRight="-20dp"
-            android:src="@drawable/ic_chevron_left" />
+            android:src="@drawable/ic_chevron_left"
+            android:onClick="onClickBackButtonLegal"/>
 
         <TextView
-            android:id="@+id/faq_title"
+            android:id="@+id/terms_of_use_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_weight="1"
-            android:text="@string/terms_of_use"
-            android:textSize="24sp"
+            android:text="@string/mentions_l_gales2"
+            android:textSize="30dp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>

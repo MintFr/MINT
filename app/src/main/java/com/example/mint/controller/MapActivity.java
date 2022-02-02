@@ -1,6 +1,7 @@
 package com.example.mint.controller;
 
 import static android.graphics.Color.argb;
+import static android.graphics.Color.parseColor;
 import static android.graphics.Color.rgb;
 
 import android.content.Context;
@@ -25,6 +26,8 @@ import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.devs.vectorchildfinder.VectorChildFinder;
+import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.mint.R;
 import com.example.mint.model.Pollution;
 import com.example.mint.model.PreferencesSize;
@@ -207,19 +210,56 @@ public class MapActivity<pollen_alert_count, pollen_count, pollen> extends AppCo
         /////////////////////////////////////////////////////////
         //                   BOTTOM MENU END                   //
         /////////////////////////////////////////////////////////
+
+
+//pollen_alert button color
+        int pollen_count = getPollenIntensity();
+        int colorZero = parseColor("#b0bb3a");
+        int colorOne = parseColor("#387D22");
+        int colorTwo = parseColor("#F1E952");
+        int colorThree = parseColor("#EB3323");
+
+        int color = (
+                (pollen_count == 0) ?
+                        colorZero :
+                        (pollen_count == 1) ?
+                                colorOne :
+                                (pollen_count == 2) ?
+                                        colorTwo :
+                                        colorThree
+        );
+
+        // Change color to the button
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+        path1.setFillColor(color);
+        VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+        path2.setFillColor(color);
+        VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+        path3.setFillColor(color);
+        VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+        path4.setFillColor(color);
+        VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+        path5.setFillColor(color);
+
+        // apply changes of colors
+        pollen_button.invalidate();
     }
+
+    private int getPollenIntensity() {
+
+
+        return 2;
+    }
+
+
 
 
     /////////////////////////////////////////////////////////
     //                   BACK BUTTON                       //
     /////////////////////////////////////////////////////////
 
-            //pollen_alert button
-
-        int pollen_count=0;
-        int colorZero = Color.parseColor("#89BE89");
-        int colorOne = Color.parseColor("#FF9800");
-        int colorTwo = Color.parseColor("#F00020");
 
 
 

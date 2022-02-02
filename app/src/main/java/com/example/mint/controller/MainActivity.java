@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     }
 
     private int getPollenIntensity() {
-        return 1;
+        return 0;
     }
 
 

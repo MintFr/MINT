@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     TextView donneesPollen;
     String SAMPLE_URL;
-    View test; // view in which to search the text view for the pollen
+    View v; // view in which to search the text view for the pollen
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        this.test=pollenPopupView; //initialisation of the view for the textView
+        this.v=pollenPopupView; //initialisation of the view for the textView
         dialogBuilder.setNegativeButton("FERMER", null);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         //Fetch data from RNSA url
         this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-        this.donneesPollen = test.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
         Log.d("test donneesPollen","msg: " +donneesPollen.getText());
 
         // Highlighting selected favorite means of transportation chosen in Profile

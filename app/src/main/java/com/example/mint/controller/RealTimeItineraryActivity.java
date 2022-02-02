@@ -272,6 +272,13 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "onStart: finished ");
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
     public void zoomIn(View view){
         map.getController().zoomIn();
     }

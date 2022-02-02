@@ -381,35 +381,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     @Override
     public void onBackPressed() {
-
-        String targetActivity = "No target activity yet";
-        // Get previous intent with information of previous activity
-        Intent intent = getIntent();
-        targetActivity = intent.getStringExtra("previousActivity");
-
-        // Creates a new intent to go back to that previous activity
-        // Tries to get the class from the name that was passed through the previous intent
-        Intent newIntent = null;
-        try {
-            newIntent = new Intent(this, Class.forName(targetActivity));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-
-        intent.putExtra("previousActivity", this.getClass());
-        this.startActivity(newIntent);
-
-        //---------TRANSITIONS-----------
-        //For Left-To-Right transitions
-        if (targetActivity.equals("com.example.mint.MapsActivity")||targetActivity.equals("com.example.mint.controller.ProfileActivity")
-        ) {
-            //override the transition and finish the current activity
-            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            this.finish();
-        }
-
+            finish();
+            System.exit(0);
     }
 
     /////////////////////////////////////////////////////////

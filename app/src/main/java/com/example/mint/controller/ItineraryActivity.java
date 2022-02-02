@@ -403,6 +403,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -901,7 +902,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         intent.putExtra("itineraries",itineraries);
         Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null)  + "'"));
         startActivity(intent);
-        onStop();
+        finish();
     }
 
     @Override

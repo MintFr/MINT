@@ -223,12 +223,19 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onPause() {
-        super.onPause();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
-        map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+        try {
+            super.onPause();
+            //this will refresh the osmdroid configuration on resuming.
+            //if you make changes to the configuration, use
+            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            //Configuration.getInstance().save(this, prefs);
+            map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+        } catch (IllegalStateException e){
+            e.printStackTrace();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
     }
 
 
@@ -250,6 +257,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             newIntent = new Intent(this, Class.forName(targetActivity));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }catch (NullPointerException e){
+            newIntent = new Intent(this, MainActivity.class);
+            targetActivity = "com.example.mint.controller.MainActivity";
         }
         intent.putExtra("previousActivity", this.getClass());
 
@@ -261,7 +271,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
             //override the transition and finish the current activity
             this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            //this.finish();
+            this.finish();
         }
 
         //For Right-To-Left transitions

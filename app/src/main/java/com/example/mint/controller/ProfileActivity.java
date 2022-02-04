@@ -641,7 +641,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         System.out.println("values" + PreferencesPollution.getPollutionYear(2021, this));
         ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2021, this);
 
-
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we use the java date format to calculate how many days have gone by since the beginning of the year

@@ -65,6 +65,9 @@ import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -145,8 +148,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * POPUP POLLEN
      */
     TextView donneesPollen;
-    String SAMPLE_URL;
-    View test; // view in which to search the text view for the pollen
+    String SAMPLE_URL, cypres, dataPollen;
+    View v; // view in which to search the text view for the pollen
+    TextView alertPollen;
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
@@ -211,24 +215,39 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         //creation of the popup
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        this.test = pollenPopupView; //initialisation of the view for the textView
+        this.v = pollenPopupView; //initialisation of the view for the textView
 
         //Fetch data from RNSA url
         this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-        this.donneesPollen = test.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
         Log.d("test donneesPollen", "msg: " + donneesPollen.getText());
 
         //Fetch RNSA data
         new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
+        dataPollen = String.valueOf(this.donneesPollen.getText());
         Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
 
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
         dialogBuilder.setNegativeButton("FERMER", null);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+
+        /**
+        //Parse data
+        try {
+            final JSONObject obj = new JSONObject(dataPollen);
+            final JSONObject data = obj.getJSONObject(" ");
+            cypres = data.getString("cypres");
+            donneesPollen.setText("Cypres: "+ cypres);
+            final JSONObject dic = data.getJSONObject(0);
+            alertPollen.setText(dic.getString("cypres"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+         */
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug

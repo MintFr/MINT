@@ -71,7 +71,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
@@ -1109,18 +1108,18 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             // it to Addresses.
             switch (positionId) {
                 case 0:
-                    // PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
+                    PreferencesAddresses.addAddress("startAddress", "Ma position", MainActivity.this);
                     PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
                     PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
                     break;
                 case 1:
                     PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
-                    // PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
+                    PreferencesAddresses.addAddress("endAddress", "Ma position", MainActivity.this);
                     PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
                 case 2:
                     PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
                     PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);
-                    // PreferencesAddresses.addAddress("stepAddress", step, MainActivity.this);
+                    PreferencesAddresses.addAddress("stepAddress", "Ma position", MainActivity.this);
                 default:
                     PreferencesAddresses.addAddress("startAddress", start, MainActivity.this);
                     PreferencesAddresses.addAddress("endAddress", end, MainActivity.this);

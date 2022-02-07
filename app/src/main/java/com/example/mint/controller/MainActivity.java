@@ -53,6 +53,7 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesDate2;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     protected void onStart() {
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
-
+        Log.d("Date", PreferencesDate2.getCurrentDate());
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
         /////////////////////////////////////////////////////////////////////////////////////////

@@ -25,7 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mint.R;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesDate;
+import com.example.mint.model.PreferencesDate2;
 import com.example.mint.model.PreferencesPollution;
+import com.example.mint.model.PreferencesPollution2;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
@@ -129,18 +131,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // handle the pollution
         pollutionToday = findViewById(R.id.exposure_today);
         // check whether a new day has started and if so reset pollution to 0 and store the last value
-        resetPollutionNewDay();
-        // Get the pollution from the last itineraries and change the pollution from today accordingly
-        setPollutionToday();
+        //resetPollutionNewDay();
+        // get the pollution from today
+        int pollution = PreferencesPollution2.getPollutionToday(this);
+        pollutionToday.setText(Integer.toString(pollution));
 
-        // UPDATE PREFERENCES
-        // update the pollution for this month
-        System.out.println("pollution today" + PreferencesPollution.getPollutionToday(this));
-        PreferencesPollution.addDayPollutionToMonth(PreferencesDate.getCurrentDate(), PreferencesPollution.getPollutionToday(this), this);
-        System.out.println(PreferencesPollution.getPollutionMonth(3, this));
-        // update the pollution for this year
-        PreferencesPollution.addMonthPollutionToYear(PreferencesDate.getCurrentDate()[1], PreferencesPollution.getPollutionMonth(PreferencesDate.getCurrentDate()[1], this), this);
-        System.out.println(PreferencesPollution.getPollutionYear(2021, this));
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
 //        ArrayList<Integer> valuesTest = new ArrayList<>();
@@ -591,29 +586,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    /**
-     * This adds the pollution from the last itinerary to today's pollution
-     */
-    private void setPollutionToday() {
-        // get the pollution from today
-        int pollution = PreferencesPollution.getPollutionToday(this);
-        // get the pollution from the last itinerary
-        int lastPol = PreferencesPollution.getLastPollution(this);
-        // add it to the pollution from today
-        pollution += lastPol;
-        // save it in the preferences
-        PreferencesPollution.setPollutionToday(pollution, this);
-        // display new pollution
-        pollutionToday.setText(Integer.toString(pollution));
-        // reset the last pollution now that it has been saved (so that it doesn't keep adding it as soon as we reopen the profile)
-        PreferencesPollution.setLastPollution(0, this);
-    }
+
 
     /**
      * This method checks whether we have started a new day or not every time we open the profile activity
      * If so, we save the new date value in the preferences, to be used as a comparison for the next time this function is called
      * Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
      */
+    /*
     private void resetPollutionNewDay() {
         // first we check whether today is a new day or not
         // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
@@ -626,7 +606,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             PreferencesPollution.addDayPollutionToMonth(lastDate, PreferencesPollution.getPollutionToday(ProfileActivity.this), ProfileActivity.this);
             PreferencesPollution.setPollutionToday(0, ProfileActivity.this); // we start over with a value of 0
         }
-    }
+    }*/
 
     /**
      * This handles all the graph values and appearance settings
@@ -642,9 +622,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we use the java date format to calculate how many days have gone by since the beginning of the year
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-        String inputString1 = PreferencesDate.getCurrentDate()[0] + " " + PreferencesDate.getCurrentDate()[1] + " " + PreferencesDate.getCurrentDate()[2];
-        String inputString2 = "00 01 " + PreferencesDate.getCurrentDate()[2];
+        SimpleDateFormat myFormat = new SimpleDateFormat("d_M_yy");
+        String inputString1 = PreferencesDate2.getCurrentDate();
+        String inputString2 = "01 01 " + PreferencesDate.getCurrentDate()[2];
         int diffDays = 0;
         try {
             Date date1 = myFormat.parse(inputString1);

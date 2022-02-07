@@ -23,6 +23,7 @@ import com.example.mint.R;
 import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollution;
+import com.example.mint.model.PreferencesPollution2;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.Step;
@@ -746,9 +747,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     Toast.makeText(ItineraryActivity.this,
                             "L'exposition associée à ce trajet a bien été ajoutée à votre profil",
                             Toast.LENGTH_SHORT).show();
-                    // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
-                    PreferencesPollution.setLastPollution(
-                            (int) list.get(i).getPollution(), ItineraryActivity.this);
+                    //get the pollution already saved today
+                    int pollution = PreferencesPollution2.getPollutionToday(ItineraryActivity.this);
+                    //add the pollution of this itinerary
+                    pollution+=(int) list.get(i).getPollution();
+                    // save it in the preferences
+                    PreferencesPollution2.setPollutionToday(pollution, ItineraryActivity.this);
                 }
             });
 

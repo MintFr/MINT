@@ -121,8 +121,8 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
         android:background="@drawable/round_button_shadow_background"
-        android:src="@drawable/ic_save"
-        android:contentDescription="TODO" />
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_save" />
 
     <View
         android:layout_width="match_parent"

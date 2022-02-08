@@ -1,6 +1,7 @@
 package com.example.mint.model;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -90,6 +91,8 @@ public class fetchData extends AsyncTask<String, String, String> {
 
             }
             max = dic.getInt("Total");
+            MainActivity.maxPollen = 1;
+
             }
             catch (JSONException e) {
                 e.printStackTrace();

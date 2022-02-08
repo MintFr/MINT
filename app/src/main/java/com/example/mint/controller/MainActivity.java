@@ -2,6 +2,9 @@ package com.example.mint.controller;
 
 import static android.graphics.Color.parseColor;
 
+import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
+import static com.example.mint.model.PreferencesMaxPollen.setMaxPollen;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -154,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
+    public static int maxPollen;
+    private Context contextPollen;
     /**
      * Map
      */
@@ -195,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
+
     /**
      * Method to read server response, which is as text file, and put it in a String object.
      *
@@ -219,23 +225,21 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         //Fetch data from RNSA url
         this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
-        Log.d("test donneesPollen", "msg: " + donneesPollen.getText());
 
         //Fetch RNSA data
         new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
         dataPollen = String.valueOf(this.donneesPollen.getText());
-        Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
-
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
         dialogBuilder.setNegativeButton("FERMER", null);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
-
-        //Parse data
-
-
+        //Set SharedPreferences
+        Log.d(LOG_TAG,"pollen" + maxPollen);
+        setMaxPollen("maxPollen", maxPollen, contextPollen);
+        Log.d(LOG_TAG, "pollen" + getMaxPollen("maxPollen", contextPollen));
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
 
         //Popup Pollen when app starts
-        Context contextPollen = getApplicationContext();
+        contextPollen = getApplicationContext();
         SharedPreferences prefs = contextPollen.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
         boolean isStartingPollen = prefs.getBoolean("isStartingPollen", true);
         if (isStartingPollen) {

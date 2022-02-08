@@ -5,16 +5,16 @@ import android.content.SharedPreferences;
 
 public class PreferencesMaxPollen {
 
-    public static void setMaxPollen(String key, String value, Context context) {
+    public static void setMaxPollen(String key, int value, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("maxPollen", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(key, value);
+        editor.putInt(key, value);
         editor.apply();
     }
 
-    public static String getMaxPollen(String key, Context context) {
+    public static int getMaxPollen(String key, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("maxPollen", Context.MODE_PRIVATE);
-        return prefs.getString(key, "--");
+        return prefs.getInt(key, 10);
     }
 
     public static void removeMaxPollen(String key, Context context) {

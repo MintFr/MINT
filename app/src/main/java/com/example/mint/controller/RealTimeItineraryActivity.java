@@ -310,6 +310,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         //Display the first step
         displayStep(1);
+        this.nbPointsDone += itinerary.getDetail().get(0).getNbEdges();
+        updateFirstDirection();
 
 
 
@@ -372,6 +374,18 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // add line
         map.getOverlays().add(line);
+
+    }
+
+    private void updateFirstDirection() {
+        ArrayList<double[]> pointsIti = itinerary.getPoints();
+        double v1x = pointsIti.get(this.nbPointsDone)[1] - pointsIti.get(0)[1];
+        double v1y = pointsIti.get(this.nbPointsDone)[0] - pointsIti.get(0)[0];
+
+        double v2x = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[1] - pointsIti.get(this.nbPointsDone)[1];
+        double v2y = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[0] - pointsIti.get(this.nbPointsDone)[0];
+
+        double theta = Math.acos((v1x*v2x + v1y*v2y)/(Math.sqrt(v1x*v1x +v1y*v1y)*Math.sqrt(v2x*v2x + v2y*v2y)));
 
     }
 

@@ -13,8 +13,7 @@ public class MyHttpUtils {
         try {
             URL url = new URL("http://51.77.201.227:100/pickdate/noemie/12_25");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            String donneesPollen = inputStreamToString(urlConnection.getInputStream());
-            return donneesPollen;
+            return inputStreamToString(urlConnection.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

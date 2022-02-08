@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.mint.R;
 import com.example.mint.controller.MainActivity;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class fetchData extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
-            textView.append("Get data ...\n\n");
+            textView.append("Le risque allergique prévisionnel (RAEP) pour chaque pollen est de : \n\n");
         }
 
         @Override

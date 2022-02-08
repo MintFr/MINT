@@ -136,5 +136,7 @@ Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermen
         <br></br>
         Les données sont fournies par le RNSA et le RAEP est calculé grâce au risque allergique théorique, à un index clinique provenant des bulletins de médecins, d\'un index phénologique appuyé sur des observations réalisées sur la croissance et la floraison des espèces et enfin sur un index météorologique<br></br>
     </string>
+    <string name="message_fin_pollen_alert"><br></br>
+    Les données sont fournies par le RNSA et le RAEP est calculé grâce au risque allergique théorique, à un index clinique provenant des bulletins de médecins, d\'un index phénologique appuyé sur des observations réalisées sur la croissance et la floraison des espèces et enfin sur un index météorologique<br></br></string>
     <string name="title_pollen_alert">Alerte Pollen</string>
 </resources>

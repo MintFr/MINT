@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * POPUP POLLEN
      */
     TextView donneesPollen;
-    String SAMPLE_URL, cypres, dataPollen;
+    String SAMPLE_URL, dataPollen;
     View v; // view in which to search the text view for the pollen
     TextView alertPollen;
     private View dimPopup;
@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.v = pollenPopupView; //initialisation of the view for the textView
 
         //Fetch data from RNSA url
-        this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
         this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
         Log.d("test donneesPollen", "msg: " + donneesPollen.getText());
 
@@ -232,21 +231,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
-        /**
-        //Parse data
-        try {
-            final JSONObject obj = new JSONObject(dataPollen);
-            final JSONObject data = obj.getJSONObject(" ");
-            cypres = data.getString("cypres");
-            donneesPollen.setText("Cypres: "+ cypres);
-            final JSONObject dic = data.getJSONObject(0);
-            alertPollen.setText(dic.getString("cypres"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-         */
-    }
 
+        //Parse data
+
+
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

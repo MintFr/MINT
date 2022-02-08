@@ -5,6 +5,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 public class PreferencesDate2 {
+    @SuppressLint("SimpleDateFormat")
     static SimpleDateFormat formatDate = new SimpleDateFormat("d_M_yy");
 
     /**
@@ -20,10 +22,9 @@ public class PreferencesDate2 {
      */
     public static String getCurrentDate() {
         final Calendar cldr = Calendar.getInstance();
-        String date = formatDate.format(cldr.getTime());
+        final String date = formatDate.format(cldr.getTime());
         return date;
     }
-
 
 }
 

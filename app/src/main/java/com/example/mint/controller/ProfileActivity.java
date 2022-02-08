@@ -2,6 +2,7 @@ package com.example.mint.controller;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
@@ -105,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      *
      * @param savedInstanceState
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -613,33 +616,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      *
      * @param range : whether we want to display a week, a month or a year (0 for week, 1 for month, 2 for year)
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUpGraph(final int range) {
-        // we get the pollution data from preferences
-        System.out.println("values" + PreferencesPollution.getPollutionYear(2021, this));
-        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2021, this);
 
+        // set up of a Calendar object
+        final Calendar calendar = Calendar.getInstance();
+        // we get the pollution data from preferences calendar.get(Calendar.YEAR)
+        ArrayList<Integer> values = PreferencesPollution2.getPollutionYear(2022, this);
+
+        Log.d(LOG_TAG,"taille values :'" + values.size() +"'");
 
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
-        // we use the java date format to calculate how many days have gone by since the beginning of the year
-        SimpleDateFormat myFormat = new SimpleDateFormat("d_M_yy");
-        String inputString1 = PreferencesDate2.getCurrentDate();
-        String inputString2 = "01 01 " + PreferencesDate.getCurrentDate()[2];
-        int diffDays = 0;
-        try {
-            Date date1 = myFormat.parse(inputString1);
-            Date date2 = myFormat.parse(inputString2);
-            long diff = date1.getTime() - date2.getTime(); // number of days that have gone by in milliseconds
-            diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            System.out.println("Days: " + diffDays);
-            for (int i = 1; i <= diffDays; i++) {
-                System.out.println("i " + i);
-                System.out.println("value " + values.get(i + 4));
-                entries.add(new Entry(i, values.get(i + 2)));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        // we get the nth day of the year
+        int diffDays = calendar.get(Calendar.DAY_OF_YEAR);
 
         // LineDataSet allows for individual styling of this data (for if we have several data sets)
         LineDataSet dataSet = new LineDataSet(entries, null);
@@ -657,7 +647,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         YAxis yAxisRight = graph.getAxisRight();
         final YAxis yAxisLeft = graph.getAxisLeft();
         yAxisRight.setEnabled(false);
-        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setDrawAxisLine(true);
         yAxisLeft.setGridLineWidth(0.5f);
         yAxisLeft.setGridColor(getResources().getColor(R.color.colorLightGrey));
         yAxisLeft.setTypeface(Typeface.DEFAULT);
@@ -666,7 +656,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // X axis
         final XAxis xAxis = graph.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setTypeface(Typeface.DEFAULT);
         xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
@@ -676,10 +666,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 0:
                 // in the case that we want to show the week :
                 // first we change the range of the x axis
-                int currentDayOfWeek = (PreferencesDate.getCurrentDate()[3]) - 1; // day of week starts with 1 for sunday, so we do -1 to start with monday
-                int xAxisMin = (diffDays - currentDayOfWeek) + 1; // we have to add one because if we dont we will have a one day difference
-                xAxis.setAxisMinimum(xAxisMin);
-                xAxis.setAxisMaximum(diffDays + (7 - currentDayOfWeek));
+                int xAxisMin = (diffDays - calendar.get(Calendar.DAY_OF_WEEK));
+                xAxis.setAxisMinimum(xAxisMin + 1);
+                xAxis.setAxisMaximum(xAxisMin + 7);
                 // then we change the labels of the x axis
                 final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
                 xAxisLabelWeek.add("Lun");
@@ -702,19 +691,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 1:
                 // in the case that we want to show the month :
                 // first we change the range of the x axis
-                int dayOfMonth = PreferencesDate.getCurrentDate()[0]; // same principle as the day of week
-                int lengthOfMonth = PreferencesDate.getCurrentDate()[4]; // this is the number of days in the current month
-                final int xAxisMinMonth = diffDays - dayOfMonth + 1;
+                final int xAxisMinMonth = diffDays - calendar.get(Calendar.DAY_OF_MONTH);
                 xAxis.setAxisMinimum(xAxisMinMonth);
-                xAxis.setAxisMaximum((diffDays - dayOfMonth) + lengthOfMonth);
+                xAxis.setAxisMaximum((diffDays - calendar.get(Calendar.DAY_OF_MONTH)) + java.time.LocalDate.now().lengthOfMonth());
                 // then we change the labels of the x axis
                 // this way we can set the array for the month we are about to draw
-                final ArrayList<String> xAxisLabelMonth = daysInYear(PreferencesDate.getCurrentDate()[2]);
+                final ArrayList<String> xAxisLabelMonth = daysInYear(calendar.get(Calendar.YEAR));
                 // this formats the values to be the new ones we just created :
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getFormattedValue(float value) {
-                        System.out.println("value : " + value);
                         return xAxisLabelMonth.get((int) value);
                     }
                 });
@@ -795,7 +781,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                                 int min = (int) xAxis.getAxisMinimum();
                                 int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                                int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
+                                int[] monthDrawn = {1, month + 1, calendar.get(Calendar.YEAR)};
                                 int[] monthNext = new int[]{monthDrawn[0], monthDrawn[1] + 1, monthDrawn[2]}; // same but with the next month
                                 // then we get the length of each month
                                 int lengthDrawn = nbOfDaysInMonth(monthDrawn);
@@ -828,7 +814,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                                 int min = (int) xAxis.getAxisMinimum();
                                 int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                                int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
+                                int[] monthDrawn = {1, month + 1, calendar.get(Calendar.YEAR)};
                                 int[] monthLast = new int[]{monthDrawn[0], monthDrawn[1] - 1, monthDrawn[2]}; // same but with the next month
                                 // then we get the length of each month
                                 int lengthDrawn = nbOfDaysInMonth(monthDrawn);
@@ -857,11 +843,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             graph.moveViewToX(xAxis.getAxisMinimum());
                             break;
                         case 1:
-                            System.out.println(slideLeft.isEnabled());
                             // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                             int min = (int) xAxis.getAxisMinimum();
                             int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                            int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
+                            int[] monthDrawn = {1, month + 1, calendar.get(Calendar.YEAR)};
                             int[] monthLast = new int[]{monthDrawn[0], monthDrawn[1] - 1, monthDrawn[2]}; // we go back one month, that way we know how many days are in the previous month
                             int[] monthNext = new int[]{monthDrawn[0], monthDrawn[1] + 1, monthDrawn[2]}; // same but with the next month
                             // then we get the length of each month
@@ -911,7 +896,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         for (int i = 0; i < 365; i++) {
             days.add(String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
             cal.add(Calendar.DATE, 1);
-            System.out.println(days.get(i));
         }
         return days;
     }

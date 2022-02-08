@@ -17,10 +17,10 @@
         android:id="@+id/itinerary_real_time_step_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_shape_end_itinerary"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
 
         >
 
@@ -57,6 +57,17 @@
             android:paddingBottom="10dp"
             android:text="m"
             android:textSize="22dp" />
+
+        <ImageView
+            android:id="@+id/current_arrow_image"
+            android:layout_width="35dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/step_distance"
+            app:srcCompat="@drawable/ic_baseline_arrow_upward_24"
+            tools:ignore="VectorDrawableCompat" />
 
     </RelativeLayout>
 
@@ -106,6 +117,17 @@
             android:paddingBottom="10dp"
             android:text="m"
             android:textSize="17dp" />
+
+        <ImageView
+            android:id="@+id/next_arrow_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/step_distance_2"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_24"
+            tools:ignore="VectorDrawableCompat" />
 
 
     </RelativeLayout>

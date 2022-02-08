@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,9 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,47 +28,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 
 import com.example.mint.R;
-import com.example.mint.model.Coordinates;
 import com.example.mint.model.Itinerary;
-import com.example.mint.model.PreferencesAddresses;
-import com.example.mint.model.PreferencesPollution;
-import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.Step;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
-import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.PaintList;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.advancedpolyline.MonochromaticPaintList;
-import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,12 +105,15 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     private PaintList plBorder;
     private PaintList plBorderSelected;
     private int threshold;
+    private ImageView next_arrow;
+    private ImageView current_arrow;
     /**
      * INFLATER : brings up necessary views
      */
     LayoutInflater inflater;
 
     private ArrayList<Itinerary> itineraries;
+    private int nbPointsDone;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -215,6 +199,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         //Getting the array of itineraries to handle the intent to main
         itineraries = (ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries");
         Log.d(LOG_TAG, (" Save State itineraries from OnCreate Realtimeiti is null ? : '" + String.valueOf(itineraries == null)  + "'"));
+
+        next_arrow = findViewById(R.id.next_arrow_image);
+        current_arrow = findViewById(R.id.current_arrow_image);
+        this.nbPointsDone = 0;
 
     }
 

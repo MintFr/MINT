@@ -11,10 +11,9 @@ public class MyHttpUtils {
 
     public static String getDataHttpUriConnection(String uri){
         try {
-            URL url = new URL("http://51.77.201.227:100/pickdate/noemie/12_25");
+            URL url = new URL(uri);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            String donneesPollen = inputStreamToString(urlConnection.getInputStream());
-            return donneesPollen;
+            return inputStreamToString(urlConnection.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

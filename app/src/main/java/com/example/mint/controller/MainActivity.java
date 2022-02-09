@@ -2,6 +2,9 @@ package com.example.mint.controller;
 
 import static android.graphics.Color.parseColor;
 
+import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
+import static com.example.mint.model.PreferencesMaxPollen.setMaxPollen;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -59,12 +62,16 @@ import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -85,6 +92,7 @@ import java.util.Locale;
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
  * among other things.
  */
+
 public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener, LocationListener {
 
     // For debug log
@@ -145,11 +153,14 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      * POPUP POLLEN
      */
     TextView donneesPollen;
-    String SAMPLE_URL;
-    View test; // view in which to search the text view for the pollen
+    String SAMPLE_URL, dataPollen;
+    View v; // view in which to search the text view for the pollen
+    TextView alertPollen;
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
+    public static int maxPollen;
+    private Context contextPollen;
     /**
      * Map
      */
@@ -191,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
+
     /**
      * Method to read server response, which is as text file, and put it in a String object.
      *
@@ -211,24 +223,26 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         //creation of the popup
         dialogBuilder = new AlertDialog.Builder(this);
         final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        this.test = pollenPopupView; //initialisation of the view for the textView
+        this.v = pollenPopupView; //initialisation of the view for the textView
 
         //Fetch data from RNSA url
-        this.SAMPLE_URL = "http://51.77.201.227:100/pickdate/noemie/12_25";
-        this.donneesPollen = test.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
-        Log.d("test donneesPollen", "msg: " + donneesPollen.getText());
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
 
         //Fetch RNSA data
         new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
-        Log.d(LOG_TAG, "msg" + this.donneesPollen.getText());
-
+        dataPollen = String.valueOf(this.donneesPollen.getText());
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
         dialogBuilder.setNegativeButton("FERMER", null);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+
+        //Set SharedPreferences
+        Log.d(LOG_TAG,"pollen" + maxPollen);
+        setMaxPollen("maxPollen", maxPollen, contextPollen);
+        Log.d(LOG_TAG, "pollen" + getMaxPollen("maxPollen", contextPollen));
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -245,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
 
         //Popup Pollen when app starts
-        Context contextPollen = getApplicationContext();
+        contextPollen = getApplicationContext();
         SharedPreferences prefs = contextPollen.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
         boolean isStartingPollen = prefs.getBoolean("isStartingPollen", true);
         if (isStartingPollen) {
@@ -379,43 +393,161 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         menuItem.setChecked(true);
 
 
-        //pollen_alert button color
-        int pollen_count = getPollenIntensity();
-        int colorZero = parseColor("#b0bb3a");
-        int colorOne = parseColor("#387D22");
-        int colorTwo = parseColor("#F1E952");
-        int colorThree = parseColor("#EB3323");
+        // This code allows to change the color of the button depending on the sensibility of the user
 
-        int color = (
-                (pollen_count == 0) ?
-                        colorZero :
-                        (pollen_count == 1) ?
-                                colorOne :
-                                (pollen_count == 2) ?
-                                        colorTwo :
-                                        colorThree
-        );
 
-        // Change color to the button
-        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+        String sensibility = PreferencesPollen.getPollen("Pollen", MainActivity.this);
 
-        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
-        path1.setFillColor(color);
-        VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
-        path2.setFillColor(color);
-        VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
-        path3.setFillColor(color);
-        VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
-        path4.setFillColor(color);
-        VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
-        path5.setFillColor(color);
 
-        // apply changes of colors
-        pollen_button.invalidate();
+        if (sensibility.equals("Pas sensible")){
+
+            int pollen_count = getPollenIntensity();
+            int colorZero = parseColor("#b0bb3a");
+            int colorOne = parseColor("#387D22");
+            int colorTwo = parseColor("#F1E952");
+            int colorThree = parseColor("#EB3323");
+
+            int color = (
+                    (pollen_count == 0) ?
+                            colorZero :
+                            (pollen_count == 1) ?
+                                    colorOne :
+                                    (pollen_count == 2) ?
+                                            colorTwo :
+                                            colorThree
+            );
+
+
+            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+            path1.setFillColor(color);
+            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+            path2.setFillColor(color);
+            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+            path3.setFillColor(color);
+            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+            path4.setFillColor(color);
+            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+            path5.setFillColor(color);
+
+            // apply changes of colors
+            pollen_button.invalidate();
+
+        }
+        if (sensibility.equals("Peu sensible")){
+
+            int pollen_count_low = getPollenIntensity();
+            int colorOne = parseColor("#387D22");
+            int colorTwo = parseColor("#F1E952");
+            int colorThree = parseColor("#EB3323");
+
+            int color = (
+                    (pollen_count_low == 0) ?
+                            colorOne :
+                            (pollen_count_low == 1) ?
+                                    colorOne :
+                                    (pollen_count_low == 2) ?
+                                            colorTwo :
+                                            colorThree
+            );
+
+
+            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+            path1.setFillColor(color);
+            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+            path2.setFillColor(color);
+            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+            path3.setFillColor(color);
+            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+            path4.setFillColor(color);
+            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+            path5.setFillColor(color);
+
+            // apply changes of colors
+            pollen_button.invalidate();
+
+        }
+
+
+        if (sensibility.equals("Sensible")){
+
+            int pollen_count_sensible = getPollenIntensity();
+            int colorOne = parseColor("#387D22");
+            int colorTwo = parseColor("#F1E952");
+            int colorThree = parseColor("#EB3323");
+
+            int color = (
+                    (pollen_count_sensible  == 0) ?
+                            colorOne :
+                            (pollen_count_sensible  == 1) ?
+                                    colorTwo :
+                                    (pollen_count_sensible  == 2) ?
+                                            colorThree :
+                                            colorThree
+            );
+
+
+            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+            path1.setFillColor(color);
+            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+            path2.setFillColor(color);
+            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+            path3.setFillColor(color);
+            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+            path4.setFillColor(color);
+            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+            path5.setFillColor(color);
+
+            // apply changes of colors
+            pollen_button.invalidate();
+
+        }
+
+        if (sensibility.equals("Très sensible")){
+
+            int pollen_count_high = getPollenIntensity();
+            int colorOne = parseColor("#387D22");
+            int colorThree = parseColor("#EB3323");
+
+            int color = (
+                    (pollen_count_high == 0) ?
+                            colorOne:
+                            (pollen_count_high == 1) ?
+                                    colorThree :
+                                    (pollen_count_high == 2) ?
+                                            colorThree :
+                                            colorThree
+            );
+
+
+            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+            path1.setFillColor(color);
+            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+            path2.setFillColor(color);
+            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+            path3.setFillColor(color);
+            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+            path4.setFillColor(color);
+            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+            path5.setFillColor(color);
+
+            // apply changes of colors
+            pollen_button.invalidate();
+        }
+
+
     }
 
     private int getPollenIntensity() {
-        return 1;
+        return 2;
+
     }
 
 

@@ -409,6 +409,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         int threshold1 = 2;
         int threshold2 = 3;
         int threshold3 = 4;
+        //We check the sensibility and set the according threshold for the colors
         switch(sensibility){
 
             case "Pas sensible":
@@ -435,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 break;    }
 
 
-
+        //We now choosing the color depending on the pollen and the threshold defined earlier
             int color = (
                     (pollen_count >= threshold3) ?
                             colorThree :
@@ -465,11 +466,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
     }
 
-
-    private int getPollenIntensity() {
-        return 2;
-
-    }
 
 
     /**

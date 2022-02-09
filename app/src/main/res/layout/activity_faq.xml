@@ -43,6 +43,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
+                        android:textSize="15dp"
                         android:text="@string/faq_question_1" />
 
                     <ImageButton
@@ -66,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
+                        android:textSize="15dp"
                         android:text="@string/faq_question_2" />
 
                     <ImageButton
@@ -89,6 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
+                        android:textSize="15dp"
                         android:text="@string/faq_question_3" />
 
                     <ImageButton
@@ -112,6 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
+                        android:textSize="15dp"
                         android:text="@string/faq_question_4" />
 
                     <ImageButton
@@ -134,6 +138,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="15dp"
                         android:layout_gravity="center_vertical"
                         android:text="@string/faq_question_5" />
 
@@ -158,6 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
+                        android:textSize="15dp"
                         android:text="@string/faq_question_6" />
 
                     <ImageButton

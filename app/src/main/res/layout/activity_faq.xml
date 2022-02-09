@@ -42,6 +42,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/faq_question_1" />
 
                     <ImageButton
@@ -53,7 +54,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="15dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,6 +65,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/faq_question_2" />
 
                     <ImageButton
@@ -75,7 +77,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="15dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -86,6 +88,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/faq_question_3" />
 
                     <ImageButton
@@ -97,7 +100,77 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/question4_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/faq_question_4" />
+
+                    <ImageButton
+                        android:id="@+id/question4_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_expand_more_24" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/question5_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/faq_question_5" />
+
+                    <ImageButton
+                        android:id="@+id/question5_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_expand_more_24" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/question6_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/faq_question_6" />
+
+                    <ImageButton
+                        android:id="@+id/question6_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_expand_more_24" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
 
             </LinearLayout>
         </ScrollView>

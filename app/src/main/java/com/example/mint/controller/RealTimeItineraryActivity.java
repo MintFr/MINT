@@ -309,7 +309,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         line.setId(valueOf(0));
 
         //Display the first step
-        displayStep(1);
+        displayStep(0);
         this.nbPointsDone += itinerary.getDetail().get(0).getNbEdges();
         updateFirstDirection();
 
@@ -379,13 +379,24 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
     private void updateFirstDirection() {
         ArrayList<double[]> pointsIti = itinerary.getPoints();
-        double v1x = pointsIti.get(this.nbPointsDone)[1] - pointsIti.get(0)[1];
-        double v1y = pointsIti.get(this.nbPointsDone)[0] - pointsIti.get(0)[0];
+        Log.d(LOG_TAG, "TAGG : " + nbPointsDone);
+        Log.d(LOG_TAG, "TAGG : " + pointsIti.get(0));
+        Log.d(LOG_TAG, "TAGG : " + pointsIti.get(0)[1]);
+        double v1x = pointsIti.get(0)[1] - pointsIti.get(this.nbPointsDone)[1];
+        double v1y = pointsIti.get(0)[0] - pointsIti.get(this.nbPointsDone)[0];
 
         double v2x = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[1] - pointsIti.get(this.nbPointsDone)[1];
         double v2y = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[0] - pointsIti.get(this.nbPointsDone)[0];
 
-        double theta = Math.acos((v1x*v2x + v1y*v2y)/(Math.sqrt(v1x*v1x +v1y*v1y)*Math.sqrt(v2x*v2x + v2y*v2y)));
+        double theta = Math.acos((v1x*v2x + v1y*v2y)/(Math.sqrt(v1x*v1x +v1y*v1y)*Math.sqrt(v2x*v2x + v2y*v2y))) * 180. / Math.PI;
+        double theta2 = Math.atan((v2x*v1y - v1x*v2y)/(v1x*v2x + v1y*v2y)) * 180. / Math.PI;
+        double theta3 = v1x*v2y - v2x*v1y;
+
+        System.out.println(theta);
+        Log.d(LOG_TAG, "TAGG : " + String.valueOf(v1x) + ", " + String.valueOf(v1y) + ", " + String.valueOf(v2x) + ", " + String.valueOf(v2y));
+        Log.d(LOG_TAG, "TAGG : " + theta);
+        Log.d(LOG_TAG, "TAGG : " + theta2);
+        Log.d(LOG_TAG, "TAGG : " + theta3);
 
     }
 

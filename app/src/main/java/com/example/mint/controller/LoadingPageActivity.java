@@ -75,8 +75,8 @@ public class LoadingPageActivity extends AppCompatActivity {
                 longitudeEnd = -1.5535549386503666;
             }
 
-            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
-                            "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
+            String url = String.format("http://172.20.10.3:8080/itineraries-pollution/itineraryPollution" +
+                            "?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, options[0], options[1], options[2], options[3], start, time);
 
             // activity launch

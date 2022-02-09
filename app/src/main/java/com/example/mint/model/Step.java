@@ -13,6 +13,13 @@ public class Step implements Serializable {
     public Step(String address, int distance) {
         this.address = address;
         this.distance = distance;
+        this.nbEdges = 1;
+    }
+
+    public Step(String address, int distance, int nbEdges){
+        this.address = address;
+        this.distance = distance;
+        this.nbEdges = nbEdges;
     }
 
     public String getAddress() {

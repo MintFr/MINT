@@ -219,6 +219,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         return sb.toString();
     }
 
+    /**
+     * Creation of the Popup pollen and fetch the data from the RNSA link
+     *
+     */
+
     public void displayPollen() {
         //creation of the popup
         dialogBuilder = new AlertDialog.Builder(this);
@@ -226,10 +231,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.v = pollenPopupView; //initialisation of the view for the textView
 
         //Fetch data from RNSA url
-        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for he pollen
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
 
         //Fetch RNSA data
-        new fetchData(this.donneesPollen).execute(this.SAMPLE_URL);
+        new fetchData(this.donneesPollen).execute();
         dataPollen = String.valueOf(this.donneesPollen.getText());
         dialogBuilder = dialogBuilder.setView(pollenPopupView);
         dialogBuilder.setNegativeButton("FERMER", null);
@@ -237,9 +242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         dialog.show();
 
         //Set SharedPreferences
-        Log.d(LOG_TAG,"pollen" + maxPollen);
         setMaxPollen("maxPollen", maxPollen, contextPollen);
-        Log.d(LOG_TAG, "pollen" + getMaxPollen("maxPollen", contextPollen));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

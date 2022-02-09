@@ -24,7 +24,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
 import com.example.mint.R;
-import com.example.mint.model.AsyncItineraryCompute;
 import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollution;
@@ -693,21 +692,30 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
             //between start and end
             if (itinerary.getPointSize() > 2) {
+                // Check if name of address is not empty or the two extremes
+                int sizeDetails = STEPS.size();
+                ArrayList<Step> toDisplay = new ArrayList<>();
+                for (int m=1; m<sizeDetails-1; m++){
+                    if (!STEPS.get(m).getAddress().equals("")){
+                        toDisplay.add(STEPS.get(m));
+                    }
+                }
 
                 // first we want to clear all previous steps that might already be displayed in itinerary detail
                 //it's a container for the views for each step that will be created with itinerary_step_layout
                 LinearLayout stepsLayout = listItem.findViewById(R.id.steps_linear_layout);
-                for (int k = 1; k <= STEPS.size(); k++) {
+                for (int k = 1; k <= toDisplay.size(); k++) {
+                    int count = 0;
                     // k is going to be the index at which we add the stepView
                     final View stepView = inflater.inflate(R.layout.itinerary_step_layout, null); // get the view from layout
                     TextView stepTimeMin = stepView.findViewById(R.id.address); // get the different textViews from the base view
                     TextView stepDist = stepView.findViewById(R.id.step_distance);
-                    String streetName = STEPS.get(k - 1).getAddress();
-                    int dist = STEPS.get(k - 1).getDistance();
+                    String streetName = toDisplay.get(k - 1).getAddress();
+                    int dist = toDisplay.get(k - 1).getDistance();
                     stepTimeMin.setText(streetName);
                     stepDist.setText(String.format("%d", dist));
                     // add the textView to the linearlayout which contains the steps
-                    stepsLayout.addView(stepView, k + 1);
+                    stepsLayout.addView(stepView, k + 1 - count);
                 }
             }
         } else {

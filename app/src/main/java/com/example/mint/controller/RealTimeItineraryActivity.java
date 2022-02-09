@@ -619,7 +619,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                 }
 
             }
-            System.out.println(map);
 
             //printing a new position marker on the map
             if (map != null) {

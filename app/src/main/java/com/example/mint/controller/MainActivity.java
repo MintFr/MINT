@@ -398,152 +398,70 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         String sensibility = PreferencesPollen.getPollen("Pollen", MainActivity.this);
 
+        int pollen_count = getMaxPollen("maxPollen",this.contextPollen);
+        int colorZero = parseColor("#387D22");
+        int colorOne = parseColor("#b0bb3a");
+        int colorTwo = parseColor("#F1E952");
+        int colorThree = parseColor("#EB3323");
+        int threshold1 = 2;
+        int threshold2 = 3;
+        int threshold3 = 4;
+        switch(sensibility){
 
-        if (sensibility.equals("Pas sensible")){
+            case "Pas sensible":
+                threshold1 = 2;
+                threshold2 = 3;
+                threshold3 = 4;
+                break;
 
-            int pollen_count = getPollenIntensity();
-            int colorZero = parseColor("#b0bb3a");
-            int colorOne = parseColor("#387D22");
-            int colorTwo = parseColor("#F1E952");
-            int colorThree = parseColor("#EB3323");
+            case "Peu sensible":
+                threshold1 = 1;
+                threshold2 = 2;
+                threshold3 = 3;
+                break;
 
-            int color = (
-                    (pollen_count == 0) ?
-                            colorZero :
-                            (pollen_count == 1) ?
-                                    colorOne :
-                                    (pollen_count == 2) ?
-                                            colorTwo :
-                                            colorThree
-            );
+            case "Sensible":
+                threshold1 = 1;
+                threshold2 = 2;
+                threshold3 = 2;
+                break;
+            case "Très sensible":
+                threshold1 = 1;
+                threshold2 = 1;
+                threshold3 = 1;
+                break;    }
 
 
-            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
-
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
-            path1.setFillColor(color);
-            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
-            path2.setFillColor(color);
-            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
-            path3.setFillColor(color);
-            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
-            path4.setFillColor(color);
-            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
-            path5.setFillColor(color);
-
-            // apply changes of colors
-            pollen_button.invalidate();
-
-        }
-        if (sensibility.equals("Peu sensible")){
-
-            int pollen_count_low = getPollenIntensity();
-            int colorOne = parseColor("#387D22");
-            int colorTwo = parseColor("#F1E952");
-            int colorThree = parseColor("#EB3323");
 
             int color = (
-                    (pollen_count_low == 0) ?
-                            colorOne :
-                            (pollen_count_low == 1) ?
-                                    colorOne :
-                                    (pollen_count_low == 2) ?
-                                            colorTwo :
-                                            colorThree
-            );
-
-
-            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
-
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
-            path1.setFillColor(color);
-            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
-            path2.setFillColor(color);
-            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
-            path3.setFillColor(color);
-            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
-            path4.setFillColor(color);
-            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
-            path5.setFillColor(color);
-
-            // apply changes of colors
-            pollen_button.invalidate();
-
-        }
-
-
-        if (sensibility.equals("Sensible")){
-
-            int pollen_count_sensible = getPollenIntensity();
-            int colorOne = parseColor("#387D22");
-            int colorTwo = parseColor("#F1E952");
-            int colorThree = parseColor("#EB3323");
-
-            int color = (
-                    (pollen_count_sensible  == 0) ?
-                            colorOne :
-                            (pollen_count_sensible  == 1) ?
+                    (pollen_count >= threshold3) ?
+                            colorThree :
+                            (pollen_count == threshold2) ?
                                     colorTwo :
-                                    (pollen_count_sensible  == 2) ?
-                                            colorThree :
-                                            colorThree
+                                    (pollen_count == threshold1) ?
+                                            colorOne :
+                                            colorZero
             );
 
 
-            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
 
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
-            path1.setFillColor(color);
-            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
-            path2.setFillColor(color);
-            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
-            path3.setFillColor(color);
-            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
-            path4.setFillColor(color);
-            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
-            path5.setFillColor(color);
+        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+        path1.setFillColor(color);
+        VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+        path2.setFillColor(color);
+        VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+        path3.setFillColor(color);
+        VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+        path4.setFillColor(color);
+        VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+        path5.setFillColor(color);
 
-            // apply changes of colors
-            pollen_button.invalidate();
-
-        }
-
-        if (sensibility.equals("Très sensible")){
-
-            int pollen_count_high = getPollenIntensity();
-            int colorOne = parseColor("#387D22");
-            int colorThree = parseColor("#EB3323");
-
-            int color = (
-                    (pollen_count_high == 0) ?
-                            colorOne:
-                            (pollen_count_high == 1) ?
-                                    colorThree :
-                                    (pollen_count_high == 2) ?
-                                            colorThree :
-                                            colorThree
-            );
-
-
-            VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
-
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
-            path1.setFillColor(color);
-            VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
-            path2.setFillColor(color);
-            VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
-            path3.setFillColor(color);
-            VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
-            path4.setFillColor(color);
-            VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
-            path5.setFillColor(color);
-
-            // apply changes of colors
-            pollen_button.invalidate();
-        }
-
+        // apply changes of colors
+        pollen_button.invalidate();
 
     }
+
 
     private int getPollenIntensity() {
         return 2;

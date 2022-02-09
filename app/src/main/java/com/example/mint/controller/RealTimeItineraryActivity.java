@@ -255,6 +255,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                 showAlertMessageNoGps();
             }
             displayItinerary(itinerary);
+            //Display the first step
+            displayStep(0);
+            this.nbPointsDone += itinerary.getDetail().get(0).getNbEdges();
+            updateFirstDirection();
         }
         map.invalidate();
         Log.d(LOG_TAG, "onStart: finished ");
@@ -307,11 +311,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // this is to be able to identify the line later on
         line.setId(valueOf(0));
-
-        //Display the first step
-        displayStep(0);
-        this.nbPointsDone += itinerary.getDetail().get(0).getNbEdges();
-        updateFirstDirection();
 
 
 
@@ -382,8 +381,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "TAGG : " + nbPointsDone);
         Log.d(LOG_TAG, "TAGG : " + pointsIti.get(0));
         Log.d(LOG_TAG, "TAGG : " + pointsIti.get(0)[1]);
-        double v1x = pointsIti.get(0)[1] - pointsIti.get(this.nbPointsDone)[1];
-        double v1y = pointsIti.get(0)[0] - pointsIti.get(this.nbPointsDone)[0];
+        double v1x = pointsIti.get(this.nbPointsDone)[1] - pointsIti.get(0)[1];
+        double v1y = pointsIti.get(this.nbPointsDone)[0] - pointsIti.get(0)[0];
 
         double v2x = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[1] - pointsIti.get(this.nbPointsDone)[1];
         double v2y = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[0] - pointsIti.get(this.nbPointsDone)[0];
@@ -397,6 +396,13 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "TAGG : " + theta);
         Log.d(LOG_TAG, "TAGG : " + theta2);
         Log.d(LOG_TAG, "TAGG : " + theta3);
+
+        if (theta3 > 0){
+            next_arrow.setImageResource(R.drawable.ic_baseline_arrow_back_24);
+        }
+        else {
+            next_arrow.setImageResource(R.drawable.ic_baseline_arrow_forward_24);
+        }
 
     }
 

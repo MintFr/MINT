@@ -33,6 +33,7 @@ import com.example.mint.model.Pollution;
 import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.TanMap;
+import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -90,6 +91,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
     private ImageButton pollen_button;
+    private View v;
+    public TextView donneesPollen;
+    public String dataPollen;
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -777,13 +781,20 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     // OnClick method to open the pollen popup when the user click on the button
 
     public void onClickPollen(View view) {
+        //creation of the popup
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        this.v = pollenPopupView; //initialisation of the view for the textView
 
-            dialogBuilder = new AlertDialog.Builder(this);
-            final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-            dialogBuilder = dialogBuilder.setView(pollenPopupView);
-            dialogBuilder.setNegativeButton("FERMER", null);
-            AlertDialog dialog = dialogBuilder.create();
-            dialog.show();
-        }
+        //Fetch data from RNSA url
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
 
+        //Fetch RNSA data
+        new fetchData(this.donneesPollen).execute();
+        dataPollen = String.valueOf(this.donneesPollen.getText());
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
 }

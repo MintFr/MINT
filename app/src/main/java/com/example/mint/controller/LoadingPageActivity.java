@@ -13,6 +13,8 @@ import com.example.mint.model.PreferencesTransport;
  * Activity for the loading page, used when calculating an itinerary
  */
 public class LoadingPageActivity extends AppCompatActivity {
+    final static String URL_LOCAL = "http://172.20.10.3:8080/itineraries-pollution/itineraryPollution?";
+    final static String URL_SERV = "http://ser-info-03.ec-nantes.fr:8080/itinerary_pollution/itineraryPollution?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class LoadingPageActivity extends AppCompatActivity {
                 longitudeEnd = -1.5535549386503666;
             }
 
-            String url = String.format("http://172.20.10.3:8080/itineraries-pollution/itineraryPollution" +
+            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itineraries-pollution/itineraryPollution" +
                             "?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, options[0], options[1], options[2], options[3], start, time);
 

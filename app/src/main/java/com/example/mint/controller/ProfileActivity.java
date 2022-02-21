@@ -601,7 +601,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // first we check whether today is a new day or not
         // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
         int[] lastDate = PreferencesDate.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
-        int[] currentDate = PreferencesDate.getCurrentDate(); // this is the current date
 
         if (currentDate[0] != lastDate[0]) {
             PreferencesDate.setDate(ProfileActivity.this); // we replace the last saved date with today's date
@@ -611,6 +610,81 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }*/
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setUpWeekGraph(){
+
+        //set up a Calendar object to handle date
+        final Calendar calendar = Calendar.getInstance();
+        // we get the pollution data from preferences calendar.get(Calendar.YEAR)
+        ArrayList<Integer> values = PreferencesPollution2.getPollutionYear(2022, this);
+        // we convert it to a list of "entries" which is a class from the MPAndroidChart library
+        List<Entry> entries = new ArrayList<>();
+        // we get the nth day of the year
+        int diffDays = calendar.get(Calendar.DAY_OF_YEAR);
+
+        for (int i = 1; i <= diffDays; i++) {
+            entries.add(new Entry(i, values.get(i)));
+        }
+
+        // LineDataSet allows for individual styling of this data (for if we have several data sets)
+        LineDataSet dataSet = new LineDataSet(entries, null);
+        dataSet.setColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setLineWidth(3);
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setCircleRadius(5);
+        dataSet.setCircleHoleRadius(3);
+        dataSet.setDrawValues(false);
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+
+        // Axis styling
+        // Y axis
+        YAxis yAxisRight = graph.getAxisRight();
+        final YAxis yAxisLeft = graph.getAxisLeft();
+        yAxisRight.setEnabled(false);
+        yAxisLeft.setDrawAxisLine(true);
+        yAxisLeft.setGridLineWidth(0.5f);
+        yAxisLeft.setGridColor(getResources().getColor(R.color.colorLightGrey));
+        yAxisLeft.setTypeface(Typeface.DEFAULT);
+        yAxisLeft.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // X axis
+        final XAxis xAxis = graph.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setTypeface(Typeface.DEFAULT);
+        xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // in the case that we want to show the week :
+        // first we change the range of the x axis
+        int xAxisMin = (diffDays - calendar.get(Calendar.DAY_OF_WEEK));
+        xAxis.setAxisMinimum(xAxisMin + 1);
+        Log.d(LOG_TAG, "xAxisMin + :'" + xAxis.getAxisMinimum()+ "'");
+        xAxis.setAxisMaximum(xAxisMin + 7);
+        Log.d(LOG_TAG, "xAxisMax + :'" + xAxis.getAxisMaximum()+ "'");
+        // then we change the labels of the x axis
+        final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
+        xAxisLabelWeek.add("Lun");
+        xAxisLabelWeek.add("Mar");
+        xAxisLabelWeek.add("Mer");
+        xAxisLabelWeek.add("Jeu");
+        xAxisLabelWeek.add("Ven");
+        xAxisLabelWeek.add("Sam");
+        xAxisLabelWeek.add("Dim");
+        // this formats the values to be the new ones we just created :
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xAxisLabelWeek.get((int) (value - xAxis.getAxisMinimum()));
+            }
+        });
+        dataSet.setDrawCircles(true);
+        graph.invalidate();
+
+    }
+
+
     /**
      * This handles all the graph values and appearance settings
      *
@@ -619,17 +693,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUpGraph(final int range) {
 
-        // set up of a Calendar object
+        // set up of a Calendar object to handle date
         final Calendar calendar = Calendar.getInstance();
         // we get the pollution data from preferences calendar.get(Calendar.YEAR)
         ArrayList<Integer> values = PreferencesPollution2.getPollutionYear(2022, this);
-
-        Log.d(LOG_TAG,"taille values :'" + values.size() +"'");
-
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we get the nth day of the year
         int diffDays = calendar.get(Calendar.DAY_OF_YEAR);
+
+        for (int i = 1; i <= diffDays; i++) {
+            entries.add(new Entry(i, values.get(i)));
+        }
 
         // LineDataSet allows for individual styling of this data (for if we have several data sets)
         LineDataSet dataSet = new LineDataSet(entries, null);
@@ -666,9 +741,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 0:
                 // in the case that we want to show the week :
                 // first we change the range of the x axis
-                int xAxisMin = (diffDays - calendar.get(Calendar.DAY_OF_WEEK));
-                xAxis.setAxisMinimum(xAxisMin + 1);
-                xAxis.setAxisMaximum(xAxisMin + 7);
+                int firstCurrentWeekDay = (diffDays - calendar.get(Calendar.DAY_OF_WEEK));
+                Log.d(LOG_TAG,"Rkey : nth day       : '" + diffDays+ "'");
+                Log.d(LOG_TAG,"Rkey : day of week   : '" + calendar.get(Calendar.DAY_OF_WEEK)+ "'");
+                Log.d(LOG_TAG,"Rkey : day of week   : '" + firstCurrentWeekDay+ "'");
+                xAxis.setAxisMinimum(firstCurrentWeekDay + 1);
+                Log.d(LOG_TAG, "Rkey : xAxisMin +   : '" + xAxis.getAxisMinimum()+ "'");
+                xAxis.setAxisMaximum(firstCurrentWeekDay + 7);
+                Log.d(LOG_TAG, "Rkey : xAxisMax + : '" + xAxis.getAxisMaximum()+ "'");
                 // then we change the labels of the x axis
                 final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
                 xAxisLabelWeek.add("Lun");
@@ -682,6 +762,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getFormattedValue(float value) {
+                        Log.d(LOG_TAG, "Rkey : index_week : '"+ value +"'");
                         return xAxisLabelWeek.get((int) (value - xAxis.getAxisMinimum()));
                     }
                 });
@@ -701,6 +782,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getFormattedValue(float value) {
+                        Log.d(LOG_TAG, "Rkey : index_month : '"+ value +"'");
                         return xAxisLabelMonth.get((int) value);
                     }
                 });
@@ -854,8 +936,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             int lengthLast = nbOfDaysInMonth(monthLast);
                             int lengthNext = nbOfDaysInMonth(monthNext);
                             // then we move the minimum and maximum
-                            xAxis.setAxisMinimum(i == 110 ? xAxis.getAxisMinimum() - lengthLast : xAxis.getAxisMinimum() + lengthDrawn);
-                            xAxis.setAxisMaximum(i == 110 ? xAxis.getAxisMaximum() - lengthDrawn : xAxis.getAxisMaximum() + lengthNext);
+                            Log.d(LOG_TAG , "Rkey : axis min : '" + xAxis.getAxisMinimum() + "'");
+                            Log.d(LOG_TAG , "Rkey : axis max : '" + xAxis.getAxisMaximum() + "'");
+                            xAxis.setAxisMinimum(1);
+                            xAxis.setAxisMaximum(31);
                             graph.fitScreen();
                             graph.setVisibleXRangeMaximum(i == 110 ? lengthLast : lengthNext); // setting the range according to whether we went back or forward
                             graph.moveViewToX(xAxis.getAxisMinimum());

@@ -318,7 +318,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     protected void onStart() {
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
-        Log.d("Date", PreferencesDate2.getCurrentDate());
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
         /////////////////////////////////////////////////////////////////////////////////////////

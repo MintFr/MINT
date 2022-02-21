@@ -35,8 +35,7 @@ public class PreferencesPollution2 {
         ArrayList<Integer> values = new ArrayList<>();
         for (int i = 1; i <= daysInMonth; i++) {
             values.add(prefs.getInt(i + "_" + month + "_" + year, 0));
-        }
-        return values;
+        } return values;
     }
 
 

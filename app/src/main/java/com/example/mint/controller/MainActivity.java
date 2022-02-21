@@ -1,11 +1,17 @@
 package com.example.mint.controller;
 
+import static android.graphics.Color.parseColor;
+
+import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
+import static com.example.mint.model.PreferencesMaxPollen.setMaxPollen;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -49,15 +56,22 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.devs.vectorchildfinder.VectorChildFinder;
+import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.PreferencesAddresses;
+import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
+import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -65,7 +79,10 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -75,6 +92,7 @@ import java.util.Locale;
  * MainActivity is the activity for the front page of the app, where the user can select start and end points for an itinerary
  * among other things.
  */
+
 public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener, LocationListener {
 
     // For debug log
@@ -89,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LONGITUDE_MIN = -1.8;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
+
+
     /**
      * GEOLOC
      */
@@ -99,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     Location locationUser;
     IMapController mapController;
     /**
-     * Adress suggestions
+     * Address suggestions
      */
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
@@ -128,9 +148,19 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
 
     SwitchCompat switchCompat;
+    Button click;
+    /**
+     * POPUP POLLEN
+     */
+    TextView donneesPollen;
+    String SAMPLE_URL, dataPollen;
+    View v; // view in which to search the text view for the pollen
+    TextView alertPollen;
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
+    public static int maxPollen;
+    private Context contextPollen;
     /**
      * Map
      */
@@ -164,11 +194,58 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
+    private ImageButton pollen_button;
     /**
      * Temporary point for location changes
      */
     private GeoPoint tmpPoint;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
+
+    /**
+     * Method to read server response, which is as text file, and put it in a String object.
+     *
+     * @param is InputStream
+     * @return String
+     */
+    private String readStream(InputStream is) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader r = new BufferedReader(new InputStreamReader(is), 1000);
+        for (String line = r.readLine(); line != null; line = r.readLine()) {
+            sb.append(line);
+        }
+        is.close();
+        return sb.toString();
+    }
+
+    /**
+     * Creation of the Popup pollen and fetch the data from the RNSA link
+     *
+     */
+
+    public void displayPollen() {
+        //creation of the popup
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        this.v = pollenPopupView; //initialisation of the view for the textView
+
+        //Fetch data from RNSA url
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
+
+        //Fetch RNSA data
+        new fetchData(this.donneesPollen).execute();
+        dataPollen = String.valueOf(this.donneesPollen.getText());
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+
+        //Set SharedPreferences
+        setMaxPollen("maxPollen", maxPollen, contextPollen);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Debug
@@ -183,6 +260,17 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         } else {
             setContentView(R.layout.activity_main);
         }
+
+        //Popup Pollen when app starts
+        contextPollen = getApplicationContext();
+        SharedPreferences prefs = contextPollen.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
+        boolean isStartingPollen = prefs.getBoolean("isStartingPollen", true);
+        if (isStartingPollen) {
+            displayPollen();
+        }
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isStartingPollen", false);
+        editor.apply();
 
         // Highlighting selected favorite means of transportation chosen in Profile
         // (next and last step in "showOptions()")
@@ -232,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         this.myPosition = findViewById(R.id.myPosition);
         this.option = findViewById(R.id.options);
         this.dimPopup = findViewById(R.id.dim_popup);
+        this.pollen_button = findViewById(R.id.pollen_button);
 
 
         // Initializing Adresses with Adress Class
@@ -241,7 +330,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         // startPoint/endPoint inversion
         ImageButton inversionButton = findViewById(R.id.inversion);
-
 
         // check if the editText is empty and if so disable add button
         TextWatcher textChangedListener = new TextWatcher() {
@@ -306,7 +394,78 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
+
+        // This code allows to change the color of the button depending on the sensibility of the user
+
+
+        String sensibility = PreferencesPollen.getPollen("Pollen", MainActivity.this);
+
+        int pollen_count = getMaxPollen("maxPollen",this.contextPollen);
+        int colorZero = parseColor("#387D22");
+        int colorOne = parseColor("#b0bb3a");
+        int colorTwo = parseColor("#F1E952");
+        int colorThree = parseColor("#EB3323");
+        int threshold1 = 2;
+        int threshold2 = 3;
+        int threshold3 = 4;
+        //We check the sensibility and set the according threshold for the colors
+        switch(sensibility){
+
+            case "Pas sensible":
+                threshold1 = 2;
+                threshold2 = 3;
+                threshold3 = 4;
+                break;
+
+            case "Peu sensible":
+                threshold1 = 1;
+                threshold2 = 2;
+                threshold3 = 3;
+                break;
+
+            case "Sensible":
+                threshold1 = 1;
+                threshold2 = 2;
+                threshold3 = 2;
+                break;
+            case "Très sensible":
+                threshold1 = 1;
+                threshold2 = 1;
+                threshold3 = 1;
+                break;    }
+
+
+        //We now choosing the color depending on the pollen and the threshold defined earlier
+            int color = (
+                    (pollen_count >= threshold3) ?
+                            colorThree :
+                            (pollen_count == threshold2) ?
+                                    colorTwo :
+                                    (pollen_count == threshold1) ?
+                                            colorOne :
+                                            colorZero
+            );
+
+
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+        path1.setFillColor(color);
+        VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+        path2.setFillColor(color);
+        VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+        path3.setFillColor(color);
+        VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+        path4.setFillColor(color);
+        VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+        path5.setFillColor(color);
+
+        // apply changes of colors
+        pollen_button.invalidate();
+
     }
+
 
 
     /**
@@ -317,6 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     protected void onStart() {
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
+
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
@@ -1494,7 +1654,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         }
     }
 
+    public void onClickPollen(View view) {
+        displayPollen();
+    }
 }
+
 
 
 

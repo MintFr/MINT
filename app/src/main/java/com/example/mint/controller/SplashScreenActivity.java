@@ -1,6 +1,8 @@
 package com.example.mint.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -18,6 +20,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        Context context = this.getApplicationContext();
+        SharedPreferences prefs = context.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isStartingPollen", true);
+        // TODO: toast only once
+        editor.putBoolean("isStartingToast", true);
+        editor.apply();
 
         //redirect to MainActivity after 1 seconds
 

@@ -1,7 +1,10 @@
 package com.example.mint.controller;
 
 import static android.graphics.Color.argb;
+import static android.graphics.Color.parseColor;
 import static android.graphics.Color.rgb;
+
+import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,17 +19,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.devs.vectorchildfinder.VectorChildFinder;
+import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.mint.R;
 import com.example.mint.model.Pollution;
+import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.TanMap;
+import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -56,7 +65,7 @@ import java.util.List;
 
 /**
  * MapActivity handles the Maps page of the app, letting the user consult various maps of Nantes
- * MapActivity is a inherited class from AppCompatActivity which is a base class of Andorid Studio
+ * MapActivity is a inherited class from AppCompatActivity which is a base class of Android Studio
  */
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -83,6 +92,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private Paint paintInside;
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
+    private ImageButton pollen_button;
+    private View v;
+    public TextView donneesPollen;
+    public String dataPollen;
 
     //private static final String TAG = "MapActivity"; //--> for debugging
 
@@ -160,6 +173,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
+        this.pollen_button=findViewById(R.id.pollen_button);
 
 
         /////////////////////////////////////////////////////////
@@ -203,12 +217,88 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         /////////////////////////////////////////////////////////
         //                   BOTTOM MENU END                   //
         /////////////////////////////////////////////////////////
+
+        // This code allows to change the color of the button depending on the sensibility of the user
+
+
+        String sensibility = PreferencesPollen.getPollen("Pollen", MapActivity.this);
+
+        int pollen_count = getMaxPollen("maxPollen",MapActivity.this);
+        int colorZero = parseColor("#387D22");
+        int colorOne = parseColor("#b0bb3a");
+        int colorTwo = parseColor("#F1E952");
+        int colorThree = parseColor("#EB3323");
+        int threshold1 = 2;
+        int threshold2 = 3;
+        int threshold3 = 4;
+        //We check the sensibility and set the according threshold for the colors
+        switch(sensibility){
+
+            case "Pas sensible":
+                threshold1 = 2;
+                threshold2 = 3;
+                threshold3 = 4;
+                break;
+
+            case "Peu sensible":
+                threshold1 = 1;
+                threshold2 = 2;
+                threshold3 = 3;
+                break;
+
+            case "Sensible":
+                threshold1 = 1;
+                threshold2 = 2;
+                threshold3 = 2;
+                break;
+            case "Très sensible":
+                threshold1 = 1;
+                threshold2 = 1;
+                threshold3 = 1;
+                break;    }
+
+
+        //We now choosing the color depending on the pollen and the threshold defined earlier
+        int color = (
+                (pollen_count >= threshold3) ?
+                        colorThree :
+                        (pollen_count == threshold2) ?
+                                colorTwo :
+                                (pollen_count == threshold1) ?
+                                        colorOne :
+                                        colorZero
+        );
+
+
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+
+        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
+        path1.setFillColor(color);
+        VectorDrawableCompat.VFullPath path2 = vector.findPathByName("changingColor2");
+        path2.setFillColor(color);
+        VectorDrawableCompat.VFullPath path3 = vector.findPathByName("changingColor3");
+        path3.setFillColor(color);
+        VectorDrawableCompat.VFullPath path4 = vector.findPathByName("changingColor4");
+        path4.setFillColor(color);
+        VectorDrawableCompat.VFullPath path5 = vector.findPathByName("changingColor5");
+        path5.setFillColor(color);
+
+        // apply changes of colors
+        pollen_button.invalidate();
+
     }
+
+
+
+
 
 
     /////////////////////////////////////////////////////////
     //                   BACK BUTTON                       //
     /////////////////////////////////////////////////////////
+
+
+
 
 
     @Override
@@ -613,6 +703,26 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
+    // OnClick method to open the pollen popup when the user click on the button
 
+    public void onClickPollen(View view) {
+        //creation of the popup
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        this.v = pollenPopupView; //initialisation of the view for the textView
+
+        //Fetch data from RNSA url
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
+
+        //Fetch RNSA data
+        new fetchData(this.donneesPollen).execute();
+        dataPollen = String.valueOf(this.donneesPollen.getText());
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
 }

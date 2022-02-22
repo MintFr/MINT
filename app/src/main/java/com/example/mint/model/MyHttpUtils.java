@@ -10,7 +10,7 @@ import java.net.URL;
 public class MyHttpUtils {
 
     //Do the connection with the link given as a String uri
-    public static String getDataHttpUriConnection(String uri){
+    public static String getDataHttpUriConnection(String uri) {
         try {
             URL url = new URL(uri);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -20,22 +20,19 @@ public class MyHttpUtils {
         }
         return null;
     }
+
     //Parse the data in the link
-    public static String inputStreamToString(InputStream stream)  {
+    public static String inputStreamToString(InputStream stream) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         StringBuilder sb = new StringBuilder();
         String line = "";
-        try
-        {
-            while ((line = reader.readLine()) != null)
-            {
+        try {
+            while ((line = reader.readLine()) != null) {
                 sb.append(line);
                 sb.append("\n");
             }
             return sb.toString();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

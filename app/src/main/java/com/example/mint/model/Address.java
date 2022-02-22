@@ -1,11 +1,5 @@
 package com.example.mint.model;
 
-//import android.location.Geocoder;
-
-//import java.util.Locale;
-
-//import static java.util.Locale.getDefault;
-
 /**
  * Describe an address with a name and two coordinates (latitude and longitude)
  */

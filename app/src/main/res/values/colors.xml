@@ -15,9 +15,13 @@
     <color name="colorOrange">#F69F65</color>
     <color name="colorTransparentBlack">#33000000</color> // this is a black color with 20% opacity for shadows
     <color name="colorTransparentWhite">#11ffffff</color>
+    <color name="FlashRed">#F00020</color>
 
-    <!-- Colors for  layout activity_itinerary -->
+
+
+    <!-- Colors for  layout activity_main -->
     <color name="White_Main">#F8F8F8</color>
+    <color name="Transparent_Main">#11ffffff</color>
 
     <!-- Colors for  layout activity_itinerary -->
     <color name="PrimaryWhite_Itinerary">#ffffff</color>
@@ -32,6 +36,8 @@
     <color name="PrimaryGreen_Map">#084528</color>
     <color name="White_Map">#F8F8F8</color>
     <color name="DarkGrey_Map">#999999</color>
+    <color name="Transparent_Map">#F8F8F8</color>
+
 
     <!-- Colors for  activity_profile -->
     <color name="GreenKaki_Profile">#1a89be89</color>
@@ -87,5 +93,12 @@
 
     <!-- Colors ic_position -->
     <color name="FlashRed_position">#F00020</color>
+
+    <!-- Colors for pollen_alert button actity -->
+    <color name="LightGreen_pollen">#89BE89</color> // when it is 0
+    <color name="Orange_pollen">#FF9800</color> // when it is 1
+    <color name="FlashRed_pollen">#F00020</color> // when it is 2
+
+
 
 </resources>

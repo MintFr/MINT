@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -200,6 +201,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         next_arrow = findViewById(R.id.next_arrow_image);
         current_arrow = findViewById(R.id.current_arrow_image);
         this.nbPointsDone = 0;
+        this.nbActualStep = 0;
+
 
     }
 
@@ -253,7 +256,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             }
             displayItinerary(itinerary);
             //Display the first step
-            nbActualStep = 0;
             displayStep(nbActualStep);
             this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
             updateFirstDirection();
@@ -262,6 +264,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "onStart: finished ");
         testDirection();
 
+        Button previousStepButton = findViewById(R.id.previous_step_button);
+        previousStepButton.setVisibility(Button.INVISIBLE);
     }
 
     @Override
@@ -460,6 +464,21 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      * @param n : number of the step to display
      */
     private void displayStep(int n) {
+        // Next and previous step button display
+        Button previousStepButton = findViewById(R.id.previous_step_button);
+        Button nextStepButton = findViewById(R.id.next_step_button);
+
+        if (n == 0) {
+            previousStepButton.setVisibility(Button.INVISIBLE);
+        } else {
+            previousStepButton.setVisibility(Button.VISIBLE);
+        }
+
+        if (n == itinerary.getDetail().size() - 2) {
+            nextStepButton.setVisibility(Button.INVISIBLE);
+        } else {
+            nextStepButton.setVisibility(Button.VISIBLE);
+        }
 
         //Saving Steps
         ArrayList<Step> STEPS = itinerary.getDetail();
@@ -672,7 +691,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
             updateDist();
 
-            if (dist < 5) {
+            if (dist < 15) {
                 nextStep();
                 this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
                 if (nbActualStep < itinerary.getDetail().size() - 1) {
@@ -848,5 +867,30 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     public void onDestroy() {
         super.onDestroy();
         Log.d(LOG_TAG, "Save State RealTimeItinerary OnDestroy");
+    }
+
+    public void onClickNextStep(View view) {
+        Log.d(LOG_TAG, "TAGGG : nbPoints next 1 " + nbPointsDone);
+        Log.d(LOG_TAG, "TAGGG : nbAct next 1 " + nbActualStep);
+        nextStep(view);
+        this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
+        if (nbActualStep < itinerary.getDetail().size() - 2) {
+            nextDirection();
+        }
+        Log.d(LOG_TAG, "TAGGG : nbPoints next 2 " + nbPointsDone);
+        Log.d(LOG_TAG, "TAGGG : nbAct next 2 " + nbActualStep);
+    }
+
+    public void onClickPreviousStep(View view) {
+        Log.d(LOG_TAG, "TAGGG : nbPoints prev 1 " + nbPointsDone);
+        Log.d(LOG_TAG, "TAGGG : nbAct prev 1 " + nbActualStep);
+        nbPointsDone -= itinerary.getDetail().get(nbActualStep).getNbEdges();
+        nbActualStep -= 1;
+
+        displayStep(nbActualStep);
+
+        updateDist();
+        Log.d(LOG_TAG, "TAGGG : nbPoints prev 2 : " + nbPointsDone);
+        Log.d(LOG_TAG, "TAGGG : nbAct prev 2 : " + nbActualStep);
     }
 }

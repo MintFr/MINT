@@ -60,8 +60,8 @@ public class LoadingPageActivity extends AppCompatActivity {
 
             // build the URL for the request to the server
 
-            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itinerary_pol/" +
-                            "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
+            String url = String.format("http://ser-info-03.ec-nantes.fr:8080/itineraries-pollution/itineraryPollution" +
+                            "?start=%s,%s&end=%s,%s&hasStep=%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, latitudeStep, longitudeStep, options[0], options[1], options[2], options[3], start, time);
 
             System.out.println(url);

@@ -151,18 +151,19 @@
             android:background="@color/Transparent_Profile_PopupMain"/>
 
     </LinearLayout>
+
     <View
         android:id="@+id/option_separation"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@id/option_calendar_icon"
-        android:layout_alignRight="@id/end_time"
-        android:background="@color/WhiteGrey_Profile_PopupMain"
         android:layout_below="@id/transportation_icons"
         android:layout_alignStart="@id/option_calendar_icon"
-        android:layout_alignEnd="@id/end_time" />
+        android:layout_alignLeft="@id/option_calendar_icon"
+        android:layout_alignEnd="@id/end_time"
+        android:layout_alignRight="@id/end_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/WhiteGrey_Profile_PopupMain" />
 
 
     <View

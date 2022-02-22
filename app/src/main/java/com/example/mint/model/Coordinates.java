@@ -25,6 +25,11 @@ public class Coordinates implements Serializable {
         this.longitude = longitude;
     }
 
+    /**
+     * Override of the toString method to print the coordinates properly
+     *
+     * @return String of the coordinates
+     */
     @Override
     public String toString() {
         return "Coordinates{" +

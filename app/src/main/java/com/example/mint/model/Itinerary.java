@@ -13,9 +13,7 @@ public class Itinerary implements Serializable {
     private String type; // type of transportation
     private double pollution; // total exposition to pollution
     private double duration; // total itinerary duration
-    //private ArrayList<Integer> stepTime; // duration between steps in sec
     private double distance; // total itinerary distance
-    //private ArrayList<Integer> stepDistance; // distance between steps in metres
     private ArrayList<double[]> points; // coordinates of each point
     private ArrayList<Step> detail;
     private boolean hasStep;
@@ -100,13 +98,6 @@ public class Itinerary implements Serializable {
                 this.points.add(p);
             }
             int s = this.points.size();
-            //this.stepTime = new ArrayList<>();
-            //this.stepDistance = new ArrayList<>();
-            //JSONArray stepsLength = json.getJSONArray("stepsLength");
-            /*for (int j=0;j<stepsLength.length();j++){
-                this.stepTime.add(0);
-                this.stepDistance.add(stepsLength.getInt(j));
-            }*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,8 +119,6 @@ public class Itinerary implements Serializable {
         this.pollution = itinerary.getPollution();
         this.duration = itinerary.getDuration();
         this.distance = itinerary.getDistance();
-        //this.stepTime = itinerary.getStepTime();
-        //this.stepDistance = itinerary.getStepDistance();
         this.points = itinerary.getPoints();
     }
 
@@ -200,21 +189,6 @@ public class Itinerary implements Serializable {
         this.duration = duration;
     }
 
-    /*public ArrayList<Integer> getStepTime() {
-        return stepTime;
-    }
-
-    public void setStepTime(ArrayList<Integer> stepTime) {
-        this.stepTime = stepTime;
-    }
-
-    public ArrayList<Integer> getStepDistance() {
-        return stepDistance;
-    }
-
-    public void setStepDistance(ArrayList<Integer> stepDistance) {
-        this.stepDistance = stepDistance;
-    }*/
 
     /**
      * Access total distance

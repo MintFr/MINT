@@ -1,7 +1,5 @@
 package com.example.mint.model;
 
-//import android.annotation.SuppressLint;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,7 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-//import java.util.Arrays;
 
 /**
  * Asynchronous task to request server and read response.
@@ -56,9 +53,6 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
     protected void onPreExecute() {
         //Prepare task and show waiting view
         myActivity.setContentView(R.layout.activity_loading_page);
-        //progress.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-
-
     }
 
     /**

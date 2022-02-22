@@ -120,7 +120,7 @@ Scelerisque purus semper eget duis. Eu augue ut lectus arcu bibendum at. Tortor 
 Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida. Eget felis eget nunc lobortis mattis aliquam faucibus purus in. Nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. Donec et odio pellentesque diam volutpat commodo sed egestas. Egestas quis ipsum suspendisse ultrices. Viverra orci sagittis eu volutpat odio facilisis mauris. Dictum sit amet justo donec enim diam vulputate ut. Et leo duis ut diam quam nulla porttitor massa id. Vel turpis nunc eget lorem dolor sed viverra ipsum. Volutpat odio facilisis mauris sit amet massa vitae tortor. Lectus magna fringilla urna porttitor rhoncus dolor purus non enim. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Dictum at tempor commodo ullamcorper. Viverra accumsan in nisl nisi scelerisque eu ultrices. Non nisi est sit amet facilisis magna.
 
 Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermentum dui faucibus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa. Pharetra pharetra massa massa ultricies. Tincidunt eget nullam non nisi est sit. Duis ultricies lacus sed turpis tincidunt id. Molestie at elementum eu facilisis sed odio morbi. Diam in arcu cursus euismod quis viverra. Pulvinar pellentesque habitant morbi tristique senectus. Pellentesque habitant morbi tristique senectus et netus et. Viverra justo nec ultrices dui. Eget egestas purus viverra accumsan in nisl. Penatibus et magnis dis parturient montes. Volutpat maecenas volutpat blandit aliquam etiam erat velit. Egestas sed tempus urna et pharetra pharetra. Fusce ut placerat orci nulla pellentesque. Euismod in pellentesque massa placerat duis.</string>
-    <string name="mentions_l_gales_content">1. Présentation de l’application. \n \n
+    <string name="mentions_l_gales_content"><b>1. Présentation de l’application.</b> \n \n
 
 En vertu de l’article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique, il est précisé aux utilisateurs de l’application Mint l’identité des différents intervenants dans le cadre de sa réalisation et de son suivi :
 Propriétaire : Ecole Centrale de Nantes
@@ -129,7 +129,7 @@ Le responsable publication est une personne physique ou une personne morale.
 
 \n  \n \n
 
-2. Conditions générales d’utilisation de l’application et des services proposés. \n \n
+<b> 2. Conditions générales d’utilisation de l’application et des services proposés. </b>\n \n
 
 L’utilisation de l’application Mint implique l’acceptation pleine et entière des conditions générales d’utilisation ci-après décrites. Ces conditions d’utilisation sont susceptibles d’être modifiées ou complétées à tout moment, les utilisateurs de l’application Mint sont donc invités à les consulter de manière régulière.
 Cette application est normalement accessible à tout moment aux utilisateurs. Une interruption pour raison de maintenance technique peut être toutefois décidée par Mint qui s’efforcera alors de communiquer préalablement aux utilisateurs les dates et heures de l’intervention.
@@ -137,7 +137,7 @@ Le site est mis à jour régulièrement par Sophie To. De la même façon, les m
 
 \n  \n \n
 
-3. Description des services fournis. \n \n
+<b> 3. Description des services fournis. </b> \n \n
 
 L’application Mint a pour objet de fournir une information concernant l’ensemble des activités de la société.
 Mint s’efforce de fournir sur l’application Mint des informations aussi précises que possible. Toutefois, il ne pourra être tenue responsable des omissions, des inexactitudes et des carences dans la mise à jour, qu’elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations.
@@ -145,7 +145,7 @@ Tous les informations indiquées sur le site sont données à titre indicatif, e
 
 \n \n \n
 
-4. Propriété intellectuelle et contrefaçons. \n \n
+<b>4. Propriété intellectuelle et contrefaçons.</b> \n \n
 
 L’école Centrale de Nantes est propriétaire des droits de propriété intellectuelle ou détient les droits d’usage sur tous les éléments accessibles sur le site, notamment les textes, images, graphismes, logo, icônes, logiciels.
 Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable.
@@ -153,14 +153,14 @@ Toute exploitation non autorisée du site ou de l’un quelconque des éléments
 
 \n \n \n
 
-5. Limitations de responsabilité. \n \n
+<b>5. Limitations de responsabilité.</b> \n \n
 
 Mint ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l’utilisateur, lors de l’installation de l’application, et résultant soit de l’utilisation d’un matériel non approprié, soit de l’apparition d’un bug ou d’une incompatibilité.
 Mint ne pourra également être tenue responsable des dommages indirects (tels par exemple qu’une perte de marché ou perte d’une chance) consécutifs à l’utilisation de l’application.
 
 \n \n \n
 
-6. Gestion des données personnelles. \n \n
+<b>6. Gestion des données personnelles.</b> \n \n
 
 En France, les données personnelles sont notamment protégées par la loi n° 78-87 du 6 janvier 1978, la loi n° 2004-801 du 6 août 2004, l’article L. 226-13 du Code pénal et la Directive Européenne du 24 octobre 1995.
 En tout état de cause Mint ne collecte des informations personnelles relatives à l’utilisateur que pour le besoin de certains services proposés par le site. L’utilisateur fournit ces informations en toute connaissance de cause, notamment lorsqu’il procède par lui-même à leur saisie. Il est alors précisé à l’utilisateur du site, l’obligation ou non de fournir ces informations.
@@ -171,20 +171,20 @@ Les bases de données sont protégées par les dispositions de la loi du 1er jui
 
 \n \n \n
 
-7. Droit applicable et attribution de juridiction. \n \n
+<b>7. Droit applicable et attribution de juridiction.</b> \n \n
 
 Tout litige en relation avec l’utilisation de l’application Mint est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Nantes.
 
 \n \n \n
 
-8. Les principales lois concernées. \n \n
+<b>8. Les principales lois concernées.</b> \n \n
 
 Loi n° 78-17 du 6 janvier 1978, notamment modifiée par la loi n° 2004-801 du 6 août 2004 relative à l’informatique, aux fichiers et aux libertés.
 Loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique.
 
 \n \n \n
 
-9. Lexique. \n \n
+<b>9. Lexique.</b> \n \n
 
 Utilisateur : Personne utilisant l’application susnommé.
 Informations personnelles : « les informations qui permettent, sous quelque forme que ce soit, directement ou non, l’identification des personnes physiques auxquelles elles s’appliquent » (article 4 de la loi n° 78-17 du 6 janvier 1978).

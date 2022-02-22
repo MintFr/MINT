@@ -2,7 +2,6 @@
     <string name="app_name">Mint</string>
     <!-- Bottom Menu -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="itinerary">Itinéraire</string>
     <string name="maps">Cartes</string>
     <string name="profile">Profil</string>
@@ -18,10 +17,8 @@
     <!--    Spinner activity_map-->
     <string-array name="map_array">
         <item>Routes</item>
-        <item tools:ignore="Typos">Trafic</item>
         <item>Transports en commun</item>
         <item>Pollution</item>
-        <item>Pollens</item>
     </string-array>
     <string name="enter_address">Entrer une nouvelle adresse</string>
     <string name="favorite_addresses_button"><u>Mes adresses favorites</u></string>
@@ -330,6 +327,12 @@ L’Application Mobile Nantes est la propriété exclusive de Nantes à Tous dro
 </string>
     <string name="mentions_l_gales">Mentions légales</string>
     <string name="mentions_l_gales2">Mentions Légales</string>
-    <string name="message_fin_pollen_alert"><br></br>Les données sont fournies par le RNSA et le RAEP est calculé grâce au risque allergique théorique, à un index clinique provenant des bulletins de médecins, d\'un index phénologique appuyé sur des observations réalisées sur la croissance et la floraison des espèces et enfin sur un index météorologique. <br></br></string>
+    <string name="testRealTimeItinerary">test</string>
+    <string name="followItineraryButton">Suivre cet Itinéraire</string>
+    <string name="display_itinerary">\t  Afficher l\'itinéraire \t</string>
+    <string name="pollution_icon_description">Pollution icon</string>
+    <string name="transportation_icon_description">transportation icon</string>
+    <string name="message_fin_pollen_alert"><br></br>
+    Les données sont fournies par le RNSA et le RAEP est calculé grâce au risque allergique théorique, à un index clinique provenant des bulletins de médecins, d\'un index phénologique appuyé sur des observations réalisées sur la croissance et la floraison des espèces et enfin sur un index météorologique. <br></br></string>
     <string name="title_pollen_alert">Alerte Pollen</string>
 </resources>

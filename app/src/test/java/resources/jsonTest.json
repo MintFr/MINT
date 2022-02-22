@@ -1,7 +1,7 @@
 {
   "details": [{"addressStep": "adresse 1",
-    "lengthStep": 15},
-    {"addressStep": "adresse   2","lengthStep":30.3}],
+    "lengthStep": 15, "numberOfEdges":  1},
+    {"addressStep": "adresse   2","lengthStep":30.3, "numberOfEdges":  2}],
 
   "time": "\"15:30\"",
   "distance": 45.3,

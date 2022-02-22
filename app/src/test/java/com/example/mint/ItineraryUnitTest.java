@@ -72,13 +72,15 @@ public class ItineraryUnitTest {
             expectedDetails.add(
                     new Step(
                             "adresse 1",
-                            15
+                            15,
+                            1
                     )
             );
             expectedDetails.add(
                     new Step(
                             "adresse   2",
-                            30
+                            30,
+                            2
                     )
             );
 
@@ -91,6 +93,10 @@ public class ItineraryUnitTest {
                 assertEquals(
                         expectedDetails.get(i).getDistance(),
                         output.getDetail().get(i).getDistance()
+                );
+                assertEquals(
+                        expectedDetails.get(i).getNbEdges(),
+                        output.getDetail().get(i).getNbEdges()
                 );
             }
 

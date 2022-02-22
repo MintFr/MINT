@@ -635,6 +635,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             newIntent = new Intent(this, Class.forName(targetActivity));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }catch (NullPointerException e){
+            newIntent = new Intent(this, MainActivity.class);
+            targetActivity = "com.example.mint.controller.MainActivity";
         }
         intent.putExtra("previousActivity", this.getClass());
 
@@ -1079,8 +1082,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onPause() {
-        super.onPause();
-        Log.d(LOG_TAG, "Save State Profile OnPause");
+        try {
+            super.onPause();
+            Log.d(LOG_TAG, "Save State Profile OnPause");
+        } catch (IllegalStateException e){
+            e.printStackTrace();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override

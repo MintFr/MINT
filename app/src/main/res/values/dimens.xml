@@ -15,4 +15,5 @@
     <dimen name="transport_button_gap">40dp</dimen>
     <dimen name="tram_transport_button_gap">120dp</dimen>
     <dimen name="button_scale">1.5</dimen>
+    <dimen name="peek_height_big">200dp</dimen>
 </resources>

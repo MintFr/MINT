@@ -3,13 +3,14 @@ package com.example.mint.controller;
 import static android.graphics.Color.argb;
 import static android.graphics.Color.parseColor;
 import static android.graphics.Color.rgb;
-
 import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -23,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AlertDialog;
@@ -69,6 +71,8 @@ import java.util.List;
  */
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    public TextView donneesPollen;
+    public String dataPollen;
     LayoutInflater inflaterMap;
     ////////////////////////
     ////////  MAP  /////////
@@ -78,7 +82,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private IMapController mapController = null;
     private GeoPoint defaultPoint;
     private TanMap[] lines;
-
     ////////////////////////
     /////// BUTTONS  ///////
     ////////////////////////
@@ -94,10 +97,28 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private ScaleBarOverlay mScaleBarOverlay;
     private ImageButton pollen_button;
     private View v;
-    public TextView donneesPollen;
-    public String dataPollen;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
-    //private static final String TAG = "MapActivity"; //--> for debugging
+
+    /////////////////////////////////////////////////////////
+    //                   BACK BUTTON                       //
+    /////////////////////////////////////////////////////////
+
+    /**
+     * Check if the device has an internet connection
+     *
+     * @return
+     */
+    public boolean CheckInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            return true;
+        }
+        return false;
+    }//end of check int
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +194,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
-        this.pollen_button=findViewById(R.id.pollen_button);
+        this.pollen_button = findViewById(R.id.pollen_button);
 
 
         /////////////////////////////////////////////////////////
@@ -223,7 +244,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
         String sensibility = PreferencesPollen.getPollen("Pollen", MapActivity.this);
 
-        int pollen_count = getMaxPollen("maxPollen",MapActivity.this);
+        int pollen_count = getMaxPollen("maxPollen", MapActivity.this);
         int colorZero = parseColor("#387D22");
         int colorOne = parseColor("#b0bb3a");
         int colorTwo = parseColor("#F1E952");
@@ -232,7 +253,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         int threshold2 = 3;
         int threshold3 = 4;
         //We check the sensibility and set the according threshold for the colors
-        switch(sensibility){
+        switch (sensibility) {
 
             case "Pas sensible":
                 threshold1 = 2;
@@ -255,7 +276,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 threshold1 = 1;
                 threshold2 = 1;
                 threshold3 = 1;
-                break;    }
+                break;
+        }
 
 
         //We now choosing the color depending on the pollen and the threshold defined earlier
@@ -270,7 +292,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         );
 
 
-        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen, pollen_button);
 
         VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
         path1.setFillColor(color);
@@ -288,19 +310,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-
-
-
-
-
-    /////////////////////////////////////////////////////////
-    //                   BACK BUTTON                       //
-    /////////////////////////////////////////////////////////
-
-
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -310,17 +319,26 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
     }
+    /////////////////////////////////////////////////////////
+    //                   BACK BUTTON END                   //
+    /////////////////////////////////////////////////////////
 
     @Override
     public void onPause() {
-        super.onPause();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
-        map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
-    }
+        try {
+            super.onPause();
+            //this will refresh the osmdroid configuration on resuming.
+            //if you make changes to the configuration, use
+            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            //Configuration.getInstance().save(this, prefs);
+            map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
 
+    }
 
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
@@ -340,6 +358,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             newIntent = new Intent(this, Class.forName(targetActivity));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            newIntent = new Intent(this, MainActivity.class);
+            targetActivity = "com.example.mint.controller.MainActivity";
         }
         intent.putExtra("previousActivity", this.getClass());
 
@@ -351,7 +372,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
             //override the transition and finish the current activity
             this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            //this.finish();
+            this.finish();
         }
 
         //For Right-To-Left transitions
@@ -362,10 +383,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             this.finish();
         }
     }
-    /////////////////////////////////////////////////////////
-    //                   BACK BUTTON END                   //
-    /////////////////////////////////////////////////////////
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -429,7 +446,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 break;
         }
     }
-
 
     /**
      * Function to read a file.
@@ -551,6 +567,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         map.invalidate();
 
     }
+    /////////////////////////////////////////////////////////
+    // BACK BUTTON END //
+    /////////////////////////////////////////////////////////
 
     /**
      * Display a single route
@@ -637,7 +656,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         });
     }
 
-
     /**
      * Function to highlight the chosen itinerary
      *
@@ -674,10 +692,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         alreadySelectedPolyline.closeInfoWindow();
         map.invalidate();
     }
-    /////////////////////////////////////////////////////////
-    // BACK BUTTON END //
-    /////////////////////////////////////////////////////////
-
 
     /**
      * Reset the appearance of a polyline that was highlighted
@@ -693,26 +707,30 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
 
     // OnClick method to open the pollen popup when the user click on the button
 
     public void onClickPollen(View view) {
-        //creation of the popup
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        this.v = pollenPopupView; //initialisation of the view for the textView
+        if (CheckInternet()) {
+            //creation of the popup
+            dialogBuilder = new AlertDialog.Builder(this);
+            final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+            this.v = pollenPopupView; //initialisation of the view for the textView
 
-        //Fetch data from RNSA url
-        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
+            //Fetch data from RNSA url
+            this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
 
-        //Fetch RNSA data
-        new fetchData(this.donneesPollen).execute();
-        dataPollen = String.valueOf(this.donneesPollen.getText());
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
+            //Fetch RNSA data
+            new fetchData(this.donneesPollen).execute();
+            dataPollen = String.valueOf(this.donneesPollen.getText());
+            dialogBuilder = dialogBuilder.setView(pollenPopupView);
+            dialogBuilder.setNegativeButton("FERMER", null);
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Connexion à Internet nécessaire pour obtenir les informations sur le pollen.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -2,23 +2,28 @@
   "details": [
     {
       "addressStep": "Rue de la Noë",
-      "lengthStep": 88
+      "lengthStep": 88,
+      "numberOfEdges":  2
     },
     {
       "addressStep": "Rond-Point de la Noë",
-      "lengthStep": 43
+      "lengthStep": 43,
+      "numberOfEdges":  3
     },
     {
       "addressStep": "Route de la Jonelière",
-      "lengthStep": 238
+      "lengthStep": 238,
+      "numberOfEdges":  1
     },
     {
       "addressStep": "Boulevard Guy Mollet",
-      "lengthStep": 331
+      "lengthStep": 331,
+      "numberOfEdges":  5
     },
     {
       "addressStep": "Place du 8 Mai 1945",
-      "lengthStep": 25
+      "lengthStep": 25,
+      "numberOfEdges":  23
     }
   ],
   "time": "16:03",

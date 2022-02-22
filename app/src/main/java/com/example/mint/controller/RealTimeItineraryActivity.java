@@ -90,6 +90,8 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     private IMapController mapController = null;
     private Marker positionMarker;
     private Itinerary itinerary = new Itinerary();
+    private Button nextStepButton;
+    private Button previousStepButton;
     /**
      * LAYOUT AND MENU
      */
@@ -121,6 +123,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_time_itinerary);
+
+        // Next and previous step button display
+        previousStepButton = findViewById(R.id.previous_step_button);
+        nextStepButton = findViewById(R.id.next_step_button);
 
         //Map display
         map = findViewById(R.id.map);
@@ -441,9 +447,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      * @param n : number of the step to display
      */
     private void displayStep(int n) {
-        // Next and previous step button display
-        Button previousStepButton = findViewById(R.id.previous_step_button);
-        Button nextStepButton = findViewById(R.id.next_step_button);
 
         if (n == 0) {
             previousStepButton.setVisibility(Button.INVISIBLE);
@@ -892,5 +895,12 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         updateDist();
         Log.d(LOG_TAG, "TAGGG : nbPoints prev 2 : " + nbPointsDone);
         Log.d(LOG_TAG, "TAGGG : nbAct prev 2 : " + nbActualStep);
+
+        if(nbActualStep > 0) {
+            nextDirection();
+        }
+        //Hide the next step (for there is none)
+        View nextStepLayout = findViewById(R.id.itinerary_real_time_step_layout_second);
+        nextStepLayout.setVisibility(View.VISIBLE);
     }
 }

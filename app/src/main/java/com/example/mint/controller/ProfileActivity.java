@@ -27,10 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mint.R;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesDate;
-import com.example.mint.model.PreferencesDate2;
 import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesPollution;
-import com.example.mint.model.PreferencesPollution2;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
@@ -45,14 +43,10 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
@@ -138,7 +132,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // check whether a new day has started and if so reset pollution to 0 and store the last value
         //resetPollutionNewDay();
         // get the pollution from today
-        int pollution = PreferencesPollution2.getPollutionToday(this);
+        int pollution = PreferencesPollution.getPollutionToday(this);
         pollutionToday.setText(Integer.toString(pollution));
 
 
@@ -723,7 +717,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //set up a Calendar object to handle date
         final Calendar calendar = Calendar.getInstance();
         // we get the pollution data from preferences calendar.get(Calendar.YEAR)
-        ArrayList<Integer> values = PreferencesPollution2.getPollutionYear(2022, this);
+        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2022, this);
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we get the nth day of the year
@@ -803,7 +797,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // set up of a Calendar object to handle date
         final Calendar calendar = Calendar.getInstance();
         // we get the pollution data from preferences calendar.get(Calendar.YEAR)
-        ArrayList<Integer> values = PreferencesPollution2.getPollutionYear(2022, this);
+        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2022, this);
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we get the nth day of the year

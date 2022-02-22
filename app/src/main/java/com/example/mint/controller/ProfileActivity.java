@@ -58,45 +58,31 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
     ImageButton slideLeft;
     ImageButton slideRight;
-    /**
-     * dim the screen behind the popup window
-     */
+    //dim the screen behind the popup window
     private View dim_popup;
-    /**
-     * parameters textView
-     */
+
     private TextView parameters;
-    /**
-     * pollution profile
-     */
+    //pollution profile
     private TextView pollutionToday;
     private LineChart graph;
-    /**
-     * favorite addresses
-     */
+    //favorite addresses
     private Button addButton;
     private Button favoriteAddressesButton;
     private EditText enterAddress;
     private PopupWindow addressPopupWindow;
 
-    /**
-     * sensibility
-     */
+    //sensibility
     private TextView setSensibility;
     private TextView setSensibilityPollen;
     private Button sensibilityButton;
     private PopupWindow sensibilityPopupWindow;
 
 
-    /**
-     * transportation
-     */
-
+    //transportation
     private ImageButton carButton;
     private ImageButton tramButton;
     private ImageButton bikeButton;
     private ImageButton walkButton;
-
 
     //private static final String TAG = "ProfileActivity"; //--> for debugging
 
@@ -120,12 +106,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             setContentView(R.layout.activity_profile);
         }
 
-
         //link layout elements to activity
         parameters = findViewById(R.id.parameters);
         sensibilityButton = findViewById(R.id.sensibility);
         favoriteAddressesButton = findViewById(R.id.favorite_addresses);
-
         dim_popup = findViewById(R.id.dim_popup);
 
         // handle the pollution
@@ -137,24 +121,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // UPDATE PREFERENCES
         // update the pollution for this month
-        System.out.println("pollution today" + PreferencesPollution.getPollutionToday(this));
         PreferencesPollution.addDayPollutionToMonth(PreferencesDate.getCurrentDate(), PreferencesPollution.getPollutionToday(this), this);
-        System.out.println(PreferencesPollution.getPollutionMonth(3, this));
         // update the pollution for this year
         PreferencesPollution.addMonthPollutionToYear(PreferencesDate.getCurrentDate()[1], PreferencesPollution.getPollutionMonth(PreferencesDate.getCurrentDate()[1], this), this);
-        System.out.println(PreferencesPollution.getPollutionYear(2021, this));
 
-        // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
-//        ArrayList<Integer> valuesTest = new ArrayList<>();
-//        ArrayList<Integer> valuesTest2 = new ArrayList<>();
-//        for (int j=0;j<31;j++){
-//            valuesTest.add((int) (Math.random() * 100));
-//        }
-//        for (int j=0;j<31;j++){
-//            valuesTest2.add(0);
-//        }
-//        Preferences.setPollutionMonth(1,valuesTest2,this);
-//        Preferences.setPollutionMonth(2,valuesTest2,this);
 
         // handle the graph
         graph = findViewById(R.id.chart);
@@ -175,7 +145,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttons.add(yearBtn);
 
         weekBtn.setActivated(true); // by default we start with weekly graph
-
         final LinearLayout btnView = findViewById(R.id.graph_buttons_layout);
 
 
@@ -223,9 +192,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final View sensibilityPopupView = inflater.inflate(R.layout.popup_sensibility, null);
         final View transportationPopupView = inflater.inflate(R.layout.popup_favorite_transportation, null);
 
-        /////////////////////////////////////////////////////////
+        /////////////////////////////
         // FAVORITE ADDRESSES POPUP//
-        /////////////////////////////////////////////////////////
+        /////////////////////////////
 
         // create the popup window
         int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
@@ -453,16 +422,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SENSIBILITY POPUP END //
         /////////////////////////////////////////////////////////
 
-        // this is the sensibility that is displayed directly in the profile page
-        setSensibilityPollen = findViewById(R.id.set_sensibility_pollen);
-        setSensibilityPollen.setText(PreferencesPollen.getPollen("Pollen", this));
 
         /////////////////////////////////////////////////////////
         // SENSIBILITY POLLEN //
         /////////////////////////////////////////////////////////
 
+        // this is the sensibility that is displayed directly in the profile page
+        setSensibilityPollen = findViewById(R.id.set_sensibility_pollen);
+        setSensibilityPollen.setText(PreferencesPollen.getPollen("Pollen", this));
 
-
+        /////////////////////////////////////////////////////////
+        // SENSIBILITY POLLEN END //
+        /////////////////////////////////////////////////////////
 
 
         /////////////////////////////////////////////////////////
@@ -485,47 +456,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
-
         /////////////////////////////////////////////////////////
         // BOTTOM MENU END //
         /////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////
-        // SLIDE ANIMATION //
-        /////////////////////////////////////////////////////////
-
-        /*bottomNav.setSelectedItemId(R.id.profile);*/
-
-        //TODO This is redundant with MenuSwitcherActivity
-        //Slide animation
-        //bottomNav.setSelectedItemId(R.id.profile);
-
-        /*
-        bottomNav.setOnNavigationItemSelectedListener (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itinerary:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                        return true;
-                    case R.id.maps:
-                        startActivity(new Intent(getApplicationContext(),MapActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                        return true;
-                    case R.id.profile:
-                        return true;
-                    default:
-                }
-                return false;
-            }
-        });
-         */
-
-    }
-
-    /////////////////////////////////////////////////////////
-    // BACK BUTTON //
-    /////////////////////////////////////////////////////////
+   }
 
     /**
      * Display and set up the pollen sensibility pop up
@@ -541,7 +475,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         pollenPopupWindow.setBackgroundDrawable(null);
         pollenPopupWindow.setFocusable(true);
 
-        //
+        //Handling the onClick of the buttons
         Button noSensibility = popup_pollen.findViewById(R.id.no_sensibility_btn);
         noSensibility.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -606,7 +540,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     void saveSensibilityPollen(Button pressed,PopupWindow window){
 
-        //
         String sensibility = pressed.getText().toString();
         PreferencesPollen.setPollen("Pollen",sensibility,ProfileActivity.this);
 
@@ -693,11 +626,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public void highlightPollen(View PollenButton) {
-        //check if the button is already activated or not
-    }
-
-
     /**
      * This adds the pollution from the last itinerary to today's pollution
      */
@@ -742,10 +670,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void setUpGraph(final int range) {
         // we get the pollution data from preferences
-        System.out.println("values" + PreferencesPollution.getPollutionYear(2021, this));
         ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2021, this);
-
-
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
         // we use the java date format to calculate how many days have gone by since the beginning of the year
@@ -758,10 +683,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Date date2 = myFormat.parse(inputString2);
             long diff = date1.getTime() - date2.getTime(); // number of days that have gone by in milliseconds
             diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            System.out.println("Days: " + diffDays);
             for (int i = 1; i <= diffDays; i++) {
-                System.out.println("i " + i);
-                System.out.println("value " + values.get(i + 4));
                 entries.add(new Entry(i, values.get(i + 2)));
             }
         } catch (ParseException e) {
@@ -841,7 +763,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getFormattedValue(float value) {
-                        System.out.println("value : " + value);
                         return xAxisLabelMonth.get((int) value);
                     }
                 });
@@ -984,7 +905,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             graph.moveViewToX(xAxis.getAxisMinimum());
                             break;
                         case 1:
-                            System.out.println(slideLeft.isEnabled());
                             // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                             int min = (int) xAxis.getAxisMinimum();
                             int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
@@ -1008,10 +928,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         };
-
         slideLeft.setOnClickListener(onSlideClick);
         slideRight.setOnClickListener(onSlideClick);
-
     }
 
     /**
@@ -1038,7 +956,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         for (int i = 0; i < 365; i++) {
             days.add(String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
             cal.add(Calendar.DATE, 1);
-            System.out.println(days.get(i));
         }
         return days;
     }
@@ -1099,19 +1016,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         bikeButton = this.findViewById(R.id.bike_button);
         walkButton = this.findViewById(R.id.walk_button);
 
-
         ArrayList<String> favoriteTransportation = PreferencesTransport.getPrefTransportation("Transportation", this);
         if (!favoriteTransportation.isEmpty()) {
-
             carButton.setActivated(favoriteTransportation.get(0).equals("car_button"));
             tramButton.setActivated(favoriteTransportation.get(1).equals("tram_button"));
             bikeButton.setActivated(favoriteTransportation.get(2).equals("bike_button"));
             walkButton.setActivated(favoriteTransportation.get(3).equals("walk_button"));
-
-
         }
-
-
     }
 
     @Override

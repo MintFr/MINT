@@ -93,7 +93,6 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     /**
      * Method applying when user clicks on "Mentions légales". Launches the LegalNotices Activity.
      *
@@ -104,18 +103,10 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickSizePolice(View view) {
-        SharedPreferences sharedPreferences = getSharedPreferences("big", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.apply();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-
         switchCompat = (SwitchCompat) findViewById(R.id.switch_police_button);
-
         String sizeMode = PreferencesSize.getSize("police", this);
         switchCompat.setChecked(!sizeMode.equals("normal"));
 

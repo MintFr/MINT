@@ -18,13 +18,11 @@ public class LoadingPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_page);
-
         Intent intent = getIntent();
 
         //Get parameters corresponding to addresses from the main activity (by default we put centrale nantes and chu hotel dieu)
         boolean start = intent.getBooleanExtra("starting", true);
         String time = intent.getStringExtra("time");
-        System.out.println(time);
         double latitudeStart = intent.getDoubleExtra("latitudeStart", 0.0);
         double longitudeStart = intent.getDoubleExtra("longitudeStart", 0.0);
         double latitudeEnd = intent.getDoubleExtra("latitudeEnd", 0.0);
@@ -62,7 +60,6 @@ public class LoadingPageActivity extends AppCompatActivity {
                             "itinerary6?start=%s,%s&end=%s,%s&hasStep=%s&step=%s,%s&transportation=%s,%s,%s,%s&hourStart=%s&time=%s",
                     latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, latitudeStep, longitudeStep, options[0], options[1], options[2], options[3], start, time);
 
-            System.out.println(url);
             AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
             task.execute(url);
 
@@ -80,7 +77,6 @@ public class LoadingPageActivity extends AppCompatActivity {
                     latitudeStart, longitudeStart, latitudeEnd, longitudeEnd, stepInItinerary, options[0], options[1], options[2], options[3], start, time);
 
             // activity launch
-            System.out.println(url);
             AsyncItineraryCompute task = new AsyncItineraryCompute(LoadingPageActivity.this);
             task.execute(url);
         }

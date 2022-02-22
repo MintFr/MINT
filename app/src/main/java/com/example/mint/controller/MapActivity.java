@@ -70,18 +70,14 @@ import java.util.List;
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     LayoutInflater inflaterMap;
-    ////////////////////////
-    ////////  MAP  /////////
-    ////////////////////////
+    // map
     private MapView map = null;
     private ArrayList<double[]> response = new ArrayList<>();
     private IMapController mapController = null;
     private GeoPoint defaultPoint;
     private TanMap[] lines;
 
-    ////////////////////////
-    /////// BUTTONS  ///////
-    ////////////////////////
+    // buttons
     private Pollution[] pol_streets;
     private FloatingActionButton zoomInButton;
     private FloatingActionButton zoomOutButton;
@@ -112,15 +108,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             setContentView(R.layout.activity_map);
         }
 
-
         // inflater used to display different views
         inflaterMap = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        ////////////////////////
-        ///// MAP Download /////
-        ////////////////////////
-
-
+        // map Download
         try {
 
             InputStream inputStream = this.getResources().openRawResource(R.raw.maptan);
@@ -173,7 +164,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         paintBorder.setStrokeJoin(Paint.Join.ROUND);
         paintBorder.setShadowLayer(15, 0, 10, getResources().getColor(R.color.colorTransparentBlack));
         paintBorder.setAntiAlias(true);
-        this.pollen_button=findViewById(R.id.pollen_button);
+        this.pollen_button = findViewById(R.id.pollen_button);
 
 
         /////////////////////////////////////////////////////////
@@ -219,11 +210,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         /////////////////////////////////////////////////////////
 
         // This code allows to change the color of the button depending on the sensibility of the user
-
-
         String sensibility = PreferencesPollen.getPollen("Pollen", MapActivity.this);
 
-        int pollen_count = getMaxPollen("maxPollen",MapActivity.this);
+        int pollen_count = getMaxPollen("maxPollen", MapActivity.this);
         int colorZero = parseColor("#387D22");
         int colorOne = parseColor("#b0bb3a");
         int colorTwo = parseColor("#F1E952");
@@ -232,7 +221,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         int threshold2 = 3;
         int threshold3 = 4;
         //We check the sensibility and set the according threshold for the colors
-        switch(sensibility){
+        switch (sensibility) {
 
             case "Pas sensible":
                 threshold1 = 2;
@@ -255,8 +244,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 threshold1 = 1;
                 threshold2 = 1;
                 threshold3 = 1;
-                break;    }
-
+                break;
+        }
 
         //We now choosing the color depending on the pollen and the threshold defined earlier
         int color = (
@@ -285,21 +274,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
         // apply changes of colors
         pollen_button.invalidate();
-
     }
-
-
-
-
-
 
     /////////////////////////////////////////////////////////
     //                   BACK BUTTON                       //
     /////////////////////////////////////////////////////////
-
-
-
-
 
     @Override
     public void onResume() {
@@ -321,7 +300,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 
-
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
      */
@@ -342,7 +320,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             e.printStackTrace();
         }
         intent.putExtra("previousActivity", this.getClass());
-
         this.startActivity(newIntent);
 
         //---------TRANSITIONS-----------
@@ -366,7 +343,14 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     //                   BACK BUTTON END                   //
     /////////////////////////////////////////////////////////
 
-
+    /**
+     * Display the right map (routes, transport en commun, pollution) according to the current selection
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = (String) parent.getItemAtPosition(position);
@@ -374,7 +358,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
         switch (item) {
             case "Routes":
-                System.out.println("Routes");
                 mCompassOverlay = new CompassOverlay(this, new InternalCompassOrientationProvider(this), map);
                 this.mCompassOverlay.enableCompass();
                 map.getOverlays().add(this.mCompassOverlay);
@@ -401,10 +384,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 displayPollution(pol_streets);
                 break;
 
-                /*case "Pollens en direct":
-                break;
-
-                 */
             default:
                 break;
         }
@@ -457,9 +436,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
      */
     private TanMap[] readJSON(String response) throws JSONException {
         JSONArray json = new JSONArray(response);
-
-        System.out.println(json.getJSONObject(0));
-        System.out.println("json length : " + json.length());
         TanMap[] lines = new TanMap[json.length()];
         for (int i = 0; i < json.length(); i++) {
             lines[i] = new TanMap(json.getJSONObject(i));
@@ -476,13 +452,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
      */
     private Pollution[] readJSONPol(String response) throws JSONException {
         JSONArray json = new JSONArray(response);
-
-        //System.out.println(json.getJSONObject(0));
-        //System.out.println("json length : "+json.length());
         Pollution[] streets = new Pollution[json.length()];
         for (int i = 0; i < json.length(); i++) {
             streets[i] = new Pollution(json.getJSONObject(i));
-            System.out.println(streets[i]);
         }
         return streets;
     }
@@ -594,16 +566,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             busLineName.setTextColor(argb(alpha, 0, 0, 0));
 
         }
-        /*
-        float[] matrix = { 0, 0, 0, 0, red,
-                0, 0, 0, 0, green,
-                0, 0, 0, 0, blue,
-                0, 0, 0, 1, 0 };
-
-        ColorFilter colorFilter = new ColorMatrixColorFilter(matrix);
-        .setColorFilter(colorFilter);
-
-         */
 
         busLineDirection.setText(direction);
         busLineName.setText(name);
@@ -668,16 +630,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         // reset all other lines to original appearance
         // which concerns only the last polyline in the overlay.
         int n = map.getOverlays().size();
-        System.out.println(n);
         Polyline alreadySelectedPolyline = (Polyline) map.getOverlays().get(n - 2);
         resetPolylineAppearance(alreadySelectedPolyline);
         alreadySelectedPolyline.closeInfoWindow();
         map.invalidate();
     }
-    /////////////////////////////////////////////////////////
-    // BACK BUTTON END //
-    /////////////////////////////////////////////////////////
-
 
     /**
      * Reset the appearance of a polyline that was highlighted
@@ -693,6 +650,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             polyline.getOutlinePaint().setColor(color);
         }
     }
+
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 

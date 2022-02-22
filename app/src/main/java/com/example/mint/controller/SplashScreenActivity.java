@@ -25,7 +25,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         SharedPreferences prefs = context.getSharedPreferences("isStarting", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isStartingPollen", true);
-        // TODO: toast only once
         editor.putBoolean("isStartingToast", true);
         editor.apply();
 

@@ -79,29 +79,20 @@ import java.util.List;
  */
 public class ItineraryActivity extends AppCompatActivity implements View.OnClickListener {
 
-    /**
-     * GEOPOINT POSITIONS
-     */
+    // geopoint positions
     GeoPoint startPosition;
     GeoPoint endPosition;
     List<GeoPoint> markers;
     GeoPoint stepPosition;
-    /**
-     * ITINERARY
-     */
+
     ArrayList<Itinerary> itineraries;
-    /**
-     * INFLATER : brings up necessary views
-     */
+    // the inflater brings up necessary views
     LayoutInflater inflater;
-    /**
-     * MAP
-     */
+
     private MapView map = null;
     private IMapController mapController = null;
-    /**
-     * LAYOUT AND MENU
-     */
+
+    // layout and menu
     private BottomSheetBehavior sheetBehaviorDetail;
     private BottomSheetBehavior sheetBehaviorRecap;
     private RelativeLayout recapLayout;
@@ -138,9 +129,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // get the sensibility from preferences
-        /**
-         * POLLUTION DATA
-         */
         String sensibility = PreferencesSensibility.getSensibility("Sensibility", this);
         //set the threshold for the display color of the itineraries
         // TODO change values for threshold once you have the data from captation
@@ -196,9 +184,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         ////////////////////////
 
         // get the buttons for map control
-        /**
-         * BUTTONS
-         */
+
         FloatingActionButton zoomInButton = findViewById(R.id.zoom_in);
         FloatingActionButton zoomOutButton = findViewById(R.id.zoom_out);
         FloatingActionButton locateButton = findViewById(R.id.locate);
@@ -238,9 +224,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         // Paintlists for the effects on the polylines //
 
         // for the white border
-        /**
-         * STYLE
-         */
+
         Paint paintBorder = new Paint();
         paintBorder.setStrokeWidth(30);
         paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -308,17 +292,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     Polyline selectedLine = (Polyline) map.getOverlays().get(i);
                     resetPolylineAppearance(selectedLine);
                 }
-                // if a line is selected, display recap, else, do nothing
-//                boolean lineSelected = false;
-//                int i=1;
-//                while (!lineSelected&&i<finalItineraries.size()){
-//                    Polyline l = (Polyline) map.getOverlays().get(i);
-//                    if (l.getOutlinePaintLists().contains(paintBorderSelected)){
-//                        lineSelected=true;
-//                        displayRecap(finalItineraries);
-//                    }
-//                    i++;
-//                }
                 displayRecap(itineraries);
                 return true;
             }
@@ -520,13 +493,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      */
     //TODO fix this display so that is stays nicely
     private void displayDetails(Itinerary itinerary) {
-//        // hide recap
-//        recapView.setVisibility(View.GONE);
-//        // show details layout
-//        LinearLayout detailLayout = findViewById(R.id.itinerary_detail_layout); // get a reference to the detail layout
-//        detailLayout.setVisibility(View.VISIBLE); // set visibility to visible in case it was gone
+
         ArrayList<Step> STEPS = itinerary.getDetail();
-        //System.out.println(STEPS);
         //start and end
         TextView viewPoint1 = findViewById(R.id.start_point);
         TextView viewPoint2 = findViewById(R.id.end_point);
@@ -560,7 +528,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
             if (itinerary.getPointSize() > 2) {
 
                 // first we want to clear all previous steps that might already be displayed in itinerary detail
-                //it's a container for the views for each step that will be created with itinerary_step_layout
+                // it's a container for the views for each step that will be created with itinerary_step_layout
                 LinearLayout stepsLayout = findViewById(R.id.steps_linear_layout);
 
                 // this is the number of steps from the previously displayed itinerary
@@ -708,7 +676,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
 
             }
-            //list.get(i).getTime
 
             // set transportation
             switch (list.get(i).getType()) {
@@ -873,6 +840,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
 
     //////////////////////////////////
     // Methods to center map on points
+    ////////////////////////////////
 
     public void onClickP1(View view) {
         System.out.println(startPosition);
@@ -883,56 +851,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         mapController.setCenter(endPosition);
     }
 
-/*    public ArrayList<Step> detailItinerary(Itinerary itinerary){
-        List<Step> steps = new ArrayList<>();
-        //System.out.println(itinerary.getPointSize());
-        //System.out.println(itinerary.getStepDistance().size());
-
-        for (int j = 0; j<itinerary.getStepDistance().size();j++){
-            System.out.println(j);
-
-            Address address = new Address();
-            try {
-                Geocoder geocoder = new Geocoder(ItineraryActivity.this, Locale.getDefault());
-                List<android.location.Address> addresses = geocoder.getFromLocation(itinerary.getPoints().get(j+1)[0], itinerary.getPoints().get(j)[1],1);
-                System.out.println(addresses);
-                String a = addresses.get(0).getAddressLine(0);
-                if (addresses.get(0).getThoroughfare() != null){
-                    a = addresses.get(0).getThoroughfare();
-                }
-                else if(addresses.get(0).getFeatureName() != null){
-                    a = addresses.get(0).getFeatureName();
-                }
-                System.out.println("a" + a);
-                address.setCoordinates(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]);
-                address.setLocationName(a);
-                System.out.println(itinerary.getStepDistance().size());
-                Step tempStep = new Step(address.getLocationName(), itinerary.getStepDistance().get(j));
-                steps.add(tempStep);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        ArrayList<Step> newSteps = new ArrayList<>();
-        String address = steps.get(0).getAddress();
-        System.out.println(address);
-        int distance = steps.get(0).getDistance();
-        for (Step step:steps){
-            System.out.println(step.getAddress());
-            if (step.getAddress().equals(address)){
-                distance += step.getDistance();
-            }
-            else{
-                newSteps.add(new Steps(address, distance));
-                address = step.getAddress();
-                distance = step.getDistance();
-            }
-        }
-        //System.out.println(newSteps);
-        return newSteps;
-    }*/
-
-    ////////////////////////////////
 
     /**
      * Method to control map
@@ -983,7 +901,6 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
      * @param itinerary Itinerary
      */
     public void setColorForPolyline(Itinerary itinerary) {
-        System.out.println("pollution" + itinerary.getPollution());
 
         if (itinerary.getPollution() <= threshold) {
             plInside = new MonochromaticPaintList(paintInsideG);

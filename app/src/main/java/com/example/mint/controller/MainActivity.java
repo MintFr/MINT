@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         String sensibility = PreferencesPollen.getPollen("Pollen", MainActivity.this);
 
-        int pollen_count = getMaxPollen("maxPollen",this.contextPollen);
+        int pollen_count = getMaxPollen("maxPollen", this.contextPollen);
         int colorZero = parseColor("#387D22");
         int colorOne = parseColor("#b0bb3a");
         int colorTwo = parseColor("#F1E952");
@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         int threshold2 = 3;
         int threshold3 = 4;
         //We check the sensibility and set the according threshold for the colors
-        switch(sensibility){
+        switch (sensibility) {
 
             case "Pas sensible":
                 threshold1 = 2;
@@ -387,19 +387,20 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 threshold1 = 1;
                 threshold2 = 1;
                 threshold3 = 1;
-                break;    }
+                break;
+        }
 
 
         //We now choosing the color depending on the pollen and the threshold defined earlier
-            int color = (
-                    (pollen_count >= threshold3) ?
-                            colorThree :
-                            (pollen_count == threshold2) ?
-                                    colorTwo :
-                                    (pollen_count == threshold1) ?
-                                            colorOne :
-                                            colorZero
-            );
+        int color = (
+                (pollen_count >= threshold3) ?
+                        colorThree :
+                        (pollen_count == threshold2) ?
+                                colorTwo :
+                                (pollen_count == threshold1) ?
+                                        colorOne :
+                                        colorZero
+        );
 
 
         VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
@@ -419,7 +420,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         pollen_button.invalidate();
     }
 
-
     /**
      * OnStart method, applied right after onCreate.
      * This method tries to center the map on the location of the user, if GPS granted.
@@ -428,7 +428,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     protected void onStart() {
         super.onStart();
         Log.d(LOG_TAG, "Save State Main OnStart");
-
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////// Centers the map on launch on the user's position ///////////
@@ -530,7 +529,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
     /**
      * Creation of the Popup pollen and fetch the data from the RNSA link
-     *
      */
 
     public void displayPollen() {

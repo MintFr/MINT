@@ -58,7 +58,11 @@ import java.util.List;
 
 public class RealTimeItineraryActivity extends AppCompatActivity implements LocationListener {
     private static final String LOG_TAG = RealTimeItineraryActivity.class.getSimpleName();
-
+    /**
+     * GEOLOC
+     */
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private final int POSITION_PERMISSION_CODE = 1;
     /**
      * GEOPOINT POSITIONS
      */
@@ -66,8 +70,14 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     GeoPoint endPosition;
     List<GeoPoint> markers;
     GeoPoint stepPosition;
-
     int nbActualStep;
+    boolean GpsStatus = false; //true if the user's location is activated on the phone
+    LocationManager locationManager;
+    Location locationUser;
+    /**
+     * INFLATER : brings up necessary views
+     */
+    LayoutInflater inflater;
     /**
      * Temporary point for location changes
      */
@@ -77,14 +87,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      */
     private MapView map = null;
     private IMapController mapController = null;
-    /**
-     * GEOLOC
-     */
-    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private final int POSITION_PERMISSION_CODE = 1;
-    boolean GpsStatus = false; //true if the user's location is activated on the phone
-    LocationManager locationManager;
-    Location locationUser;
     private Marker positionMarker;
     private Itinerary itinerary = new Itinerary();
     /**
@@ -107,11 +109,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     private int threshold;
     private ImageView next_arrow;
     private ImageView current_arrow;
-    /**
-     * INFLATER : brings up necessary views
-     */
-    LayoutInflater inflater;
-
     private ArrayList<Itinerary> itineraries;
     private int nbPointsDone;
 
@@ -198,7 +195,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         itinerary = (Itinerary) getIntent().getSerializableExtra("itinerary");
         //Getting the array of itineraries to handle the intent to main
         itineraries = (ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries");
-        Log.d(LOG_TAG, (" Save State itineraries from OnCreate Realtimeiti is null ? : '" + String.valueOf(itineraries == null)  + "'"));
+        Log.d(LOG_TAG, (" Save State itineraries from OnCreate Realtimeiti is null ? : '" + String.valueOf(itineraries == null) + "'"));
 
         next_arrow = findViewById(R.id.next_arrow_image);
         current_arrow = findViewById(R.id.current_arrow_image);
@@ -256,12 +253,14 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             }
             displayItinerary(itinerary);
             //Display the first step
-            displayStep(0);
-            this.nbPointsDone += itinerary.getDetail().get(0).getNbEdges();
+            nbActualStep = 0;
+            displayStep(nbActualStep);
+            this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
             updateFirstDirection();
         }
         map.invalidate();
         Log.d(LOG_TAG, "onStart: finished ");
+        testDirection();
 
     }
 
@@ -271,16 +270,19 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         startActivity(intent);
         finish();
     }
-    public void zoomIn(View view){
+
+    public void zoomIn(View view) {
         map.getController().zoomIn();
     }
-    public void zoomOut(View view){
+
+    public void zoomOut(View view) {
         map.getController().zoomOut();
     }
 
     /////////////////////////////////////////////////////////
     // Display Itinerary on the map //
     /////////////////////////////////////////////////////////
+
     /**
      * DISPLAY ITINERARY
      * Display one itinerary on the map
@@ -311,7 +313,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // this is to be able to identify the line later on
         line.setId(valueOf(0));
-
 
 
         // SETUP INFO WINDOW
@@ -376,58 +377,77 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
     }
 
+    /**
+     * Method that updates the direction to take to the first street.
+     */
     private void updateFirstDirection() {
         ArrayList<double[]> pointsIti = itinerary.getPoints();
         Log.d(LOG_TAG, "TAGG : " + nbPointsDone);
         Log.d(LOG_TAG, "TAGG : " + pointsIti.get(0));
         Log.d(LOG_TAG, "TAGG : " + pointsIti.get(0)[1]);
+
         double v1x = pointsIti.get(this.nbPointsDone)[1] - pointsIti.get(0)[1];
         double v1y = pointsIti.get(this.nbPointsDone)[0] - pointsIti.get(0)[0];
-
         double v2x = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[1] - pointsIti.get(this.nbPointsDone)[1];
         double v2y = pointsIti.get(nbPointsDone + itinerary.getDetail().get(1).getNbEdges())[0] - pointsIti.get(this.nbPointsDone)[0];
 
-        double theta = Math.acos((v1x*v2x + v1y*v2y)/(Math.sqrt(v1x*v1x +v1y*v1y)*Math.sqrt(v2x*v2x + v2y*v2y))) * 180. / Math.PI;
-        double theta2 = Math.atan((v2x*v1y - v1x*v2y)/(v1x*v2x + v1y*v2y)) * 180. / Math.PI;
-        double theta3 = v1x*v2y - v2x*v1y;
+        double theta = v1x * v2y - v2x * v1y;
 
         System.out.println(theta);
         Log.d(LOG_TAG, "TAGG : " + String.valueOf(v1x) + ", " + String.valueOf(v1y) + ", " + String.valueOf(v2x) + ", " + String.valueOf(v2y));
         Log.d(LOG_TAG, "TAGG : " + theta);
-        Log.d(LOG_TAG, "TAGG : " + theta2);
-        Log.d(LOG_TAG, "TAGG : " + theta3);
 
-        if (theta3 > 0){
+        if (theta > 0) {
             next_arrow.setImageResource(R.drawable.ic_baseline_arrow_back_24);
-        }
-        else {
+        } else {
             next_arrow.setImageResource(R.drawable.ic_baseline_arrow_forward_24);
         }
 
     }
 
-    public void nextStep(View view){
+    public void nextStep(View view) {
         nextStep();
     }
 
-    public void nextStep(){
+    public void nextStep() {
         nbActualStep += 1;
         displayStep(nbActualStep);
     }
 
-    public int distanceToStep(int n){
+    /**
+     * Tell the user the direction to take in the next step. Calculate the determinant between
+     * 2 vectors.
+     */
+    public void nextDirection() {
+        ArrayList<double[]> pointsIti = itinerary.getPoints();
+        double v1x = pointsIti.get(this.nbPointsDone)[1] - pointsIti.get(this.nbPointsDone - itinerary.getDetail().get(nbActualStep - 1).getNbEdges())[1];
+        double v1y = pointsIti.get(this.nbPointsDone)[0] - pointsIti.get(this.nbPointsDone - itinerary.getDetail().get(nbActualStep - 1).getNbEdges())[0];
+
+        double v2x = pointsIti.get(nbPointsDone + itinerary.getDetail().get(nbActualStep + 1).getNbEdges())[1] - pointsIti.get(this.nbPointsDone)[1];
+        double v2y = pointsIti.get(nbPointsDone + itinerary.getDetail().get(nbActualStep + 1).getNbEdges())[0] - pointsIti.get(this.nbPointsDone)[0];
+
+        double theta = v1x * v2y - v2x * v1y;
+        if (theta > 0) {
+            next_arrow.setImageResource(R.drawable.ic_baseline_arrow_back_24);
+        } else {
+            next_arrow.setImageResource(R.drawable.ic_baseline_arrow_forward_24);
+        }
+
+    }
+
+    public int distanceToStep(int n) {
 
         //calculate the distance to the current step
         double[] point = itinerary.getPoints().get(n);
         Location targetLocation = new Location("");//provider name is unnecessary
         targetLocation.setLatitude(point[0]);
         targetLocation.setLongitude(point[1]);
-        return((int)targetLocation.distanceTo(locationUser));
+        return ((int) targetLocation.distanceTo(locationUser));
     }
 
-    public void updateDist(){
+    public void updateDist() {
         //calculate the distance to the current step
-        int dist = distanceToStep(nbActualStep);
+        int dist = distanceToStep(nbPointsDone);
 
         //display the distance to the current step
         TextView currentStepDist = findViewById(R.id.step_distance);
@@ -439,7 +459,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      *
      * @param n : number of the step to display
      */
-    private void displayStep(int n){
+    private void displayStep(int n) {
 
         //Saving Steps
         ArrayList<Step> STEPS = itinerary.getDetail();
@@ -447,22 +467,40 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         //display the name of the current step
         TextView currentStepName = findViewById(R.id.address);
-        currentStepName.setText(STEPS.get(n).getAddress());
+        String address = STEPS.get(n).getAddress();
+
+        if (address.equals("")) {
+            currentStepName.setText(
+                    (n >= len - 2) ?
+                            STEPS.get(len - 1).getAddress()
+                            : "Continuez puis tournez sur " + STEPS.get(n + 1).getAddress()
+            );
+        } else {
+            currentStepName.setText(address);
+        }
 
         //display the distance to the current step
         updateDist();
 
         //Displaying or not the next step
-        if (n<len-1){
+        if (n < len - 1) {
             //display the name of the next step
             TextView nextStepName = findViewById(R.id.address_2);
-            nextStepName.setText(STEPS.get(n+1).getAddress());
+            String nextAddress = STEPS.get(n + 1).getAddress();
+            if (nextAddress.equals("")) {
+                nextStepName.setText(
+                        (n == len - 2) ?
+                                STEPS.get(len - 1).getAddress()
+                                : "Tournez sur " + STEPS.get(n + 2).getAddress()
+                );
+            } else {
+                nextStepName.setText(nextAddress);
+            }
 
             //display the distance to the next step
             TextView nextStepDist = findViewById(R.id.step_distance_2);
-            nextStepDist.setText(Integer.toString(STEPS.get(n+1).getDistance()));
-        }
-        else{
+            nextStepDist.setText(Integer.toString(STEPS.get(n + 1).getDistance()));
+        } else {
             //Hide the next step (for there is none)
             View nextStepLayout = findViewById(R.id.itinerary_real_time_step_layout_second);
             nextStepLayout.setVisibility(View.INVISIBLE);
@@ -508,14 +546,13 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     /////////////////////////////////////////////////////////
 
 
-
     /////////////////////////////////////////////////////////
     // LOCATION //
     /////////////////////////////////////////////////////////
 
 
     //Centers the map on the user's position when the button myPosition is clicked
-    public void positionCentering(View view){
+    public void positionCentering(View view) {
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         assert locationManager != null; //check if there the app is allowed to access location
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if the GPS is enabled
@@ -527,9 +564,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             // We also need the phone's GPS to be activated. We check this here.
             if (GpsStatus) {
                 // if there's already a marker on the map it is deleted
-                for(int i=0;i<map.getOverlays().size();i++){
-                    Overlay overlay=map.getOverlays().get(i);
-                    if(overlay instanceof Marker){
+                for (int i = 0; i < map.getOverlays().size(); i++) {
+                    Overlay overlay = map.getOverlays().get(i);
+                    if (overlay instanceof Marker) {
                         map.getOverlays().remove(overlay);
                     }
                 }
@@ -598,6 +635,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                 })
                 .create().show();
     }
+
     /**
      * Print user's position If we need to convert the
      * coordinates in an address, we need to do it here with a "geocoder"
@@ -612,9 +650,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             getLocation();
             pointTempo = new GeoPoint(locationUser.getLatitude(), locationUser.getLongitude());
             //Deleting the previous marker
-            for(int i=0;i<map.getOverlays().size();i++){
-                Overlay overlay=map.getOverlays().get(i);
-                if(overlay instanceof Marker){
+            for (int i = 0; i < map.getOverlays().size(); i++) {
+                Overlay overlay = map.getOverlays().get(i);
+                if (overlay instanceof Marker) {
                     map.getOverlays().remove(overlay);
                 }
 
@@ -630,13 +668,40 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                 map.getOverlays().add(positionMarker);
             }
 
-            int dist = distanceToStep(nbActualStep);
+            int dist = distanceToStep(nbPointsDone);
 
             updateDist();
 
-            if (dist < 5){
+            if (dist < 5) {
                 nextStep();
+                this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
+                if (nbActualStep < itinerary.getDetail().size() - 1) {
+                    nextDirection();
+                }
             }
+        }
+    }
+
+    private void testDirection() {
+        int points = itinerary.getDetail().get(0).getNbEdges();
+        ArrayList<double[]> pointsIti = itinerary.getPoints();
+        for (int i = 1; i < itinerary.getDetail().size() - 1; i++) {
+
+            double v1x = pointsIti.get(points)[1] - pointsIti.get(points - itinerary.getDetail().get(i - 1).getNbEdges())[1];
+            double v1y = pointsIti.get(points)[0] - pointsIti.get(points - itinerary.getDetail().get(i - 1).getNbEdges())[0];
+
+            double v2x = pointsIti.get(points + itinerary.getDetail().get(i + 1).getNbEdges())[1] - pointsIti.get(points)[1];
+            double v2y = pointsIti.get(points + itinerary.getDetail().get(i + 1).getNbEdges())[0] - pointsIti.get(points)[0];
+
+            points += itinerary.getDetail().get(i).getNbEdges();
+
+            double theta3 = v1x * v2y - v2x * v1y;
+            if (theta3 > 0) {
+                Log.d(LOG_TAG, "TAGG : " + "gauche");
+            } else {
+                Log.d(LOG_TAG, "TAGG : " + "droite");
+            }
+            Log.d(LOG_TAG, "TAGG : " + itinerary.getDetail().get(i).getAddress());
         }
     }
 
@@ -746,14 +811,13 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         return sb.toString();
     }
 
-    public void toMain(View view){
-        Intent intent = new Intent ( this, MainActivity.class);
-        intent.putExtra("itineraries",itineraries);
-        Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null)  + "'"));
+    public void toMain(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("itineraries", itineraries);
+        Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null) + "'"));
         startActivity(intent);
         finish();
     }
-
 
 
     @Override

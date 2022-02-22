@@ -1,7 +1,6 @@
 package com.example.mint.controller;
 
 import static android.graphics.Color.parseColor;
-
 import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
 import static com.example.mint.model.PreferencesMaxPollen.setMaxPollen;
 
@@ -70,9 +69,6 @@ import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -106,10 +102,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LATITUDE_MIN = 47.0;
     private final static double LONGITUDE_MAX = -1.3;
     private final static double LONGITUDE_MIN = -1.8;
+    public static int maxPollen;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
-
-
     /**
      * GEOLOC
      */
@@ -160,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
-    public static int maxPollen;
     private Context contextPollen;
     /**
      * Map
@@ -203,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private GeoPoint tmpPoint;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-
+    private ArrayList<Itinerary> itineraries;
 
     /**
      * Method to read server response, which is as text file, and put it in a String object.
@@ -223,31 +217,34 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
     /**
      * Creation of the Popup pollen and fetch the data from the RNSA link
-     *
      */
 
     public void displayPollen() {
-        //creation of the popup
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        this.v = pollenPopupView; //initialisation of the view for the textView
+        if (CheckInternet()) {
+            //creation of the popup
+            dialogBuilder = new AlertDialog.Builder(this);
+            final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+            this.v = pollenPopupView; //initialisation of the view for the textView
 
-        //Fetch data from RNSA url
-        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
+            //Fetch data from RNSA url
+            this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
 
-        //Fetch RNSA data
-        new fetchData(this.donneesPollen).execute();
-        dataPollen = String.valueOf(this.donneesPollen.getText());
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
+            //Fetch RNSA data
+            new fetchData(this.donneesPollen).execute();
+            dataPollen = String.valueOf(this.donneesPollen.getText());
+            dialogBuilder = dialogBuilder.setView(pollenPopupView);
+            dialogBuilder.setNegativeButton("FERMER", null);
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
 
-        //Set SharedPreferences
-        setMaxPollen("maxPollen", maxPollen, contextPollen);
+            //Set SharedPreferences
+            setMaxPollen("maxPollen", maxPollen, contextPollen);
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Connexion à Internet nécessaire pour obtenir les informations sur le pollen.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
-
-    private ArrayList<Itinerary> itineraries;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -403,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         String sensibility = PreferencesPollen.getPollen("Pollen", MainActivity.this);
 
-        int pollen_count = getMaxPollen("maxPollen",this.contextPollen);
+        int pollen_count = getMaxPollen("maxPollen", this.contextPollen);
         int colorZero = parseColor("#387D22");
         int colorOne = parseColor("#b0bb3a");
         int colorTwo = parseColor("#F1E952");
@@ -412,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         int threshold2 = 3;
         int threshold3 = 4;
         //We check the sensibility and set the according threshold for the colors
-        switch(sensibility){
+        switch (sensibility) {
 
             case "Pas sensible":
                 threshold1 = 2;
@@ -435,22 +432,23 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 threshold1 = 1;
                 threshold2 = 1;
                 threshold3 = 1;
-                break;    }
+                break;
+        }
 
 
         //We now choosing the color depending on the pollen and the threshold defined earlier
-            int color = (
-                    (pollen_count >= threshold3) ?
-                            colorThree :
-                            (pollen_count == threshold2) ?
-                                    colorTwo :
-                                    (pollen_count == threshold1) ?
-                                            colorOne :
-                                            colorZero
-            );
+        int color = (
+                (pollen_count >= threshold3) ?
+                        colorThree :
+                        (pollen_count == threshold2) ?
+                                colorTwo :
+                                (pollen_count == threshold1) ?
+                                        colorOne :
+                                        colorZero
+        );
 
 
-        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen, pollen_button);
 
         VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
         path1.setFillColor(color);
@@ -467,7 +465,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         pollen_button.invalidate();
 
     }
-
 
 
     /**
@@ -540,8 +537,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     @Override
     public void onBackPressed() {
-            finish();
-            System.exit(0);
+        finish();
+        System.exit(0);
     }
 
     /////////////////////////////////////////////////////////
@@ -1621,6 +1618,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             requestLocalisationPermission(); //line 447
         }
     }
+
     /**
      * temporary function for testing real time itinerary
      */

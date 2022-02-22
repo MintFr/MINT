@@ -6,13 +6,16 @@ android:layout_width="fill_parent"
 android:layout_height="wrap_content">
 
     <TextView
-    android:id="@+id/pollen_alert_title"
+        android:id="@+id/pollen_alert_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
-    android:text="@string/title_pollen_alert" />
+        android:text="@string/title_pollen_alert"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
         <ScrollView
             android:layout_width="wrap_content"

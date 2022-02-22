@@ -77,7 +77,7 @@ public class fetchData extends AsyncTask<String, String, String> {
                 max = 0;
                 for (int j = 0; j < 5; j++) {
                     if (pollenList[j] != "") {
-                        textPopup += "- " + pollenList[j] + ": " + j + "\n" +"\n" ;
+                        textPopup += "- " + pollenList[j] + ": " + j + " / 5 " + "\n" +"\n" ;
                         }
                 }
                 textPopup = textPopup + getRes().getString(R.string.message_fin_pollen_alert);

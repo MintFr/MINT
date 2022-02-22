@@ -67,13 +67,13 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     List<GeoPoint> markers;
     GeoPoint stepPosition;
     /**
-     * ITINERARY
-     */
-    private ArrayList<Itinerary> itineraries;
-    /**
      * INFLATER : brings up necessary views
      */
     LayoutInflater inflater;
+    /**
+     * ITINERARY
+     */
+    private ArrayList<Itinerary> itineraries;
     /**
      * MAP
      */
@@ -695,8 +695,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 // Check if name of address is not empty or the two extremes
                 int sizeDetails = STEPS.size();
                 ArrayList<Step> toDisplay = new ArrayList<>();
-                for (int m=1; m<sizeDetails-1; m++){
-                    if (!STEPS.get(m).getAddress().equals("")){
+                for (int m = 1; m < sizeDetails - 1; m++) {
+                    if (!STEPS.get(m).getAddress().equals("")) {
                         toDisplay.add(STEPS.get(m));
                     }
                 }
@@ -907,8 +907,8 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     public void toRealTimeItinerary(View view) {
         Intent intent = new Intent(this, RealTimeItineraryActivity.class);
         intent.putExtra("itinerary", itineraries.get((int) view.getTag()));
-        intent.putExtra("itineraries",itineraries);
-        Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null)  + "'"));
+        intent.putExtra("itineraries", itineraries);
+        Log.d(LOG_TAG, (" Save State itineraries from main is null ? : '" + String.valueOf(itineraries == null) + "'"));
         startActivity(intent);
         finish();
     }

@@ -198,8 +198,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         itineraries = (ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries");
         Log.d(LOG_TAG, (" Save State itineraries from OnCreate Realtimeiti is null ? : '" + String.valueOf(itineraries == null) + "'"));
 
+        // Arrow for directions to take
         next_arrow = findViewById(R.id.next_arrow_image);
         current_arrow = findViewById(R.id.current_arrow_image);
+
+        // Initialization for the following real time
         this.nbPointsDone = 0;
         this.nbActualStep = 0;
 
@@ -238,8 +241,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                     map.getOverlays().add(positionMarker);
                     mapController.setCenter(pointTempo);
                 } else {
-                    //TODO : fix this
-                    // if the return is null we show a toast to the user
                     Toast toast = Toast.makeText(
                             getApplicationContext(),
                             "Nous n'avons pas réussi à vous localiser",
@@ -294,9 +295,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
      *
      * @param itinerary Itinerary :  Current itinerary to display
      */
-
-
-    //DISPLAY ITINERARY
     private void displayItinerary(final Itinerary itinerary) {
         // polyline for itinerary
         // first we create a list of geopoints for the geometry of the polyline
@@ -317,64 +315,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // this is to be able to identify the line later on
         line.setId(valueOf(0));
-
-
-        // SETUP INFO WINDOW
-//        final View infoWindowView = inflater.inflate(R.layout.itinerary_infowindow, null);
-
-
-        // find all the corresponding views in the infowindow
-      /*  TextView timeInfo = infoWindowView.findViewById(R.id.time_info);
-        ImageView transportationInfo = infoWindowView.findViewById(R.id.transportation);
-        final ImageView pollutionInfo = infoWindowView.findViewById(R.id.pollution_icon);
-
-        // set values for time, transportation and pollution
-
-        //time
-        int t = Double.valueOf(itinerary.getDuration()).intValue();
-        String s = convertIntToHour(t);
-        System.out.println(s);
-        timeInfo.setText(s);
-
-        //transportation
-        switch (itinerary.getType()) {
-            case "Piéton":
-                transportationInfo.setImageResource(R.drawable.ic_walk_activated);
-                break;
-            case "Voiture":
-                transportationInfo.setImageResource(R.drawable.ic_car_activated);
-                break;
-            case "Transport en commun":
-                transportationInfo.setImageResource(R.drawable.ic_tram_activated);
-                break;
-            case "Vélo":
-                transportationInfo.setImageResource(R.drawable.ic_bike_activated);
-                break;
-        }
-
-        //pollution
-        if ((itinerary.getPollution() >= 0) && (itinerary.getPollution() < 33)) {
-            pollutionInfo.setImageResource(R.drawable.ic_pollution_good);
-        } else if ((itinerary.getPollution() >= 33) && (itinerary.getPollution() < 66)) {
-            pollutionInfo.setImageResource(R.drawable.ic_pollution_medium);
-        } else if ((itinerary.getPollution() >= 66) && (itinerary.getPollution() <= 100)) {
-            pollutionInfo.setImageResource(R.drawable.ic_pollution_bad);
-        }
-        final InfoWindow infoWindow = new InfoWindow(infoWindowView, map) {
-            @Override
-            public void onOpen(Object item) {
-            }
-
-            @Override
-            public void onClose() {
-            }
-        };
-
-        // add infowindow to the polyline
-        line.setInfoWindow(infoWindow);
-
-        // show details once you click on the infowindow
-        RelativeLayout layout = infoWindowView.findViewById(R.id.layout);*/
 
         // add line
         map.getOverlays().add(line);
@@ -439,6 +379,12 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
     }
 
+    /**
+     * Returns the distance between user location and the end of the current step.
+     *
+     * @param n
+     * @return
+     */
     public int distanceToStep(int n) {
 
         //calculate the distance to the current step
@@ -449,6 +395,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         return ((int) targetLocation.distanceTo(locationUser));
     }
 
+    /**
+     * Update the distance between the user and the end of the current step in the layout.
+     */
     public void updateDist() {
         //calculate the distance to the current step
         int dist = distanceToStep(nbPointsDone);
@@ -691,6 +640,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
             updateDist();
 
+            // We go to the next step if the distance to it is under 15 meters.
             if (dist < 15) {
                 nextStep();
                 this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
@@ -701,6 +651,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         }
     }
 
+    /**
+     * Test method in log to verify the good direction arrows. Could be deleted.
+     */
     private void testDirection() {
         int points = itinerary.getDetail().get(0).getNbEdges();
         ArrayList<double[]> pointsIti = itinerary.getPoints();
@@ -830,6 +783,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         return sb.toString();
     }
 
+    /**
+     * On click method to quit the itinerary and go back to Main Activity
+     *
+     * @param view
+     */
     public void toMain(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("itineraries", itineraries);
@@ -869,6 +827,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "Save State RealTimeItinerary OnDestroy");
     }
 
+    /**
+     * On click method to display next step if needed.
+     *
+     * @param view
+     */
     public void onClickNextStep(View view) {
         Log.d(LOG_TAG, "TAGGG : nbPoints next 1 " + nbPointsDone);
         Log.d(LOG_TAG, "TAGGG : nbAct next 1 " + nbActualStep);
@@ -881,6 +844,11 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "TAGGG : nbAct next 2 " + nbActualStep);
     }
 
+    /**
+     * On click method to display previous step if needed.
+     *
+     * @param view
+     */
     public void onClickPreviousStep(View view) {
         Log.d(LOG_TAG, "TAGGG : nbPoints prev 1 " + nbPointsDone);
         Log.d(LOG_TAG, "TAGGG : nbAct prev 1 " + nbActualStep);

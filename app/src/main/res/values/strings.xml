@@ -17,16 +17,15 @@
     <!--    Spinner activity_map-->
     <string-array name="map_array">
         <item>Routes</item>
-        <item tools:ignore="Typos">Trafic</item>
         <item>Transports en commun</item>
         <item>Pollution</item>
-        <item>Pollens</item>
     </string-array>
     <string name="enter_address">Entrer une nouvelle adresse</string>
     <string name="favorite_addresses_button"><u>Mes adresses favorites</u></string>
     <string name="favorite_transportation_button"><u>Mes modes de transport favoris</u></string>
-    <string name="sensibility_button"><u>Sensibilité</u></string>
+    <string name="sensibility_button"><u>Sensibilité aux polluants</u></string>
     <string name="add">ajouter</string>
+    <string name="sensibility_pollen_button"><u>Sensibilité aux pollens</u></string>
     <string name="address1">première adresse favorite</string>
     <string name="address2">deuxième adresse favorite</string>
     <string name="address3">troisième adresse favorite</string>
@@ -38,6 +37,7 @@
     <string name="low_sensibility">Faible</string>
     <string name="no_sensibility">Pas de sensibilité</string>
     <string name="message_sensibility">Sélectionnez votre niveau de sensibilité à la pollution</string>
+    <string name="message_sensibility_pollen">Sélectionnez votre niveau de sensibilité aux pollens</string>
     <string name="graph_week">graph_week</string>
     <string name="max_value_exposure">312</string>
     <string name="graph_pie">graph_pie</string>
@@ -46,6 +46,10 @@
     <string name="user_image">user_image</string>
     <string name="app_logo">logo</string>
     <string name="set_sensibility">-</string>
+    <string name="low_sensibility_pollen">Peu sensible</string>
+    <string name="high_sensibility_pollen">Sensible</string>
+    <string name="very_high_sensibility_pollen">Très sensible</string>
+    <string name="no_sensibility_pollen">Pas sensible</string>
     <string name="user_name">"Mon Profil"</string>
     <string name="favorite_transportation_message">Sélectionnez vos modes de transports favoris</string>
     <string name="walk_button">walk_button</string>
@@ -127,4 +131,7 @@ Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermen
     <string name="display_itinerary">\t  Afficher l\'itinéraire \t</string>
     <string name="pollution_icon_description">Pollution icon</string>
     <string name="transportation_icon_description">transportation icon</string>
+    <string name="message_fin_pollen_alert"><br></br>
+    Les données sont fournies par le RNSA et le RAEP est calculé grâce au risque allergique théorique, à un index clinique provenant des bulletins de médecins, d\'un index phénologique appuyé sur des observations réalisées sur la croissance et la floraison des espèces et enfin sur un index météorologique. <br></br></string>
+    <string name="title_pollen_alert">Alerte Pollen</string>
 </resources>

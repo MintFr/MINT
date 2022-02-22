@@ -78,8 +78,8 @@
         android:layout_height="wrap_content"
 
         android:layout_below="@id/itinerary_real_time_step_layout"
-        android:layout_marginTop="1dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="1dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/button_shape_end_itinerary">
 
@@ -212,12 +212,38 @@
         style="@style/bold"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_below="@+id/next_step_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="toMain"
+        android:text="Fin Itinéraire" />
+
+    <Button
+        android:id="@+id/next_step_button"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itinerary_real_time_step_layout_second"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="onClickNextStep"
+        android:text="Prochaine étape" />
+
+    <Button
+        android:id="@+id/previous_step_button"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/itinerary_real_time_step_layout_second"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_shape_end_itinerary"
-        android:text="Fin Itinéraire"
-        android:onClick="toMain"/>
+        android:onClick="onClickPreviousStep"
+        android:text="Etape précédente" />
 
 </RelativeLayout>

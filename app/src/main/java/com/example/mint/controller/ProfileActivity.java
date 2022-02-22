@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mint.R;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesDate;
+import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesPollution;
 import com.example.mint.model.PreferencesSensibility;
 import com.example.mint.model.PreferencesSize;
@@ -82,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * sensibility
      */
     private TextView setSensibility;
+    private TextView setSensibilityPollen;
     private Button sensibilityButton;
     private PopupWindow sensibilityPopupWindow;
 
@@ -451,6 +453,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // SENSIBILITY POPUP END //
         /////////////////////////////////////////////////////////
 
+        // this is the sensibility that is displayed directly in the profile page
+        setSensibilityPollen = findViewById(R.id.set_sensibility_pollen);
+        setSensibilityPollen.setText(PreferencesPollen.getPollen("Pollen", this));
+
+        /////////////////////////////////////////////////////////
+        // SENSIBILITY POLLEN //
+        /////////////////////////////////////////////////////////
+
+
+
+
 
         /////////////////////////////////////////////////////////
         // BOTTOM MENU //
@@ -513,6 +526,96 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     /////////////////////////////////////////////////////////
     // BACK BUTTON //
     /////////////////////////////////////////////////////////
+
+    /**
+     * Display and set up the pollen sensibility pop up
+     *
+     */
+    public void onClickDisplayPollenSensibility(View v) {
+
+        //Create the pollen popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popup_pollen = inflater.inflate(R.layout.popup_pollen_sensibility, null);
+        PopupWindow pollenPopupWindow = new PopupWindow(this);
+        pollenPopupWindow.setContentView(popup_pollen);
+        pollenPopupWindow.setBackgroundDrawable(null);
+        pollenPopupWindow.setFocusable(true);
+
+        //
+        Button noSensibility = popup_pollen.findViewById(R.id.no_sensibility_btn);
+        noSensibility.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Button selectedButton = (Button) v;
+                saveSensibilityPollen(selectedButton,pollenPopupWindow);
+            }
+        });
+
+        Button lowSensibility = popup_pollen.findViewById(R.id.low_sensibility_btn);
+        lowSensibility.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Button selectedButton = (Button) v;
+                saveSensibilityPollen(selectedButton,pollenPopupWindow);
+            }
+        });
+
+        Button highSensibility = popup_pollen.findViewById(R.id.high_sensibility_btn);
+        highSensibility.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Button selectedButton = (Button) v;
+                saveSensibilityPollen(selectedButton,pollenPopupWindow);
+            }
+        });
+
+        Button veryHighSensibility = popup_pollen.findViewById(R.id.very_high_sensibility_btn);
+        veryHighSensibility.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Button selectedButton = (Button) v;
+                saveSensibilityPollen(selectedButton,pollenPopupWindow);
+            }
+        });
+
+        //Highlight the sensibility when you click
+        String actualSensibility = PreferencesPollen.getPollen("Pollen",ProfileActivity.this);
+        if (actualSensibility.equals(noSensibility.getText().toString())){
+            noSensibility.setActivated(true);
+        }
+        if (actualSensibility.equals(lowSensibility.getText())){
+            lowSensibility.setActivated(true);
+        }
+        if (actualSensibility.equals(highSensibility.getText())){
+            highSensibility.setActivated(true);
+        }
+        if (actualSensibility.equals(veryHighSensibility.getText())){
+            veryHighSensibility.setActivated(true);
+        }
+
+        //display popup
+        pollenPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+    }
+
+    /**
+     *
+     * Close the pollen popup window and set the pollen sensibility of the user in sharedprefrences
+     *
+     * @param pressed the button pressed by the user
+     * @param window The pollen pop up which will be closed
+     */
+    void saveSensibilityPollen(Button pressed,PopupWindow window){
+
+        //
+        String sensibility = pressed.getText().toString();
+        PreferencesPollen.setPollen("Pollen",sensibility,ProfileActivity.this);
+
+        //Save the sensibility in the profile activity
+        setSensibilityPollen.setText(sensibility);
+
+        // dismiss the popup once you have selected a sensibility
+        window.dismiss(); // Remove popup
+    }
 
     /**
      * Overrides onBackPressed method so we can navigate to the previous activity when the phone's back button is pressed
@@ -591,6 +694,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             //same as above but to remove
             PreferencesTransport.removeTransportation("Transportation", Integer.parseInt(transportationButton.getTag().toString()), ProfileActivity.this);
         }
+    }
+
+    public void highlightPollen(View PollenButton) {
+        //check if the button is already activated or not
     }
 
 

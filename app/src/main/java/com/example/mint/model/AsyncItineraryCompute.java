@@ -178,7 +178,10 @@ public class AsyncItineraryCompute extends AsyncTask<String, Integer, JSONArray>
                 for (int i = 0; i < c.length(); i++)            //to delete error message
                 {
                     Itinerary itinerary = new Itinerary(c.getJSONObject(i));
+                    int sizeDetails = itinerary.getDetail().size();
+                    itinerary.getDetail().get(0).setAddress(itinerary.getDetail().get(0).getAddress() + PreferencesAddresses.getAddress("startAddress", myActivity.getApplicationContext()));
                     // System.out.println(itinerary.getDetail().get(0).getAddress() + itinerary.getDetail().get(0).getDistance());
+                    itinerary.getDetail().get(sizeDetails-1).setAddress(itinerary.getDetail().get(sizeDetails-1).getAddress() + PreferencesAddresses.getAddress("endAddress", myActivity.getApplicationContext()));
                     itineraries.add(itinerary);
                 }
             }

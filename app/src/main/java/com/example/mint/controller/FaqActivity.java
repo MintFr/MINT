@@ -89,6 +89,9 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
         return res;
     }
 
+    /**
+     * Display/Undisplay the answer of the question clicked
+     */
     @Override
     public void onClick(View v) {
         // Getting the index of the button clicked in the list

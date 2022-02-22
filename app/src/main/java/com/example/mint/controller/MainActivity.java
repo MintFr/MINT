@@ -108,19 +108,14 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
 
-
-    /**
-     * GEOLOC
-     */
+    // Geoloc
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private final int POSITION_PERMISSION_CODE = 1;
     boolean GpsStatus = false; //true if the user's location is activated on the phone
     LocationManager locationManager;
     Location locationUser;
     IMapController mapController;
-    /**
-     * Address suggestions
-     */
+    // Adress Suggestion
     ArrayList<String> lastAddressList;
     ArrayList<String> addressList;
     ListView addressListView;
@@ -141,17 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     boolean starting;
     boolean fast;
     boolean healthy;
-    /**
-     * This activity handles the input of start and end points and the itinerary options
-     *
-     * @param savedInstanceState
-     */
 
     SwitchCompat switchCompat;
     Button click;
-    /**
-     * POPUP POLLEN
-     */
+
+    //Pop Pollen
     TextView donneesPollen;
     String SAMPLE_URL, dataPollen;
     View v; // view in which to search the text view for the pollen
@@ -161,22 +150,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
     public static int maxPollen;
     private Context contextPollen;
-    /**
-     * Map
-     */
+
     private MapView map;
     private Marker positionMarker;
-    /**
-     * Start Address
-     */
+
+
     private com.example.mint.model.Address startAddress;
-    /**
-     * End Address
-     */
     private com.example.mint.model.Address endAddress;
-    /**
-     * Step Address
-     */
     private com.example.mint.model.Address stepAddress;
     private EditText startPoint;
     private EditText endPoint;
@@ -185,9 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private boolean stepBool = false; // "true" if the user has chosen a stepPoint, "false" if not
     private ImageButton addStepPoint;
     private Button search;
-    /**
-     * Options
-     */
+
     private Button option;
     private Button dateBtn;
     private ImageButton iconDateBtn;
@@ -195,9 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private Button timeBtn;
     private ImageButton myPosition;
     private ImageButton pollen_button;
-    /**
-     * Temporary point for location changes
-     */
+
     private GeoPoint tmpPoint;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -220,31 +196,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     }
 
     /**
-     * Creation of the Popup pollen and fetch the data from the RNSA link
+     * This activity handles the input of start and end points and the itinerary options
      *
+     * @param savedInstanceState
      */
-
-    public void displayPollen() {
-        //creation of the popup
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        this.v = pollenPopupView; //initialisation of the view for the textView
-
-        //Fetch data from RNSA url
-        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
-
-        //Fetch RNSA data
-        new fetchData(this.donneesPollen).execute();
-        dataPollen = String.valueOf(this.donneesPollen.getText());
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
-
-        //Set SharedPreferences
-        setMaxPollen("maxPollen", maxPollen, contextPollen);
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -338,10 +293,9 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
             }
 
-            /**
-             * Set the search button enable if the length of the text written in the field
-             * s (start or end) is not zero.
-             */
+            //Set the search button enable if the length of the text written in the field
+            //s (start or end) is not zero.
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 search.setEnabled(s.toString().length() != 0);
@@ -463,9 +417,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         // apply changes of colors
         pollen_button.invalidate();
-
     }
-
 
 
     /**
@@ -574,6 +526,33 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     /////////////////////////////////////////////////////////
     // BACK BUTTON END //
     /////////////////////////////////////////////////////////
+
+
+    /**
+     * Creation of the Popup pollen and fetch the data from the RNSA link
+     *
+     */
+
+    public void displayPollen() {
+        //creation of the popup
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+        this.v = pollenPopupView; //initialisation of the view for the textView
+
+        //Fetch data from RNSA url
+        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
+
+        //Fetch RNSA data
+        new fetchData(this.donneesPollen).execute();
+        dataPollen = String.valueOf(this.donneesPollen.getText());
+        dialogBuilder = dialogBuilder.setView(pollenPopupView);
+        dialogBuilder.setNegativeButton("FERMER", null);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+
+        //Set SharedPreferences
+        setMaxPollen("maxPollen", maxPollen, contextPollen);
+    }
 
 
     /**
@@ -1518,6 +1497,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         return false;
     }//end of check int
 
+    //Override to debug
+
     @Override
     public void onPause() {
         super.onPause();
@@ -1528,9 +1509,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     public void onRestart() {
         super.onRestart();
         Log.d(LOG_TAG, "Save State Main OnRestart");
-        for (int i = 0; i < 4; i++) {
-
-        }
     }
 
     @Override

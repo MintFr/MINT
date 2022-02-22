@@ -121,6 +121,127 @@ Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida. Eget felis eget 
 
 Sapien eget mi proin sed libero enim. Diam quis enim lobortis scelerisque fermentum dui faucibus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa. Pharetra pharetra massa massa ultricies. Tincidunt eget nullam non nisi est sit. Duis ultricies lacus sed turpis tincidunt id. Molestie at elementum eu facilisis sed odio morbi. Diam in arcu cursus euismod quis viverra. Pulvinar pellentesque habitant morbi tristique senectus. Pellentesque habitant morbi tristique senectus et netus et. Viverra justo nec ultrices dui. Eget egestas purus viverra accumsan in nisl. Penatibus et magnis dis parturient montes. Volutpat maecenas volutpat blandit aliquam etiam erat velit. Egestas sed tempus urna et pharetra pharetra. Fusce ut placerat orci nulla pellentesque. Euismod in pellentesque massa placerat duis.</string>
     <string name="terms_of_use">Conditions d\'utilisation</string>
+    <string name="terms_of_use_content">1. Définitions \n \n
+Application Mobile Mint:désigne l’application mobile de Mint accessible via un téléphone mobile / tablette. Cette application comprend différents Services de Mint.
+Service(s) : désigne tout service proposé sur l’Application Mobile Mint. Parmi les services concernés on retrouve : \n \n
+    1. Le Service de cartographie \n
+    2. Le Service de calcul d’itinéraire \n
+    3. Le Service de suivie de votre exposition aux polluants \n
+    4. Le Service d’information de la présence de pollens \n
+    5. Le Service de guidage GPS \n \n
+Utilisateur : désigne une personne physique détentrice d’un téléphone mobile / tablette et utilisant les Services de l’Application Mobile Mint. \n \n
+CGU : désigne les présentes Conditions Générales d’Utilisation du Service gratuit de l’Application Mobile Mint.  \n \n
+Cartographe(s) : désigne les sociétés qui fournissent les données cartographiques à Mint. \n \n
+
+2. Objet \n \n
+
+Les présentes CGU ont pour objet de définir les modalités de fourniture de l’Application Mobile Mint. Elles constituent un contrat qui lie Mint et l’Utilisateur de l’Application Mobile Mint.
+ \n \n
+
+3. Acceptation des CGU \n \n
+
+L’utilisation de l’Application Mobile Mint et de ses Services implique l’acceptation, sans conditions des CGU. L’Utilisateur reconnaît et accepte notamment que les CGU couvrent toute utilisation des Services à partir de l’Application Mobile Mint.
+ \n \n
+4. Prise d’effet des CGU
+Les CGU prendront effet à la date de leur mise en ligne dans l’Application Mobile Mint et sont opposables à la date de la première utilisation des Services par l’Utilisateur, pendant toute la durée de son utilisation.
+\n \n
+5. Modifications des CGU et de l’Application Mobile Mint \n \n
+Mint se réserve le droit de modifier tout ou partie des présentes CGU de l’Application Mobile Mint et de ses Services, à tout moment. \n \n
+En conséquence, l’Utilisateur reconnaît et accepte qu’aucune indemnité de quelque nature que ce soit ne puisse lui être accordée à ce titre. Il est, par ailleurs, conseillé à l’Utilisateur de se référer régulièrement à la dernière version des CGU disponible en permanence dans l’Application Mobile Mint. \n \n
+Les modifications de l’Application Mobile Mint (incluant ses Services) et des présentes CGU entrent en vigueur à la date de leur mise en ligne dans l’Application Mobile Mint et sont opposables à la date de la première utilisation par l’Utilisateur. L’utilisation de l’Application Mobile Mint (et de ses Services) implique la pleine et entière acceptation de toute révision ou modification de celle-ci et de ses CGU.
+\n \n
+6. Présentation et fonctionnement des Services \n \n
+L’Application Mobile Mint regroupe les différents Services suivants : \n
+    1. Un Service de cartographie, qui permet à l’Utilisateur de se repérer sur une carte, de localiser sa position et de rechercher une adresse. \n
+    2. Un Service de calcul d’itinéraire, qui offre à l’Utilisateur la possibilité de définir un itinéraire sur Nantes avec différents modes de transports (en voiture, à pied, en vélo ou en transports en commun). \n
+    3. Un Service de suivie de l’exposition au polluants, qui offre à l’Utilisateur la possibilité de de suivre son exposition au polluants lors des trajets qu’il effectue et ce tout au long de l’année. \n
+    4. Un Service d’information de la présence de pollens, qui permet à l’utilisateur de s’informer de la présence ou non des différents types de pollens sur la métropole Nantaise. \n
+    5. Un Service de guidage GPS, qui permet à l’utilisateur d’être guidé, en temps réel, via des instructions vocales et la représentation de son trajet sur une carte. \n
+Cette Application peut contenir des produits et/ou contenus et/ou services provenant d’une partie tiers. Mint n’est pas responsable des produits/contenus/services des parties tiers. Mint ne garantie pas que les produits/contenus/services fournis par une partie tierce sont précis, corrects, efficaces ou ininterrompus.
+\n \n
+
+7. Modalités d’utilisation des Services \n
+        \n
+L’Application Mobile Mint est uniquement compatible pour les terminaux embarquant à minimum un système d’exploitation en version 5.0 pour Android. \n \n
+
+8. Géolocalisation \n \n
+
+Les Utilisateurs peuvent utiliser la fonctionnalité de géolocalisation de l’Application Mobile Mint, ladite fonctionnalité leur permettant d’être guidés plus précisément par rapport à leur position, de localiser des points d’intérêts à proximité de celle-ci et de leur proposer de la publicité en lien avec leurs déplacements. \n \n
+La géolocalisation est effectuée même lorsque l’Application Mobile Mint est en veille (en fonction des choix que vos aurez exprimé via les réglages de votre téléphone) via la technologie GPS/ A-GPS pour capter les signaux des antennes satellites GPS. Le terminal de l’Utilisateur calcule alors lui-même sa position. \n \n
+L’utilisation de la fonctionnalité de géolocalisation nécessite au préalable le consentement des Utilisateurs à être géolocalisés qui est formulé de la manière suivante : lors du premier démarrage de l’application Mint, l’Utilisateur est invité à accepter formellement l’ensemble des accès dont l’application à besoin pour son fonctionnement. Certaines versions d’Android (versions 4 et antérieures) ne laissent pas la possibilité à ce jour à l’Utilisateur d’accepter ou de refuser ces accès de façon unitaire, la seule possibilité consistant en la désactivation globale de la fonctionnalité de géolocalisation sur le téléphone. D’autres versions d’Android permettent aux utilisateurs de désactiver l’accès à la géolocalisation pour certaines applications, depuis les réglages Android.
+        \n
+        \n
+9. Durée
+        \n
+        \n
+
+Les Services sont proposés aux Utilisateurs pour une durée illimitée, Mint pouvant y mettre un terme à tout moment. L’Utilisateur peut à tout moment renoncer à utiliser les Services. Les CGU sont opposables à l’Utilisateur pendant toute la durée d’existence des Services ou jusqu’à ce que de nouvelles conditions générales d’utilisation les remplacent.
+\n \n
+        10. Accès à l’Application Mobile Mint \n \n
+
+Pour pouvoir utiliser l’Application Mobile Mint, l’Utilisateur doit être majeur (ou disposer d’une autorisation parentale). \n \n
+L’Utilisateur devra accepter sans réserve les CGU (obligatoire).  \n \n
+En cas de non-respect des obligations inhérentes à votre responsabilité au titre des présentes conditions d’utilisation, l’accès à votre compte peut être, immédiatement et sans préavis, temporairement ou définitivement suspendu au moyen de la désactivation de votre compte et ce, sans préjudice de nos autres droits. \n \n
+L’Application Mobile Mint est disponible sur le réseau Internet, et accessible gratuitement, 24 heures sur 24 et 7 jours sur 7, et ce, toute l’année, à tout Utilisateur disposant d’un accès à Internet, ou à une connexion 3G ou 4G. Tous les coûts afférents à l’accès aux Services, quels qu’ils soient (notamment frais matériels ou accès à Internet) sont exclusivement à la charge de l’Utilisateur qui est seul responsable du bon fonctionnement de son équipement informatique ainsi que de son accès à Internet. \n \n
+Mint met en œuvre toute la compétence et le soin nécessaires à la fourniture de l’Application Mobile Mint, mais n’est tenue à aucune obligation d’y parvenir. \n \n
+Mint se réserve le droit, sans préavis, de suspendre définitivement ou temporairement l’utilisation de tout ou partie de l’Application Mobile Mint, afin notamment de la mettre à jour, de la modifier, d’en assurer la maintenance, et, de manière générale, pour toute autre cause technique et organisationnelle. \n \n
+En conséquence, la responsabilité de Mint ne pourra être retenue de quelque manière que ce soit, et à quelque titre que ce soit, en cas notamment d’indisponibilité temporaire ou totale de tout ou partie de l’Application Mobile Mint, d’une difficulté liée au temps de réponse, et d’une manière générale, d’un défaut de performance quelconque de tout ou partie de l’Application Mobile Mint.
+\n \n
+        11. Précautions d’usage de l’Application Mobile Mint \n \n
+
+L’Utilisateur est entièrement responsable de l’utilisation de l’Application Mobile Mint. L’Utilisateur ne doit utiliser l’Application Mobile Mint et suivre ses instructions que dans des situations sans danger et en accord avec le code de la route. L’Utilisateur ne doit en aucun cas effectuer de saisie lorsque le véhicule est en marche. Mint ne peut voir sa responsabilité engagée en cas d’accident résultant de la non-observation des précautions de conduite.
+\n \n
+        12. Utilisation de l’Application Mobile Mint \n \n
+
+L’utilisation de l’Application Mobile Mint est réservée à un usage exclusivement personnel. Ainsi, l’Utilisateur s’interdit d’utiliser l’Application Mobile Mint à des fins commerciales. Tout message publicitaire, de promotion, de parrainage rémunérant l’Utilisateur sous quelque forme que ce soit, est interdit au sein de l’Application Mobile Mint. \n \n
+En tout état de cause, l’Utilisation de l’Application Mobile Mint s’effectue sous le seul contrôle et la seule responsabilité de l’Utilisateur. \n \n
+Afin de respecter la vie privée de l’Utilisateur, l’accès à l’Application Mobile Mint est limité à une utilisation manuelle. Tout usage d’un robot est interdit. Est notamment illégale l’utilisation automatique des Services aux fins de constitution de bases de données commerciales et de prospection automatisée d’adresses email.
+\n \n
+
+13. Propriété Intellectuelle \n \n
+
+Mint est titulaire exclusif de tous les droits de propriété intellectuelle relatifs à la conception et la réalisation de l’Application Mobile Mappy (notamment chartes graphiques, contenus, onglets, fonctionnalité etc.) à l’exception des données géographiques dont les Cartographes demeurent seuls responsables. \n \n
+Mint accorde à l’Utilisateur pour le monde entier, à titre personnel, le droit non exclusif et non cessible d’utiliser l’Application Mobile Mint – à l’exclusion de toute autre utilisation – sous réserve de l’acceptation par l’Utilisateur des présentes CGU. \n \n
+Il est expressément interdit à l’Utilisateur, sans l’accord préalable et écrit de Mint, de copier, modifier, améliorer, éditer, traduire, décompiler, créer une oeuvre dérivée, inverser la conception ou l’assemblage ou de toute autre manière tenter de trouver le code source (à l’exception des cas prévus par la loi), vendre, attribuer, sous licencier ou transférer de quelque manière que ce soit tout ou partie de l’Application Mobile Mint. \n \n
+Toute reproduction, représentation, exploitation de quelque nature que ce soit et à quelque fin que ce soit, de tout ou partie de l’Application Mobile Mint, et notamment de sa structure et/ou de son contenu, sans l’autorisation préalable et écrite de Mint, constitue des actes de contrefaçon. \n \n
+
+14. Responsabilité \n \n
+
+Les informations (notamment relatives aux cartographies) présentes dans l’Application Mobile Mappy sont données à titre indicatif. Mint ne saurait garantir, en effet, que ses informations transmises par des Cartographes sont notamment exemptes d’erreurs, ni garantir leur complétude, leur actualité et/ou leur exhaustivité. Mint ne peut être tenue pour responsable de l’utilisation qui en est faite par l’Utilisateur.
+\n \n
+
+        14.1. De Mint \n
+L’Utilisateur reconnaît que la responsabilité de Mint ne saurait être retenue, de quelque manière que ce soit, et à quelque titre que ce soit, pour tous dommages directs (notamment immatériels) et/ou indirects, relatifs à l’Utilisation de l’Application Mobile Mint par l’Utilisateur. L’Utilisateur demeurant le seul responsable à ce titre. \n \n
+Mint se réserve le droit de mener toutes actions nécessaires pour garantir le parfait respect de ses obligations par l’Utilisateur.
+\n \n
+
+        14.2. De l’Utilisateur \n
+L’Utilisateur est responsable de l’utilisation qu’il fait des informations mises à sa disposition par Mint dans le cadre de l’Application Mobile Mint, et doit par conséquent veiller à être en possession de tous les éléments nécessaires à la prise d’une décision conforme à ses intérêts.
+Mint ne pourra en aucun cas être tenue responsable des décisions de toute nature qui pourraient être prises par l’Utilisateur sur la base des informations accessibles dans les Services.
+\n \n
+15. Protection des données à caractère personnel \n  \n
+
+Pour en savoir plus, nous vous invitons à consulter notre politique de protection de la vie privée.
+\n \n
+
+16. Signaler un problème technique \n \n
+
+Pour toute question et/ou réclamation, concernant l’Application Mobile Mint, vous pouvez nous contacter par courrier électronique à l’adresse suivante : mathis.barthere@eleves.ec-nantes.fr
+\n \n
+
+17. Information légale relative à l’éditeur de l’Application Mobile Mint \n \n
+
+L’Application Mobile Mint est éditée par l’Ecole Centrale de Nantes, 1 rue de la Noë, 44300 Nantes, Loire-Atlantique, France, école d’ingénieur généraliste, \n
+La Directrice de rédaction et de publication est Madame Sophie To, \n
+L’Application Mobile Mint est hébergée par les services informatique de l’Ecole Centrale de Nantes. \n \n
+
+18. Réclamation – Contestation à Loi applicable et attribution de juridiction \n \n
+
+Les Présentes CGU et l’utilisation de l’Application Mobile Mint sont soumises à la loi française. \n \n
+Les réclamations ou contestations seront toujours reçues avec une bienveillance attentive. En cas de litige, l’Utilisateur doit s’adresser en priorité à Mint pour obtenir une solution amiable, par mail à : sophie.to@eleves.ec-nantes.fr \n \n
+Les litiges qui pourraient naître à l’occasion de l’interprétation et/ou de l’exécution des présentes CGU seront portés devant les tribunaux compétents de Nantes. \n \n
+L’Application Mobile Nantes est la propriété exclusive de Nantes à Tous droits réservés.
+</string>
     <string name="mentions_l_gales">Mentions légales</string>
     <string name="mentions_l_gales2">Mentions Légales</string>
 

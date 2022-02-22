@@ -113,6 +113,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     private ArrayList<Itinerary> itineraries;
     private int nbPointsDone;
 
+    private Polyline line;
+    private Polyline lineHighlighted;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,6 +264,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
             updateFirstDirection();
         }
+        highlightCurrentStep();
         map.invalidate();
         Log.d(LOG_TAG, "onStart: finished ");
         testDirection();
@@ -304,7 +308,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         }
 
         // then we attribute it to the new polyline
-        final Polyline line = new Polyline(map);
+        this.line = new Polyline(map);
         line.setPoints(geoPoints);
 
         // then we handle the color :
@@ -318,6 +322,30 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
         // add line
         map.getOverlays().add(line);
+
+    }
+
+    private void highlightCurrentStep() {
+
+        map.getOverlays().remove(lineHighlighted);
+
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        for (int j = nbPointsDone - itinerary.getDetail().get(nbActualStep).getNbEdges(); j <= nbPointsDone; j++) {
+            geoPoints.add(new GeoPoint(itinerary.getPoints().get(j)[0], itinerary.getPoints().get(j)[1]));
+        }
+
+        lineHighlighted = new Polyline(map);
+        lineHighlighted.setPoints(geoPoints);
+
+        setColorForPolyline(itinerary);
+
+        lineHighlighted.getOutlinePaintLists().add(plBorderSelected);
+        lineHighlighted.getOutlinePaintLists().add(plInsideSelected);
+
+        map.getOverlays().add(lineHighlighted);
+
+        map.invalidate();
+
 
     }
 
@@ -423,7 +451,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
             previousStepButton.setVisibility(Button.VISIBLE);
         }
 
-        if (n == itinerary.getDetail().size() - 2) {
+        if (n == itinerary.getDetail().size() - 1) {
             nextStepButton.setVisibility(Button.INVISIBLE);
         } else {
             nextStepButton.setVisibility(Button.VISIBLE);
@@ -626,6 +654,20 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
             }
 
+            int dist = distanceToStep(nbPointsDone);
+
+            updateDist();
+
+            // We go to the next step if the distance to it is under 15 meters.
+            if (dist < 10) {
+                nextStep();
+                this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
+                highlightCurrentStep();
+                if (nbActualStep < itinerary.getDetail().size() - 1) {
+                    nextDirection();
+                }
+            }
+
             //printing a new position marker on the map
             if (map != null) {
                 Marker positionMarker = new Marker(map);
@@ -634,19 +676,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
                 positionMarker.setFlat(true);
                 positionMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
                 map.getOverlays().add(positionMarker);
-            }
-
-            int dist = distanceToStep(nbPointsDone);
-
-            updateDist();
-
-            // We go to the next step if the distance to it is under 15 meters.
-            if (dist < 15) {
-                nextStep();
-                this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
-                if (nbActualStep < itinerary.getDetail().size() - 1) {
-                    nextDirection();
-                }
             }
         }
     }
@@ -837,7 +866,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "TAGGG : nbAct next 1 " + nbActualStep);
         nextStep(view);
         this.nbPointsDone += itinerary.getDetail().get(nbActualStep).getNbEdges();
-        if (nbActualStep < itinerary.getDetail().size() - 2) {
+        highlightCurrentStep();
+
+        if (nbActualStep < itinerary.getDetail().size() - 1) {
             nextDirection();
         }
         Log.d(LOG_TAG, "TAGGG : nbPoints next 2 " + nbPointsDone);
@@ -856,6 +887,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         nbActualStep -= 1;
 
         displayStep(nbActualStep);
+        highlightCurrentStep();
 
         updateDist();
         Log.d(LOG_TAG, "TAGGG : nbPoints prev 2 : " + nbPointsDone);

@@ -9,12 +9,27 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * One line of public transportation, used in array to display the whole map from the JSON that represents all the lines
+ */
 public class TanMap implements Serializable {
+    /**
+     * Name of both extremities of the line
+     */
     private String fullName;
+    /**
+     * Type of transportation (bus/tram)
+     */
     private String type;
+    /**
+     * Both list of the couple of coordinates of the stops in each ways, we have 2 list of coordinates because some lines do not have the same path back and forth
+     */
     private ArrayList<ArrayList<double[]>> coordinates;
     @ColorInt
     private int color;
+    /**
+     * Number of the line ex: 26, C20
+     */
     private String shortName;
 
     public TanMap() {
@@ -29,6 +44,12 @@ public class TanMap implements Serializable {
         this.shortName = shortName;
     }
 
+    /**
+     * Creates a new line of public transportation from a JSON
+     *
+     * @param json the line we want to create
+     * @throws JSONException
+     */
     public TanMap(JSONObject json) throws JSONException {
         this.fullName = json.getString("fullName");
         this.type = json.getString("type");

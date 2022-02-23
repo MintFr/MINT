@@ -17,10 +17,10 @@
         android:id="@+id/itinerary_real_time_step_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_shape_end_itinerary"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
 
         >
 
@@ -58,6 +58,17 @@
             android:text="m"
             android:textSize="22dp" />
 
+        <ImageView
+            android:id="@+id/current_arrow_image"
+            android:layout_width="35dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/step_distance"
+            app:srcCompat="@drawable/ic_baseline_arrow_upward_24"
+            tools:ignore="VectorDrawableCompat" />
+
     </RelativeLayout>
 
 
@@ -67,8 +78,8 @@
         android:layout_height="wrap_content"
 
         android:layout_below="@id/itinerary_real_time_step_layout"
-        android:layout_marginTop="1dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="1dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/button_shape_end_itinerary">
 
@@ -106,6 +117,17 @@
             android:paddingBottom="10dp"
             android:text="m"
             android:textSize="17dp" />
+
+        <ImageView
+            android:id="@+id/next_arrow_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/step_distance_2"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_24"
+            tools:ignore="VectorDrawableCompat" />
 
 
     </RelativeLayout>
@@ -190,12 +212,38 @@
         style="@style/bold"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_below="@+id/next_step_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="toMain"
+        android:text="Fin Itinéraire" />
+
+    <Button
+        android:id="@+id/next_step_button"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itinerary_real_time_step_layout_second"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="onClickNextStep"
+        android:text="Prochaine étape" />
+
+    <Button
+        android:id="@+id/previous_step_button"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/itinerary_real_time_step_layout_second"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_shape_end_itinerary"
-        android:text="Fin Itinéraire"
-        android:onClick="toMain"/>
+        android:onClick="onClickPreviousStep"
+        android:text="Etape précédente" />
 
 </RelativeLayout>

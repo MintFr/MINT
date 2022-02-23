@@ -3,8 +3,17 @@ package com.example.mint.model;
 import java.io.Serializable;
 
 public class Step implements Serializable {
+    /**
+     * Name of the road that is the step
+     */
     private String address;
+    /**
+     * Distance we have to do on the step
+     */
     private int distance;
+    /**
+     * Number of edges that composes the step (used for the real time itinerary)
+     */
     private int nbEdges;
 
     public Step() {

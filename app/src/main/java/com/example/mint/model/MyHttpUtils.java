@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Class to connect to the URL to get the pollen information 
+ */
 public class MyHttpUtils {
 
     //Do the connection with the link given as a String uri

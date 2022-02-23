@@ -8,19 +8,35 @@ import java.util.ArrayList;
 public class PreferencesAddresses {
 
     // for the itinerary
+
+    /**
+     * Adds an address in memory in the startEndAddress shared preferences, used to transfer the value in the search bar to the itinerary activity and server request
+     * @param key key to get back the value (start or end generally)
+     * @param value name of the address
+     * @param context
+     */
     public static void addAddress(String key, String value, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key, value);
         editor.apply();
     }
-
+    /**
+     * Gets an address from memory in the startEndAddress shared preferences, used to transfer the value in the search bar to the itinerary activity and server request
+     * @param key key of the value we want (start or end generally)
+     * @param context
+     * @return name of the address
+     */
     // for the itinerary
     public static String getAddress(String key, Context context) {
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
         return prefs.getString(key, null);
     }
 
+    /**
+     * Clears the whole startEndAddress shared preferences to ensure no overlap
+     * @param context
+     */
     public static void clearAddressItinerary(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("startEndAddress", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

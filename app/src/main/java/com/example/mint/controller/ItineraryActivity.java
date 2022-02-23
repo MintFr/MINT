@@ -3,6 +3,7 @@ package com.example.mint.controller;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -106,6 +107,7 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
     private ImageView pollutionInfo;
 
     private int itineraryToDisplay;
+    private boolean hasStep;
 
     /**
      * On create of this activity, display itineraries and the recap of all the itineraries
@@ -677,10 +679,14 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         TextView viewPoint2 = listItem.findViewById(R.id.end_point);
 
         // get start and end addresses
+        String step = "";
         String start = getString(R.string.itinerary_point1) + " : " +
                 (PreferencesAddresses.getAddress("startAddress", ItineraryActivity.this));
         String end = getString(R.string.itinerary_point2) + " : " +
                 (PreferencesAddresses.getAddress("endAddress", ItineraryActivity.this));
+        if (itinerary.isHasStep()) {
+            step = "Etape : " + (PreferencesAddresses.getAddress("stepAddress", ItineraryActivity.this));
+        }
 
         if (itinerary.getPointSize() > 0) {
             // start and end
@@ -697,7 +703,16 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                 ArrayList<Step> toDisplay = new ArrayList<>();
                 for (int m = 1; m < sizeDetails - 1; m++) {
                     if (!STEPS.get(m).getAddress().equals("")) {
-                        toDisplay.add(STEPS.get(m));
+                        if (STEPS.get(m).getAddress().equals("Vous arrivez : ")) {
+                            continue;
+                        }
+                        else if (STEPS.get(m).getAddress().equals("Rejoignez : ")) {
+                            toDisplay.add(new Step(step, 0, 1));
+                        }
+                        else {
+                            toDisplay.add(STEPS.get(m));
+                        }
+
                     }
                 }
 
@@ -713,6 +728,12 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
                     String streetName = toDisplay.get(k - 1).getAddress();
                     int dist = toDisplay.get(k - 1).getDistance();
                     stepTimeMin.setText(streetName);
+                    if (streetName.contains("Etape : ")) {
+                        ImageView imageStep = stepView.findViewById(R.id.location_icon);
+                        imageStep.setImageResource(R.drawable.ic_step_marker);
+                        stepTimeMin.setTypeface(null, Typeface.BOLD);
+                        stepTimeMin.setTextSize(13f);
+                    }
                     stepDist.setText(String.format("%d", dist));
                     // add the textView to the linearlayout which contains the steps
                     stepsLayout.addView(stepView, k + 1 - count);

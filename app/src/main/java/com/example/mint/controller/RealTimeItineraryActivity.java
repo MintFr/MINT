@@ -331,6 +331,9 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
 
     }
 
+    /**
+     * Removes the previous superposed highlighted polyline and the new polyline that is superposed with the current step
+     */
     private void highlightCurrentStep() {
 
         map.getOverlays().remove(lineHighlighted);
@@ -506,19 +509,6 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         }
     }
 
-    /**
-     * Convert a time in seconds to hours
-     *
-     * @param seconds int
-     * @return String
-     */
-    private String convertIntToHour(int seconds) {
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-        minutes = minutes - hours * 60;
-        String res = String.format("%s h %s min", hours, minutes);
-        return res;
-    }
 
     /**
      * this method decides which color the itinerary line will be, according to the threshold
@@ -896,7 +886,7 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
         Log.d(LOG_TAG, "TAGGG : nbPoints prev 2 : " + nbPointsDone);
         Log.d(LOG_TAG, "TAGGG : nbAct prev 2 : " + nbActualStep);
 
-        if(nbActualStep > 0) {
+        if (nbActualStep > 0) {
             nextDirection();
         }
         //Hide the next step (for there is none)

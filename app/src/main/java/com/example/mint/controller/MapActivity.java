@@ -670,9 +670,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
     // OnClick method to open the pollen popup when the user click on the button
 
     public void onClickPollen(View view) {

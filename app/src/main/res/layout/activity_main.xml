@@ -11,7 +11,7 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints" >
 
         <View
             android:id="@+id/dim_popup"
@@ -216,7 +216,7 @@
         android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
         android:onClick="onClickPollen"
-        app:srcCompat="@drawable/ic_pollen_modified_1"
+        app:srcCompat="@drawable/ic_pollen"
         tools:background="@color/PrimaryWhite_Map"
         tools:ignore="VectorDrawableCompat"
         tools:layout_alignParentRight="true" />
@@ -251,7 +251,5 @@
         app:menu="@menu/bottom_menu"
         tools:ignore="MissingConstraints"
         />
-
-
 
 </RelativeLayout>

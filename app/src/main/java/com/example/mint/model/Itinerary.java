@@ -78,7 +78,8 @@ public class Itinerary implements Serializable {
                 JSONObject step = tempDetail.getJSONObject(i);
                 String address = step.getString("addressStep");
                 int length = step.getInt("lengthStep");
-                detail.add(new Step(address, length));
+                int nbEdges = step.getInt("numberOfEdges");
+                detail.add(new Step(address, length, nbEdges));
                 //System.out.println(address);
             }
             this.setDetail(detail);

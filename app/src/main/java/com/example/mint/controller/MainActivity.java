@@ -1,7 +1,6 @@
 package com.example.mint.controller;
 
 import static android.graphics.Color.parseColor;
-
 import static com.example.mint.model.PreferencesMaxPollen.getMaxPollen;
 import static com.example.mint.model.PreferencesMaxPollen.setMaxPollen;
 
@@ -61,6 +60,7 @@ import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.mint.R;
 import com.example.mint.model.Coordinates;
 import com.example.mint.model.CustomListAdapter;
+import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollen;
 import com.example.mint.model.PreferencesSize;
@@ -69,9 +69,6 @@ import com.example.mint.model.fetchData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -105,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private final static double LATITUDE_MIN = 47.0;
     private final static double LONGITUDE_MAX = -1.3;
     private final static double LONGITUDE_MIN = -1.8;
+    public static int maxPollen;
     // get current date and time
     final Calendar cldr = Calendar.getInstance();
 
@@ -148,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private View dimPopup;
     private int idButton; // We need this to know where we have to write the location of the user : in the startPoint or the endPoint
     private int positionId = -1; // where user's location is used : 0=startPoint, 1=endPoint, 2=stepPoint, -1 otherwise
-    public static int maxPollen;
     private Context contextPollen;
 
     private MapView map;
@@ -172,12 +169,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     private ImageButton iconTimeBtn;
     private Button timeBtn;
     private ImageButton myPosition;
+    private Button temporaryItineraryRealTime;
     private ImageButton pollen_button;
 
     private GeoPoint tmpPoint;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-
+    private ArrayList<Itinerary> itineraries;
 
     /**
      * Method to read server response, which is as text file, and put it in a String object.
@@ -195,6 +193,36 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         return sb.toString();
     }
 
+    /**
+     * Creation of the Popup pollen and fetch the data from the RNSA link
+     */
+
+    public void displayPollen() {
+        if (CheckInternet()) {
+            //creation of the popup
+            dialogBuilder = new AlertDialog.Builder(this);
+            final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
+            this.v = pollenPopupView; //initialisation of the view for the textView
+
+            //Fetch data from RNSA url
+            this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
+
+            //Fetch RNSA data
+            new fetchData(this.donneesPollen).execute();
+            dataPollen = String.valueOf(this.donneesPollen.getText());
+            dialogBuilder = dialogBuilder.setView(pollenPopupView);
+            dialogBuilder.setNegativeButton("FERMER", null);
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
+
+            //Set SharedPreferences
+            setMaxPollen("maxPollen", maxPollen, contextPollen);
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Connexion à Internet nécessaire pour obtenir les informations sur le pollen.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
     /**
      * This activity handles the input of start and end points and the itinerary options
      *
@@ -403,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         );
 
 
-        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen_modified_1, pollen_button);
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.ic_pollen, pollen_button);
 
         VectorDrawableCompat.VFullPath path1 = vector.findPathByName("changingColor1");
         path1.setFillColor(color);
@@ -489,68 +517,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
      */
     @Override
     public void onBackPressed() {
-
-        String targetActivity = "No target activity yet";
-        // Get previous intent with information of previous activity
-        Intent intent = getIntent();
-        targetActivity = intent.getStringExtra("previousActivity");
-
-        // Creates a new intent to go back to that previous activity
-        // Tries to get the class from the name that was passed through the previous intent
-        Intent newIntent = null;
-        try {
-            newIntent = new Intent(this, Class.forName(targetActivity));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        intent.putExtra("previousActivity", this.getClass());
-
-        this.startActivity(newIntent);
-
-        //---------TRANSITIONS-----------
-        //For Left-To-Right transitions
-        if (
-                targetActivity.equals("com.example.mint.MapsActivity")
-                        || targetActivity.equals("com.example.mint.controller.ProfileActivity")
-        ) {
-
-            // hide/show stepPoint when the user clicks on the addStepPoint button
-
-            //override the transition and finish the current activity
-            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            this.finish();
-        }
+        finish();
+        System.exit(0);
     }
 
     /////////////////////////////////////////////////////////
     // BACK BUTTON END //
     /////////////////////////////////////////////////////////
-
-
-    /**
-     * Creation of the Popup pollen and fetch the data from the RNSA link
-     */
-
-    public void displayPollen() {
-        //creation of the popup
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View pollenPopupView = getLayoutInflater().inflate(R.layout.popup_pollen, null);
-        this.v = pollenPopupView; //initialisation of the view for the textView
-
-        //Fetch data from RNSA url
-        this.donneesPollen = v.findViewById(R.id.pollen_alert_text);   //initialisation of the text view for te pollen
-
-        //Fetch RNSA data
-        new fetchData(this.donneesPollen).execute();
-        dataPollen = String.valueOf(this.donneesPollen.getText());
-        dialogBuilder = dialogBuilder.setView(pollenPopupView);
-        dialogBuilder.setNegativeButton("FERMER", null);
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
-
-        //Set SharedPreferences
-        setMaxPollen("maxPollen", maxPollen, contextPollen);
-    }
 
 
     /**

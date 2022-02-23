@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
+import com.example.mint.model.PreferencesSize;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,13 @@ public class FaqActivity extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         // We need to fulfill the different arrays with data
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faq);
+        String sizePolice = PreferencesSize.getSize("police", FaqActivity.this);
+        if (sizePolice.equals("big")) {
+            setContentView(R.layout.activity_faq_big);
+        } else {
+            setContentView(R.layout.activity_faq);
+        }
+
         // Getting from xml
         nbQuestions = getResources().getInteger(R.integer.nbQuestionFAQ);
         // For each question, we add the elements we need in arrays

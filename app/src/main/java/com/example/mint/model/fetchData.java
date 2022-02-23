@@ -3,7 +3,6 @@ package com.example.mint.model;
 import static com.example.mint.model.App.getRes;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.mint.R;

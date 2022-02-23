@@ -7,13 +7,19 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
+import com.example.mint.model.PreferencesSize;
 
 public class LegalNoticesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_legal_notices);
+        String sizePolice = PreferencesSize.getSize("police", LegalNoticesActivity.this);
+        if (sizePolice.equals("big")) {
+            setContentView(R.layout.activity_legal_notices_big);
+        } else {
+            setContentView(R.layout.activity_legal_notices);
+        }
     }
 
     /**

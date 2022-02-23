@@ -209,7 +209,7 @@
         android:onClick="onClickPollen"
         android:padding="70dp"
         android:scaleX="1"
-        app:srcCompat="@drawable/ic_pollen_modified_1"
+        app:srcCompat="@drawable/ic_pollen"
         tools:foregroundGravity="center"
         tools:scaleY="1"
         tools:ignore="VectorDrawableCompat" />

@@ -7,10 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:layout_marginBottom="@dimen/bottom_navigation_height"
-    android:paddingBottom="@dimen/bottom_navigation_height"
+    android:paddingBottom="@dimen/bottom_navigation_height_big"
+    app:behavior_peekHeight="@dimen/peek_height_big"
     app:behavior_hideable="false"
     android:focusable="false"
+    android:layout_marginBottom="@dimen/bottom_navigation_height_big"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
@@ -32,11 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/recap_title">
-    <LinearLayout
-        android:id="@+id/recap_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/recap_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

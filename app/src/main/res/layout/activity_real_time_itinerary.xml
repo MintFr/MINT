@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Transparant_Background_End_Itinerary_Button"
+    tools:context=".controller.RealTimeItineraryActivity">
+
+    <include
+        android:id="@+id/map_layout"
+        layout="@layout/itinerary_map" />
+
+    <!-- Adding bottom sheet after main content -->
+
+    <RelativeLayout
+        android:id="@+id/itinerary_real_time_step_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+
+        >
+
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="00"
+            android:textSize="22dp" />
+
+
+        <TextView
+            android:id="@+id/step_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/metres"
+            android:paddingTop="10dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:text="00"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/metres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="m"
+            android:textSize="22dp" />
+
+        <ImageView
+            android:id="@+id/current_arrow_image"
+            android:layout_width="35dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/step_distance"
+            app:srcCompat="@drawable/ic_baseline_arrow_upward_24"
+            tools:ignore="VectorDrawableCompat" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/itinerary_real_time_step_layout_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/itinerary_real_time_step_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button_shape_end_itinerary">
+
+
+        <TextView
+            android:id="@+id/address_2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="00"
+            android:textSize="17dp" />
+
+
+        <TextView
+            android:id="@+id/step_distance_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/metres_2"
+            android:paddingTop="10dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:text="00"
+            android:textSize="17dp" />
+
+
+        <TextView
+            android:id="@+id/metres_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="m"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:id="@+id/next_arrow_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/step_distance_2"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_24"
+            tools:ignore="VectorDrawableCompat" />
+
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/zoom_out"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="TODO"
+        android:onClick="zoomIn"
+        android:src="@drawable/ic_zoom_in"
+        app:backgroundTint="@color/PrimaryWhite_Itinerary"
+        app:fabSize="mini" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/zoom_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/locate"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="TODO"
+        android:onClick="zoomOut"
+        android:src="@drawable/ic_zoom_out"
+        app:backgroundTint="@color/PrimaryWhite_Itinerary"
+        app:fabSize="mini" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/locate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/PrimaryWhite_Itinerary"
+        android:contentDescription="TODO"
+        android:onClick="positionCentering"
+        android:src="@drawable/ic_locate"
+        app:borderWidth="0dp"
+        app:fabSize="mini" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="90dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/PrimaryWhite_Itinerary"
+        android:contentDescription="TODO"
+        android:onClick="nextStep"
+        android:src="@drawable/ic_locate"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:fabSize="mini" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/White_Main"
+        app:itemTextAppearance="@style/BottomStyle"
+        app:itemTextColor="#999999"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_menu"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/imageButton"
+        style="@style/bold"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/next_step_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="toMain"
+        android:text="Fin Itinéraire" />
+
+    <Button
+        android:id="@+id/next_step_button"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itinerary_real_time_step_layout_second"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="onClickNextStep"
+        android:text="Prochaine étape" />
+
+    <Button
+        android:id="@+id/previous_step_button"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itinerary_real_time_step_layout_second"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape_end_itinerary"
+        android:onClick="onClickPreviousStep"
+        android:text="Etape précédente" />
+
+</RelativeLayout>

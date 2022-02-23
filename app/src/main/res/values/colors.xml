@@ -71,7 +71,6 @@
     <color name="Transparent_FavAdresses">#00ffffff</color>
     <color name="PrimaryWhite_FavAdresses">#FFFFFF</color>
 
-
     <!-- Colors for popup_activity_main_options -->
     <color name="Transparent_Profile_PopupMain">#00ffffff</color>
     <color name="WhiteGrey_Profile_PopupMain">#e0e0e0</color>
@@ -94,11 +93,15 @@
     <!-- Colors ic_position -->
     <color name="FlashRed_position">#F00020</color>
 
+    <!-- Colors actitivity_real_time_itinerary -->
+    <color name="White_Backgroung_Step">#FFFFFF</color>
+    <color name="White_Background_End_Itinerary_Button">#FFFFFF</color>
+    <color name="Transparant_Background_End_Itinerary_Button">#00ffffff</color>
+
     <!-- Colors for pollen_alert button actity -->
     <color name="LightGreen_pollen">#89BE89</color> // when it is 0
     <color name="Orange_pollen">#FF9800</color> // when it is 1
     <color name="FlashRed_pollen">#F00020</color> // when it is 2
-
 
 
 </resources>

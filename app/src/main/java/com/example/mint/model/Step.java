@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Step implements Serializable {
     private String address;
     private int distance;
+    private int nbEdges;
 
     public Step() {
     }
@@ -12,6 +13,13 @@ public class Step implements Serializable {
     public Step(String address, int distance) {
         this.address = address;
         this.distance = distance;
+        this.nbEdges = 1;
+    }
+
+    public Step(String address, int distance, int nbEdges){
+        this.address = address;
+        this.distance = distance;
+        this.nbEdges = nbEdges;
     }
 
     public String getAddress() {
@@ -32,5 +40,9 @@ public class Step implements Serializable {
 
     public void increaseDistance(int length) {
         this.distance += length;
+    }
+
+    public int getNbEdges() {
+        return this.nbEdges;
     }
 }

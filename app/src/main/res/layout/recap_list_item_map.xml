@@ -6,10 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/cardview_light_background"
-    android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:onClick="displayDetailButton"
     tools:ignore="DuplicateClickableBoundsCheck">
 
     <RelativeLayout
@@ -111,22 +109,16 @@
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="8sp" />
 
-    <ImageButton
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/round_button_shadow_background"
-        android:src="@drawable/ic_save"
-        android:contentDescription="TODO" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/LightLightGrey_RecapList" />
+            <ImageButton
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/round_button_shadow_background"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_save" />
 
             <TextView
                 android:id="@+id/timeStart"
@@ -219,6 +211,9 @@
                 android:background="@color/WhiteTwo_Detail" />
 
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
                 <LinearLayout
                     android:id="@+id/itinerary_steps"
                     android:layout_width="match_parent"
@@ -330,6 +325,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </RelativeLayout>
 

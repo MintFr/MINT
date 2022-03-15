@@ -82,4 +82,5 @@ When the app opens a pop-up appears to inform the user about the types of pollen
 For now, only a few tests are implemented. We have not yet succeeded to implement tests for activity classes. The other classes contain only getters, setters and basic constructors, some tests were made for these classes but they are not really that useful.
 
 
+![Mint_Icone+Nom](https://user-images.githubusercontent.com/25695519/158411576-f23b796e-c0f1-4cfa-8908-06cd4c3d9fd2.png)
 

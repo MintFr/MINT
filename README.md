@@ -1,5 +1,7 @@
 # MINT the best way to breath 
 
+![bannière 3 copie](https://user-images.githubusercontent.com/25695519/158411176-c1b33562-b0ec-468d-9745-b0794b9b3063.jpg)
+
 The main goal of the app is to provide healthier itineraries in regards to atmospheric pollution.
 
 ## Project’s Content

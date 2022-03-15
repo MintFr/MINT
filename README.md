@@ -7,7 +7,7 @@ Project’s description
 The main goal of the app is to provide healthier itineraries in regards to atmospheric pollution.
 Project’s Content
 
-What does the application
+## What does the application
 
 The application's principal feature is to calculate less polluted itineraries within the city of Nantes, France. 
 The application also provides pollen alerts thanks to the RNSA’s data, which won’t be available in the first place but can be accessed by asking them, the data format is as follow : 

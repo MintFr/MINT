@@ -81,4 +81,6 @@ When the app opens a pop-up appears to inform the user about the types of pollen
 For now, only a few tests are implemented. We have not yet succeeded to implement tests for activity classes. The other classes contain only getters, setters and basic constructors, some tests were made for these classes but they are not really that useful.
 
 
+## Link to the work we've done
 
+https://www.youtube.com/watch?v=JKieGlmomvA

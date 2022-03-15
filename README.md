@@ -42,8 +42,8 @@ The main thing we used for the project was android studio to code the applicatio
 We chose to code in java because it was a language we already knew and we needed to start fast and didn’t have the time to learn kotlin properly.<br>
 
 Libraries outside native android : 
-OSMdroid : open source mapping for android, used to show maps and get addresses for itineraries calculation. It was chosen because we use OSM data for itinerary calculation.<br>
-https://github.com/PhilJay/MPAndroidChart : free library to show graphs within android. It was chosen because it was the best free library to show graphs we could find.
+- OSMdroid : open source mapping for android, used to show maps and get addresses for itineraries calculation. It was chosen because we use OSM data for itinerary calculation.
+- https://github.com/PhilJay/MPAndroidChart : free library to show graphs within android. It was chosen because it was the best free library to show graphs we could find.
 
 ## How to Install and Run the Project
 

@@ -372,6 +372,13 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    /**
+     * Changes the display depending on the button clicked
+     * @param parent the parent view (the bottom part were we get the clickable items
+     * @param view
+     * @param position the position of the button clicked, used to get what item to change
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = (String) parent.getItemAtPosition(position);
@@ -670,7 +677,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    // OnClick method to open the pollen popup when the user click on the button
+    /**
+     * OnClick method to open the pollen popup when the user click on the button
+     * @param view standard parameter for onClick method on button
+     */
     public void onClickPollen(View view) {
         if (CheckInternet()) {
             //creation of the popup

@@ -40,6 +40,11 @@ public class fetchData extends AsyncTask<String, String, String> {
         this.textView = textView;
     }
 
+    /**
+     * Method executed in background. Sends url to server, read response and put it in JSONObjects then puts it in the text to be shown
+     * @param params
+     * @return the text to be shown in the pop up
+     */
     @Override
     protected String doInBackground(String... params) {
         Calendar calendar = Calendar.getInstance();

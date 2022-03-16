@@ -539,8 +539,10 @@ public class RealTimeItineraryActivity extends AppCompatActivity implements Loca
     // LOCATION //
     /////////////////////////////////////////////////////////
 
-
-    //Centers the map on the user's position when the button myPosition is clicked
+    /**
+     * Centers the map on the user's position when the button myPosition is clicked
+     * @param view standard onClick param for button
+     */
     public void positionCentering(View view) {
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         assert locationManager != null; //check if there the app is allowed to access location

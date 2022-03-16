@@ -532,8 +532,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     *
-     * Close the pollen popup window and set the pollen sensibility of the user in sharedprefrences
+     * Close the pollen popup window and set the pollen sensibility of the user in sharedPreferences
      *
      * @param pressed the button pressed by the user
      * @param window The pollen pop up which will be closed

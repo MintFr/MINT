@@ -10,7 +10,7 @@ The main goal of the app is to provide healthier itineraries in regards to atmos
 
 The application's principal feature is to calculate less polluted itineraries within the city of Nantes, France. 
 The application also provides pollen alerts thanks to the RNSA’s data, which won’t be available in the first place but can be accessed by asking them, the data format is as follow : 
-
+![Sceenshot-data-format-pollen](https://user-images.githubusercontent.com/45060840/158555733-a90b0cd1-9102-42c2-9cf7-d1fb022cb68c.PNG)
 
 The application is also able to follow an itinerary step by step thanks to geolocalisation.
 When an itinerary is chosen it also saves the exposure to pollution during this route and can show a graph recapitulating the exposition of the user.

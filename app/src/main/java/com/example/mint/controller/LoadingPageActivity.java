@@ -14,7 +14,7 @@ import com.example.mint.model.PreferencesTransport;
  */
 public class LoadingPageActivity extends AppCompatActivity {
     final static String URL_LOCAL;
-    final static String URL_SERV = "http://ser-info-03.ec-nantes.fr:8080/itinerary_pollution/itineraryPollution?";
+    final static String URL_SERV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

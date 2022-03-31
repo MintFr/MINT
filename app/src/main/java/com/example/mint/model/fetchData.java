@@ -44,7 +44,7 @@ public class fetchData extends AsyncTask<String, String, String> {
             String todayData = today.format(calendar.getTime());
 
             //Get the link with today's date
-            urlData = "http://51.77.201.227:100/pickdate/noemie/" + todayData;
+            urlData = urlData + todayData;
             donneesPollen = MyHttpUtils.getDataHttpUriConnection(urlData);
             try {
                 JSONArray list = new JSONArray(donneesPollen);

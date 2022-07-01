@@ -649,22 +649,24 @@ public class ItineraryActivity extends AppCompatActivity implements View.OnClick
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         listItem.setLayoutParams(params);
 
-        // add the view to the layout
-        // save pollution button
-        save.setTag(100 + i); // we add 100 because otherwise we will override the tag for "listItem"
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int i = (int) v.getTag() - 100; // this lets us find the corresponding itinerary for which we want to save the pollution data
-                // we inform the user that he just saved this pollution data to his profile :
-                Toast.makeText(ItineraryActivity.this,
-                        "L'exposition associée à ce trajet a bien été ajoutée à votre profil",
-                        Toast.LENGTH_SHORT).show();
-                // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
-                PreferencesPollution.setLastPollution(
-                        (int) itinerary.getPollution(), ItineraryActivity.this);
-            }
-        });
+            // add the view to the layout
+            recapList.addView(listItem, i);
+
+            // save pollution button
+            save.setTag(100 + i); // we add 100 because otherwise we will override the tag for "listItem"
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i = (int) v.getTag() - 100; // this lets us find the corresponding itinerary for which we want to save the pollution data
+                    // we inform the user that he just saved this pollution data to his profile :
+                    Toast.makeText(ItineraryActivity.this,
+                            "L'exposition associée à ce trajet a bien été ajoutée à votre profil",
+                            Toast.LENGTH_SHORT).show();
+                    // then we save the value of the pollution to Preferences to be able to retrieve it in the profile
+                    PreferencesPollution.setLastPollution(
+                            (int) list.get(i).getPollution(), ItineraryActivity.this);
+                }
+            });
 
         listItem.setTag(i);
         Button followItineraryButton = listItem.findViewById(R.id.followItineraryButton);

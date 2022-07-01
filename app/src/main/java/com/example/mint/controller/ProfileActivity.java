@@ -2,6 +2,7 @@ package com.example.mint.controller;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mint.R;
@@ -41,14 +43,10 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This activity is used for the profile page of the app, in which the user can record their preferences, and access the settings
@@ -105,6 +103,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      *
      * @param savedInstanceState
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,18 +130,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // handle the pollution
         pollutionToday = findViewById(R.id.exposure_today);
         // check whether a new day has started and if so reset pollution to 0 and store the last value
-        resetPollutionNewDay();
-        // Get the pollution from the last itineraries and change the pollution from today accordingly
-        setPollutionToday();
+        //resetPollutionNewDay();
+        // get the pollution from today
+        int pollution = PreferencesPollution.getPollutionToday(this);
+        pollutionToday.setText(Integer.toString(pollution));
 
-        // UPDATE PREFERENCES
-        // update the pollution for this month
-        System.out.println("pollution today" + PreferencesPollution.getPollutionToday(this));
-        PreferencesPollution.addDayPollutionToMonth(PreferencesDate.getCurrentDate(), PreferencesPollution.getPollutionToday(this), this);
-        System.out.println(PreferencesPollution.getPollutionMonth(3, this));
-        // update the pollution for this year
-        PreferencesPollution.addMonthPollutionToYear(PreferencesDate.getCurrentDate()[1], PreferencesPollution.getPollutionMonth(PreferencesDate.getCurrentDate()[1], this), this);
-        System.out.println(PreferencesPollution.getPollutionYear(2021, this));
 
         // THIS IS A TEST WITH RANDOM NUMBERS TO SEE IF DISPLAY WORKS CORRECTLY
 //        ArrayList<Integer> valuesTest = new ArrayList<>();
@@ -701,34 +693,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    /**
-     * This adds the pollution from the last itinerary to today's pollution
-     */
-    private void setPollutionToday() {
-        // get the pollution from today
-        int pollution = PreferencesPollution.getPollutionToday(this);
-        // get the pollution from the last itinerary
-        int lastPol = PreferencesPollution.getLastPollution(this);
-        // add it to the pollution from today
-        pollution += lastPol;
-        // save it in the preferences
-        PreferencesPollution.setPollutionToday(pollution, this);
-        // display new pollution
-        pollutionToday.setText(Integer.toString(pollution));
-        // reset the last pollution now that it has been saved (so that it doesn't keep adding it as soon as we reopen the profile)
-        PreferencesPollution.setLastPollution(0, this);
-    }
+
 
     /**
      * This method checks whether we have started a new day or not every time we open the profile activity
      * If so, we save the new date value in the preferences, to be used as a comparison for the next time this function is called
      * Then we clear the value for today's pollution and add it to an array with the values for the month's exposure
      */
+    /*
     private void resetPollutionNewDay() {
         // first we check whether today is a new day or not
         // the date is in the format {day,month,year}, so currentDate[0] corresponds to the day
         int[] lastDate = PreferencesDate.getLastDate(ProfileActivity.this); // this is the value that was set the last time the day changed (in if statement)
-        int[] currentDate = PreferencesDate.getCurrentDate(); // this is the current date
 
         if (currentDate[0] != lastDate[0]) {
             PreferencesDate.setDate(ProfileActivity.this); // we replace the last saved date with today's date
@@ -736,39 +712,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             PreferencesPollution.addDayPollutionToMonth(lastDate, PreferencesPollution.getPollutionToday(ProfileActivity.this), ProfileActivity.this);
             PreferencesPollution.setPollutionToday(0, ProfileActivity.this); // we start over with a value of 0
         }
-    }
+    }*/
 
-    /**
-     * This handles all the graph values and appearance settings
-     *
-     * @param range : whether we want to display a week, a month or a year (0 for week, 1 for month, 2 for year)
-     */
-    private void setUpGraph(final int range) {
-        // we get the pollution data from preferences
-        System.out.println("values" + PreferencesPollution.getPollutionYear(2021, this));
-        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2021, this);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setUpWeekGraph(){
 
-
+        //set up a Calendar object to handle date
+        final Calendar calendar = Calendar.getInstance();
+        // we get the pollution data from preferences calendar.get(Calendar.YEAR)
+        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2022, this);
         // we convert it to a list of "entries" which is a class from the MPAndroidChart library
         List<Entry> entries = new ArrayList<>();
-        // we use the java date format to calculate how many days have gone by since the beginning of the year
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-        String inputString1 = PreferencesDate.getCurrentDate()[0] + " " + PreferencesDate.getCurrentDate()[1] + " " + PreferencesDate.getCurrentDate()[2];
-        String inputString2 = "00 01 " + PreferencesDate.getCurrentDate()[2];
-        int diffDays = 0;
-        try {
-            Date date1 = myFormat.parse(inputString1);
-            Date date2 = myFormat.parse(inputString2);
-            long diff = date1.getTime() - date2.getTime(); // number of days that have gone by in milliseconds
-            diffDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            System.out.println("Days: " + diffDays);
-            for (int i = 1; i <= diffDays; i++) {
-                System.out.println("i " + i);
-                System.out.println("value " + values.get(i + 4));
-                entries.add(new Entry(i, values.get(i + 2)));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        // we get the nth day of the year
+        int diffDays = calendar.get(Calendar.DAY_OF_YEAR);
+
+        for (int i = 1; i <= diffDays; i++) {
+            entries.add(new Entry(i, values.get(i)));
         }
 
         // LineDataSet allows for individual styling of this data (for if we have several data sets)
@@ -787,7 +746,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         YAxis yAxisRight = graph.getAxisRight();
         final YAxis yAxisLeft = graph.getAxisLeft();
         yAxisRight.setEnabled(false);
-        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setDrawAxisLine(true);
         yAxisLeft.setGridLineWidth(0.5f);
         yAxisLeft.setGridColor(getResources().getColor(R.color.colorLightGrey));
         yAxisLeft.setTypeface(Typeface.DEFAULT);
@@ -796,7 +755,87 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // X axis
         final XAxis xAxis = graph.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setTypeface(Typeface.DEFAULT);
+        xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // in the case that we want to show the week :
+        // first we change the range of the x axis
+        int xAxisMin = (diffDays - calendar.get(Calendar.DAY_OF_WEEK));
+        xAxis.setAxisMinimum(xAxisMin + 1);
+        Log.d(LOG_TAG, "xAxisMin + :'" + xAxis.getAxisMinimum()+ "'");
+        xAxis.setAxisMaximum(xAxisMin + 7);
+        Log.d(LOG_TAG, "xAxisMax + :'" + xAxis.getAxisMaximum()+ "'");
+        // then we change the labels of the x axis
+        final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
+        xAxisLabelWeek.add("Lun");
+        xAxisLabelWeek.add("Mar");
+        xAxisLabelWeek.add("Mer");
+        xAxisLabelWeek.add("Jeu");
+        xAxisLabelWeek.add("Ven");
+        xAxisLabelWeek.add("Sam");
+        xAxisLabelWeek.add("Dim");
+        // this formats the values to be the new ones we just created :
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xAxisLabelWeek.get((int) (value - xAxis.getAxisMinimum()));
+            }
+        });
+        dataSet.setDrawCircles(true);
+        graph.invalidate();
+
+    }
+
+
+    /**
+     * This handles all the graph values and appearance settings
+     *
+     * @param range : whether we want to display a week, a month or a year (0 for week, 1 for month, 2 for year)
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setUpGraph(final int range) {
+
+        // set up of a Calendar object to handle date
+        final Calendar calendar = Calendar.getInstance();
+        // we get the pollution data from preferences calendar.get(Calendar.YEAR)
+        ArrayList<Integer> values = PreferencesPollution.getPollutionYear(2022, this);
+        // we convert it to a list of "entries" which is a class from the MPAndroidChart library
+        List<Entry> entries = new ArrayList<>();
+        // we get the nth day of the year
+        int diffDays = calendar.get(Calendar.DAY_OF_YEAR);
+
+        for (int i = 1; i <= diffDays; i++) {
+            entries.add(new Entry(i, values.get(i)));
+        }
+
+        // LineDataSet allows for individual styling of this data (for if we have several data sets)
+        LineDataSet dataSet = new LineDataSet(entries, null);
+        dataSet.setColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setLineWidth(3);
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleColor(getResources().getColor(R.color.colorAccent));
+        dataSet.setCircleRadius(5);
+        dataSet.setCircleHoleRadius(3);
+        dataSet.setDrawValues(false);
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+
+        // Axis styling
+        // Y axis
+        YAxis yAxisRight = graph.getAxisRight();
+        final YAxis yAxisLeft = graph.getAxisLeft();
+        yAxisRight.setEnabled(false);
+        yAxisLeft.setDrawAxisLine(true);
+        yAxisLeft.setGridLineWidth(0.5f);
+        yAxisLeft.setGridColor(getResources().getColor(R.color.colorLightGrey));
+        yAxisLeft.setTypeface(Typeface.DEFAULT);
+        yAxisLeft.setTextColor(getResources().getColor(R.color.colorDarkGrey));
+
+        // X axis
+        final XAxis xAxis = graph.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setTypeface(Typeface.DEFAULT);
         xAxis.setTextColor(getResources().getColor(R.color.colorDarkGrey));
@@ -806,10 +845,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 0:
                 // in the case that we want to show the week :
                 // first we change the range of the x axis
-                int currentDayOfWeek = (PreferencesDate.getCurrentDate()[3]) - 1; // day of week starts with 1 for sunday, so we do -1 to start with monday
-                int xAxisMin = (diffDays - currentDayOfWeek) + 1; // we have to add one because if we dont we will have a one day difference
-                xAxis.setAxisMinimum(xAxisMin);
-                xAxis.setAxisMaximum(diffDays + (7 - currentDayOfWeek));
+                int firstCurrentWeekDay = (diffDays - calendar.get(Calendar.DAY_OF_WEEK));
+                Log.d(LOG_TAG,"Rkey : nth day       : '" + diffDays+ "'");
+                Log.d(LOG_TAG,"Rkey : day of week   : '" + calendar.get(Calendar.DAY_OF_WEEK)+ "'");
+                Log.d(LOG_TAG,"Rkey : day of week   : '" + firstCurrentWeekDay+ "'");
+                xAxis.setAxisMinimum(firstCurrentWeekDay + 1);
+                Log.d(LOG_TAG, "Rkey : xAxisMin +   : '" + xAxis.getAxisMinimum()+ "'");
+                xAxis.setAxisMaximum(firstCurrentWeekDay + 7);
+                Log.d(LOG_TAG, "Rkey : xAxisMax + : '" + xAxis.getAxisMaximum()+ "'");
                 // then we change the labels of the x axis
                 final ArrayList<String> xAxisLabelWeek = new ArrayList<>();
                 xAxisLabelWeek.add("Lun");
@@ -832,14 +875,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case 1:
                 // in the case that we want to show the month :
                 // first we change the range of the x axis
-                int dayOfMonth = PreferencesDate.getCurrentDate()[0]; // same principle as the day of week
-                int lengthOfMonth = PreferencesDate.getCurrentDate()[4]; // this is the number of days in the current month
-                final int xAxisMinMonth = diffDays - dayOfMonth + 1;
+                final int xAxisMinMonth = diffDays - calendar.get(Calendar.DAY_OF_MONTH);
                 xAxis.setAxisMinimum(xAxisMinMonth);
-                xAxis.setAxisMaximum((diffDays - dayOfMonth) + lengthOfMonth);
+                xAxis.setAxisMaximum((diffDays - calendar.get(Calendar.DAY_OF_MONTH)) + java.time.LocalDate.now().lengthOfMonth());
                 // then we change the labels of the x axis
                 // this way we can set the array for the month we are about to draw
-                final ArrayList<String> xAxisLabelMonth = daysInYear(PreferencesDate.getCurrentDate()[2]);
+                final ArrayList<String> xAxisLabelMonth = daysInYear(calendar.get(Calendar.YEAR));
                 // this formats the values to be the new ones we just created :
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
@@ -925,7 +966,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                                 int min = (int) xAxis.getAxisMinimum();
                                 int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                                int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
+                                int[] monthDrawn = {1, month + 1, calendar.get(Calendar.YEAR)};
                                 int[] monthNext = new int[]{monthDrawn[0], monthDrawn[1] + 1, monthDrawn[2]}; // same but with the next month
                                 // then we get the length of each month
                                 int lengthDrawn = nbOfDaysInMonth(monthDrawn);
@@ -958,7 +999,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                                 int min = (int) xAxis.getAxisMinimum();
                                 int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                                int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
+                                int[] monthDrawn = {1, month + 1, calendar.get(Calendar.YEAR)};
                                 int[] monthLast = new int[]{monthDrawn[0], monthDrawn[1] - 1, monthDrawn[2]}; // same but with the next month
                                 // then we get the length of each month
                                 int lengthDrawn = nbOfDaysInMonth(monthDrawn);
@@ -987,11 +1028,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             graph.moveViewToX(xAxis.getAxisMinimum());
                             break;
                         case 1:
-                            System.out.println(slideLeft.isEnabled());
                             // We have to obtain the number of days in the months surrounding the current month, in order to move the minimum and maximum accordingly
                             int min = (int) xAxis.getAxisMinimum();
                             int month = getMonthFromDay(min); // this tells us which month is currently drawn on the graph
-                            int[] monthDrawn = {1, month + 1, PreferencesDate.getCurrentDate()[2]};
+                            int[] monthDrawn = {1, month + 1, calendar.get(Calendar.YEAR)};
                             int[] monthLast = new int[]{monthDrawn[0], monthDrawn[1] - 1, monthDrawn[2]}; // we go back one month, that way we know how many days are in the previous month
                             int[] monthNext = new int[]{monthDrawn[0], monthDrawn[1] + 1, monthDrawn[2]}; // same but with the next month
                             // then we get the length of each month
@@ -999,8 +1039,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             int lengthLast = nbOfDaysInMonth(monthLast);
                             int lengthNext = nbOfDaysInMonth(monthNext);
                             // then we move the minimum and maximum
-                            xAxis.setAxisMinimum(i == 110 ? xAxis.getAxisMinimum() - lengthLast : xAxis.getAxisMinimum() + lengthDrawn);
-                            xAxis.setAxisMaximum(i == 110 ? xAxis.getAxisMaximum() - lengthDrawn : xAxis.getAxisMaximum() + lengthNext);
+                            xAxis.setAxisMinimum(1);
+                            xAxis.setAxisMaximum(31);
                             graph.fitScreen();
                             graph.setVisibleXRangeMaximum(i == 110 ? lengthLast : lengthNext); // setting the range according to whether we went back or forward
                             graph.moveViewToX(xAxis.getAxisMinimum());

@@ -63,6 +63,7 @@ import com.example.mint.model.CustomListAdapter;
 import com.example.mint.model.Itinerary;
 import com.example.mint.model.PreferencesAddresses;
 import com.example.mint.model.PreferencesPollen;
+import com.example.mint.model.PreferencesDate;
 import com.example.mint.model.PreferencesSize;
 import com.example.mint.model.PreferencesTransport;
 import com.example.mint.model.fetchData;
